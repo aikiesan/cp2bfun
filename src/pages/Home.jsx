@@ -2,32 +2,25 @@ import React from 'react';
 import { Container, Row, Col, Card, Button, Carousel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { carouselSlides, newsItems } from '../data/content';
+import { carouselSlides, newsItems, forumData } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 
 const Home = () => {
   const { language } = useLanguage();
   const slides = carouselSlides[language];
   const news = newsItems[language];
+  const forum = forumData[language];
 
   const labels = {
     pt: {
-      forumTitle: 'Fórum de Biogás e Bioprodutos',
-      forumSubtitle: 'Fórum Paulista',
-      forumDescription: 'Confira os destaques do nosso último encontro, reunindo especialistas, pesquisadores e parceiros estratégicos para discutir o futuro da bioenergia.',
-      forumBtn: 'Ver cobertura completa',
-      newsTitle: 'Últimas Atualizações',
+      newsTitle: 'Novidades',
       newsAll: 'Ver todas',
       newsLink: 'Ler notícia →',
       partnersTitle: 'Parceiros e Apoiadores',
       videoFallback: 'Seu navegador não suporta a tag de vídeo.'
     },
     en: {
-      forumTitle: 'Biogas and Bioproducts Forum',
-      forumSubtitle: 'São Paulo Forum',
-      forumDescription: 'Check out the highlights from our last meeting, bringing together specialists, researchers, and strategic partners to discuss the future of bioenergy.',
-      forumBtn: 'Full coverage',
-      newsTitle: 'Latest Updates',
+      newsTitle: 'News',
       newsAll: 'View all',
       newsLink: 'Read more →',
       partnersTitle: 'Partners and Supporters',
@@ -90,18 +83,19 @@ const Home = () => {
         </Carousel>
       </section>
 
-      {/* Video Highlight Section */}
+      {/* Video Highlight Section - FORUM 2026 */}
       <section className="py-5">
         <Container>
             <Row className="align-items-center g-5">
                 <Col lg={6}>
                     <motion.div initial={{ x: -50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} viewport={{ once: true }}>
-                        <span className="text-success fw-bold text-uppercase small ls-2">{labels.forumSubtitle}</span>
-                        <h2 className="display-5 fw-bold mb-4">{labels.forumTitle}</h2>
+                        <span className="text-success fw-bold text-uppercase small ls-2">{forum.badge}</span>
+                        <span className="ms-2 text-muted fw-bold text-uppercase small ls-2">{forum.subtitle}</span>
+                        <h2 className="display-5 fw-bold mb-4">{forum.title}</h2>
                         <p className="lead text-muted mb-4">
-                            {labels.forumDescription}
+                            {forum.description}
                         </p>
-                        <Button variant="outline-primary" className="rounded-pill">{labels.forumBtn}</Button>
+                        <Button variant="outline-primary" className="rounded-pill">{forum.button}</Button>
                     </motion.div>
                 </Col>
                 <Col lg={6}>
@@ -130,7 +124,7 @@ const Home = () => {
           </div>
 
           <Row className="g-4">
-            {news.map((item) => (
+            {news.slice(0, 3).map((item) => (
               <Col md={4} key={item.id}>
                 <Card className="h-100 border-0 shadow-sm hover-lift">
                   <div className="card-img-top overflow-hidden position-relative" style={{ height: '240px' }}>

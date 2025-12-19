@@ -6,6 +6,39 @@ export const socialLinks = {
   whatsapp: '#'
 };
 
+export const menuLabels = {
+  pt: {
+    home: 'Início',
+    about: 'Sobre',
+    opportunities: 'Oportunidades',
+    news: 'Novidades',
+    team: 'Equipe',
+    publications: 'Publicações',
+    projects: 'Projetos',
+    media: 'CP2B na Mídia',
+    others: 'Outros',
+    linkedin: 'LinkedIn',
+    accessibility: 'Acessibilidade',
+    search: 'Buscar',
+    axes: 'Eixos de Pesquisa'
+  },
+  en: {
+    home: 'Home',
+    about: 'About',
+    opportunities: 'Opportunities',
+    news: 'News',
+    team: 'Team',
+    publications: 'Publications',
+    projects: 'Projects',
+    media: 'CP2B in Media',
+    others: 'Others',
+    linkedin: 'LinkedIn',
+    accessibility: 'Accessibility',
+    search: 'Search',
+    axes: 'Research Axes'
+  }
+};
+
 export const projectDetails = {
   number: '2024/01112-1',
   agency: 'FAPESP',
@@ -24,6 +57,23 @@ export const projectDetails = {
   }
 };
 
+export const forumData = {
+  pt: {
+    badge: 'EM BREVE',
+    subtitle: 'Fórum Paulista',
+    title: 'Fórum de Biogás e Bioprodutos - Maio/2026',
+    description: 'Prepare-se para o maior encontro de biogás de São Paulo. Reuniremos especialistas, pesquisadores e parceiros estratégicos para discutir o futuro da bioenergia.',
+    button: 'Saiba mais sobre a edição 2026'
+  },
+  en: {
+    badge: 'COMING SOON',
+    subtitle: 'São Paulo Forum',
+    title: 'Biogas and Bioproducts Forum - May/2026',
+    description: 'Get ready for the largest biogas meeting in São Paulo. We will bring together specialists, researchers, and strategic partners to discuss the future of bioenergy.',
+    button: 'Learn more about the 2026 edition'
+  }
+};
+
 export const aboutContent = {
   pt: {
     resumo: `O Centro Paulista de Estudos em Biogás e Bioprodutos é dedicado ao tema "Aproveitamento inteligente de resíduos para o desenvolvimento sustentável" e visa criar competências com base em ciência que conduzam ao desenvolvimento e aplicações de soluções inovadoras de biogás. Os sistemas energéticos sociotécnicos que incluem soluções de biogás têm um desempenho de sustentabilidade bastante positivo uma vez que tratam resíduos, produzem combustível renovável e criam nutrientes renováveis para as plantas. No Estado de São Paulo (ESP) há muito substrato disponível - um potencial de mais de 4,5 bilhões de m3 ano de biogás - assim como uma grande demanda por seus bioprodutos, mas apenas uma fração deste potencial é aproveitada.
@@ -32,11 +82,11 @@ O papel do CP2B é criar novos conhecimentos e competências que levem a soluç�
 
 Em 2022, o setor sucroenergético injetou mais de R$50 bilhões na economia do estado, que responde por 50% da produção nacional de cana, por 44% do etanol e 60% de açúcar (safra 2023/24). O potencial de produção de biogás neste setor representa mais de 50% do potencial nacional, sendo que a integração com outros setores por meio de ecopólos ou ecoparques deve resultar em soluções sustentáveis e inovadoras.
 
-O centro irá atuar de forma transdisciplinar, organizado em oito eixos temáticos integrados, seguindo o conceito de laboratório vivo, com projetos que experimentam em campo novas soluções e tecnologias.`,
-    
+O centro irá atuar de forma transdisciplinar, organizado em oito eixos temáticos integrados, seguindo o conceito de laboratório vivo, com projetos que experimentam em campo novas soluções e tecnologias.`,    
     objetivos: `O objetivo principal do CP2B é contribuir para a gestão de resíduos orgânicos e lignocelulósicos no ESP nos segmentos urbano e agroindustrial, com prioridade para as ações voltadas à gestão pública de resíduos e setores estratégicos para a economia do estado (como o sucroenergético).
     
-    Isso será feito por meio da pesquisa científica e tecnológica visando o desenvolvimento de modelos inovadores de produção de biogás e bioprodutos, explorando e integrando os conceitos de biorrefinaria, bioenergia e bioeconomia.    
+    Isso será feito por meio da pesquisa científica e tecnológica visando o desenvolvimento de modelos inovadores de produção de biogás e bioprodutos, explorando e integrando os conceitos de biorrefinaria, bioenergia e bioeconomia.
+    
     A concepção do CP2B e sua própria missão preveem a forte integração das pesquisas básica e aplicada como princípio para criação de soluções inteligentes na temática da gestão de resíduos urbanos e agropecuários com foco no desenvolvimento sustentável.`,
     
     resultados: `Entre os principais resultados esperados estão:
@@ -104,28 +154,6 @@ export const carouselSlides = {
       labelPrimary: 'Explorar Eixos',
       linkSecondary: '/sobre',
       labelSecondary: 'Saiba Mais'
-    },
-    {
-      id: 2,
-      image: '/assets/IMG_20240205_165148-1920x748.jpg',
-      badge: 'SUSTENTABILIDADE',
-      title: 'Economia Circular na Prática',
-      description: 'Desenvolvimento de bioprodutos e soluções tecnológicas integradas para o setor sucroenergético e urbano.',
-      linkPrimary: '/sobre',
-      labelPrimary: 'Saiba Mais',
-      linkSecondary: '/contato',
-      labelSecondary: 'Fale Conosco'
-    },
-    {
-      id: 3,
-      image: '/assets/DSC00621-1920x748.jpg',
-      badge: 'PARCERIAS',
-      title: 'Conectando Ciência e Mercado',
-      description: 'Unindo universidade, empresas e governo para impulsionar a cadeia do biogás e bioprodutos.',
-      linkPrimary: '/equipe',
-      labelPrimary: 'Conheça a Equipe',
-      linkSecondary: '/pesquisa',
-      labelSecondary: 'Nossos Projetos'
     }
   ],
   en: [
@@ -139,28 +167,6 @@ export const carouselSlides = {
       labelPrimary: 'Explore Axes',
       linkSecondary: '/sobre',
       labelSecondary: 'Learn More'
-    },
-    {
-      id: 2,
-      image: '/assets/IMG_20240205_165148-1920x748.jpg',
-      badge: 'SUSTAINABILITY',
-      title: 'Circular Economy in Practice',
-      description: 'Developing bioproducts and integrated technological solutions for the sugar-energy and urban sectors.',
-      linkPrimary: '/sobre',
-      labelPrimary: 'Learn More',
-      linkSecondary: '/contato',
-      labelSecondary: 'Contact Us'
-    },
-    {
-      id: 3,
-      image: '/assets/DSC00621-1920x748.jpg',
-      badge: 'PARTNERSHIPS',
-      title: 'Connecting Science and Market',
-      description: 'Uniting university, companies, and government to boost the biogas and bioproducts chain.',
-      linkPrimary: '/equipe',
-      labelPrimary: 'Meet the Team',
-      linkSecondary: '/pesquisa',
-      labelSecondary: 'Our Projects'
     }
   ]
 };
@@ -457,79 +463,121 @@ export const researchAxes = {
 };
 
 export const teamMembers = [
-  { name: 'Bruna de Souza Moraes', role: 'Pesquisador Responsável', institution: 'NIPE/UNICAMP', email: 'bsmoraes@unicamp.br', phone: '+55 (19) 3521-1241' },
-  { name: 'Alessandro Sanches Pereira', role: 'Pesquisador Responsável (Parceiro)', institution: 'Curtin University/CU' },
-  { name: 'Anderson Targino da Silva Ferreira', role: 'Pesquisador Responsável (Parceiro)', institution: 'CEPPE/UNG' },
-  { name: 'Bruno Sidnei da Silva', role: 'Pesquisador Responsável (Parceiro)', institution: '-' },
-  { name: 'Daniel de Oliveira Silva', role: 'Pesquisador Responsável (Parceiro)', institution: '-' },
-  { name: 'Gabriel Dias Mangolini Neves', role: 'Pesquisador Responsável (Parceiro)', institution: '-' },
-  { name: 'Jens Bo Holm-Nielsen', role: 'Pesquisador Responsável (Parceiro)', institution: 'Aalborg University (AAU)' },
-  { name: 'José Octavio Armani Paschoal', role: 'Pesquisador Responsável (Parceiro)', institution: '-' },
-  { name: 'Juliana Paula da Silva Ulian', role: 'Pesquisador Responsável (Parceiro)', institution: 'FEM/UNICAMP' },
-  { name: 'Leidiane Mariani', role: 'Pesquisador Responsável (Parceiro)', institution: 'Amplum Biogás' },
-  { name: 'Leonardo Vasconcelos Fregolente', role: 'Pesquisador Responsável (Parceiro)', institution: 'FEQ/UNICAMP' },
-  { name: 'Marcelo Kenji Miki', role: 'Pesquisador Responsável (Parceiro)', institution: '-' },
-  { name: 'Paola Mercadante Petry', role: 'Pesquisador Responsável (Parceiro)', institution: 'COMGAS' },
-  { name: 'Renata Piacentini Rodriguez', role: 'Pesquisador Responsável (Parceiro)', institution: 'ICT/UNIFAL' },
-  { name: 'Rubens Maciel Filho', role: 'Pesquisador Responsável (Parceiro)', institution: 'FEQ/UNICAMP' },
-  { name: 'Ângela Cruz Guirao', role: 'Pesquisador Responsável (Parceiro)', institution: '-' },
-  { name: 'José Maria Ferreira Jardim da Silveira', role: 'Pesquisador Principal', institution: 'IE/UNICAMP' },
-  { name: 'Luis Alberto Follegatti Romero', role: 'Pesquisador Principal', institution: 'EP/USP' },
-  { name: 'Rafael de Brito Dias', role: 'Pesquisador Principal', institution: 'FCA/UNICAMP' },
-  { name: 'Rubens Augusto Camargo Lamparelli', role: 'Pesquisador Principal', institution: 'NIPE/UNICAMP', email: 'lamparel@unicamp.br' },
-  { name: 'Aline Veronese da Silva', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
-  { name: 'Barbara Janet Teruel Mederos', role: 'Pesquisador Associado', institution: 'FEAGRI/UNICAMP' },
-  { name: 'Caio Henrique Rufino', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
-  { name: 'Carla Kazue Nakao Cavaliero', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
-  { name: 'Daniel Francisco Nagao Menezes', role: 'Pesquisador Associado', institution: 'FACAMP' },
-  { name: 'Daniel Henrique Dario Capitani', role: 'Pesquisador Associado', institution: 'FCA/UNICAMP' },
-  { name: 'Dante Chiavareto Pezzin', role: 'Pesquisador Associado', institution: 'NICS/UNICAMP' },
-  { name: 'Danúsia Arantes Ferreira', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
-  { name: 'Enelton Fagnani', role: 'Pesquisador Associado', institution: 'FT/UNICAMP', email: 'enelton@ft.unicamp.br' },
-  { name: 'Flávia Luciane Consoni', role: 'Pesquisador Associado', institution: 'IG/UNICAMP' },
-  { name: 'Gustavo Mockaitis', role: 'Pesquisador Associado', institution: 'FEAGRI/UNICAMP' },
-  { name: 'Hildo Guillardi Júnior', role: 'Pesquisador Associado', institution: 'FESJBV/UNESP' },
-  { name: 'Ivo Leandro Dorileo', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
-  { name: 'Joni de Almeida Amorim', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
-  { name: 'João Guilherme Ito Cypriano', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
-  { name: 'Karla Adriana Martins Bessa', role: 'Pesquisador Associado', institution: 'PAGU/UNICAMP' },
-  { name: 'Leandro Wang Hantao', role: 'Pesquisador Associado', institution: 'IQ/UNICAMP' },
-  { name: 'Lira Luz Benites Lazaro', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
-  { name: 'Luana Mattos de Oliveira Cruz', role: 'Pesquisador Associado', institution: 'FEC/UNICAMP' },
-  { name: 'Lucas Tadeu Fuess', role: 'Pesquisador Associado', institution: 'EESC/USP', email: 'lt.fuess@usp.br' },
-  { name: 'Luciana Cristina Lenhari da Silva', role: 'Pesquisador Associado', institution: 'IG/UNICAMP' },
-  { name: 'Luiz Carlos Pereira da Silva', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
-  { name: 'Luiz Carlos Roma Júnior', role: 'Pesquisador Associado', institution: 'IZ/SAASP' },
-  { name: 'Luiz Gustavo Antonio de Souza', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP', email: 'lgasouza@unicamp.br' },
-  { name: 'Marcelo Antunes Nolasco', role: 'Pesquisador Associado', institution: 'EACH/USP' },
-  { name: 'Marcelo de Carvalho Pereira', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
-  { name: 'Marcelo Marques de Magalhães', role: 'Pesquisador Associado', institution: 'CET/UNESP' },
-  { name: 'Marcelo Pereira da Cunha', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
-  { name: 'Marcelo Zaiat', role: 'Pesquisador Associado', institution: 'EESC/USP' },
-  { name: 'Maria Paula Cardeal Volpi', role: 'Pesquisador Associado', institution: 'ESALQ/USP' },
-  { name: 'Mariana Conceição da Costa', role: 'Pesquisador Associado', institution: 'FEQ/UNICAMP' },
-  { name: 'Marlon Fernandes de Souza', role: 'Pesquisador Associado', institution: 'ESALQ/USP' },
-  { name: 'Mauro Donizeti Berni', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
-  { name: 'Natalia Molina Cetrulo', role: 'Pesquisador Associado', institution: 'EACH/USP' },
-  { name: 'Patricia Jacqueline Thyssen', role: 'Pesquisador Associado', institution: 'IB/UNICAMP' },
-  { name: 'Patricia Nunes da Silva Mariuzzo', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
-  { name: 'Paulo Cesar Souza Manduca', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
-  { name: 'Paulo Sergio Graziano Magalhães', role: 'Pesquisador Associado', institution: 'UPP' },
-  { name: 'Priscila Rosseto Camiloti', role: 'Pesquisador Associado', institution: 'IEE/USP', email: 'prcamiloti@usp.br' },
-  { name: 'Sarita Cândida Rabelo', role: 'Pesquisador Associado', institution: 'FCA/UNESP' },
-  { name: 'Sergio Valdir Bajay', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
-  { name: 'Solange Teles da Silva', role: 'Pesquisador Associado', institution: 'CPG/UPM' },
-  { name: 'Sonia Regina da Cal Seixas', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
-  { name: 'Thais Aparecida Dibbern', role: 'Pesquisador Associado', institution: 'FCA/UNICAMP' },
-  { name: 'Thalita dos Santos Dalbelo', role: 'Pesquisador Associado', institution: 'FEC/UNICAMP' },
-  { name: 'Valeria Maia Merzel', role: 'Pesquisador Associado', institution: 'CPQBA/UNICAMP' },
-  { name: 'Waldyr Luiz Ribeiro Gallo', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
-  { name: 'Bruno Felipe Veloso', role: 'Apoio Técnico', institution: 'CCUEC/UNICAMP' },
-  { name: 'Joaquim Eugênio Abel Seabra', role: 'Apoio Técnico', institution: 'FEM/UNICAMP' },
-  { name: 'Raffaella Rossetto', role: 'Apoio Técnico', institution: 'APTA/SAASP' },
-  { name: 'Magali Luzia Maróstica', role: 'Apoio Administrativo', institution: 'NIPE/UNICAMP' },
-  { name: 'Paulo César de Almeida Pinheiro', role: 'Apoio Administrativo', institution: 'NIPE/UNICAMP' },
-  { name: 'Rosângela Pedroz', role: 'Apoio Administrativo', institution: 'NIPE/UNICAMP' },
-  { name: 'Denis da Silva Miranda', role: 'Estudante sem Bolsa', institution: '-' },
-  { name: 'Raquel Teixeira Gomes Magri', role: 'Estudante sem Bolsa', institution: 'FEEC/UNICAMP' }
+  {
+    category: 'coordinator',
+    pt: 'Pesquisador Responsável',
+    en: 'Lead Researcher',
+    members: [
+      { name: 'Bruna de Souza Moraes', role: 'Pesquisador Responsável', institution: 'NIPE/UNICAMP', email: 'bsmoraes@unicamp.br', phone: '+55 (19) 3521-1241' }
+    ]
+  },
+  {
+    category: 'partners',
+    pt: 'Pesquisadores Responsáveis nas Instituições Parceiras',
+    en: 'Lead Researchers at Partner Institutions',
+    members: [
+      { name: 'Alessandro Sanches Pereira', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'Curtin University/CU' },
+      { name: 'Anderson Targino da Silva Ferreira', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'CEPPE/UNG' },
+      { name: 'Bruno Sidnei da Silva', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
+      { name: 'Daniel de Oliveira Silva', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
+      { name: 'Gabriel Dias Mangolini Neves', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
+      { name: 'Jens Bo Holm-Nielsen', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'Aalborg University (AAU)' },
+      { name: 'José Octavio Armani Paschoal', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
+      { name: 'Juliana Paula da Silva Ulian', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'FEM/UNICAMP' },
+      { name: 'Leidiane Mariani', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'Amplum Biogás' },
+      { name: 'Leonardo Vasconcelos Fregolente', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'FEQ/UNICAMP' },
+      { name: 'Marcelo Kenji Miki', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
+      { name: 'Paola Mercadante Petry', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'COMGAS' },
+      { name: 'Renata Piacentini Rodriguez', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'ICT/UNIFAL' },
+      { name: 'Rubens Maciel Filho', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'FEQ/UNICAMP' },
+      { name: 'Ângela Cruz Guirao', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' }
+    ]
+  },
+  {
+    category: 'principals',
+    pt: 'Pesquisadores Principais',
+    en: 'Principal Investigators',
+    members: [
+      { name: 'José Maria Ferreira Jardim da Silveira', role: 'Pesquisador Principal', institution: 'IE/UNICAMP' },
+      { name: 'Luis Alberto Follegatti Romero', role: 'Pesquisador Principal', institution: 'EP/USP' },
+      { name: 'Rafael de Brito Dias', role: 'Pesquisador Principal', institution: 'FCA/UNICAMP' },
+      { name: 'Rubens Augusto Camargo Lamparelli', role: 'Pesquisador Principal', institution: 'NIPE/UNICAMP', email: 'lamparel@unicamp.br' }
+    ]
+  },
+  {
+    category: 'associates',
+    pt: 'Pesquisadores Associados',
+    en: 'Associate Researchers',
+    members: [
+      { name: 'Aline Veronese da Silva', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
+      { name: 'Barbara Janet Teruel Mederos', role: 'Pesquisador Associado', institution: 'FEAGRI/UNICAMP' },
+      { name: 'Caio Henrique Rufino', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
+      { name: 'Carla Kazue Nakao Cavaliero', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
+      { name: 'Daniel Francisco Nagao Menezes', role: 'Pesquisador Associado', institution: 'FACAMP' },
+      { name: 'Daniel Henrique Dario Capitani', role: 'Pesquisador Associado', institution: 'FCA/UNICAMP' },
+      { name: 'Dante Chiavareto Pezzin', role: 'Pesquisador Associado', institution: 'NICS/UNICAMP' },
+      { name: 'Danúsia Arantes Ferreira', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
+      { name: 'Enelton Fagnani', role: 'Pesquisador Associado', institution: 'FT/UNICAMP' },
+      { name: 'Flávia Luciane Consoni', role: 'Pesquisador Associado', institution: 'IG/UNICAMP' },
+      { name: 'Gustavo Mockaitis', role: 'Pesquisador Associado', institution: 'FEAGRI/UNICAMP' },
+      { name: 'Hildo Guillardi Júnior', role: 'Pesquisador Associado', institution: 'FESJBV/UNESP' },
+      { name: 'Ivo Leandro Dorileo', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
+      { name: 'Joni de Almeida Amorim', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
+      { name: 'João Guilherme Ito Cypriano', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
+      { name: 'Karla Adriana Martins Bessa', role: 'Pesquisador Associado', institution: 'PAGU/UNICAMP' },
+      { name: 'Leandro Wang Hantao', role: 'Pesquisador Associado', institution: 'IQ/UNICAMP' },
+      { name: 'Lira Luz Benites Lazaro', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
+      { name: 'Luana Mattos de Oliveira Cruz', role: 'Pesquisador Associado', institution: 'FEC/UNICAMP' },
+      { name: 'Lucas Tadeu Fuess', role: 'Pesquisador Associado', institution: 'EESC/USP' },
+      { name: 'Luciana Cristina Lenhari da Silva', role: 'Pesquisador Associado', institution: 'IG/UNICAMP' },
+      { name: 'Luiz Carlos Pereira da Silva', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
+      { name: 'Luiz Carlos Roma Júnior', role: 'Pesquisador Associado', institution: 'IZ/SAASP' },
+      { name: 'Luiz Gustavo Antonio de Souza', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
+      { name: 'Marcelo Antunes Nolasco', role: 'Pesquisador Associado', institution: 'EACH/USP' },
+      { name: 'Marcelo de Carvalho Pereira', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
+      { name: 'Marcelo Marques de Magalhães', role: 'Pesquisador Associado', institution: 'CET/UNESP' },
+      { name: 'Marcelo Pereira da Cunha', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
+      { name: 'Marcelo Zaiat', role: 'Pesquisador Associado', institution: 'EESC/USP' },
+      { name: 'Maria Paula Cardeal Volpi', role: 'Pesquisador Associado', institution: 'ESALQ/USP' },
+      { name: 'Mariana Conceição da Costa', role: 'Pesquisador Associado', institution: 'FEQ/UNICAMP' },
+      { name: 'Marlon Fernandes de Souza', role: 'Pesquisador Associado', institution: 'ESALQ/USP' },
+      { name: 'Mauro Donizeti Berni', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
+      { name: 'Natalia Molina Cetrulo', role: 'Pesquisador Associado', institution: 'EACH/USP' },
+      { name: 'Patricia Jacqueline Thyssen', role: 'Pesquisador Associado', institution: 'IB/UNICAMP' },
+      { name: 'Patricia Nunes da Silva Mariuzzo', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
+      { name: 'Paulo Cesar Souza Manduca', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
+      { name: 'Paulo Sergio Graziano Magalhães', role: 'Pesquisador Associado', institution: 'UPP' },
+      { name: 'Priscila Rosseto Camiloti', role: 'Pesquisador Associado', institution: 'IEE/USP' },
+      { name: 'Sarita Cândida Rabelo', role: 'Pesquisador Associado', institution: 'FCA/UNESP' },
+      { name: 'Sergio Valdir Bajay', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
+      { name: 'Solange Teles da Silva', role: 'Pesquisador Associado', institution: 'CPG/UPM' },
+      { name: 'Sonia Regina da Cal Seixas', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
+      { name: 'Thais Aparecida Dibbern', role: 'Pesquisador Associado', institution: 'FCA/UNICAMP' },
+      { name: 'Thalita dos Santos Dalbelo', role: 'Pesquisador Associado', institution: 'FEC/UNICAMP' },
+      { name: 'Valeria Maia Merzel', role: 'Pesquisador Associado', institution: 'CPQBA/UNICAMP' },
+      { name: 'Waldyr Luiz Ribeiro Gallo', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' }
+    ]
+  },
+  {
+    category: 'support',
+    pt: 'Apoio Técnico e Administrativo',
+    en: 'Technical and Administrative Support',
+    members: [
+      { name: 'Bruno Felipe Veloso', role: 'Apoio Técnico', institution: 'CCUEC/UNICAMP' },
+      { name: 'Joaquim Eugênio Abel Seabra', role: 'Apoio Técnico', institution: 'FEM/UNICAMP' },
+      { name: 'Raffaella Rossetto', role: 'Apoio Técnico', institution: 'APTA/SAASP' },
+      { name: 'Magali Luzia Maróstica', role: 'Apoio Administrativo', institution: 'NIPE/UNICAMP' },
+      { name: 'Paulo César de Almeida Pinheiro', role: 'Apoio Administrativo', institution: 'NIPE/UNICAMP' },
+      { name: 'Rosângela Pedroz', role: 'Apoio Administrativo', institution: 'NIPE/UNICAMP' }
+    ]
+  },
+  {
+    category: 'students',
+    pt: 'Estudantes',
+    en: 'Students',
+    members: [
+      { name: 'Denis da Silva Miranda', role: 'Estudante sem Bolsa', institution: '-' },
+      { name: 'Raquel Teixeira Gomes Magri', role: 'Estudante sem Bolsa', institution: 'FEEC/UNICAMP' }
+    ]
+  }
 ];

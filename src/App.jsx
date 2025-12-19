@@ -17,6 +17,11 @@ import Team from './pages/Team';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
 import Contact from './pages/Contact';
+import Opportunities from './pages/Opportunities';
+import Publications from './pages/Publications';
+import Projects from './pages/Projects';
+import Media from './pages/Media';
+import Others from './pages/Others';
 
 function App() {
   return (
@@ -33,6 +38,11 @@ function App() {
             <Route path="/noticias" element={<News />} />
             <Route path="/noticias/:slug" element={<NewsDetail />} />
             <Route path="/contato" element={<Contact />} />
+            <Route path="/oportunidades" element={<Opportunities />} />
+            <Route path="/publicacoes" element={<Publications />} />
+            <Route path="/projetos" element={<Projects />} />
+            <Route path="/na-midia" element={<Media />} />
+            <Route path="/outros" element={<Others />} />
           </Routes>
         </main>
         <Footer />

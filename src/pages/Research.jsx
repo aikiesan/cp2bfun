@@ -1,29 +1,25 @@
 import React from 'react';
-import { Container, Accordion, Row, Col, Card } from 'react-bootstrap';
-import { researchAxes, flagshipProjects, sdgMap } from '../data/content';
+import { Container, Accordion, Row, Col } from 'react-bootstrap';
+import { researchAxes, sdgMap, menuLabels } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 
 const Research = () => {
   const { language } = useLanguage();
   const axes = researchAxes[language];
-  const projects = flagshipProjects[language];
+  const t = menuLabels[language];
 
   const labels = {
     pt: {
-      tag: 'Oito Eixos Temáticos',
-      title: 'Estrutura de Pesquisa',
-      subtitle: 'Para atingir suas metas, a atuação do CP2B está organizada em oito eixos temáticos integrados, cobrindo desde o inventário de resíduos até políticas públicas.',
-      projects: 'Projetos em Destaque',
-      details: 'Detalhamento dos Eixos',
+      tag: 'Estrutura de Pesquisa',
+      subtitle: 'A atuação do CP2B está organizada em oito eixos temáticos integrados, cobrindo desde o inventário de resíduos até políticas públicas.',
+      details: 'Conheça os Eixos',
       axis: 'EIXO',
       sdgs: 'ODS Relacionados:'
     },
     en: {
-      tag: 'Eight Thematic Axes',
-      title: 'Research Structure',
-      subtitle: 'To achieve its goals, CP2B\'s activities are organized into eight integrated thematic axes, covering from waste inventory to public policies.',
-      projects: 'Flagship Projects',
-      details: 'Axes Detailing',
+      tag: 'Research Structure',
+      subtitle: 'CP2B\'s activities are organized into eight integrated thematic axes, covering from waste inventory to public policies.',
+      details: 'Discover the Axes',
       axis: 'AXIS',
       sdgs: 'Related SDGs:'
     }
@@ -33,35 +29,13 @@ const Research = () => {
     <Container className="py-5">
       <Row className="mb-5">
         <Col lg={8}>
-          <span className="mono-label text-success">{labels.tag}</span>
-          <h1 className="display-5 fw-bold mb-4">{labels.title}</h1>
+          <span className="mono-label text-success text-uppercase">{t.axes}</span>
+          <h1 className="display-5 fw-bold mb-4">{labels.tag}</h1>
           <p className="lead text-muted">
             {labels.subtitle}
           </p>
         </Col>
       </Row>
-
-      {/* Flagship Projects Section */}
-      <section className="mb-5">
-        <h3 className="fw-bold mb-4">{labels.projects}</h3>
-        <Row className="g-4">
-          {projects.map((project) => (
-            <Col md={4} key={project.id}>
-              <Card className="h-100 border-0 shadow-sm">
-                <div style={{ height: '200px', overflow: 'hidden', borderRadius: '24px 24px 0 0' }}>
-                  <img src={project.image} alt={project.title} className="w-100 h-100 object-fit-cover" />
-                </div>
-                <Card.Body>
-                  <Card.Title className="fw-bold fs-6">{project.title}</Card.Title>
-                  <Card.Text className="text-muted small">
-                    {project.description}
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      </section>
 
       <div className="border-top border-dark pt-5">
         <h3 className="fw-bold mb-4">{labels.details}</h3>
