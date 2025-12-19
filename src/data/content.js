@@ -464,11 +464,12 @@ export const researchAxes = {
 
 export const teamMembers = [
   {
-    category: 'coordinator',
-    pt: 'Pesquisador Responsável',
-    en: 'Lead Researcher',
+    category: 'leadership',
+    pt: 'Diretoria',
+    en: 'Leadership',
     members: [
-      { name: 'Bruna de Souza Moraes', role: 'Pesquisador Responsável', institution: 'NIPE/UNICAMP', email: 'bsmoraes@unicamp.br', phone: '+55 (19) 3521-1241' }
+      { name: 'Bruna de Souza Moraes', role: 'Diretora / Pesquisadora Responsável', institution: 'NIPE/UNICAMP', email: 'bsmoraes@unicamp.br', phone: '+55 (19) 3521-1241' },
+      { name: 'Renata Piacentini Rodriguez', role: 'Vice-Diretora / Pesquisadora Responsável (Parceira)', institution: 'ICT/UNIFAL', email: 'renata.rodriguez@unifal-mg.edu.br' }
     ]
   },
   {
@@ -488,7 +489,6 @@ export const teamMembers = [
       { name: 'Leonardo Vasconcelos Fregolente', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'FEQ/UNICAMP' },
       { name: 'Marcelo Kenji Miki', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
       { name: 'Paola Mercadante Petry', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'COMGAS' },
-      { name: 'Renata Piacentini Rodriguez', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'ICT/UNIFAL' },
       { name: 'Rubens Maciel Filho', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'FEQ/UNICAMP' },
       { name: 'Ângela Cruz Guirao', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' }
     ]
