@@ -1,12 +1,38 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Navbar, Nav, Container, Button, Form, InputGroup } from 'react-bootstrap';
 import { FaSearch } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 const Header = () => {
-  const [lang, setLang] = useState('pt');
+  const { language, setLanguage } = useLanguage();
 
-  const toggleLang = (l) => setLang(l);
+  const toggleLang = (l) => setLanguage(l);
+
+  const menu = {
+    pt: {
+      home: 'Início',
+      about: 'Sobre',
+      axes: 'Eixos',
+      team: 'Equipe',
+      news: 'Notícias',
+      contact: 'Contato',
+      search: 'Buscar',
+      accessibility: 'Acessibilidade'
+    },
+    en: {
+      home: 'Home',
+      about: 'About',
+      axes: 'Axes',
+      team: 'Team',
+      news: 'News',
+      contact: 'Contact',
+      search: 'Search',
+      accessibility: 'Accessibility'
+    }
+  };
+
+  const t = menu[language];
 
   return (
     <header>
@@ -26,7 +52,7 @@ const Header = () => {
               <span className="cursor-pointer fw-bold" title="Aumentar tamanho da letra" style={{ cursor: 'pointer' }}>A+</span>
               <span className="cursor-pointer fw-bold" title="Diminuir tamanho da letra" style={{ cursor: 'pointer' }}>A-</span>
               <span className="contrast-btn cursor-pointer" style={{ width: '16px', height: '16px', borderRadius: '50%', border: '1px solid #333', background: 'linear-gradient(to right, #333 50%, #fff 50%)', display: 'inline-block', cursor: 'pointer' }} title="Contraste"></span>
-              <span className="d-none d-md-block">Acessibilidade</span>
+              <span className="d-none d-md-block">{t.accessibility}</span>
             </div>
 
             {/* Languages */}
@@ -34,7 +60,7 @@ const Header = () => {
               <div className="languages d-flex justify-content-end gap-2">
                 <button 
                   onClick={() => toggleLang('en')} 
-                  className={`btn btn-sm p-0 ${lang === 'en' ? 'opacity-100' : 'opacity-50'}`} 
+                  className={`btn btn-sm p-0 ${language === 'en' ? 'opacity-100' : 'opacity-50'}`} 
                   title="English"
                   style={{ border: 'none', background: 'none' }}
                 >
@@ -42,7 +68,7 @@ const Header = () => {
                 </button>
                 <button 
                   onClick={() => toggleLang('pt')} 
-                  className={`btn btn-sm p-0 ${lang === 'pt' ? 'opacity-100' : 'opacity-50'}`} 
+                  className={`btn btn-sm p-0 ${language === 'pt' ? 'opacity-100' : 'opacity-50'}`} 
                   title="Portuguese"
                   style={{ border: 'none', background: 'none' }}
                 >
@@ -75,18 +101,18 @@ const Header = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto align-items-center gap-2">
-              <Nav.Link as={Link} to="/">Início</Nav.Link>
-              <Nav.Link as={Link} to="/sobre">Sobre</Nav.Link>
-              <Nav.Link as={Link} to="/pesquisa">Eixos</Nav.Link> {/* Renamed */}
-              <Nav.Link as={Link} to="/equipe">Equipe</Nav.Link>
-              <Nav.Link as={Link} to="/noticias">Notícias</Nav.Link>
-              <Nav.Link as={Link} to="/contato">Contato</Nav.Link>
+              <Nav.Link as={Link} to="/">{t.home}</Nav.Link>
+              <Nav.Link as={Link} to="/sobre">{t.about}</Nav.Link>
+              <Nav.Link as={Link} to="/pesquisa">{t.axes}</Nav.Link>
+              <Nav.Link as={Link} to="/equipe">{t.team}</Nav.Link>
+              <Nav.Link as={Link} to="/noticias">{t.news}</Nav.Link>
+              <Nav.Link as={Link} to="/contato">{t.contact}</Nav.Link>
               
               <Form className="d-flex ms-3" onSubmit={(e) => e.preventDefault()}>
                 <InputGroup>
                   <Form.Control
                     type="search"
-                    placeholder="Buscar"
+                    placeholder={t.search}
                     className="border-light bg-light rounded-start-pill"
                     aria-label="Search"
                     style={{ maxWidth: '150px' }}

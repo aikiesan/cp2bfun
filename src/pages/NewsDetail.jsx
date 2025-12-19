@@ -1,21 +1,40 @@
 import React from 'react';
-import { Container, Row, Col, Badge, Button } from 'react-bootstrap';
-import { useParams, Link, Navigate } from 'react-router-dom';
+import { Container, Badge, Button } from 'react-bootstrap';
+import { useParams, Link } from 'react-router-dom';
 import { newsItems } from '../data/content';
 import { FaArrowLeft, FaCalendarAlt, FaShareAlt } from 'react-icons/fa';
+import { useLanguage } from '../context/LanguageContext';
 
 const NewsDetail = () => {
   const { slug } = useParams();
+  const { language } = useLanguage();
+  const news = newsItems[language];
 
   // Find the news item that matches the link "/noticias/slug"
-  // Note: content.js links are full paths like "/noticias/cau-2025"
-  const article = newsItems.find(item => item.link.endsWith(slug));
+  const article = news.find(item => item.link.endsWith(slug));
+
+  const labels = {
+    pt: {
+      notFound: 'Notícia não encontrada',
+      backBtn: 'Voltar para Notícias',
+      readTime: '5 min de leitura',
+      back: 'Voltar',
+      share: 'Compartilhar'
+    },
+    en: {
+      notFound: 'News not found',
+      backBtn: 'Back to News',
+      readTime: '5 min read',
+      back: 'Back',
+      share: 'Share'
+    }
+  }[language];
 
   if (!article) {
     return (
       <Container className="py-5 text-center">
-        <h2>Notícia não encontrada</h2>
-        <Button as={Link} to="/noticias" variant="primary" className="mt-3">Voltar para Notícias</Button>
+        <h2>{labels.notFound}</h2>
+        <Button as={Link} to="/noticias" variant="primary" className="mt-3">{labels.backBtn}</Button>
       </Container>
     );
   }
@@ -42,7 +61,7 @@ const NewsDetail = () => {
             <div className="d-flex justify-content-center align-items-center gap-4 text-muted small" style={{ fontFamily: 'var(--font-mono)' }}>
                 <span><FaCalendarAlt className="me-2"/>{article.date}</span>
                 <span>•</span>
-                <span>5 min de leitura</span>
+                <span>{labels.readTime}</span>
             </div>
         </div>
 
@@ -52,7 +71,6 @@ const NewsDetail = () => {
                 {article.description}
             </p>
             
-            {/* Placeholder for full content simulation since we only have descriptions currently */}
             <p>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
                 Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
@@ -63,7 +81,7 @@ const NewsDetail = () => {
             </p>
             
             <blockquote className="blockquote my-5 p-4 bg-light border-start border-4 border-success fst-italic rounded">
-                "O biogás representa uma das fronteiras mais promissoras para a transição energética brasileira, unindo sustentabilidade e desenvolvimento econômico."
+                {language === 'pt' ? '"O biogás representa uma das fronteiras mais promissoras para a transição energética brasileira..."' : '"Biogas represents one of the most promising frontiers for the Brazilian energy transition..."'}
             </blockquote>
 
             <p>
@@ -74,10 +92,10 @@ const NewsDetail = () => {
         {/* Footer Actions */}
         <div className="d-flex justify-content-between align-items-center border-top pt-4">
             <Button as={Link} to="/noticias" variant="outline-dark" className="rounded-pill px-4">
-                <FaArrowLeft className="me-2" /> Voltar
+                <FaArrowLeft className="me-2" /> {labels.back}
             </Button>
             <Button variant="outline-primary" className="rounded-pill px-4">
-                <FaShareAlt className="me-2" /> Compartilhar
+                <FaShareAlt className="me-2" /> {labels.share}
             </Button>
         </div>
       </Container>

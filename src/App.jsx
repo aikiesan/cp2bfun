@@ -1,8 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import './index.css';
+import { LanguageProvider } from './context/LanguageContext';
+
+// Components
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+
+// Pages
 import Home from './pages/Home';
 import About from './pages/About';
 import Research from './pages/Research';
@@ -13,11 +20,11 @@ import Contact from './pages/Contact';
 
 function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="d-flex flex-column min-vh-100">
+    <LanguageProvider>
+      <Router>
+        <ScrollToTop />
         <Header />
-        <main className="flex-grow-1">
+        <main style={{ minHeight: '80vh' }}>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/sobre" element={<About />} />
@@ -29,8 +36,8 @@ function App() {
           </Routes>
         </main>
         <Footer />
-      </div>
-    </Router>
+      </Router>
+    </LanguageProvider>
   );
 }
 

@@ -3,14 +3,44 @@ import { Container, Row, Col, Card, Button, Carousel } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { carouselSlides, newsItems } from '../data/content';
+import { useLanguage } from '../context/LanguageContext';
 
 const Home = () => {
+  const { language } = useLanguage();
+  const slides = carouselSlides[language];
+  const news = newsItems[language];
+
+  const labels = {
+    pt: {
+      forumTitle: 'Fórum de Biogás e Bioprodutos',
+      forumSubtitle: 'Fórum Paulista',
+      forumDescription: 'Confira os destaques do nosso último encontro, reunindo especialistas, pesquisadores e parceiros estratégicos para discutir o futuro da bioenergia.',
+      forumBtn: 'Ver cobertura completa',
+      newsTitle: 'Últimas Atualizações',
+      newsAll: 'Ver todas',
+      newsLink: 'Ler notícia →',
+      partnersTitle: 'Parceiros e Apoiadores',
+      videoFallback: 'Seu navegador não suporta a tag de vídeo.'
+    },
+    en: {
+      forumTitle: 'Biogas and Bioproducts Forum',
+      forumSubtitle: 'São Paulo Forum',
+      forumDescription: 'Check out the highlights from our last meeting, bringing together specialists, researchers, and strategic partners to discuss the future of bioenergy.',
+      forumBtn: 'Full coverage',
+      newsTitle: 'Latest Updates',
+      newsAll: 'View all',
+      newsLink: 'Read more →',
+      partnersTitle: 'Partners and Supporters',
+      videoFallback: 'Your browser does not support the video tag.'
+    }
+  }[language];
+
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       {/* Hero Section - Carousel with Ken Burns Effect */}
       <section className="position-relative overflow-hidden mb-5">
         <Carousel fade interval={8000} controls={false} indicators={true}>
-          {carouselSlides.map((slide) => (
+          {slides.map((slide) => (
             <Carousel.Item key={slide.id}>
               <div style={{ 
                 height: '80vh', 
@@ -43,7 +73,6 @@ const Home = () => {
                       <p className="lead mb-4 text-white-50 d-none d-md-block" style={{ maxWidth: '600px' }}>
                         {slide.description}
                       </p>
-                      {/* Mobile description visible but shorter if needed, or hidden as per design */}
                       <p className="d-block d-md-none text-white-50 mb-4 small">
                         {slide.description.substring(0, 100)}...
                       </p>
@@ -67,12 +96,12 @@ const Home = () => {
             <Row className="align-items-center g-5">
                 <Col lg={6}>
                     <motion.div initial={{ x: -50, opacity: 0 }} whileInView={{ x: 0, opacity: 1 }} viewport={{ once: true }}>
-                        <span className="text-success fw-bold text-uppercase small ls-2">Fórum Paulista</span>
-                        <h2 className="display-5 fw-bold mb-4">Fórum de Biogás e Bioprodutos</h2>
+                        <span className="text-success fw-bold text-uppercase small ls-2">{labels.forumSubtitle}</span>
+                        <h2 className="display-5 fw-bold mb-4">{labels.forumTitle}</h2>
                         <p className="lead text-muted mb-4">
-                            Confira os destaques do nosso último encontro, reunindo especialistas, pesquisadores e parceiros estratégicos para discutir o futuro da bioenergia.
+                            {labels.forumDescription}
                         </p>
-                        <Button variant="outline-primary" className="rounded-pill">Ver cobertura completa</Button>
+                        <Button variant="outline-primary" className="rounded-pill">{labels.forumBtn}</Button>
                     </motion.div>
                 </Col>
                 <Col lg={6}>
@@ -84,7 +113,7 @@ const Home = () => {
                      >
                         <video width="100%" height="auto" controls poster="/assets/Forum-CP2B-junho-2025-Destaque-500x230.jpg" style={{ display: 'block' }}>
                             <source src="/assets/Em-breve-960-x-540-px-2.mp4" type="video/mp4" />
-                            Seu navegador não suporta a tag de vídeo.
+                            {labels.videoFallback}
                         </video>
                      </motion.div>
                 </Col>
@@ -96,24 +125,24 @@ const Home = () => {
       <section className="py-5 bg-light-gray">
         <Container>
           <div className="d-flex justify-content-between align-items-center mb-5">
-            <h2 className="mb-0 fw-bold">Últimas Atualizações</h2>
-            <Link to="/noticias" className="btn btn-outline-dark rounded-pill btn-sm">Ver todas</Link>
+            <h2 className="mb-0 fw-bold">{labels.newsTitle}</h2>
+            <Link to="/noticias" className="btn btn-outline-dark rounded-pill btn-sm">{labels.newsAll}</Link>
           </div>
 
           <Row className="g-4">
-            {newsItems.map((news) => (
-              <Col md={4} key={news.id}>
+            {news.map((item) => (
+              <Col md={4} key={item.id}>
                 <Card className="h-100 border-0 shadow-sm hover-lift">
                   <div className="card-img-top overflow-hidden position-relative" style={{ height: '240px' }}>
-                     <img src={news.image} alt={news.title} className="w-100 h-100 object-fit-cover" style={{ borderRadius: '24px 24px 0 0' }} />
+                     <img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover" style={{ borderRadius: '24px 24px 0 0' }} />
                   </div> 
                   <Card.Body className="p-4">
-                    <span className={`badge bg-${news.badgeColor} bg-opacity-10 text-${news.badgeColor} mb-3 rounded-pill`}>{news.badge}</span>
-                    <Card.Title className="fw-bold mb-3">{news.title}</Card.Title>
+                    <span className={`badge bg-${item.badgeColor} bg-opacity-10 text-${item.badgeColor} mb-3 rounded-pill`}>{item.badge}</span>
+                    <Card.Title className="fw-bold mb-3">{item.title}</Card.Title>
                     <Card.Text className="text-muted small mb-4">
-                      {news.description}
+                      {item.description}
                     </Card.Text>
-                    <Link to={news.link} className="btn btn-link text-decoration-none p-0 fw-bold text-dark">Ler notícia →</Link>
+                    <Link to={item.link} className="btn btn-link text-decoration-none p-0 fw-bold text-dark">{labels.newsLink}</Link>
                   </Card.Body>
                 </Card>
               </Col>
@@ -126,12 +155,12 @@ const Home = () => {
       <section className="py-5">
         <Container>
           <div className="text-center mb-5">
-            <h3 className="fw-bold">Parceiros e Apoiadores</h3>
+            <h3 className="fw-bold">{labels.partnersTitle}</h3>
           </div>
           <div className="text-center bg-white p-5 rounded-5 shadow-sm">
             <img 
                 src="/assets/parceiros.png" 
-                alt="Parceiros e Apoiadores CP2B" 
+                alt="Partners" 
                 className="img-fluid" 
                 style={{ maxWidth: '100%', mixBlendMode: 'multiply', borderRadius: 0 }} 
             />
