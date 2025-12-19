@@ -15,7 +15,7 @@ export const menuLabels = {
     team: 'Equipe',
     publications: 'Publicações',
     projects: 'Projetos',
-    media: 'CP2B na Mídia',
+    media: 'Mídia',
     others: 'Outros',
     linkedin: 'LinkedIn',
     accessibility: 'Acessibilidade',
@@ -30,7 +30,7 @@ export const menuLabels = {
     team: 'Team',
     publications: 'Publications',
     projects: 'Projects',
-    media: 'CP2B in Media',
+    media: 'Media',
     others: 'Others',
     linkedin: 'LinkedIn',
     accessibility: 'Accessibility',
@@ -464,20 +464,14 @@ export const researchAxes = {
 
 export const teamMembers = [
   {
-    category: 'coordinator',
-    pt: 'Pesquisador Responsável',
-    en: 'Lead Researcher',
+    category: 'coordinators',
+    pt: 'Pesquisadores Responsáveis',
+    en: 'Lead Researchers',
     members: [
-      { name: 'Bruna de Souza Moraes', role: 'Pesquisador Responsável', institution: 'NIPE/UNICAMP', email: 'bsmoraes@unicamp.br', phone: '+55 (19) 3521-1241' }
-    ]
-  },
-  {
-    category: 'partners',
-    pt: 'Pesquisadores Responsáveis nas Instituições Parceiras',
-    en: 'Lead Researchers at Partner Institutions',
-    members: [
+      { name: 'Bruna de Souza Moraes', role: 'Diretora / Pesquisadora Responsável', institution: 'NIPE/UNICAMP', email: 'bsmoraes@unicamp.br', phone: '+55 (19) 3521-1241' },
+      { name: 'Renata Piacentini Rodriguez', role: 'Vice-Diretora / Pesquisadora Responsável (Parceira)', institution: 'ICT/UNIFAL', email: 'renata.rodriguez@unifal-mg.edu.br' },
       { name: 'Alessandro Sanches Pereira', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'Curtin University/CU' },
-      { name: 'Anderson Targino da Silva Ferreira', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'CEPPE/UNG' },
+      { name: 'Anderson Targino da Silva Ferreira', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'Centro de Pós-Graduação e Pesquisa/CEPPE/UNG' },
       { name: 'Bruno Sidnei da Silva', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
       { name: 'Daniel de Oliveira Silva', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
       { name: 'Gabriel Dias Mangolini Neves', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
@@ -488,7 +482,6 @@ export const teamMembers = [
       { name: 'Leonardo Vasconcelos Fregolente', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'FEQ/UNICAMP' },
       { name: 'Marcelo Kenji Miki', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
       { name: 'Paola Mercadante Petry', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'COMGAS' },
-      { name: 'Renata Piacentini Rodriguez', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'ICT/UNIFAL' },
       { name: 'Rubens Maciel Filho', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'FEQ/UNICAMP' },
       { name: 'Ângela Cruz Guirao', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' }
     ]
