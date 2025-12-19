@@ -464,21 +464,14 @@ export const researchAxes = {
 
 export const teamMembers = [
   {
-    category: 'leadership',
-    pt: 'Diretoria',
-    en: 'Leadership',
+    category: 'coordinators',
+    pt: 'Pesquisadores Responsáveis',
+    en: 'Lead Researchers',
     members: [
       { name: 'Bruna de Souza Moraes', role: 'Diretora / Pesquisadora Responsável', institution: 'NIPE/UNICAMP', email: 'bsmoraes@unicamp.br', phone: '+55 (19) 3521-1241' },
-      { name: 'Renata Piacentini Rodriguez', role: 'Vice-Diretora / Pesquisadora Responsável (Parceira)', institution: 'ICT/UNIFAL', email: 'renata.rodriguez@unifal-mg.edu.br' }
-    ]
-  },
-  {
-    category: 'partners',
-    pt: 'Pesquisadores Responsáveis nas Instituições Parceiras',
-    en: 'Lead Researchers at Partner Institutions',
-    members: [
+      { name: 'Renata Piacentini Rodriguez', role: 'Vice-Diretora / Pesquisadora Responsável (Parceira)', institution: 'ICT/UNIFAL', email: 'renata.rodriguez@unifal-mg.edu.br' },
       { name: 'Alessandro Sanches Pereira', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'Curtin University/CU' },
-      { name: 'Anderson Targino da Silva Ferreira', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'CEPPE/UNG' },
+      { name: 'Anderson Targino da Silva Ferreira', role: 'Pesquisador Responsável na Instituição Parceira', institution: 'Centro de Pós-Graduação e Pesquisa/CEPPE/UNG' },
       { name: 'Bruno Sidnei da Silva', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
       { name: 'Daniel de Oliveira Silva', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
       { name: 'Gabriel Dias Mangolini Neves', role: 'Pesquisador Responsável na Instituição Parceira', institution: '-' },
