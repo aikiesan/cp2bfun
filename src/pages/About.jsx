@@ -1,16 +1,16 @@
 import React from 'react';
-import { Container, Row, Col } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
+import { aboutContent, partners, projectDetails } from '../data/content';
 
 const About = () => (
   <Container className="py-5">
     <Row className="mb-5 align-items-center">
-      <Col lg={6}>
-        <span className="mono-label text-success">NOSSA MISSÃO</span>
-        <h1 className="display-4 fw-bold mb-4">Promover o uso inteligente de resíduos para sustentabilidade.</h1>
-      </Col>
-      <Col lg={6}>
-        <p className="lead text-muted">
-          O Centro Paulista de Estudos em Biogás (CP2B) busca conhecimento e articula ações para aproveitar o grande potencial de biogás em São Paulo, especialmente nos setores sucroenergético e urbano (RSU e esgoto).
+      <Col lg={8}>
+        <span className="mono-label text-success">SOBRE O PROJETO</span>
+        <h1 className="display-4 fw-bold mb-4">{projectDetails.titlePt}</h1>
+        <p className="lead text-muted mb-2"><strong>Processo FAPESP:</strong> {projectDetails.number}</p>
+        <p className="text-muted small">
+            <strong>Início:</strong> {projectDetails.startDate} | <strong>Duração:</strong> {projectDetails.duration}
         </p>
       </Col>
     </Row>
@@ -29,26 +29,62 @@ const About = () => (
        </div>
     </div>
 
-    <Row className="gy-5">
-      <Col md={4}>
-        <h3 className="fw-bold mb-3">Atuação</h3>
-        <p className="text-muted">
-          O centro pesquisa bioprodutos, atua em oito eixos temáticos e opera como laboratório vivo, testando soluções com a sociedade.
-        </p>
-      </Col>
-      <Col md={4}>
-        <h3 className="fw-bold mb-3">Parcerias</h3>
-        <p className="text-muted">
-          Com apoio da FAPESP e diversas instituições parceiras, visamos criar competências com base em ciência para soluções inovadoras.
-        </p>
-      </Col>
-      <Col md={4}>
-        <h3 className="fw-bold mb-3">Impacto</h3>
-        <p className="text-muted">
-          Focamos nos Objetivos de Desenvolvimento Sustentável (ODS), desde energia limpa até cidades sustentáveis.
-        </p>
+    <Row className="gy-5 mb-5">
+      <Col md={12}>
+        <h3 className="fw-bold mb-4">Resumo</h3>
+        <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>{aboutContent.resumo}</p>
       </Col>
     </Row>
+
+    <Row className="gy-5 mb-5 bg-light p-4 rounded-3">
+        <Col md={6}>
+            <h3 className="fw-bold mb-3">Objetivos</h3>
+            <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>{aboutContent.objetivos}</p>
+        </Col>
+        <Col md={6}>
+            <h3 className="fw-bold mb-3">Resultados Esperados</h3>
+            <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>{aboutContent.resultados}</p>
+        </Col>
+    </Row>
+
+    {/* Partners Section */}
+    <section className="mb-5">
+        <h3 className="fw-bold mb-4 border-bottom pb-2">Instituições e Parceiros</h3>
+        
+        <div className="mb-4">
+            <h5 className="fw-bold text-success">Sede</h5>
+            <p>{partners.host.name} - {partners.host.location}</p>
+        </div>
+
+        <Row className="g-4">
+            <Col md={6}>
+                <h5 className="fw-bold mb-3">Instituições Públicas</h5>
+                <ul className="list-unstyled">
+                    {partners.public.map((p, idx) => (
+                        <li key={idx} className="mb-2 text-muted">• {p.name} ({p.location})</li>
+                    ))}
+                </ul>
+            </Col>
+            <Col md={6}>
+                <h5 className="fw-bold mb-3">Empresas Parceiras</h5>
+                <ul className="list-unstyled">
+                    {partners.companies.map((p, idx) => (
+                        <li key={idx} className="mb-2 text-muted">• {p.name} ({p.location})</li>
+                    ))}
+                </ul>
+            </Col>
+            <Col md={12}>
+                <h5 className="fw-bold mb-3">Instituições de Pesquisa Associadas</h5>
+                <Row>
+                    {partners.research.map((p, idx) => (
+                        <Col md={6} key={idx}>
+                            <div className="mb-2 text-muted">• {p.name} ({p.location})</div>
+                        </Col>
+                    ))}
+                </Row>
+            </Col>
+        </Row>
+    </section>
   </Container>
 );
 
