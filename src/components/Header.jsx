@@ -1,38 +1,15 @@
 import React from 'react';
 import { Navbar, Nav, Container, Button, Form, InputGroup } from 'react-bootstrap';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaLinkedin } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { menuLabels, socialLinks } from '../data/content';
 
 const Header = () => {
   const { language, setLanguage } = useLanguage();
+  const t = menuLabels[language];
 
   const toggleLang = (l) => setLanguage(l);
-
-  const menu = {
-    pt: {
-      home: 'Início',
-      about: 'Sobre',
-      axes: 'Eixos',
-      team: 'Equipe',
-      news: 'Notícias',
-      contact: 'Contato',
-      search: 'Buscar',
-      accessibility: 'Acessibilidade'
-    },
-    en: {
-      home: 'Home',
-      about: 'About',
-      axes: 'Axes',
-      team: 'Team',
-      news: 'News',
-      contact: 'Contact',
-      search: 'Search',
-      accessibility: 'Accessibility'
-    }
-  };
-
-  const t = menu[language];
 
   return (
     <header>
@@ -40,10 +17,9 @@ const Header = () => {
       <div id="top-header" className="py-2" style={{ backgroundColor: '#f8f9fa', borderBottom: '1px solid #e9ecef', fontSize: '0.85rem' }}>
         <Container>
           <div className="row align-items-center">
-            {/* Desktop Shortcuts (Empty as per ref, but keeping space) */}
             <div className="col d-none d-lg-flex">
               <div className="desktop-shortcuts">
-                  {/* Future shortcuts can go here */}
+                  {/* Future shortcuts */}
               </div>
             </div>
 
@@ -86,13 +62,13 @@ const Header = () => {
       </div>
 
       {/* Main Navbar */}
-      <Navbar expand="lg" sticky="top" className="bg-white">
+      <Navbar expand="lg" sticky="top" className="bg-white shadow-sm py-3">
         <Container>
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
             <img 
               src="/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png" 
               alt="CP2B Logo" 
-              height="60" 
+              height="55" 
               className="d-inline-block align-top me-3" 
               style={{ borderRadius: 0 }} 
             />
@@ -100,22 +76,29 @@ const Header = () => {
           
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="ms-auto align-items-center gap-2">
-              <Nav.Link as={Link} to="/">{t.home}</Nav.Link>
-              <Nav.Link as={Link} to="/sobre">{t.about}</Nav.Link>
-              <Nav.Link as={Link} to="/pesquisa">{t.axes}</Nav.Link>
-              <Nav.Link as={Link} to="/equipe">{t.team}</Nav.Link>
-              <Nav.Link as={Link} to="/noticias">{t.news}</Nav.Link>
-              <Nav.Link as={Link} to="/contato">{t.contact}</Nav.Link>
+            <Nav className="ms-auto align-items-center gap-1">
+              <Nav.Link as={Link} to="/" className="fw-semibold px-2">{t.home}</Nav.Link>
+              <Nav.Link as={Link} to="/sobre" className="fw-semibold px-2">{t.about}</Nav.Link>
+              <Nav.Link as={Link} to="/oportunidades" className="fw-semibold px-2">{t.opportunities}</Nav.Link>
+              <Nav.Link as={Link} to="/noticias" className="fw-semibold px-2">{t.news}</Nav.Link>
+              <Nav.Link as={Link} to="/equipe" className="fw-semibold px-2">{t.team}</Nav.Link>
+              <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
+              <Nav.Link as={Link} to="/projetos" className="fw-semibold px-2">{t.projects}</Nav.Link>
+              <Nav.Link as={Link} to="/na-midia" className="fw-semibold px-2">{t.media}</Nav.Link>
+              <Nav.Link as={Link} to="/outros" className="fw-semibold px-2">{t.others}</Nav.Link>
               
-              <Form className="d-flex ms-3" onSubmit={(e) => e.preventDefault()}>
-                <InputGroup>
+              <Nav.Link href={socialLinks.linkedin} target="_blank" className="fw-semibold px-2 text-primary d-flex align-items-center gap-1">
+                <FaLinkedin /> {t.linkedin}
+              </Nav.Link>
+
+              <Form className="d-flex ms-2" onSubmit={(e) => e.preventDefault()}>
+                <InputGroup size="sm">
                   <Form.Control
                     type="search"
                     placeholder={t.search}
                     className="border-light bg-light rounded-start-pill"
                     aria-label="Search"
-                    style={{ maxWidth: '150px' }}
+                    style={{ maxWidth: '120px' }}
                   />
                   <Button variant="light" className="border-light rounded-end-pill text-muted">
                     <FaSearch />
