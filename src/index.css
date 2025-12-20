@@ -964,3 +964,431 @@ img.no-radius,
     scroll-behavior: auto;
   }
 }
+
+/* ============================================
+   DARK MODE
+   ============================================ */
+
+[data-theme="dark"] {
+  /* Override neutral colors for dark mode */
+  --cp2b-black: #f0f0f0;
+  --cp2b-dark: #e8ecee;
+  --cp2b-text: #c8d0d3;
+  --cp2b-text-light: #9aa5a8;
+  --cp2b-white: #1a2426;
+  --cp2b-bg: #111618;
+  --cp2b-bg-warm: #151b1d;
+  --cp2b-light-gray: #1e2628;
+  --cp2b-border: #2d3a3d;
+  --cp2b-border-light: #232e31;
+
+  /* Tinted backgrounds for dark mode */
+  --cp2b-petrol-tint: rgba(51, 92, 103, 0.15);
+  --cp2b-green-tint: rgba(91, 140, 62, 0.15);
+  --cp2b-lime-tint: rgba(164, 198, 57, 0.12);
+  --cp2b-orange-tint: rgba(212, 132, 42, 0.12);
+
+  /* Darker shadows for dark mode */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.15);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.20);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.25);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.30);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.35);
+}
+
+[data-theme="dark"] body {
+  background-color: var(--cp2b-bg);
+  color: var(--cp2b-text);
+}
+
+[data-theme="dark"] h1,
+[data-theme="dark"] h2,
+[data-theme="dark"] h3,
+[data-theme="dark"] h4,
+[data-theme="dark"] h5,
+[data-theme="dark"] h6 {
+  color: var(--cp2b-dark);
+}
+
+[data-theme="dark"] .navbar {
+  background: rgba(17, 22, 24, 0.95) !important;
+  border-bottom-color: var(--cp2b-border);
+}
+
+[data-theme="dark"] .navbar-collapse {
+  background: var(--cp2b-white);
+}
+
+[data-theme="dark"] .nav-link {
+  color: var(--cp2b-text) !important;
+}
+
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .nav-link.active {
+  color: var(--cp2b-lime) !important;
+  background: var(--cp2b-petrol-tint);
+}
+
+[data-theme="dark"] .dropdown-menu {
+  background: var(--cp2b-white);
+  border-color: var(--cp2b-border);
+}
+
+[data-theme="dark"] .dropdown-item {
+  color: var(--cp2b-text);
+}
+
+[data-theme="dark"] .dropdown-item:hover,
+[data-theme="dark"] .dropdown-item:focus {
+  background: var(--cp2b-petrol-tint);
+  color: var(--cp2b-lime);
+}
+
+[data-theme="dark"] .top-header {
+  background: var(--cp2b-bg-warm);
+  border-bottom-color: var(--cp2b-border);
+}
+
+[data-theme="dark"] .card {
+  background: var(--cp2b-white);
+  border-color: var(--cp2b-border);
+}
+
+[data-theme="dark"] .card:hover {
+  border-color: var(--cp2b-petrol);
+}
+
+[data-theme="dark"] .card-body h5,
+[data-theme="dark"] .card-body h6,
+[data-theme="dark"] .card-title {
+  color: var(--cp2b-dark);
+}
+
+[data-theme="dark"] .bg-white {
+  background-color: var(--cp2b-white) !important;
+}
+
+[data-theme="dark"] .bg-warm,
+[data-theme="dark"] .bg-light {
+  background-color: var(--cp2b-bg-warm) !important;
+}
+
+[data-theme="dark"] .text-dark {
+  color: var(--cp2b-dark) !important;
+}
+
+[data-theme="dark"] .text-muted {
+  color: var(--cp2b-text-light) !important;
+}
+
+[data-theme="dark"] .border,
+[data-theme="dark"] .border-bottom,
+[data-theme="dark"] .border-top {
+  border-color: var(--cp2b-border) !important;
+}
+
+[data-theme="dark"] .accordion-item {
+  background-color: var(--cp2b-white) !important;
+  border-color: var(--cp2b-border) !important;
+}
+
+[data-theme="dark"] .accordion-button {
+  background-color: var(--cp2b-white) !important;
+  color: var(--cp2b-dark) !important;
+}
+
+[data-theme="dark"] .accordion-button:not(.collapsed) {
+  background-color: var(--cp2b-petrol-tint) !important;
+  color: var(--cp2b-lime) !important;
+}
+
+[data-theme="dark"] .accordion-body {
+  color: var(--cp2b-text);
+}
+
+[data-theme="dark"] .form-control {
+  background: var(--cp2b-light-gray);
+  border-color: var(--cp2b-border);
+  color: var(--cp2b-text);
+}
+
+[data-theme="dark"] .form-control:focus {
+  background: var(--cp2b-white);
+  border-color: var(--cp2b-petrol);
+}
+
+[data-theme="dark"] .form-control::placeholder {
+  color: var(--cp2b-text-light);
+}
+
+[data-theme="dark"] .btn-outline-primary {
+  color: var(--cp2b-lime);
+  border-color: var(--cp2b-lime);
+}
+
+[data-theme="dark"] .btn-outline-primary:hover {
+  background: var(--cp2b-lime);
+  color: var(--cp2b-petrol-dark);
+}
+
+[data-theme="dark"] .btn-outline-dark {
+  color: var(--cp2b-text);
+  border-color: var(--cp2b-border);
+}
+
+[data-theme="dark"] .btn-outline-dark:hover {
+  background: var(--cp2b-text);
+  color: var(--cp2b-bg);
+}
+
+[data-theme="dark"] .list-group-item {
+  background: var(--cp2b-white);
+  border-color: var(--cp2b-border);
+  color: var(--cp2b-text);
+}
+
+[data-theme="dark"] .list-group-item:hover,
+[data-theme="dark"] .list-group-item.active {
+  background: var(--cp2b-petrol-tint);
+}
+
+[data-theme="dark"] .modal-content {
+  background: var(--cp2b-white);
+  border-color: var(--cp2b-border);
+}
+
+[data-theme="dark"] .search-modal .modal-body {
+  background: var(--cp2b-white);
+}
+
+[data-theme="dark"] .hero-badge {
+  background: var(--cp2b-lime);
+  color: var(--cp2b-petrol-dark);
+}
+
+/* Breadcrumb dark mode */
+[data-theme="dark"] .breadcrumb {
+  background: var(--cp2b-bg-warm);
+}
+
+[data-theme="dark"] .breadcrumb-item a {
+  color: var(--cp2b-text-light);
+}
+
+[data-theme="dark"] .breadcrumb-item a:hover {
+  color: var(--cp2b-lime);
+}
+
+[data-theme="dark"] .breadcrumb-item.active {
+  color: var(--cp2b-text);
+}
+
+/* Partner carousel dark mode */
+[data-theme="dark"] .partner-carousel a img {
+  filter: grayscale(100%) invert(1);
+  opacity: 0.6;
+}
+
+[data-theme="dark"] .partner-carousel a:hover img {
+  filter: grayscale(0%) invert(0);
+  opacity: 1;
+}
+
+/* Footer already has dark background, minimal changes needed */
+[data-theme="dark"] .footer {
+  background: #0d1214;
+}
+
+/* ============================================
+   WCAG 2.2 ACCESSIBILITY ENHANCEMENTS
+   ============================================ */
+
+/* Focus visible indicator - high visibility for keyboard navigation */
+:focus-visible {
+  outline: 3px solid var(--cp2b-orange);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* Remove default focus for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* Skip link styles */
+.visually-hidden-focusable {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.visually-hidden-focusable:focus,
+.visually-hidden-focusable:active {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: auto !important;
+  height: auto !important;
+  padding: 1rem 1.5rem !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  background: var(--cp2b-petrol);
+  color: var(--cp2b-white);
+  font-weight: var(--font-weight-semibold);
+  z-index: 10000;
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-md) 0;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Ensure links have underlines when needed for accessibility */
+a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item) {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item):hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Ensure sufficient touch target size (minimum 44x44px per WCAG 2.5.5) */
+button,
+.btn,
+.nav-link,
+.dropdown-item,
+.accordion-button,
+.lang-btn,
+.accessibility-control {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+/* Exception for inline buttons */
+.btn-sm {
+  min-height: 36px;
+  min-width: 36px;
+}
+
+/* High contrast mode support */
+@media (forced-colors: active) {
+  .btn-primary,
+  .btn-secondary,
+  .btn-accent {
+    forced-color-adjust: none;
+    border: 2px solid currentColor;
+  }
+
+  .card {
+    border: 1px solid currentColor;
+  }
+
+  .nav-link.active::after {
+    background: currentColor;
+  }
+
+  .badge {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Screen reader only text */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Ensure proper contrast for text */
+.text-muted {
+  color: #5A6B6E !important; /* Ensures 4.5:1 contrast ratio */
+}
+
+[data-theme="dark"] .text-muted {
+  color: #9AA5A8 !important; /* Ensures 4.5:1 contrast ratio on dark */
+}
+
+/* Focus indicator for interactive cards */
+.card:focus-within {
+  outline: 2px solid var(--cp2b-petrol);
+  outline-offset: 2px;
+}
+
+/* Ensure form inputs have visible focus */
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--cp2b-petrol);
+  box-shadow: 0 0 0 3px var(--cp2b-petrol-tint);
+  outline: none;
+}
+
+/* Loading spinner accessibility */
+.spinner-border {
+  /* Screen readers will announce "Loading..." from visually-hidden text */
+}
+
+/* Disable animations for users who prefer reduced motion - enhanced */
+@media (prefers-reduced-motion: reduce) {
+  .carousel-item {
+    transition: none !important;
+  }
+
+  .hero-slide .motion-div {
+    animation: none !important;
+  }
+
+  /* Keep opacity transitions for content visibility */
+  * {
+    animation: none !important;
+    transition: opacity 0.1s ease !important;
+  }
+}
+
+/* Ensure proper heading hierarchy styles */
+[role="heading"] {
+  display: block;
+  margin-bottom: var(--space-sm);
+}
+
+/* Interactive element cursor */
+[role="button"],
+button,
+a[href],
+.btn,
+summary {
+  cursor: pointer;
+}
+
+/* Disabled state styling */
+button:disabled,
+.btn:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Selection styles */
+::selection {
+  background: var(--cp2b-lime);
+  color: var(--cp2b-petrol-dark);
+}
+
+[data-theme="dark"] ::selection {
+  background: var(--cp2b-petrol);
+  color: var(--cp2b-white);
+}

@@ -4,6 +4,11 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { carouselSlides, newsItems, forumData } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
+import ImpactDashboard from '../components/ImpactDashboard';
+import Timeline from '../components/Timeline';
+import PartnerCarousel from '../components/PartnerCarousel';
+import Newsletter from '../components/Newsletter';
+import SDGWheel from '../components/SDGWheel';
 
 const Home = () => {
   const { language } = useLanguage();
@@ -173,6 +178,9 @@ const Home = () => {
         </Container>
       </section>
 
+      {/* Impact Dashboard */}
+      <ImpactDashboard />
+
       {/* News Section */}
       <section className="py-5 bg-warm">
         <Container>
@@ -249,31 +257,17 @@ const Home = () => {
         </Container>
       </section>
 
-      {/* Partners Section */}
-      <section className="py-5">
-        <Container>
-          <div className="text-center mb-5">
-            <span className="mono-label text-green">{language === 'pt' ? 'REDE' : 'NETWORK'}</span>
-            <h3 className="fw-bold">{labels.partnersTitle}</h3>
-          </div>
-          <motion.div
-            className="text-center bg-white p-4 p-md-5 shadow-sm"
-            style={{ borderRadius: 'var(--radius-xl)' }}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            variants={fadeInUp}
-            transition={{ duration: 0.4 }}
-          >
-            <img
-              src="/assets/parceiros.png"
-              alt="Partners"
-              className="img-fluid"
-              style={{ maxWidth: '100%', mixBlendMode: 'multiply', borderRadius: 0 }}
-            />
-          </motion.div>
-        </Container>
-      </section>
+      {/* SDG Impact Visualization */}
+      <SDGWheel />
+
+      {/* Timeline - Our Journey */}
+      <Timeline />
+
+      {/* Partners Carousel */}
+      <PartnerCarousel />
+
+      {/* Newsletter Signup */}
+      <Newsletter />
     </motion.div>
   );
 };
