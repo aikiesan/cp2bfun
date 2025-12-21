@@ -2,8 +2,9 @@ import React from 'react';
 import { Container, Badge, Button } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import { newsItems } from '../data/content';
-import { FaArrowLeft, FaCalendarAlt, FaShareAlt } from 'react-icons/fa';
+import { FaArrowLeft, FaCalendarAlt } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
+import SocialShare from '../components/SocialShare';
 
 const NewsDetail = () => {
   const { slug } = useParams();
@@ -94,9 +95,11 @@ const NewsDetail = () => {
             <Button as={Link} to="/noticias" variant="outline-dark" className="rounded-pill px-4">
                 <FaArrowLeft className="me-2" /> {labels.back}
             </Button>
-            <Button variant="outline-primary" className="rounded-pill px-4">
-                <FaShareAlt className="me-2" /> {labels.share}
-            </Button>
+            <SocialShare
+              title={article.title}
+              description={article.description}
+              compact
+            />
         </div>
       </Container>
     </article>

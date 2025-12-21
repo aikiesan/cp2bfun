@@ -26,23 +26,26 @@ const Projects = lazy(() => import('./pages/Projects'));
 const Media = lazy(() => import('./pages/Media'));
 const Others = lazy(() => import('./pages/Others'));
 const FAQ = lazy(() => import('./pages/FAQ'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
-// Loading fallback
+// Loading fallback with elegant animation
 const PageLoader = () => (
   <div
-    className="d-flex align-items-center justify-content-center"
+    className="d-flex flex-column align-items-center justify-content-center"
     style={{ minHeight: '60vh' }}
   >
-    <div className="text-center">
-      <div
-        className="spinner-border text-primary mb-3"
-        role="status"
-        style={{ width: '2.5rem', height: '2.5rem' }}
-      >
-        <span className="visually-hidden">Loading...</span>
-      </div>
-      <p className="text-muted small mb-0">Carregando...</p>
-    </div>
+    <style>{`
+      @keyframes pulse {
+        0%, 100% { opacity: 0.4; transform: scale(0.98); }
+        50% { opacity: 1; transform: scale(1); }
+      }
+    `}</style>
+    <img
+      src="/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png"
+      alt="CP2B"
+      height="50"
+      style={{ animation: 'pulse 1.5s ease-in-out infinite' }}
+    />
   </div>
 );
 
@@ -78,6 +81,7 @@ function App() {
                 <Route path="/na-midia" element={<Media />} />
                 <Route path="/outros" element={<Others />} />
                 <Route path="/faq" element={<FAQ />} />
+                <Route path="*" element={<NotFound />} />
               </Routes>
             </Suspense>
           </main>

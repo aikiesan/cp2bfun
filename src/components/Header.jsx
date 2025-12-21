@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import { FaLinkedin, FaSearch, FaMoon, FaSun } from 'react-icons/fa';
+import { FaLinkedin, FaInstagram, FaSearch, FaMoon, FaSun } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
@@ -273,16 +273,27 @@ const Header = () => {
                   </span>
                 </button>
 
-                {/* LinkedIn */}
-                <Nav.Link
-                  href={socialLinks.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="px-3 d-flex align-items-center gap-2 text-petrol"
-                  aria-label="LinkedIn"
-                >
-                  <FaLinkedin size={18} aria-hidden="true" />
-                </Nav.Link>
+                {/* Social Links */}
+                <div className="d-flex align-items-center gap-1">
+                  <Nav.Link
+                    href="https://www.instagram.com/cp2b_biogas/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-2 d-flex align-items-center text-petrol"
+                    aria-label="Instagram"
+                  >
+                    <FaInstagram size={18} aria-hidden="true" />
+                  </Nav.Link>
+                  <Nav.Link
+                    href={socialLinks.linkedin}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-2 d-flex align-items-center text-petrol"
+                    aria-label="LinkedIn"
+                  >
+                    <FaLinkedin size={18} aria-hidden="true" />
+                  </Nav.Link>
+                </div>
               </Nav>
             </Navbar.Collapse>
           </Container>
