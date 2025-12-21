@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import { FaLinkedin, FaChevronDown, FaSearch, FaMoon, FaSun } from 'react-icons/fa';
+import { FaLinkedin, FaSearch, FaMoon, FaSun } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { useTheme } from '../context/ThemeContext';
@@ -41,17 +41,15 @@ const Header = () => {
 
   const toggleLang = (l) => setLanguage(l);
 
-  // Navigation labels for dropdowns
+  // Navigation labels
   const navLabels = {
     pt: {
-      institutional: 'Institucional',
-      research: 'Pesquisa',
-      connect: 'Conecte-se'
+      axes: 'Eixos',
+      more: 'Mais'
     },
     en: {
-      institutional: 'Institutional',
-      research: 'Research',
-      connect: 'Connect'
+      axes: 'Axes',
+      more: 'More'
     }
   }[language];
 
@@ -193,40 +191,34 @@ const Header = () => {
                   {t.home}
                 </Nav.Link>
 
-                {/* Institutional Dropdown */}
-                <NavDropdown
-                  title={
-                    <span className="d-flex align-items-center gap-1">
-                      {navLabels.institutional}
-                      <FaChevronDown size={10} aria-hidden="true" />
-                    </span>
-                  }
-                  id="institutional-dropdown"
-                  className={`px-2 ${isActiveGroup(['/sobre', '/equipe', '/faq']) ? 'active' : ''}`}
+                {/* Sobre */}
+                <Nav.Link
+                  as={Link}
+                  to="/sobre"
+                  className={`px-3 ${isActive('/sobre') ? 'active' : ''}`}
                 >
-                  <NavDropdown.Item as={Link} to="/sobre">{t.about}</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/equipe">{t.team}</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item as={Link} to="/faq">FAQ</NavDropdown.Item>
-                </NavDropdown>
+                  {t.about}
+                </Nav.Link>
 
-                {/* Research Dropdown */}
-                <NavDropdown
-                  title={
-                    <span className="d-flex align-items-center gap-1">
-                      {navLabels.research}
-                      <FaChevronDown size={10} aria-hidden="true" />
-                    </span>
-                  }
-                  id="research-dropdown"
-                  className={`px-2 ${isActiveGroup(['/pesquisa', '/publicacoes', '/projetos']) ? 'active' : ''}`}
+                {/* Equipe */}
+                <Nav.Link
+                  as={Link}
+                  to="/equipe"
+                  className={`px-3 ${isActive('/equipe') ? 'active' : ''}`}
                 >
-                  <NavDropdown.Item as={Link} to="/pesquisa">{t.research}</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/publicacoes">{t.publications}</NavDropdown.Item>
-                  <NavDropdown.Item as={Link} to="/projetos">{t.projects}</NavDropdown.Item>
-                </NavDropdown>
+                  {t.team}
+                </Nav.Link>
 
-                {/* News */}
+                {/* Eixos (Research) */}
+                <Nav.Link
+                  as={Link}
+                  to="/pesquisa"
+                  className={`px-3 ${isActive('/pesquisa') ? 'active' : ''}`}
+                >
+                  {navLabels.axes}
+                </Nav.Link>
+
+                {/* Notícias */}
                 <Nav.Link
                   as={Link}
                   to="/noticias"
@@ -235,25 +227,7 @@ const Header = () => {
                   {t.news}
                 </Nav.Link>
 
-                {/* Media */}
-                <Nav.Link
-                  as={Link}
-                  to="/na-midia"
-                  className={`px-3 ${isActive('/na-midia') ? 'active' : ''}`}
-                >
-                  {t.media}
-                </Nav.Link>
-
-                {/* Opportunities */}
-                <Nav.Link
-                  as={Link}
-                  to="/oportunidades"
-                  className={`px-3 ${isActive('/oportunidades') ? 'active' : ''}`}
-                >
-                  {t.opportunities}
-                </Nav.Link>
-
-                {/* Contact */}
+                {/* Contato */}
                 <Nav.Link
                   as={Link}
                   to="/contato"
@@ -261,6 +235,21 @@ const Header = () => {
                 >
                   {t.contact}
                 </Nav.Link>
+
+                {/* More Dropdown - at the end */}
+                <NavDropdown
+                  title={navLabels.more}
+                  id="more-dropdown"
+                  className={`px-2 ${isActiveGroup(['/publicacoes', '/projetos', '/na-midia', '/oportunidades', '/faq']) ? 'active' : ''}`}
+                >
+                  <NavDropdown.Item as={Link} to="/publicacoes">{t.publications}</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/projetos">{t.projects}</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item as={Link} to="/na-midia">{t.media}</NavDropdown.Item>
+                  <NavDropdown.Item as={Link} to="/oportunidades">{t.opportunities}</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item as={Link} to="/faq">FAQ</NavDropdown.Item>
+                </NavDropdown>
 
                 {/* Divider */}
                 <div
@@ -293,7 +282,6 @@ const Header = () => {
                   aria-label="LinkedIn"
                 >
                   <FaLinkedin size={18} aria-hidden="true" />
-                  <span className="d-none d-xl-inline">{t.linkedin}</span>
                 </Nav.Link>
               </Nav>
             </Navbar.Collapse>
