@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<browserconfig>
+  <msapplication>
+    <tile>
+      <square150x150logo src="/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png"/>
+      <TileColor>#335C67</TileColor>
+    </tile>
+  </msapplication>
+</browserconfig>
