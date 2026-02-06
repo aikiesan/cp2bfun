@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git remote add:*)",
+      "Bash(move \"1-s2.0-*.pdf\" \"C:\\\\Users\\\\Lucas\\\\Documents\\\\cp2b_research\\\\papers\"\")",
+      "Bash(docker:*)",
+      "Bash(docker-compose up:*)",
+      "Bash(npm install:*)",
+      "Bash(npx vitest run)",
+      "Bash(npm run lint:*)"
+    ]
+  }
+}

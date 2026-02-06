@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://cp2b.unicamp.br/sitemap.xml
