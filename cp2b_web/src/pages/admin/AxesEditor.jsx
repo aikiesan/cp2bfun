@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container, Form, Button, Alert, Spinner, Accordion, Badge, Row, Col } from 'react-bootstrap';
 import api from '../../services/api';
+import ImageUploadField from '../../components/ImageUploadField';
 
 const sdgOptions = [
   { value: 1, label: '1 - Erradicacao da Pobreza' },
@@ -78,6 +79,9 @@ const AxesEditor = () => {
         title_pt: axis.title_pt,
         title_en: axis.title_en,
         coordinator: axis.coordinator,
+        coordinator_image: axis.coordinator_image,
+        sub_coordinator: axis.sub_coordinator,
+        sub_coordinator_image: axis.sub_coordinator_image,
         content_pt: axis.content_pt,
         content_en: axis.content_en,
         sdgs: axis.sdgs,
@@ -144,7 +148,42 @@ const AxesEditor = () => {
                   type="text"
                   value={axis.coordinator || ''}
                   onChange={(e) => handleChange(axis.axis_number, 'coordinator', e.target.value)}
+                  placeholder="Ex: Prof. Dr. Nome Sobrenome"
                 />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label><strong>Foto do Coordenador</strong></Form.Label>
+                <ImageUploadField
+                  value={axis.coordinator_image || ''}
+                  onChange={(url) => handleChange(axis.axis_number, 'coordinator_image', url)}
+                  label="Foto do Coordenador"
+                />
+                <Form.Text className="text-muted">
+                  Imagem quadrada recomendada (mín. 200x200px)
+                </Form.Text>
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label><strong>Sub-Coordenador(es)</strong> <small className="text-muted">(Opcional)</small></Form.Label>
+                <Form.Control
+                  type="text"
+                  value={axis.sub_coordinator || ''}
+                  onChange={(e) => handleChange(axis.axis_number, 'sub_coordinator', e.target.value)}
+                  placeholder="Ex: Prof. Dr. Nome Sobrenome"
+                />
+              </Form.Group>
+
+              <Form.Group className="mb-3">
+                <Form.Label><strong>Foto do Sub-Coordenador</strong></Form.Label>
+                <ImageUploadField
+                  value={axis.sub_coordinator_image || ''}
+                  onChange={(url) => handleChange(axis.axis_number, 'sub_coordinator_image', url)}
+                  label="Foto do Sub-Coordenador"
+                />
+                <Form.Text className="text-muted">
+                  Imagem quadrada recomendada (mín. 200x200px)
+                </Form.Text>
               </Form.Group>
 
               <Row>

@@ -7,6 +7,11 @@ import teamRoutes from './routes/team.js';
 import axesRoutes from './routes/axes.js';
 import uploadRoutes from './routes/upload.js';
 import contactRoutes from './routes/contact.js';
+import partnersRoutes from './routes/partners.js';
+import publicationsRoutes from './routes/publications.js';
+import eventsRoutes from './routes/events.js';
+import projectsRoutes from './routes/projects.js';
+import featuredRoutes from './routes/featured.js';
 
 dotenv.config();
 
@@ -28,6 +33,11 @@ app.use('/api/team', teamRoutes);
 app.use('/api/axes', axesRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/contact', contactRoutes);
+app.use('/api/partners', partnersRoutes);
+app.use('/api/publications', publicationsRoutes);
+app.use('/api/events', eventsRoutes);
+app.use('/api/projects', projectsRoutes);
+app.use('/api/featured', featuredRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

@@ -1,11 +1,52 @@
+import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { transparencyContent } from '../../data/content';
 import { useLanguage } from '../../context/LanguageContext';
+import { fetchPageContent } from '../../services/api';
 import { motion } from 'framer-motion';
 
 const Transparency = () => {
   const { language } = useLanguage();
-  const content = transparencyContent[language];
+  const staticContent = transparencyContent[language];
+  const [content, setContent] = useState({
+    title: staticContent.title,
+    description: staticContent.description,
+    sections: staticContent.sections
+  });
+
+  useEffect(() => {
+    const loadContent = async () => {
+      const data = await fetchPageContent('transparency');
+      if (data) {
+        const langContent = language === 'pt' ? data.content_pt : data.content_en;
+        if (langContent && Object.keys(langContent).length > 0) {
+          setContent({
+            title: staticContent.title,
+            description: staticContent.description,
+            sections: {
+              fapesp: {
+                title: langContent.fapesp_title || staticContent.sections.fapesp.title,
+                number: langContent.fapesp_number || staticContent.sections.fapesp.number,
+                link: langContent.fapesp_link || staticContent.sections.fapesp.link
+              },
+              reports: {
+                title: langContent.reports_title || staticContent.sections.reports.title,
+                description: langContent.reports_description || '',
+                items: staticContent.sections.reports.items
+              },
+              financials: {
+                title: langContent.financial_title || staticContent.sections.financials.title,
+                content: langContent.financial_content || staticContent.sections.financials.content
+              }
+            }
+          });
+        }
+      }
+    };
+
+    loadContent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [language]);
 
   return (
     <motion.div
@@ -48,6 +89,9 @@ const Transparency = () => {
         <Row className="mb-5">
           <Col md={12}>
             <h3 className="fw-bold mb-4">{content.sections.reports.title}</h3>
+            {content.sections.reports.description && (
+              <p className="text-muted mb-3">{content.sections.reports.description}</p>
+            )}
             {content.sections.reports.items.length > 0 ? (
               <div>
                 {/* Render report cards */}

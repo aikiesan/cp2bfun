@@ -73,6 +73,30 @@ export const fetchNewsArticle = async (slug) => {
   }
 };
 
+export const fetchFeaturedNews = async () => {
+  try {
+    const response = await api.get('/news/featured');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching featured news:', error);
+    return { A: null, B: null, C: null };
+  }
+};
+
+export const updateFeaturedNews = async (positionA, positionB, positionC) => {
+  try {
+    const response = await api.put('/news/featured', {
+      positionA,
+      positionB,
+      positionC
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating featured news:', error);
+    throw error;
+  }
+};
+
 export const fetchTeam = async () => {
   try {
     const response = await api.get('/team/grouped');
@@ -98,7 +122,10 @@ export const fetchPageContent = async (page) => {
     const response = await api.get(`/content/${page}`);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching ${page} content:`, error);
+    // Suppress 404 errors - content doesn't exist yet, will use fallback
+    if (error.response?.status !== 404) {
+      console.error(`Error fetching ${page} content:`, error);
+    }
     return null;
   }
 };
@@ -115,5 +142,255 @@ export const fetchMessages = async () => {
   } catch (error) {
     console.error('Error fetching messages:', error);
     return null;
+  }
+};
+
+// Partners API functions
+export const fetchPartners = async () => {
+  try {
+    const response = await api.get('/partners');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching partners:', error);
+    return null;
+  }
+};
+
+export const fetchPartnersGrouped = async () => {
+  try {
+    const response = await api.get('/partners/grouped');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching grouped partners:', error);
+    return { host: [], public: [], research: [], companies: [] };
+  }
+};
+
+export const fetchPartner = async (id) => {
+  try {
+    const response = await api.get(`/partners/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching partner:', error);
+    return null;
+  }
+};
+
+export const createPartner = async (data) => {
+  const response = await api.post('/partners', data);
+  return response.data;
+};
+
+export const updatePartner = async (id, data) => {
+  const response = await api.put(`/partners/${id}`, data);
+  return response.data;
+};
+
+export const deletePartner = async (id) => {
+  const response = await api.delete(`/partners/${id}`);
+  return response.data;
+};
+
+// Publications API functions
+export const fetchPublications = async (filters = {}) => {
+  try {
+    const queryParams = new URLSearchParams();
+    if (filters.year) queryParams.append('year', filters.year);
+    if (filters.type) queryParams.append('type', filters.type);
+    if (filters.axis) queryParams.append('axis', filters.axis);
+    if (filters.search) queryParams.append('search', filters.search);
+
+    const queryString = queryParams.toString();
+    const endpoint = queryString ? `/publications?${queryString}` : '/publications';
+    const response = await api.get(endpoint);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching publications:', error);
+    return null;
+  }
+};
+
+export const fetchPublication = async (id) => {
+  try {
+    const response = await api.get(`/publications/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching publication:', error);
+    return null;
+  }
+};
+
+export const fetchFeaturedPublications = async () => {
+  try {
+    const response = await api.get('/publications/featured');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching featured publications:', error);
+    return [];
+  }
+};
+
+export const fetchPublicationsByYear = async () => {
+  try {
+    const response = await api.get('/publications/by-year');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching publications by year:', error);
+    return {};
+  }
+};
+
+export const createPublication = async (data) => {
+  const response = await api.post('/publications', data);
+  return response.data;
+};
+
+export const updatePublication = async (id, data) => {
+  const response = await api.put(`/publications/${id}`, data);
+  return response.data;
+};
+
+export const deletePublication = async (id) => {
+  const response = await api.delete(`/publications/${id}`);
+  return response.data;
+};
+
+// Events API functions
+export const fetchEvents = async (filters = {}) => {
+  try {
+    const queryParams = new URLSearchParams();
+    if (filters.status) queryParams.append('status', filters.status);
+    if (filters.type) queryParams.append('type', filters.type);
+    if (filters.from) queryParams.append('from', filters.from);
+    if (filters.to) queryParams.append('to', filters.to);
+
+    const queryString = queryParams.toString();
+    const endpoint = queryString ? `/events?${queryString}` : '/events';
+    const response = await api.get(endpoint);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching events:', error);
+    return null;
+  }
+};
+
+export const fetchEvent = async (id) => {
+  try {
+    const response = await api.get(`/events/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching event:', error);
+    return null;
+  }
+};
+
+export const fetchUpcomingEvents = async () => {
+  try {
+    const response = await api.get('/events/upcoming');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching upcoming events:', error);
+    return [];
+  }
+};
+
+export const fetchFeaturedEvents = async () => {
+  try {
+    const response = await api.get('/events/featured');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching featured events:', error);
+    return [];
+  }
+};
+
+export const createEvent = async (data) => {
+  const response = await api.post('/events', data);
+  return response.data;
+};
+
+export const updateEvent = async (id, data) => {
+  const response = await api.put(`/events/${id}`, data);
+  return response.data;
+};
+
+export const updateEventParticipants = async (id, current_participants) => {
+  const response = await api.put(`/events/${id}/participants`, { current_participants });
+  return response.data;
+};
+
+export const deleteEvent = async (id) => {
+  const response = await api.delete(`/events/${id}`);
+  return response.data;
+};
+
+// Projects API functions (duplicate of news API)
+export const fetchProjects = async () => {
+  try {
+    const response = await api.get('/projects');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching projects:', error);
+    return [];
+  }
+};
+
+export const fetchProjectArticle = async (slug) => {
+  try {
+    const response = await api.get(`/projects/${slug}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching project:', error);
+    return null;
+  }
+};
+
+export const fetchFeaturedProjects = async () => {
+  try {
+    const response = await api.get('/projects/featured');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching featured projects:', error);
+    return { A: null, B: null, C: null };
+  }
+};
+
+export const createProject = async (data) => {
+  const response = await api.post('/projects', data);
+  return response.data;
+};
+
+export const updateProject = async (slug, data) => {
+  const response = await api.put(`/projects/${slug}`, data);
+  return response.data;
+};
+
+export const deleteProject = async (slug) => {
+  const response = await api.delete(`/projects/${slug}`);
+  return response.data;
+};
+
+// Unified Featured Content API (news + projects)
+export const fetchFeaturedContent = async () => {
+  try {
+    const response = await api.get('/featured');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching featured content:', error);
+    return { A: null, B: null, C: null };
+  }
+};
+
+export const updateFeaturedContent = async (positionA, positionB, positionC) => {
+  try {
+    const response = await api.put('/featured', {
+      positionA, // { type: 'news', slug: '...' } or { type: 'project', slug: '...' }
+      positionB,
+      positionC
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating featured content:', error);
+    throw error;
   }
 };
