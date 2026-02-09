@@ -8,6 +8,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import SocialSidebar from './components/SocialSidebar';
 
 // Pages
 import Home from './pages/Home';
@@ -24,6 +25,11 @@ import Media from './pages/Media';
 import Others from './pages/Others';
 import NotFound from './pages/NotFound';
 
+// About sub-pages
+import Governance from './pages/about/Governance';
+import Transparency from './pages/about/Transparency';
+import PartnersPage from './pages/about/PartnersPage';
+
 // Admin Pages
 import {
   AdminLayout,
@@ -39,8 +45,9 @@ import {
 function App() {
   return (
     <LanguageProvider>
-      <Router>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <ScrollToTop />
+        <SocialSidebar />
         <Routes>
           {/* Admin Routes - No Header/Footer */}
           <Route path="/admin" element={<AdminLayout />}>
@@ -64,6 +71,9 @@ function App() {
                   <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/sobre" element={<About />} />
+                    <Route path="/sobre/governanca" element={<Governance />} />
+                    <Route path="/sobre/transparencia" element={<Transparency />} />
+                    <Route path="/sobre/parceiros" element={<PartnersPage />} />
                     <Route path="/pesquisa" element={<Research />} />
                     <Route path="/equipe" element={<Team />} />
                     <Route path="/noticias" element={<News />} />

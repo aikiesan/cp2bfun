@@ -32,10 +32,10 @@ const AdminLayout = () => {
   return (
     <Container fluid className="admin-layout">
       <Row>
-        <Col md={2} className="admin-sidebar bg-dark text-white py-4" style={{ minHeight: '100vh' }}>
+        <Col md={2} className="admin-sidebar py-4" style={{ minHeight: '100vh' }}>
           <div className="px-3 mb-4">
-            <h5 className="text-white mb-0">CP2B Admin</h5>
-            <small className="text-muted">Sistema de Gerenciamento</small>
+            <h5 className="mb-0">CP2B Admin</h5>
+            <small>Sistema de Gerenciamento</small>
           </div>
           <Nav className="flex-column">
             {navItems.map((item) => (
@@ -44,12 +44,8 @@ const AdminLayout = () => {
                 as={NavLink}
                 to={item.path}
                 end={item.path === '/admin'}
-                className="text-white-50 px-3 py-2"
-                style={({ isActive }) => ({
-                  backgroundColor: isActive ? 'rgba(255,255,255,0.1)' : 'transparent',
-                  borderRadius: '8px',
-                  margin: '2px 8px',
-                })}
+                className="px-3 py-2"
+                style={{ borderRadius: '8px', margin: '2px 8px' }}
               >
                 <i className={`bi ${item.icon} me-2`}></i>
                 {item.label}
@@ -59,9 +55,9 @@ const AdminLayout = () => {
               </Nav.Link>
             ))}
           </Nav>
-          <hr className="mx-3 my-4 border-secondary" />
+          <hr className="mx-3 my-4" />
           <Nav className="flex-column">
-            <Nav.Link href="/" className="text-white-50 px-3 py-2">
+            <Nav.Link href="/" className="px-3 py-2">
               <i className="bi bi-arrow-left me-2"></i>
               Voltar ao Site
             </Nav.Link>

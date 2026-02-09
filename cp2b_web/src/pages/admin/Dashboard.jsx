@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card, Alert } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import api from '../../services/api';
 
@@ -12,6 +12,7 @@ const Dashboard = () => {
     unreadMessages: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState(false);
 
   useEffect(() => {
     const fetchStats = async () => {
@@ -29,8 +30,10 @@ const Dashboard = () => {
           messagesCount: messagesRes.data.length,
           unreadMessages: messagesRes.data.filter((m) => !m.read).length,
         });
+        setApiError(false);
       } catch (error) {
         console.error('Error fetching stats:', error);
+        setApiError(true);
       } finally {
         setLoading(false);
       }
@@ -48,6 +51,15 @@ const Dashboard = () => {
   return (
     <Container>
       <h2 className="mb-4">Dashboard</h2>
+      {apiError && (
+        <Alert variant="warning" className="d-flex align-items-center mb-4">
+          <i className="bi bi-exclamation-triangle-fill me-2"></i>
+          <div>
+            <strong>Backend indisponivel</strong> — Nao foi possivel conectar ao servidor (porta 3001).
+            Verifique se os containers <code>backend</code> e <code>db</code> estao rodando.
+          </div>
+        </Alert>
+      )}
       <Row>
         {cards.map((card) => (
           <Col md={4} key={card.title} className="mb-4">

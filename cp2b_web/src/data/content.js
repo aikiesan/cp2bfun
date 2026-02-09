@@ -1,17 +1,27 @@
 export const socialLinks = {
   instagram: 'https://www.instagram.com/centro_biogas_cp2b/',
   linkedin: 'https://br.linkedin.com/company/centro-paulista-de-estudos-em-biog%C3%A1s-e-bioprodutos-cp2b',
-  facebook: '#',
+  facebook: 'https://www.facebook.com/nipeunicamp/',
   youtube: '#',
   whatsapp: '#'
 };
 
 export const menuLabels = {
   pt: {
-    home: 'Início',
     about: 'Sobre',
+    aboutSubmenu: {
+      overview: 'Visão Geral',
+      governance: 'Governança',
+      transparency: 'Transparência',
+      partners: 'Parceiros'
+    },
     opportunities: 'Oportunidades',
-    news: 'Novidades',
+    news: 'Notícias',
+    newsSubmenu: {
+      news: 'Notícias',
+      media: 'Na Mídia',
+      opportunities: 'Oportunidades'
+    },
     team: 'Equipe',
     publications: 'Publicações',
     projects: 'Projetos',
@@ -23,10 +33,20 @@ export const menuLabels = {
     axes: 'Eixos de Pesquisa'
   },
   en: {
-    home: 'Home',
     about: 'About',
+    aboutSubmenu: {
+      overview: 'Overview',
+      governance: 'Governance',
+      transparency: 'Transparency',
+      partners: 'Partners'
+    },
     opportunities: 'Opportunities',
     news: 'News',
+    newsSubmenu: {
+      news: 'News',
+      media: 'In the Media',
+      opportunities: 'Opportunities'
+    },
     team: 'Team',
     publications: 'Publications',
     projects: 'Projects',
@@ -574,3 +594,143 @@ export const teamMembers = [
     ]
   }
 ];
+
+export const governanceContent = {
+  pt: {
+    title: 'Governança',
+    description: 'Estrutura organizacional e gestão do CP2B',
+    sections: {
+      structure: {
+        title: 'Estrutura Organizacional',
+        content: `O CP2B é estruturado como um centro de pesquisa vinculado ao NIPE/UNICAMP, com organização transdisciplinar e colaborativa.
+
+O centro é organizado em oito eixos temáticos integrados, seguindo o conceito de laboratório vivo, com projetos que experimentam em campo novas soluções e tecnologias para a cadeia do biogás e bioprodutos.
+
+A estrutura conta com pesquisadores de diferentes instituições acadêmicas e parceiros estratégicos dos setores público e privado, garantindo a articulação entre ciência, tecnologia, políticas públicas e aplicações práticas.`
+      },
+      committee: {
+        title: 'Comitê Gestor',
+        content: `A coordenação científica e administrativa do CP2B é realizada por um Comitê Gestor composto por:
+
+- Diretoria: Profª Drª Bruna de Souza Moraes (NIPE/UNICAMP)
+- Vice-Diretoria: Profª Drª Renata Piacentini Rodriguez (ICT/UNIFAL)
+- Coordenadores dos Oito Eixos Temáticos
+- Representantes das Instituições Parceiras
+
+O Comitê Gestor é responsável pelas decisões estratégicas, acompanhamento dos projetos, gestão de recursos e articulação com parceiros e sociedade.`
+      },
+      guidelines: {
+        title: 'Diretrizes e Regulamentos',
+        content: `O CP2B opera segundo princípios de transparência, colaboração e compromisso com o desenvolvimento sustentável.
+
+Princípios Fundamentais:
+- Excelência científica e tecnológica
+- Integração entre pesquisa básica e aplicada
+- Responsabilidade socioambiental
+- Participação democrática e inclusiva
+- Transparência na gestão de recursos
+
+O Regimento Interno do CP2B foi aprovado em 2025 durante o I Workshop Anual, estabelecendo normas de funcionamento, atribuições dos órgãos colegiados e procedimentos administrativos.`
+      }
+    }
+  },
+  en: {
+    title: 'Governance',
+    description: 'Organizational structure and management of CP2B',
+    sections: {
+      structure: {
+        title: 'Organizational Structure',
+        content: `CP2B is structured as a research center linked to NIPE/UNICAMP, with a transdisciplinary and collaborative organization.
+
+The center is organized into eight integrated thematic axes, following the concept of a living laboratory, with projects that experiment in the field with new solutions and technologies for the biogas and bioproducts chain.
+
+The structure includes researchers from different academic institutions and strategic partners from the public and private sectors, ensuring the articulation between science, technology, public policies and practical applications.`
+      },
+      committee: {
+        title: 'Management Committee',
+        content: `The scientific and administrative coordination of CP2B is carried out by a Management Committee composed of:
+
+- Director: Prof. Dr. Bruna de Souza Moraes (NIPE/UNICAMP)
+- Vice-Director: Prof. Dr. Renata Piacentini Rodriguez (ICT/UNIFAL)
+- Coordinators of the Eight Thematic Axes
+- Representatives of Partner Institutions
+
+The Management Committee is responsible for strategic decisions, project monitoring, resource management and coordination with partners and society.`
+      },
+      guidelines: {
+        title: 'Guidelines and Regulations',
+        content: `CP2B operates according to principles of transparency, collaboration and commitment to sustainable development.
+
+Fundamental Principles:
+- Scientific and technological excellence
+- Integration between basic and applied research
+- Social and environmental responsibility
+- Democratic and inclusive participation
+- Transparency in resource management
+
+CP2B's Internal Regulations were approved in 2025 during the I Annual Workshop, establishing operating rules, attributions of collegiate bodies and administrative procedures.`
+      }
+    }
+  }
+};
+
+export const transparencyContent = {
+  pt: {
+    title: 'Transparência',
+    description: 'Prestação de contas e informações financeiras',
+    sections: {
+      fapesp: {
+        title: 'Processo FAPESP',
+        number: '2024/01112-1',
+        link: 'https://bv.fapesp.br/pt/auxilios/118756/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
+      },
+      reports: {
+        title: 'Relatórios Anuais',
+        items: []
+      },
+      financials: {
+        title: 'Informações Financeiras',
+        content: `O CP2B é financiado pela FAPESP através do Programa de Centros de Ciências para o Desenvolvimento (PCD - CCD).
+
+Processo: 2024/01112-1
+Instituição Sede: Núcleo Interdisciplinar de Planejamento Energético/NIPE/UNICAMP
+Coordenadora: Profª Drª Bruna de Souza Moraes
+Início: 01/02/2025
+Duração: 60 meses
+
+Todos os recursos são gerenciados de acordo com as normas da FAPESP e da UNICAMP, com prestação de contas periódica e auditoria independente.
+
+Para mais informações sobre o financiamento e recursos, consulte o processo completo no Portal FAPESP através do link acima.`
+      }
+    }
+  },
+  en: {
+    title: 'Transparency',
+    description: 'Accountability and financial information',
+    sections: {
+      fapesp: {
+        title: 'FAPESP Process',
+        number: '2024/01112-1',
+        link: 'https://bv.fapesp.br/pt/auxilios/118756/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
+      },
+      reports: {
+        title: 'Annual Reports',
+        items: []
+      },
+      financials: {
+        title: 'Financial Information',
+        content: `CP2B is funded by FAPESP through the Centers of Sciences for Development Program (PCD - CCD).
+
+Process: 2024/01112-1
+Host Institution: Interdisciplinary Center for Energy Planning/NIPE/UNICAMP
+Coordinator: Prof. Dr. Bruna de Souza Moraes
+Start Date: 02/01/2025
+Duration: 60 months
+
+All resources are managed in accordance with FAPESP and UNICAMP regulations, with periodic accountability and independent auditing.
+
+For more information about funding and resources, consult the complete process on the FAPESP Portal through the link above.`
+      }
+    }
+  }
+};

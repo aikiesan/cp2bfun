@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Navbar, Nav, Container } from 'react-bootstrap';
-import { FaLinkedin } from 'react-icons/fa';
+import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
+import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { menuLabels, socialLinks } from '../data/content';
@@ -16,11 +16,22 @@ const Header = () => {
   const [highContrast, setHighContrast] = useState(() => {
     return localStorage.getItem('cp2b-high-contrast') === 'true';
   });
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     document.documentElement.style.fontSize = `${fontSize}%`;
     localStorage.setItem('cp2b-font-size', fontSize);
   }, [fontSize]);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Trigger shrink at 94px scroll (CNPEM pattern)
+      setIsScrolled(window.scrollY > 94);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useEffect(() => {
     document.body.classList.toggle('high-contrast', highContrast);
@@ -35,8 +46,12 @@ const Header = () => {
   return (
     <header>
       {/* Top Header - Recod.ai Style */}
-      <div id="top-header" className="py-2" style={{ backgroundColor: '#f8f9fa', borderBottom: '1px solid #e9ecef', fontSize: '0.85rem' }}>
-        <Container>
+      <div
+        id="top-header"
+        className={`border-bottom bg-light ${isScrolled ? 'header-hidden' : ''}`}
+        style={{ fontSize: '0.85rem' }}
+      >
+        <Container className="py-2">
           <div className="row align-items-center">
             <div className="col d-none d-lg-flex">
               <div className="desktop-shortcuts">
@@ -75,39 +90,108 @@ const Header = () => {
                 </button>
               </div>
             </div>
+
+            {/* Social Media Icons */}
+            <div className="d-none d-lg-flex align-items-center gap-3 ms-3">
+              {socialLinks.facebook !== '#' && (
+                <a
+                  href={socialLinks.facebook}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted social-icon-top"
+                  aria-label="Facebook"
+                >
+                  <FaFacebookF size={14} />
+                </a>
+              )}
+              <a
+                href={socialLinks.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted social-icon-top"
+                aria-label="LinkedIn"
+              >
+                <FaLinkedinIn size={14} />
+              </a>
+              <a
+                href={socialLinks.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-muted social-icon-top"
+                aria-label="Instagram"
+              >
+                <FaInstagram size={14} />
+              </a>
+              {socialLinks.youtube !== '#' && (
+                <a
+                  href={socialLinks.youtube}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-muted social-icon-top"
+                  aria-label="YouTube"
+                >
+                  <FaYoutube size={14} />
+                </a>
+              )}
+            </div>
           </div>
         </Container>
       </div>
 
       {/* Main Navbar */}
-      <Navbar expand="lg" sticky="top" className="bg-white shadow-sm py-3">
-        <Container>
+      <Navbar
+        expand="lg"
+        sticky="top"
+        className={`bg-white shadow-sm ${isScrolled ? 'navbar-shrunk' : ''}`}
+      >
+        <Container className="py-3">
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
             <img
               src="/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png"
               alt="CP2B Logo"
-              height="55"
-              className="d-inline-block align-top me-3"
-              style={{ borderRadius: 0 }}
+              className={`me-2 ${isScrolled ? 'logo-shrunk' : ''}`}
+              style={{ height: isScrolled ? '35px' : '55px', transition: 'height 0.3s ease' }}
             />
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto align-items-center gap-1">
-              <Nav.Link as={Link} to="/" className="fw-semibold px-2">{t.home}</Nav.Link>
-              <Nav.Link as={Link} to="/sobre" className="fw-semibold px-2">{t.about}</Nav.Link>
-              <Nav.Link as={Link} to="/oportunidades" className="fw-semibold px-2">{t.opportunities}</Nav.Link>
-              <Nav.Link as={Link} to="/noticias" className="fw-semibold px-2">{t.news}</Nav.Link>
+              {/* About Dropdown */}
+              <NavDropdown title={t.about} id="nav-dropdown-about" className="fw-semibold">
+                <NavDropdown.Item as={Link} to="/sobre">
+                  {t.aboutSubmenu.overview}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/sobre/governanca">
+                  {t.aboutSubmenu.governance}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/sobre/transparencia">
+                  {t.aboutSubmenu.transparency}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/sobre/parceiros">
+                  {t.aboutSubmenu.partners}
+                </NavDropdown.Item>
+              </NavDropdown>
+
+              {/* News Dropdown */}
+              <NavDropdown title={t.news} id="nav-dropdown-news" className="fw-semibold">
+                <NavDropdown.Item as={Link} to="/noticias">
+                  {t.newsSubmenu.news}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/na-midia">
+                  {t.newsSubmenu.media}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to="/oportunidades">
+                  {t.newsSubmenu.opportunities}
+                </NavDropdown.Item>
+              </NavDropdown>
+
+              {/* Keep existing items */}
               <Nav.Link as={Link} to="/equipe" className="fw-semibold px-2">{t.team}</Nav.Link>
               <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
               <Nav.Link as={Link} to="/projetos" className="fw-semibold px-2">{t.projects}</Nav.Link>
-              <Nav.Link as={Link} to="/na-midia" className="fw-semibold px-2">{t.media}</Nav.Link>
+              <Nav.Link as={Link} to="/pesquisa" className="fw-semibold px-2">{t.axes}</Nav.Link>
               <Nav.Link as={Link} to="/outros" className="fw-semibold px-2">{t.others}</Nav.Link>
-
-              <Nav.Link href={socialLinks.linkedin} target="_blank" className="fw-semibold px-2 text-primary d-flex align-items-center gap-1">
-                <FaLinkedin /> {t.linkedin}
-              </Nav.Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
