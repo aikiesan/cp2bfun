@@ -27,11 +27,13 @@ dist-ssr
 # Environment variables
 .env
 .env.test
-.env.production
 .env.local
+# Note: deployment/.env.production is a TEMPLATE (allowed)
+# But actual production .env files with real credentials should be ignored:
+cp2b_web/backend/.env.production
 
-# Deployment secrets
-deployment/.env.production
+# Deployment secrets (actual .env files with real credentials)
+/var/www/cp2b/backend/.env
 db-credentials.txt
 
 # Backups
