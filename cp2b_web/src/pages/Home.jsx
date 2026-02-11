@@ -1,14 +1,51 @@
-import { Container, Row, Col, Card, Button, Carousel } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { carouselSlides, newsItems, forumData } from '../data/content';
+import { newsItems, forumData } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
+import { fetchFeaturedContent, fetchPageContent } from '../services/api';
+import FeaturedContent from '../components/FeaturedContent';
 
 const Home = () => {
   const { language } = useLanguage();
-  const slides = carouselSlides[language];
   const news = newsItems[language];
-  const forum = forumData[language];
+  const [forum, setForum] = useState(forumData[language]);
+  const [featuredContent, setFeaturedContent] = useState({ A: null, B: null, C: null });
+  const [loadingFeatured, setLoadingFeatured] = useState(true);
+
+  useEffect(() => {
+    const loadFeaturedContent = async () => {
+      setLoadingFeatured(true);
+      const data = await fetchFeaturedContent();
+      setFeaturedContent(data);
+      setLoadingFeatured(false);
+    };
+
+    loadFeaturedContent();
+  }, []);
+
+  useEffect(() => {
+    const loadForumContent = async () => {
+      const data = await fetchPageContent('home');
+      if (data) {
+        const langContent = language === 'pt' ? data.content_pt : data.content_en;
+        const staticFallback = forumData[language];
+        // Map database fields to the expected forum object structure
+        if (langContent && Object.keys(langContent).length > 0) {
+          setForum({
+            badge: langContent.forum_badge || staticFallback.badge,
+            subtitle: langContent.forum_subtitle || staticFallback.subtitle,
+            title: langContent.forum_title || staticFallback.title,
+            description: langContent.forum_description || staticFallback.description,
+            button: langContent.forum_button_text || staticFallback.button,
+          });
+        }
+      }
+    };
+
+    loadForumContent();
+  }, [language]);
 
   const labels = {
     pt: {
@@ -29,60 +66,20 @@ const Home = () => {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-      {/* Hero Section - Carousel with Enhanced Ken Burns Effect */}
-      <section className="position-relative overflow-hidden mb-5" style={{ marginTop: '-120px' }}>
-        <Carousel fade interval={8000} controls={false} indicators={true}>
-          {slides.map((slide) => (
-            <Carousel.Item key={slide.id}>
-              <motion.div
-                style={{
-                  height: '100vh',
-                  minHeight: '700px',
-                  overflow: 'hidden',
-                  position: 'relative'
-                }}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.5 }}
-              >
-                <motion.div
-                  initial={{ scale: 1 }}
-                  animate={{ scale: 1.15 }}
-                  transition={{ duration: 10, ease: "linear", repeat: Infinity, repeatType: "reverse" }}
-                  style={{
-                    backgroundImage: `url(${slide.image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    position: 'absolute',
-                    top: 0, left: 0, right: 0, bottom: 0,
-                    zIndex: -1
-                  }}
-                />
-
-                <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, background: 'linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.2))' }}></div>
-
-                <Container className="h-100 d-flex align-items-end pb-5 position-relative">
-                  <div className="text-white mb-5" style={{ maxWidth: '900px', width: '100%' }}>
-                    <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
-                      <span className="badge bg-white text-dark mb-3 px-3 py-2 rounded-pill fw-bold">{slide.badge}</span>
-                      <h1 className="display-3 fw-bold mb-3 text-white">{slide.title}</h1>
-                      <p className="lead mb-4 text-white-50 d-none d-md-block" style={{ maxWidth: '600px' }}>
-                        {slide.description}
-                      </p>
-                      <p className="d-block d-md-none text-white-50 mb-4 small">
-                        {slide.description.substring(0, 100)}...
-                      </p>
-
-                      <div className="d-flex flex-column flex-md-row gap-3">
-                          <Button as={Link} to={slide.linkPrimary} variant="primary" size="lg" className="rounded-pill px-5 py-3 py-md-2 btn-glow">{slide.labelPrimary}</Button>
-                          <Button as={Link} to={slide.linkSecondary} variant="outline-light" size="lg" className="rounded-pill px-5 py-3 py-md-2">{slide.labelSecondary}</Button>
-                      </div>
-                    </motion.div>
-                  </div>
-                </Container>
-              </motion.div>
-            </Carousel.Item>
-          ))}
-        </Carousel>
+      {/* Featured News Headlines Section */}
+      <section className="position-relative overflow-hidden mb-5">
+        {loadingFeatured ? (
+          <div className="d-flex justify-content-center align-items-center"
+               style={{ minHeight: '100vh', background: '#000' }}>
+            <Spinner animation="border" variant="light" />
+          </div>
+        ) : (
+          <FeaturedContent
+            itemA={featuredContent.A}
+            itemB={featuredContent.B}
+            itemC={featuredContent.C}
+          />
+        )}
       </section>
 
       {/* Video Highlight Section - FORUM 2026 with Interactive Hover */}

@@ -3,13 +3,13 @@ import pool from '../db/connection.js';
 
 const router = Router();
 
-// Get featured news articles
+// Get featured projects
 router.get('/featured', async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, slug, title_pt, title_en, description_pt, description_en,
               image, badge, badge_color, date_display, featured_position
-       FROM news
+       FROM projects
        WHERE featured_position IN ('A', 'B', 'C')
        ORDER BY featured_position`
     );
@@ -23,8 +23,8 @@ router.get('/featured', async (req, res) => {
 
     res.json(featured);
   } catch (error) {
-    console.error('Error fetching featured news:', error);
-    res.status(500).json({ error: 'Failed to fetch featured news' });
+    console.error('Error fetching featured projects:', error);
+    res.status(500).json({ error: 'Failed to fetch featured projects' });
   }
 });
 
@@ -36,65 +36,65 @@ router.put('/featured', async (req, res) => {
     await pool.query('BEGIN');
 
     // Clear all existing featured positions
-    await pool.query('UPDATE news SET featured_position = NULL WHERE featured_position IS NOT NULL');
+    await pool.query('UPDATE projects SET featured_position = NULL WHERE featured_position IS NOT NULL');
 
     // Set new positions (only if slug provided)
     if (positionA) {
-      await pool.query('UPDATE news SET featured_position = $1 WHERE slug = $2', ['A', positionA]);
+      await pool.query('UPDATE projects SET featured_position = $1 WHERE slug = $2', ['A', positionA]);
     }
     if (positionB) {
-      await pool.query('UPDATE news SET featured_position = $1 WHERE slug = $2', ['B', positionB]);
+      await pool.query('UPDATE projects SET featured_position = $1 WHERE slug = $2', ['B', positionB]);
     }
     if (positionC) {
-      await pool.query('UPDATE news SET featured_position = $1 WHERE slug = $2', ['C', positionC]);
+      await pool.query('UPDATE projects SET featured_position = $1 WHERE slug = $2', ['C', positionC]);
     }
 
     await pool.query('COMMIT');
-    res.json({ success: true, message: 'Featured news updated' });
+    res.json({ success: true, message: 'Featured projects updated' });
   } catch (error) {
     await pool.query('ROLLBACK');
-    console.error('Error updating featured news:', error);
-    res.status(500).json({ error: 'Failed to update featured news' });
+    console.error('Error updating featured projects:', error);
+    res.status(500).json({ error: 'Failed to update featured projects' });
   }
 });
 
-// Get all news articles
+// Get all projects
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, slug, title_pt, title_en, description_pt, description_en,
               image, badge, badge_color, date_display, published_at, created_at
-       FROM news
+       FROM projects
        ORDER BY published_at DESC NULLS LAST, created_at DESC`
     );
     res.json(result.rows);
   } catch (error) {
-    console.error('Error fetching news:', error);
-    res.status(500).json({ error: 'Failed to fetch news' });
+    console.error('Error fetching projects:', error);
+    res.status(500).json({ error: 'Failed to fetch projects' });
   }
 });
 
-// Get single news article by slug
+// Get single project by slug
 router.get('/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
     const result = await pool.query(
-      `SELECT * FROM news WHERE slug = $1`,
+      `SELECT * FROM projects WHERE slug = $1`,
       [slug]
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'News article not found' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error fetching news article:', error);
-    res.status(500).json({ error: 'Failed to fetch news article' });
+    console.error('Error fetching project:', error);
+    res.status(500).json({ error: 'Failed to fetch project' });
   }
 });
 
-// Create news article
+// Create project
 router.post('/', async (req, res) => {
   try {
     const {
@@ -103,7 +103,7 @@ router.post('/', async (req, res) => {
     } = req.body;
 
     const result = await pool.query(
-      `INSERT INTO news (slug, title_pt, title_en, description_pt, description_en,
+      `INSERT INTO projects (slug, title_pt, title_en, description_pt, description_en,
                          content_pt, content_en, image, badge, badge_color, date_display, published_at)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
        RETURNING *`,
@@ -113,15 +113,15 @@ router.post('/', async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    console.error('Error creating news:', error);
+    console.error('Error creating project:', error);
     if (error.code === '23505') {
-      return res.status(400).json({ error: 'A news article with this slug already exists' });
+      return res.status(400).json({ error: 'A project with this slug already exists' });
     }
-    res.status(500).json({ error: 'Failed to create news article' });
+    res.status(500).json({ error: 'Failed to create project' });
   }
 });
 
-// Update news article
+// Update project
 router.put('/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
@@ -132,7 +132,7 @@ router.put('/:slug', async (req, res) => {
     } = req.body;
 
     const result = await pool.query(
-      `UPDATE news SET
+      `UPDATE projects SET
          slug = COALESCE($1, slug),
          title_pt = COALESCE($2, title_pt),
          title_en = COALESCE($3, title_en),
@@ -153,33 +153,33 @@ router.put('/:slug', async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'News article not found' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error updating news:', error);
-    res.status(500).json({ error: 'Failed to update news article' });
+    console.error('Error updating project:', error);
+    res.status(500).json({ error: 'Failed to update project' });
   }
 });
 
-// Delete news article
+// Delete project
 router.delete('/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
     const result = await pool.query(
-      'DELETE FROM news WHERE slug = $1 RETURNING id',
+      'DELETE FROM projects WHERE slug = $1 RETURNING id',
       [slug]
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'News article not found' });
+      return res.status(404).json({ error: 'Project not found' });
     }
 
-    res.json({ message: 'News article deleted successfully' });
+    res.json({ message: 'Project deleted successfully' });
   } catch (error) {
-    console.error('Error deleting news:', error);
-    res.status(500).json({ error: 'Failed to delete news article' });
+    console.error('Error deleting project:', error);
+    res.status(500).json({ error: 'Failed to delete project' });
   }
 });
 

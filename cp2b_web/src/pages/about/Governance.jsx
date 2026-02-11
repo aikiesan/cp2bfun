@@ -1,11 +1,54 @@
+import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import { governanceContent } from '../../data/content';
 import { useLanguage } from '../../context/LanguageContext';
+import { fetchPageContent } from '../../services/api';
 import { motion } from 'framer-motion';
 
 const Governance = () => {
   const { language } = useLanguage();
-  const content = governanceContent[language];
+  const staticContent = governanceContent[language];
+  const [content, setContent] = useState({
+    title: staticContent.title,
+    description: staticContent.description,
+    sections: {
+      structure: staticContent.sections.structure,
+      committee: staticContent.sections.committee,
+      guidelines: staticContent.sections.guidelines
+    }
+  });
+
+  useEffect(() => {
+    const loadContent = async () => {
+      const data = await fetchPageContent('governance');
+      if (data) {
+        const langContent = language === 'pt' ? data.content_pt : data.content_en;
+        if (langContent && Object.keys(langContent).length > 0) {
+          setContent({
+            title: staticContent.title,
+            description: staticContent.description,
+            sections: {
+              structure: {
+                title: langContent.section1_title || staticContent.sections.structure.title,
+                content: langContent.section1_content || staticContent.sections.structure.content
+              },
+              committee: {
+                title: langContent.section2_title || staticContent.sections.committee.title,
+                content: langContent.section2_content || staticContent.sections.committee.content
+              },
+              guidelines: {
+                title: langContent.section3_title || staticContent.sections.guidelines.title,
+                content: langContent.section3_content || staticContent.sections.guidelines.content
+              }
+            }
+          });
+        }
+      }
+    };
+
+    loadContent();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [language]);
 
   return (
     <motion.div
