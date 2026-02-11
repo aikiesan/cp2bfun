@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col, Alert, Spinner, Card } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import { RichTextEditor } from '../../components/admin';
 
 const NewsEditor = () => {
   const { slug } = useParams();
@@ -154,13 +155,11 @@ const NewsEditor = () => {
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Conteudo Completo (PT)</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={8}
-                    name="content_pt"
+                  <RichTextEditor
                     value={formData.content_pt}
-                    onChange={handleChange}
+                    onChange={(value) => setFormData(prev => ({ ...prev, content_pt: value }))}
                     placeholder="Conteudo completo do artigo em portugues..."
+                    height="500px"
                   />
                 </Form.Group>
               </Card.Body>
@@ -192,13 +191,11 @@ const NewsEditor = () => {
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Conteudo Completo (EN)</Form.Label>
-                  <Form.Control
-                    as="textarea"
-                    rows={8}
-                    name="content_en"
+                  <RichTextEditor
                     value={formData.content_en}
-                    onChange={handleChange}
+                    onChange={(value) => setFormData(prev => ({ ...prev, content_en: value }))}
                     placeholder="Full article content in English..."
+                    height="500px"
                   />
                 </Form.Group>
               </Card.Body>

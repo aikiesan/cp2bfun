@@ -420,3 +420,89 @@ export const updateFeaturedContent = async (positionA, positionB, positionC) => 
     throw error;
   }
 };
+
+// ============================================
+// Featured Videos API
+// ============================================
+
+/**
+ * Fetch featured videos (positions A, B, C)
+ * Returns object with A, B, C keys
+ */
+export const fetchFeaturedVideos = async () => {
+  try {
+    const response = await api.get('/videos/featured');
+    return response.data;
+  } catch (error) {
+    // Suppress expected errors when API is not running
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching featured videos:', error);
+    }
+    return { A: null, B: null, C: null };
+  }
+};
+
+/**
+ * Fetch all videos (admin)
+ */
+export const fetchVideos = async () => {
+  try {
+    const response = await api.get('/videos');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching videos:', error);
+    throw error;
+  }
+};
+
+/**
+ * Fetch single video by ID
+ */
+export const fetchVideo = async (id) => {
+  try {
+    const response = await api.get(`/videos/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching video:', error);
+    throw error;
+  }
+};
+
+/**
+ * Create new video
+ */
+export const createVideo = async (videoData) => {
+  try {
+    const response = await api.post('/videos', videoData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating video:', error);
+    throw error;
+  }
+};
+
+/**
+ * Update existing video
+ */
+export const updateVideo = async (id, videoData) => {
+  try {
+    const response = await api.put(`/videos/${id}`, videoData);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating video:', error);
+    throw error;
+  }
+};
+
+/**
+ * Delete video
+ */
+export const deleteVideo = async (id) => {
+  try {
+    const response = await api.delete(`/videos/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting video:', error);
+    throw error;
+  }
+};

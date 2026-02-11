@@ -68,6 +68,7 @@ const AdminLayout = () => {
       icon: 'bi-file-text',
       items: [
         { path: '/admin/news', label: 'Notícias', icon: 'bi-newspaper', badge: newsCount },
+        { path: '/admin/videos', label: 'Vídeos', icon: 'bi-youtube', isNew: true },
         { path: '/admin/projects', label: 'Projetos', icon: 'bi-folder', isNew: true },
         { path: '/admin/featured', label: 'Destaques', icon: 'bi-star' },
         { path: '/admin/publications', label: 'Publicações', icon: 'bi-journal', isNew: true },

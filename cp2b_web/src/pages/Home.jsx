@@ -4,14 +4,16 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { newsItems, forumData } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
-import { fetchFeaturedContent, fetchPageContent } from '../services/api';
+import { fetchFeaturedContent, fetchPageContent, fetchFeaturedVideos } from '../services/api';
 import FeaturedContent from '../components/FeaturedContent';
+import FeaturedVideos from '../components/FeaturedVideos';
 
 const Home = () => {
   const { language } = useLanguage();
   const news = newsItems[language];
   const [forum, setForum] = useState(forumData[language]);
   const [featuredContent, setFeaturedContent] = useState({ A: null, B: null, C: null });
+  const [featuredVideos, setFeaturedVideos] = useState({ A: null, B: null, C: null });
   const [loadingFeatured, setLoadingFeatured] = useState(true);
 
   useEffect(() => {
@@ -23,6 +25,15 @@ const Home = () => {
     };
 
     loadFeaturedContent();
+  }, []);
+
+  useEffect(() => {
+    const loadFeaturedVideos = async () => {
+      const data = await fetchFeaturedVideos();
+      setFeaturedVideos(data);
+    };
+
+    loadFeaturedVideos();
   }, []);
 
   useEffect(() => {
@@ -52,6 +63,7 @@ const Home = () => {
       newsTitle: 'Novidades',
       newsAll: 'Ver todas',
       newsLink: 'Ler notícia →',
+      videosTitle: 'Vídeos em Destaque',
       partnersTitle: 'Parceiros e Apoiadores',
       videoFallback: 'Seu navegador não suporta a tag de vídeo.'
     },
@@ -59,6 +71,7 @@ const Home = () => {
       newsTitle: 'News',
       newsAll: 'View all',
       newsLink: 'Read more →',
+      videosTitle: 'Featured Videos',
       partnersTitle: 'Partners and Supporters',
       videoFallback: 'Your browser does not support the video tag.'
     }
@@ -118,7 +131,17 @@ const Home = () => {
                         whileHover={{ scale: 1.02 }}
                         className="hover-zoom position-relative rounded-4 overflow-hidden shadow-lg"
                      >
-                        <video width="100%" height="auto" controls poster="/assets/Forum-CP2B-junho-2025-Destaque-500x230.jpg" style={{ display: 'block' }}>
+                        <video
+                            width="100%"
+                            height="auto"
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            controls
+                            poster="/assets/Forum-CP2B-junho-2025-Destaque-500x230.jpg"
+                            style={{ display: 'block' }}
+                        >
                             <source src="/assets/Em-breve-960-x-540-px-2.mp4" type="video/mp4" />
                             {labels.videoFallback}
                         </video>
@@ -166,6 +189,16 @@ const Home = () => {
             ))}
           </Row>
         </Container>
+      </section>
+
+      {/* Featured Videos Section */}
+      <section className="py-5">
+        <Container>
+          <div className="text-center mb-5">
+            <h2 className="fw-bold">{labels.videosTitle}</h2>
+          </div>
+        </Container>
+        <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
       </section>
 
       {/* Partners Image Section */}

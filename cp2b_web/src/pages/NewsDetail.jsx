@@ -5,6 +5,7 @@ import { newsItems } from '../data/content';
 import { FaArrowLeft, FaCalendarAlt, FaShareAlt } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchNewsArticle } from '../services/api';
+import { SafeHtml } from '../utils/sanitize.jsx';
 
 const NewsDetail = () => {
   const { slug } = useParams();
@@ -114,7 +115,7 @@ const NewsDetail = () => {
             </p>
 
             {article.content ? (
-              <div style={{ whiteSpace: 'pre-line' }}>{article.content}</div>
+              <SafeHtml html={article.content} className="article-content" />
             ) : (
               <>
                 <p>
