@@ -28,3 +28,20 @@ dist-ssr
 .env
 .env.test
 .env.production
+.env.local
+
+# Deployment secrets
+deployment/.env.production
+db-credentials.txt
+
+# Backups
+deployment/backups/
+*.backup
+*.sql.gz
+*.tar.gz
+
+# Production uploads
+/var/www/cp2b/backend/uploads/
+
+# Temporary files
+*.old.*
