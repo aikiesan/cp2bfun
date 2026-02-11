@@ -840,6 +840,80 @@ body.high-contrast .navbar .dropdown-item:hover {
   color: var(--cp2b-black);
 }
 
+/* ============================================
+   Featured Videos/News Grid Layout (A/B_C)
+   ============================================ */
+
+/* Grid container - responsive max-width */
+.featured-news-grid {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr; /* Large left, smaller right */
+  gap: 1.5rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  height: 500px; /* Fixed height for consistent layout */
+}
+
+/* Large item (left column A) */
+.featured-news-large {
+  grid-column: 1;
+  grid-row: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+}
+
+/* Small items container (right column B/C) */
+.featured-news-small-container {
+  grid-column: 2;
+  grid-row: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Top small item (B) */
+.featured-news-top {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+}
+
+/* Bottom small item (C) */
+.featured-news-bottom {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  border-radius: 16px;
+  background: #000;
+}
+
+/* Mobile responsive: Stack vertically */
+@media (max-width: 768px) {
+  .featured-news-grid {
+    grid-template-columns: 1fr;
+    height: auto;
+    gap: 1rem;
+  }
+
+  .featured-news-large {
+    grid-column: 1;
+    height: 300px;
+  }
+
+  .featured-news-small-container {
+    grid-column: 1;
+  }
+
+  .featured-news-top,
+  .featured-news-bottom {
+    height: 250px;
+  }
+}
+
 /* Featured News Section */
 .featured-news-section {
   width: 100%;
@@ -1012,5 +1086,265 @@ body.high-contrast .navbar .dropdown-item:hover {
 
   .featured-headline-small h2 {
     font-size: 1.125rem;
+  }
+}
+
+/* ============================================
+   Rich Text Editor Styles (ReactQuill)
+   ============================================ */
+
+/* Editor container */
+.rich-text-editor-wrapper {
+  margin-bottom: 2rem;
+}
+
+/* Quill editor styling */
+.ql-container {
+  font-family: inherit;
+  font-size: 1rem;
+  border-bottom-left-radius: 0.375rem;
+  border-bottom-right-radius: 0.375rem;
+}
+
+.ql-editor {
+  min-height: 300px;
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.ql-editor.ql-blank::before {
+  font-style: italic;
+  color: #6c757d;
+}
+
+/* Toolbar styling */
+.ql-toolbar.ql-snow {
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+  background-color: #f8f9fa;
+  border-color: #dee2e6;
+}
+
+.ql-snow .ql-stroke {
+  stroke: #495057;
+}
+
+.ql-snow .ql-fill {
+  fill: #495057;
+}
+
+.ql-snow .ql-picker-label {
+  color: #495057;
+}
+
+/* Active toolbar buttons */
+.ql-snow.ql-toolbar button:hover,
+.ql-snow .ql-toolbar button:hover,
+.ql-snow.ql-toolbar button.ql-active,
+.ql-snow .ql-toolbar button.ql-active {
+  color: #0d6efd;
+}
+
+.ql-snow.ql-toolbar button:hover .ql-stroke,
+.ql-snow .ql-toolbar button:hover .ql-stroke,
+.ql-snow.ql-toolbar button.ql-active .ql-stroke,
+.ql-snow .ql-toolbar button.ql-active .ql-stroke {
+  stroke: #0d6efd;
+}
+
+.ql-snow.ql-toolbar button:hover .ql-fill,
+.ql-snow .ql-toolbar button:hover .ql-fill,
+.ql-snow.ql-toolbar button.ql-active .ql-fill,
+.ql-snow .ql-toolbar button.ql-active .ql-fill {
+  fill: #0d6efd;
+}
+
+/* ============================================
+   Article Content Display Styles
+   ============================================ */
+
+.article-content {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: #333;
+}
+
+/* Typography */
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+  font-weight: bold;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: #212529;
+}
+
+.article-content h1 { font-size: 2.5rem; }
+.article-content h2 { font-size: 2rem; }
+.article-content h3 { font-size: 1.75rem; }
+.article-content h4 { font-size: 1.5rem; }
+.article-content h5 { font-size: 1.25rem; }
+.article-content h6 { font-size: 1rem; }
+
+.article-content p {
+  margin-bottom: 1.25rem;
+}
+
+.article-content strong,
+.article-content b {
+  font-weight: 700;
+}
+
+.article-content em,
+.article-content i {
+  font-style: italic;
+}
+
+.article-content u {
+  text-decoration: underline;
+}
+
+.article-content s {
+  text-decoration: line-through;
+}
+
+/* Lists */
+.article-content ul,
+.article-content ol {
+  margin-bottom: 1.25rem;
+  padding-left: 2rem;
+}
+
+.article-content li {
+  margin-bottom: 0.5rem;
+}
+
+/* Links */
+.article-content a {
+  color: #0d6efd;
+  text-decoration: underline;
+}
+
+.article-content a:hover {
+  color: #0a58ca;
+}
+
+/* Images */
+.article-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 2rem 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Blockquotes */
+.article-content blockquote {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-left: 4px solid #0d6efd;
+  font-style: italic;
+  color: #495057;
+  border-radius: 0.375rem;
+}
+
+/* Code blocks */
+.article-content pre {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.article-content code {
+  background-color: #f8f9fa;
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-family: 'Courier New', monospace;
+  font-size: 0.9em;
+  color: #d63384;
+}
+
+.article-content pre code {
+  background-color: transparent;
+  padding: 0;
+  color: #212529;
+}
+
+/* YouTube Embed Container (Responsive 16:9) */
+.article-content .youtube-embed-container {
+  position: relative;
+  width: 100%;
+  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  height: 0;
+  margin: 2rem 0;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.article-content .youtube-embed-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Tables */
+.article-content table {
+  width: 100%;
+  margin: 2rem 0;
+  border-collapse: collapse;
+}
+
+.article-content th,
+.article-content td {
+  padding: 0.75rem;
+  border: 1px solid #dee2e6;
+  text-align: left;
+}
+
+.article-content th {
+  background-color: #f8f9fa;
+  font-weight: 700;
+}
+
+.article-content tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .article-content {
+    font-size: 1rem;
+  }
+
+  .article-content h1 { font-size: 1.75rem; }
+  .article-content h2 { font-size: 1.5rem; }
+  .article-content h3 { font-size: 1.25rem; }
+  .article-content h4 { font-size: 1.125rem; }
+  .article-content h5 { font-size: 1rem; }
+  .article-content h6 { font-size: 0.875rem; }
+
+  .article-content blockquote {
+    padding: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .article-content pre {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .ql-editor {
+    min-height: 200px;
   }
 }

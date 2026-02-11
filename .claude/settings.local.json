@@ -7,7 +7,16 @@
       "Bash(docker-compose up:*)",
       "Bash(npm install:*)",
       "Bash(npx vitest run)",
-      "Bash(npm run lint:*)"
+      "Bash(npm run lint:*)",
+      "Bash(exit 0)",
+      "Bash(netstat:*)",
+      "WebFetch(domain:g1.globo.com)",
+      "Bash(pg_isready:*)",
+      "Bash(npm run db:init:*)",
+      "Bash(test:*)",
+      "Bash(ls:*)",
+      "Bash(npm start)",
+      "Bash(psql:*)"
     ]
   }
 }

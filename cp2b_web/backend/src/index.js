@@ -12,6 +12,7 @@ import publicationsRoutes from './routes/publications.js';
 import eventsRoutes from './routes/events.js';
 import projectsRoutes from './routes/projects.js';
 import featuredRoutes from './routes/featured.js';
+import videosRoutes from './routes/videos.js';
 
 dotenv.config();
 
@@ -38,6 +39,7 @@ app.use('/api/publications', publicationsRoutes);
 app.use('/api/events', eventsRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/api/featured', featuredRoutes);
+app.use('/api/videos', videosRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

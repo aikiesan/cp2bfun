@@ -38,6 +38,8 @@ import {
   Dashboard,
   NewsList,
   NewsEditor,
+  VideosList,
+  VideosEditor,
   TeamEditor,
   AxesEditor,
   MessagesPanel,
@@ -70,6 +72,9 @@ function App() {
             <Route path="news" element={<NewsList />} />
             <Route path="news/new" element={<NewsEditor />} />
             <Route path="news/:slug" element={<NewsEditor />} />
+            <Route path="videos" element={<VideosList />} />
+            <Route path="videos/new" element={<VideosEditor />} />
+            <Route path="videos/:id" element={<VideosEditor />} />
             <Route path="featured" element={<FeaturedContentManager />} />
             <Route path="publications" element={<PublicationsList />} />
             <Route path="publications/new" element={<PublicationsEditor />} />
