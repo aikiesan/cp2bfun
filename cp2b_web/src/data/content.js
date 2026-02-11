@@ -278,6 +278,93 @@ export const newsItems = {
   ]
 };
 
+export const projectsItems = {
+  pt: [
+    {
+      id: 1,
+      date: '01 FEV 2025',
+      image: '/assets/DSC00617-1024x683.jpg',
+      badge: 'Living Lab',
+      badgeColor: 'primary',
+      title: 'Living-Lab de Resíduos Sólidos Urbanos',
+      description: 'Planta piloto para gestão de resíduos de restaurantes universitários produzindo biohidrogênio e biometano (Biohitano) para ônibus do campus da UNICAMP.',
+      link: '/projetos/living-lab-ofmsw'
+    },
+    {
+      id: 2,
+      date: '01 FEV 2025',
+      image: '/assets/gas-1.jpg',
+      badge: 'Demonstração',
+      badgeColor: 'success',
+      title: 'Unidade Demonstrativa em Cooperativa Agroindustrial',
+      description: 'Sistema de digestão anaeróbia processando resíduos de varejo agroindustrial para gerar eletricidade ou biometano, substituindo diesel em frotas.',
+      link: '/projetos/cooperativa-agroindustrial'
+    },
+    {
+      id: 3,
+      date: '01 FEV 2025',
+      image: '/assets/biogas-2919235_1280.jpg',
+      badge: 'Pesquisa',
+      badgeColor: 'info',
+      title: 'Biorrefinaria de Vinhaça e Resíduos da Cana',
+      description: 'Pesquisa em tecnologias de biorrefinaria para aproveitamento de vinhaça e resíduos da agroindústria sucroenergética, produzindo biohitano e ácidos orgânicos de alto valor.',
+      link: '/projetos/biorrefinaria-vinhaca'
+    },
+    {
+      id: 4,
+      date: '01 FEV 2025',
+      image: '/assets/DSC00339-500x333.jpg',
+      badge: 'Inventário',
+      badgeColor: 'warning',
+      title: 'Mapeamento de Resíduos e Oportunidades no Estado de São Paulo',
+      description: 'Desenvolvimento de plataforma digital georreferenciada para inventário de resíduos e identificação de oportunidades de aproveitamento energético em São Paulo.',
+      link: '/projetos/mapeamento-residuos-sp'
+    }
+  ],
+  en: [
+    {
+      id: 1,
+      date: '01 FEB 2025',
+      image: '/assets/DSC00617-1024x683.jpg',
+      badge: 'Living Lab',
+      badgeColor: 'primary',
+      title: 'Urban Solid Waste Living-Lab',
+      description: 'Pilot plant for waste management of university restaurants producing biohydrogen and biomethane (Biohitane) for UNICAMP campus buses.',
+      link: '/projetos/living-lab-ofmsw'
+    },
+    {
+      id: 2,
+      date: '01 FEB 2025',
+      image: '/assets/gas-1.jpg',
+      badge: 'Demonstration',
+      badgeColor: 'success',
+      title: 'Demonstration Unit in Agro-industrial Cooperative',
+      description: 'Anaerobic digestion system processing agro-industrial retail waste to generate electricity or biomethane, replacing diesel in fleets.',
+      link: '/projetos/cooperativa-agroindustrial'
+    },
+    {
+      id: 3,
+      date: '01 FEB 2025',
+      image: '/assets/biogas-2919235_1280.jpg',
+      badge: 'Research',
+      badgeColor: 'info',
+      title: 'Vinasse and Sugarcane Waste Biorefinery',
+      description: 'Research on biorefinery technologies for the utilization of vinasse and sugarcane agro-industry waste, producing biohitane and high-value organic acids.',
+      link: '/projetos/biorrefinaria-vinhaca'
+    },
+    {
+      id: 4,
+      date: '01 FEB 2025',
+      image: '/assets/DSC00339-500x333.jpg',
+      badge: 'Inventory',
+      badgeColor: 'warning',
+      title: 'Waste Mapping and Opportunities in São Paulo State',
+      description: 'Development of georeferenced digital platform for waste inventory and identification of energy recovery opportunities in São Paulo.',
+      link: '/projetos/mapeamento-residuos-sp'
+    }
+  ]
+};
+
 export const flagshipProjects = {
   pt: [
     {

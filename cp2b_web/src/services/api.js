@@ -58,7 +58,10 @@ export const fetchNews = async () => {
     const response = await api.get('/news');
     return response.data;
   } catch (error) {
-    console.error('Error fetching news:', error);
+    // Suppress expected errors when API is not running
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching news:', error);
+    }
     return null;
   }
 };
@@ -68,7 +71,10 @@ export const fetchNewsArticle = async (slug) => {
     const response = await api.get(`/news/${slug}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching news article:', error);
+    // Suppress expected errors when API is not running
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching news article:', error);
+    }
     return null;
   }
 };
@@ -102,7 +108,10 @@ export const fetchTeam = async () => {
     const response = await api.get('/team/grouped');
     return response.data;
   } catch (error) {
-    console.error('Error fetching team:', error);
+    // Suppress expected errors when API is not running
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching team:', error);
+    }
     return null;
   }
 };
@@ -112,7 +121,10 @@ export const fetchAxes = async () => {
     const response = await api.get('/axes');
     return response.data;
   } catch (error) {
-    console.error('Error fetching axes:', error);
+    // Suppress expected errors when API is not running
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching axes:', error);
+    }
     return null;
   }
 };
@@ -122,8 +134,9 @@ export const fetchPageContent = async (page) => {
     const response = await api.get(`/content/${page}`);
     return response.data;
   } catch (error) {
-    // Suppress 404 errors - content doesn't exist yet, will use fallback
-    if (error.response?.status !== 404) {
+    // Suppress expected errors when API is not running - using fallback content
+    // Only log unexpected server errors (500+), not network failures or 404s
+    if (error.response?.status && error.response.status >= 500) {
       console.error(`Error fetching ${page} content:`, error);
     }
     return null;
@@ -161,7 +174,10 @@ export const fetchPartnersGrouped = async () => {
     const response = await api.get('/partners/grouped');
     return response.data;
   } catch (error) {
-    console.error('Error fetching grouped partners:', error);
+    // Suppress expected errors when API is not running
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching grouped partners:', error);
+    }
     return { host: [], public: [], research: [], companies: [] };
   }
 };
@@ -330,7 +346,10 @@ export const fetchProjects = async () => {
     const response = await api.get('/projects');
     return response.data;
   } catch (error) {
-    console.error('Error fetching projects:', error);
+    // Suppress expected errors when API is not running
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching projects:', error);
+    }
     return [];
   }
 };
@@ -340,7 +359,10 @@ export const fetchProjectArticle = async (slug) => {
     const response = await api.get(`/projects/${slug}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching project:', error);
+    // Suppress expected errors when API is not running
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching project:', error);
+    }
     return null;
   }
 };
@@ -376,7 +398,11 @@ export const fetchFeaturedContent = async () => {
     const response = await api.get('/featured');
     return response.data;
   } catch (error) {
-    console.error('Error fetching featured content:', error);
+    // Suppress expected errors when API is not running - using fallback content
+    // Only log unexpected server errors (not network/404 errors)
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching featured content:', error);
+    }
     return { A: null, B: null, C: null };
   }
 };
