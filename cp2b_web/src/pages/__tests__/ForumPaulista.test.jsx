@@ -6,12 +6,12 @@ import ForumPaulista from '../ForumPaulista';
 describe('ForumPaulista', () => {
   it('renders the Forum Paulista title', () => {
     renderWithProviders(<ForumPaulista />);
-    expect(screen.getByText('Forum Paulista')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /Fórum Paulista/i })).toBeInTheDocument();
   });
 
   it('"Registro Meet-up" button links to /registro', () => {
     renderWithProviders(<ForumPaulista />);
-    const link = screen.getByText('Registro Meet-up').closest('a');
+    const link = screen.getAllByText('Registro Meet-up')[0].closest('a');
     expect(link).toBeTruthy();
     expect(link.getAttribute('href')).toMatch(/^\/registro/);
   });
