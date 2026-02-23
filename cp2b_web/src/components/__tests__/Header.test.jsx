@@ -13,10 +13,10 @@ describe('Header', () => {
   it('renders navigation links', () => {
     renderWithProviders(<Header />);
     // Default language is pt
-    expect(screen.getByText('Início')).toBeInTheDocument();
     expect(screen.getByText('Sobre')).toBeInTheDocument();
     expect(screen.getByText('Equipe')).toBeInTheDocument();
-    expect(screen.getByText('Novidades')).toBeInTheDocument();
+    expect(screen.getByText('Notícias')).toBeInTheDocument();
+    expect(screen.getByText('Publicações')).toBeInTheDocument();
   });
 
   it('does not render a search bar', () => {
@@ -38,10 +38,10 @@ describe('Header', () => {
 
     // Start in PT, switch to EN
     await user.click(screen.getByTitle('English'));
-    expect(screen.getByText('Home')).toBeInTheDocument();
+    expect(screen.getByText('About')).toBeInTheDocument();
 
     // Switch back to PT
     await user.click(screen.getByTitle('Portuguese'));
-    expect(screen.getByText('Início')).toBeInTheDocument();
+    expect(screen.getByText('Sobre')).toBeInTheDocument();
   });
 });
