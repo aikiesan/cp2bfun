@@ -12,6 +12,7 @@ services:
     environment:
       - NODE_ENV=development
       - VITE_API_URL=http://localhost:3001/api
+      - VITE_INVITE_TOKEN=palavra-secreta
     depends_on:
       - backend
 
@@ -40,6 +41,12 @@ services:
       - PORT=3001
       - NODE_ENV=development
       - FRONTEND_URL=http://localhost:5173
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=
+      - SMTP_PASS=
+      - SMTP_FROM=CP2b Forum Paulista <noreply@cp2b.org>
+      - INVITE_TOKEN=palavra-secreta
     depends_on:
       db:
         condition: service_healthy

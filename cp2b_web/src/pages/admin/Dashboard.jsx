@@ -17,6 +17,8 @@ const Dashboard = () => {
     axesCount: 0,
     messagesCount: 0,
     unreadMessages: 0,
+    participantsCount: 0,
+    meetupRequestsCount: 0,
   });
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState(false);
@@ -33,7 +35,9 @@ const Dashboard = () => {
           teamRes,
           partnersRes,
           axesRes,
-          messagesRes
+          messagesRes,
+          participantsRes,
+          meetupRequestsRes,
         ] = await Promise.all([
           api.get('/news'),
           api.get('/news/featured'),
@@ -44,6 +48,8 @@ const Dashboard = () => {
           api.get('/partners').catch(() => ({ data: [] })),
           api.get('/axes'),
           api.get('/contact').catch(() => ({ data: [] })),
+          api.get('/participants').catch(() => ({ data: [] })),
+          api.get('/meetup-requests/all').catch(() => ({ data: [] })),
         ]);
 
         const currentYear = new Date().getFullYear();
@@ -62,6 +68,8 @@ const Dashboard = () => {
           axesCount: axesRes.data.length,
           messagesCount: messagesRes.data.length,
           unreadMessages: messagesRes.data.filter((m) => !m.read).length,
+          participantsCount: participantsRes.data.length,
+          meetupRequestsCount: meetupRequestsRes.data.length,
         });
         setApiError(false);
       } catch (error) {
@@ -132,6 +140,22 @@ const Dashboard = () => {
       link: '/admin/axes',
       color: '#5E35B1'
     },
+    {
+      title: 'Participantes CP2b',
+      count: stats.participantsCount,
+      icon: 'bi-person-lines-fill',
+      link: '/admin/forum/participants',
+      color: '#00796B',
+      isNew: true,
+    },
+    {
+      title: 'Meet-up Requests',
+      count: stats.meetupRequestsCount,
+      icon: 'bi-diagram-2',
+      link: '/admin/forum/meetups',
+      color: '#AD1457',
+      isNew: true,
+    },
   ];
 
   return (
@@ -156,7 +180,7 @@ const Dashboard = () => {
       {/* Statistics Grid */}
       {loading ? (
         <Row>
-          {[1, 2, 3, 4, 5, 6, 7].map(i => (
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => (
             <Col key={i} xl={3} lg={4} md={6} className="mb-4">
               <CardSkeleton count={1} />
             </Col>
@@ -246,6 +270,16 @@ const Dashboard = () => {
                   <Link to="/admin/team" className="btn btn-outline-primary w-100">
                     <i className="bi bi-person-plus me-2"></i>Gerenciar Equipe
                   </Link>
+                </Col>
+                <Col md={4} sm={6}>
+                  <Link to="/admin/forum" className="btn btn-outline-success w-100">
+                    <i className="bi bi-grid-1x2 me-2"></i>Forum Paulista
+                  </Link>
+                </Col>
+                <Col md={4} sm={6}>
+                  <a href="/registro" target="_blank" rel="noopener noreferrer" className="btn btn-outline-secondary w-100">
+                    <i className="bi bi-box-arrow-up-right me-2"></i>Página de Inscrição
+                  </a>
                 </Col>
               </Row>
             </Card.Body>

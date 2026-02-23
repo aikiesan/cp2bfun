@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Badge, Spinner, Button, Collapse } from 'react-bootstrap';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import api from '../services/api';
 
@@ -135,6 +136,7 @@ const Events = () => {
   }
 
   return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <Container className="py-5">
       <h1 className="mb-4">{language === 'pt' ? 'Eventos' : 'Events'}</h1>
 
@@ -180,6 +182,7 @@ const Events = () => {
         </section>
       )}
     </Container>
+    </motion.div>
   );
 };
 

@@ -1,4 +1,5 @@
 import { Container, Accordion, Row, Col } from 'react-bootstrap';
+import { motion } from 'framer-motion';
 import { researchAxes, sdgMap, menuLabels } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -25,6 +26,7 @@ const Research = () => {
   }[language];
 
   return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <Container className="py-5">
       <Row className="mb-5">
         <Col lg={8}>
@@ -48,7 +50,33 @@ const Research = () => {
                 </div>
               </Accordion.Header>
               <Accordion.Body className="pb-4 pt-0">
-                <p className="fw-bold text-success mb-3 small text-uppercase">{axis.coordinator}</p>
+                {axis.coordinators && axis.coordinators.length > 0 && (
+                  <div className="d-flex flex-wrap gap-3 mb-4">
+                    {axis.coordinators.map((person) => (
+                      <div key={person.name} className="d-flex align-items-center gap-2">
+                        {person.photo ? (
+                          <img
+                            src={person.photo}
+                            alt={person.name}
+                            style={{ width: 96, height: 96, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
+                          />
+                        ) : (
+                          <div style={{
+                            width: 96, height: 96, borderRadius: '50%', backgroundColor: '#e0e0e0',
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            fontSize: '0.85rem', fontWeight: 700, color: '#555', flexShrink: 0
+                          }}>
+                            {person.name.split(' ').filter(w => w.length > 2).slice(0, 2).map(w => w[0]).join('')}
+                          </div>
+                        )}
+                        <div>
+                          <div className="fw-semibold" style={{ fontSize: '0.82rem', lineHeight: 1.2 }}>{person.name}</div>
+                          <div className="text-success" style={{ fontSize: '0.72rem', fontWeight: 600 }}>{person.role}</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
                 <p className="text-muted mb-4" style={{ whiteSpace: 'pre-line' }}>{axis.content}</p>
                 
                 {/* SDG Images */}
@@ -74,6 +102,7 @@ const Research = () => {
         </Accordion>
       </div>
     </Container>
+    </motion.div>
   );
 };
 

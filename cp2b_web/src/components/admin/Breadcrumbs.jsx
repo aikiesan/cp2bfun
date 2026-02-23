@@ -18,7 +18,11 @@ const Breadcrumbs = () => {
     partners: 'Parceiros',
     messages: 'Mensagens',
     new: 'Novo',
-    edit: 'Editar'
+    edit: 'Editar',
+    forum: 'Forum Paulista',
+    participants: 'Participantes',
+    slots: 'Horários',
+    meetups: 'Meet-ups',
   };
 
   // Build breadcrumb items

@@ -152,3 +152,49 @@ CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
 CREATE INDEX IF NOT EXISTS idx_events_start_date ON events(start_date DESC);
 CREATE INDEX IF NOT EXISTS idx_events_featured ON events(featured) WHERE featured = TRUE;
 CREATE INDEX IF NOT EXISTS idx_events_location_type ON events(location_type);
+
+-- ============================================================
+-- Forum Paulista: Event participation features
+-- ============================================================
+
+-- Registered participants for Forum Paulista
+CREATE TABLE IF NOT EXISTS event_participants (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    affiliation VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    mini_bio TEXT,
+    photo_url TEXT,
+    keywords TEXT[],
+    abstract TEXT,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Predefined time slot blocks (seeded by seed.sql)
+CREATE TABLE IF NOT EXISTS meetup_slots (
+    id SERIAL PRIMARY KEY,
+    label VARCHAR(50) NOT NULL,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
+    slot_date DATE NOT NULL,
+    sort_order INTEGER DEFAULT 0
+);
+
+-- Meetup requests between participants
+CREATE TABLE IF NOT EXISTS meetup_requests (
+    id SERIAL PRIMARY KEY,
+    requester_id INTEGER REFERENCES event_participants(id) ON DELETE CASCADE,
+    invitee_id INTEGER REFERENCES event_participants(id) ON DELETE CASCADE,
+    slot_id INTEGER REFERENCES meetup_slots(id) ON DELETE CASCADE,
+    table_number INTEGER NOT NULL CHECK (table_number BETWEEN 1 AND 10),
+    status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'declined', 'cancelled')),
+    confirm_token VARCHAR(64) UNIQUE NOT NULL,
+    message TEXT,
+    confirmed_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE (slot_id, table_number)
+);
+
+CREATE INDEX IF NOT EXISTS idx_participants_email ON event_participants(email);
+CREATE INDEX IF NOT EXISTS idx_meetup_requests_token ON meetup_requests(confirm_token);
+CREATE INDEX IF NOT EXISTS idx_meetup_requests_invitee ON meetup_requests(invitee_id);

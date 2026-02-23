@@ -51,9 +51,11 @@ const Footer = () => {
             </div>
             
             <h5 className="mb-3 text-uppercase fw-bold">{labels.partners}</h5>
-            <div className="d-flex flex-wrap gap-3" style={{ opacity: 0.7 }}>
-               <span>FAPESP</span> | <span>Copercana</span> | <span>Comgás</span> | <span>SESAMM</span>
-            </div>
+            <img
+              src="/assets/parceiros.png"
+              alt="Parceiros"
+              style={{ filter: 'brightness(0) invert(1)', opacity: 0.7, maxWidth: '280px' }}
+            />
           </Col>
 
           <Col md={4} className="text-md-end">

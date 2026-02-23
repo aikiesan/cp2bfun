@@ -9,6 +9,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import SocialSidebar from './components/SocialSidebar';
+import ErrorBoundary from './components/ErrorBoundary';
 
 // Pages
 import Home from './pages/Home';
@@ -26,6 +27,10 @@ import Events from './pages/Events';
 import Media from './pages/Media';
 import Others from './pages/Others';
 import NotFound from './pages/NotFound';
+import ForumPaulista from './pages/ForumPaulista';
+import Registro from './pages/Registro';
+import AgendaMeetups from './pages/AgendaMeetups';
+import ConfirmarMeetup from './pages/ConfirmarMeetup';
 
 // About sub-pages
 import Governance from './pages/about/Governance';
@@ -50,6 +55,10 @@ import {
   EventsEditor,
   ProjectsList,
   ProjectsEditor,
+  ParticipantsPanel,
+  MeetupSlotsManager,
+  MeetupRequestsPanel,
+  ForumDashboard,
 } from './pages/admin';
 import FeaturedContentManager from './pages/admin/FeaturedContentManager';
 import {
@@ -93,6 +102,10 @@ function App() {
             <Route path="content/transparency" element={<TransparencyContentEditor />} />
             <Route path="partners" element={<PartnersEditor />} />
             <Route path="messages" element={<MessagesPanel />} />
+            <Route path="forum" element={<ForumDashboard />} />
+            <Route path="forum/participants" element={<ParticipantsPanel />} />
+            <Route path="forum/slots"        element={<MeetupSlotsManager />} />
+            <Route path="forum/meetups"      element={<MeetupRequestsPanel />} />
           </Route>
 
           {/* Public Routes - With Header/Footer */}
@@ -101,6 +114,7 @@ function App() {
             element={
               <>
                 <Header />
+                <ErrorBoundary>
                 <main style={{ minHeight: '80vh' }}>
                   <Routes>
                     <Route path="/" element={<Home />} />
@@ -108,7 +122,7 @@ function App() {
                     <Route path="/sobre/governanca" element={<Governance />} />
                     <Route path="/sobre/transparencia" element={<Transparency />} />
                     <Route path="/sobre/parceiros" element={<PartnersPage />} />
-                    <Route path="/pesquisa" element={<Research />} />
+                    <Route path="/eixos" element={<Research />} />
                     <Route path="/equipe" element={<Team />} />
                     <Route path="/noticias" element={<News />} />
                     <Route path="/noticias/:slug" element={<NewsDetail />} />
@@ -120,9 +134,14 @@ function App() {
                     <Route path="/projetos/:slug" element={<ProjectDetail />} />
                     <Route path="/na-midia" element={<Media />} />
                     <Route path="/outros" element={<Others />} />
+                    <Route path="/forum-paulista" element={<ForumPaulista />} />
+                    <Route path="/registro" element={<Registro />} />
+                    <Route path="/agenda-meetups" element={<AgendaMeetups />} />
+                    <Route path="/confirmar-meetup" element={<ConfirmarMeetup />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>
+                </ErrorBoundary>
                 <Footer />
               </>
             }

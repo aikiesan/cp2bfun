@@ -14,3 +14,7 @@ export { default as EventsList } from './EventsList';
 export { default as EventsEditor } from './EventsEditor';
 export { default as ProjectsList } from './ProjectsList';
 export { default as ProjectsEditor } from './ProjectsEditor';
+export { default as ParticipantsPanel }   from './ParticipantsPanel';
+export { default as MeetupSlotsManager }  from './MeetupSlotsManager';
+export { default as MeetupRequestsPanel } from './MeetupRequestsPanel';
+export { default as ForumDashboard }      from './ForumDashboard';
