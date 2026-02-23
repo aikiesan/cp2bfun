@@ -506,3 +506,25 @@ export const deleteVideo = async (id) => {
     throw error;
   }
 };
+
+// ============================================================
+// Forum Paulista — Event participation API
+// ============================================================
+
+export const registerParticipant = (data) => api.post('/participants', data).then(r => r.data);
+export const searchParticipants = (q) => api.get(`/participants/search?q=${encodeURIComponent(q)}`).then(r => r.data);
+export const fetchMeetupSlots = () => api.get('/meetup-slots').then(r => r.data);
+export const createMeetupRequest = (data) => api.post('/meetup-requests', data).then(r => r.data);
+export const getMyMeetups = (email) => api.get(`/meetup-requests/my?email=${encodeURIComponent(email)}`).then(r => r.data);
+export const confirmMeetup = (token) => api.get(`/meetup-requests/confirm?token=${encodeURIComponent(token)}`).then(r => r.data);
+
+// Admin: Forum Paulista
+export const fetchAllParticipants = () => api.get('/participants').then(r => r.data);
+export const deleteParticipant   = (id) => api.delete(`/participants/${id}`).then(r => r.data);
+export const createMeetupSlot    = (data) => api.post('/meetup-slots', data).then(r => r.data);
+export const updateMeetupSlot    = (id, data) => api.put(`/meetup-slots/${id}`, data).then(r => r.data);
+export const deleteMeetupSlot    = (id) => api.delete(`/meetup-slots/${id}`).then(r => r.data);
+export const fetchAllMeetupRequests = () => api.get('/meetup-requests/all').then(r => r.data);
+export const cancelMeetupRequest = (id) => api.put(`/meetup-requests/${id}/cancel`, {}).then(r => r.data);
+export const deleteMeetupRequest = (id) => api.delete(`/meetup-requests/${id}`).then(r => r.data);
+export const confirmMeetupAdmin = (id) => api.put(`/meetup-requests/${id}/confirm-admin`, {}).then(r => r.data);

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
+import { motion } from 'framer-motion';
 import { teamMembers as staticTeamMembers, menuLabels } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchTeam } from '../services/api';
@@ -55,12 +56,13 @@ const Team = () => {
   if (loading) {
     return (
       <Container className="py-5 text-center">
-        <Spinner animation="border" variant="primary" />
+        <Spinner animation="border" variant="success" />
       </Container>
     );
   }
 
   return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <Container className="py-5">
       <Row className="mb-5">
         <Col lg={8}>
@@ -104,6 +106,7 @@ const Team = () => {
         </section>
       ))}
     </Container>
+    </motion.div>
   );
 };
 

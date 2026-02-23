@@ -4,6 +4,7 @@ import DOMPurify from 'dompurify';
  * Sanitizes HTML content to prevent XSS attacks
  * Allows safe HTML tags while blocking malicious scripts
  */
+// eslint-disable-next-line react-refresh/only-export-components
 export const sanitizeHtml = (html) => {
   if (!html) return '';
 
@@ -39,7 +40,7 @@ export const sanitizeHtml = (html) => {
       // Alignment and formatting
       'align',
     ],
-    ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp|data):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i,
+    ALLOWED_URI_REGEXP: /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|sms|cid|xmpp|data):|[^a-z]|[a-z+.-]+(?:[^a-z+.-:]|$))/i,
     // Allow data URIs for images (base64)
     ALLOW_DATA_ATTR: true,
     // Keep relative URLs

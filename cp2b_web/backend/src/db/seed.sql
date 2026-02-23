@@ -187,3 +187,17 @@ INSERT INTO team_members (name, role_pt, role_en, institution, category, sort_or
 INSERT INTO team_members (name, role_pt, role_en, institution, category, sort_order) VALUES
 ('Denis da Silva Miranda', 'Estudante sem Bolsa', 'Student without Scholarship', NULL, 'students', 1),
 ('Raquel Teixeira Gomes Magri', 'Estudante sem Bolsa', 'Student without Scholarship', 'FEEC/UNICAMP', 'students', 2);
+
+-- ============================================================
+-- Forum Paulista: Meetup time slots
+-- Date: 2025-09-01 (placeholder — update before event)
+-- ============================================================
+INSERT INTO meetup_slots (label, start_time, end_time, slot_date, sort_order) VALUES
+  ('12h00 - 12h15', '12:00', '12:15', '2025-09-01', 1),
+  ('12h15 - 12h30', '12:15', '12:30', '2025-09-01', 2),
+  ('12h30 - 12h45', '12:30', '12:45', '2025-09-01', 3),
+  ('12h45 - 13h00', '12:45', '13:00', '2025-09-01', 4),
+  ('13h00 - 13h15', '13:00', '13:15', '2025-09-01', 5),
+  ('13h15 - 13h30', '13:15', '13:30', '2025-09-01', 6),
+  ('13h30 - 13h45', '13:30', '13:45', '2025-09-01', 7)
+ON CONFLICT DO NOTHING;

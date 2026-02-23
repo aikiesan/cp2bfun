@@ -13,6 +13,7 @@ const ContentEditorBase = ({ pageKey, pageLabel, fields }) => {
 
   useEffect(() => {
     fetchContent();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pageKey]);
 
   const fetchContent = async () => {

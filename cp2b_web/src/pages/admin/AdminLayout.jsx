@@ -8,8 +8,9 @@ import Breadcrumbs from '../../components/admin/Breadcrumbs';
 const AdminLayout = () => {
   const [unreadCount, setUnreadCount] = useState(0);
   const [newsCount, setNewsCount] = useState(0);
+  const [participantCount, setParticipantCount] = useState(0);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const location = useLocation();
+  const _location = useLocation();
 
   // Load collapsed state from localStorage
   const loadCollapsedState = () => {
@@ -19,6 +20,7 @@ const AdminLayout = () => {
       content: false,
       about: false,
       pages: false,
+      forum: false,
       engagement: false
     };
   };
@@ -34,12 +36,14 @@ const AdminLayout = () => {
   useEffect(() => {
     const fetchCounts = async () => {
       try {
-        const [messagesRes, newsRes] = await Promise.all([
+        const [messagesRes, newsRes, participantsRes] = await Promise.all([
           api.get('/contact'),
-          api.get('/news')
+          api.get('/news'),
+          api.get('/participants').catch(() => ({ data: [] })),
         ]);
         setUnreadCount(messagesRes.data.filter((m) => !m.read).length);
         setNewsCount(newsRes.data.length);
+        setParticipantCount(participantsRes.data.length);
       } catch {
         // silently fail
       }
@@ -94,6 +98,17 @@ const AdminLayout = () => {
         { path: '/admin/content/about', label: 'Página Sobre', icon: 'bi-info-circle' },
         { path: '/admin/content/governance', label: 'Governança', icon: 'bi-diagram-2' },
         { path: '/admin/content/transparency', label: 'Transparência', icon: 'bi-eye' }
+      ]
+    },
+    {
+      id: 'forum',
+      label: 'FORUM PAULISTA',
+      icon: 'bi-calendar-event',
+      items: [
+        { path: '/admin/forum',             label: 'Visão Geral',   icon: 'bi-grid-1x2' },
+        { path: '/admin/forum/participants', label: 'Participantes', icon: 'bi-people-fill', badge: participantCount },
+        { path: '/admin/forum/slots',        label: 'Horários',      icon: 'bi-clock' },
+        { path: '/admin/forum/meetups',      label: 'Meet-ups',      icon: 'bi-diagram-2' },
       ]
     },
     {

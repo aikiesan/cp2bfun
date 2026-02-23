@@ -12,6 +12,7 @@ const EventsList = () => {
 
   useEffect(() => {
     fetchEvents();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   const fetchEvents = async () => {

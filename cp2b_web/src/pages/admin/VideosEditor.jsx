@@ -31,6 +31,7 @@ const VideosEditor = () => {
     if (isEditing) {
       loadVideo();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   useEffect(() => {

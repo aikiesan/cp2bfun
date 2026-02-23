@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Form, Spinner, Badge } from 'react-bootstrap';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import api from '../services/api';
 
@@ -17,6 +18,7 @@ const Publications = () => {
 
   useEffect(() => {
     fetchPublications();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   const fetchPublications = async () => {
@@ -65,6 +67,7 @@ const Publications = () => {
   const sortedYears = Object.keys(groupedByYear).sort((a, b) => b - a);
 
   return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <Container className="py-5">
       <h1 className="mb-4">{language === 'pt' ? 'Publicações' : 'Publications'}</h1>
 
@@ -182,6 +185,7 @@ const Publications = () => {
         </p>
       )}
     </Container>
+    </motion.div>
   );
 };
 

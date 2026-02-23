@@ -150,7 +150,7 @@ const Header = () => {
               src="/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png"
               alt="CP2B Logo"
               className={`me-2 ${isScrolled ? 'logo-shrunk' : ''}`}
-              style={{ height: isScrolled ? '35px' : '55px', transition: 'height 0.3s ease' }}
+              style={{ height: isScrolled ? '35px' : '55px', width: 'auto', transition: 'height 0.3s ease' }}
             />
           </Navbar.Brand>
 
@@ -190,8 +190,16 @@ const Header = () => {
               <Nav.Link as={Link} to="/equipe" className="fw-semibold px-2">{t.team}</Nav.Link>
               <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
               <Nav.Link as={Link} to="/projetos" className="fw-semibold px-2">{t.projects}</Nav.Link>
-              <Nav.Link as={Link} to="/pesquisa" className="fw-semibold px-2">{t.axes}</Nav.Link>
+              <Nav.Link as={Link} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
               <Nav.Link as={Link} to="/outros" className="fw-semibold px-2">{t.others}</Nav.Link>
+              <NavDropdown title={t.forumPaulista} id="nav-dropdown-forum" className="fw-semibold">
+                <NavDropdown.Item as={Link} to="/forum-paulista">
+                  {t.forumAbout}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={Link} to={`/registro?convite=${import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta'}`}>
+                  {t.forumRegister}
+                </NavDropdown.Item>
+              </NavDropdown>
             </Nav>
           </Navbar.Collapse>
         </Container>

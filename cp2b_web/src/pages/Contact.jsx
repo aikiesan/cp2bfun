@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Container, Row, Col, Form, Button, Alert, Spinner } from 'react-bootstrap';
+import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import api from '../services/api';
 
@@ -82,6 +83,7 @@ const Contact = () => {
   };
 
   return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <Container className="py-5">
       <Row className="justify-content-center">
         <Col lg={8} className="text-center mb-5">
@@ -180,6 +182,7 @@ const Contact = () => {
         </Col>
       </Row>
     </Container>
+    </motion.div>
   );
 };
 

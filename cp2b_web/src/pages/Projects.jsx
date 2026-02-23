@@ -56,7 +56,7 @@ const Projects = () => {
   if (loading) {
     return (
       <Container className="py-5 text-center">
-        <Spinner animation="border" variant="primary" />
+        <Spinner animation="border" variant="success" />
       </Container>
     );
   }
@@ -97,11 +97,11 @@ const Projects = () => {
       <Row className="g-4">
         {others.map((item) => (
           <Col md={6} lg={4} key={item.id}>
-            <Card className="h-100 border-0 bg-transparent">
+            <Card className="h-100 border-0 bg-transparent" style={{ overflow: 'visible' }}>
               <div className="overflow-hidden rounded-4 mb-3" style={{ height: '200px' }}>
                 <img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover hover-scale" />
               </div>
-              <Card.Body className="p-0">
+              <Card.Body className="p-0 px-2">
                 <span className={`text-${item.badgeColor} fw-bold text-uppercase x-small d-block mb-2`} style={{ fontSize: '0.7rem' }}>{item.badge}</span>
                 <Card.Title className="fw-bold mb-2 fs-5">
                   <Link to={item.link} className="text-decoration-none text-dark hover-blue">{item.title}</Link>

@@ -30,7 +30,10 @@ export const menuLabels = {
     linkedin: 'LinkedIn',
     accessibility: 'Acessibilidade',
     search: 'Buscar',
-    axes: 'Eixos de Pesquisa'
+    axes: 'Eixos de Pesquisa',
+    forumPaulista: 'Forum Paulista',
+    forumAbout: 'Sobre o Evento',
+    forumRegister: 'Registro Meet-up'
   },
   en: {
     about: 'About',
@@ -55,7 +58,10 @@ export const menuLabels = {
     linkedin: 'LinkedIn',
     accessibility: 'Accessibility',
     search: 'Search',
-    axes: 'Research Axes'
+    axes: 'Research Axes',
+    forumPaulista: 'Forum Paulista',
+    forumAbout: 'About the Event',
+    forumRegister: 'Meet-up Registration'
   }
 };
 
@@ -170,7 +176,7 @@ export const carouselSlides = {
       badge: 'INOVAÇÃO',
       title: 'Transformando Resíduos em Energia',
       description: 'O CP2B articula ações para aproveitar o potencial de biogás em São Paulo, atuando como laboratório vivo.',
-      linkPrimary: '/pesquisa',
+      linkPrimary: '/eixos',
       labelPrimary: 'Explorar Eixos',
       linkSecondary: '/sobre',
       labelSecondary: 'Saiba Mais'
@@ -183,7 +189,7 @@ export const carouselSlides = {
       badge: 'INNOVATION',
       title: 'Transforming Waste into Energy',
       description: 'CP2B coordinates actions to leverage São Paulo\'s biogas potential, acting as a living laboratory.',
-      linkPrimary: '/pesquisa',
+      linkPrimary: '/eixos',
       labelPrimary: 'Explore Axes',
       linkSecondary: '/sobre',
       labelSecondary: 'Learn More'
@@ -422,6 +428,9 @@ export const researchAxes = {
       id: '1',
       title: 'Eixo 1 – Inventário de Resíduos e Mapeamento Tecnológico',
       coordinator: 'Profº Drº Rubens Augusto Camargo Lamparelli',
+      coordinators: [
+        { name: 'Profº Drº Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/FOTO_RUBENS_LAMPARELLI_EIXO_1.jpg' }
+      ],
       content: `O Eixo 1 busca ir além dos levantamentos tradicionais de potencial de biomassa. A proposta é trabalhar com dados mais detalhados e precisos, que permitam enxergar de perto quem produz resíduos, onde estão localizados e como se relacionam com as infraestruturas ao redor.
       Usando técnicas de georreferenciamento, o Eixo 1 pretende mapear as cadeias agroindustriais e identificar oportunidades de aproveitamento desses resíduos, seja dentro da própria cadeia produtiva ou conectando diferentes setores.
       A ideia é criar uma plataforma digital acessível que funcione como ponte entre quem gera resíduos e quem pode transformá-los em novos produtos.
@@ -432,6 +441,10 @@ export const researchAxes = {
       id: '2',
       title: 'Eixo 2 – Ciência e Tecnologia de Base',
       coordinator: 'Profº Drº Lucas Tadeu Fuess (Coord.), Profª Drª Priscila Rosseto Camiloti (Adj.)',
+      coordinators: [
+        { name: 'Profº Drº Lucas Tadeu Fuess', role: 'Coord.', photo: '/assets/FOTO_LUCAS_TADEU_FUESS.jpg' },
+        { name: 'Profª Drª Priscila Rosseto Camiloti', role: 'Adj.', photo: '/assets/FOTO_PRISCILA.jpg' }
+      ],
       content: `O Eixo 2 se dedica à pesquisa científica fundamental que sustenta os avanços tecnológicos na cadeia do biogás. O principal desafio é a operação de reatores biológicos durante a entressafra da cana-de-açúcar.
       As pesquisas serão organizadas em três etapas: upstream, midstream e downstream.
       Este eixo contribui para os Objetivos de Desenvolvimento Sustentável: 2, 6, 7 e 9.`,
@@ -441,6 +454,10 @@ export const researchAxes = {
       id: '3',
       title: 'Eixo 3 – Engenharia de Processos e Bioprocessos',
       coordinator: 'Profª Drª Luana Mattos de Oliveira Cruz (Coord.), Profº Drº Enelton Fagnani (Adj.)',
+      coordinators: [
+        { name: 'Profª Drª Luana Mattos de Oliveira Cruz', role: 'Coord.', photo: '/assets/FOTO_LUANA_EIXO_3.jpg' },
+        { name: 'Profº Drº Enelton Fagnani', role: 'Adj.', photo: '/assets/FOTO_ENELTON_EIXO_3.jpg' }
+      ],
       content: `O Eixo 3 é o momento de tirar as ideias do papel e testar em escala maior. O objetivo é ajudar os parceiros a atravessar o famoso "vale da morte" tecnológico.
       As pesquisas alcançarão níveis de maturidade tecnológica (TRL) 6 e 7. A parceria com empresas é o coração deste eixo (SABESP, COPERCANA, Embrapii).
       Este eixo materializa a ponte entre academia e mercado. ODS: 2, 6, 7, 9 e 17.`,
@@ -450,6 +467,9 @@ export const researchAxes = {
       id: '4',
       title: 'Eixo 4 – Avaliação Integrada Socioeconômica, Ambiental e Energética',
       coordinator: 'Profº Drº Marcelo Pereira Cunha',
+      coordinators: [
+        { name: 'Profº Drº Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/FOTO_MARCELO_CUNHA_EIXO_4.jpg' }
+      ],
       content: `O Eixo 4 é o espaço da reflexão crítica. Sua missão é avaliar os impactos socioeconômicos, ambientais e energéticos.
       O eixo vai construir e avaliar cenários que subsidiem a formulação de políticas públicas.
       Serão utilizadas ferramentas como Análise de Ciclo de Vida (ACV) e Análise Insumo-Produto.
@@ -460,6 +480,9 @@ export const researchAxes = {
       id: '5',
       title: 'Eixo 5 – Inovação em Bioprodutos na Cadeia do Biogás',
       coordinator: 'Profº Drº Luis Alberto Follegatti Romero',
+      coordinators: [
+        { name: 'Profº Drº Luis Alberto Follegatti Romero', role: 'Coord.', photo: null }
+      ],
       content: `O Eixo 5 mergulha no conceito de biorrefinaria. A vinhaça é um bom exemplo de foco, contendo ácidos orgânicos de alto valor.
       A aposta é o biohitano (combinação de hidrogênio e metano).
       Este eixo contribui para os Objetivos de Desenvolvimento Sustentável: 7, 9 e 17.`,
@@ -469,6 +492,10 @@ export const researchAxes = {
       id: '6',
       title: 'Eixo 6 – Educação e Capacitação',
       coordinator: 'Profª Drª Renata Piacentini Rodriguez (Coord.), Profª Drª Bruna de Souza Moraes (Adj.)',
+      coordinators: [
+        { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/FOTO_RENATA.jpg' },
+        { name: 'Profª Drª Bruna de Souza Moraes', role: 'Adj.', photo: '/assets/FOTO_BRUNA.jpg' }
+      ],
       content: `O Eixo 6 é dedicado à formação de pessoas. O CP2B vai atuar como centro de capacitação profissional oferecendo cursos.
       No desenvolvimento social, atuará na educação socioambiental de comunidades periféricas (ex: Comunidade Capadócia).
       ODS: 1, 4, 5, 10, 12, 13 e 16.`,
@@ -478,6 +505,10 @@ export const researchAxes = {
       id: '7',
       title: 'Eixo 7 – Difusão Científica e Comunicação',
       coordinator: 'Profª Drª Maria Paula Cardeal Volpi (Coord.), Profª Drª Renata Piacentini Rodriguez (Adj.)',
+      coordinators: [
+        { name: 'Profª Drª Maria Paula Cardeal Volpi', role: 'Coord.', photo: '/assets/FOTO_MARIA_PAULA.jpg' },
+        { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Adj.', photo: '/assets/FOTO_RENATA.jpg' }
+      ],
       content: `O conhecimento precisa ultrapassar os muros da universidade. O centro vai promover visitas científicas, palestras e projetos de estímulo à ciência.
       ODS: 4, 7 e 17.`,
       sdgs: [4, 7, 17]
@@ -486,6 +517,10 @@ export const researchAxes = {
       id: '8',
       title: 'Eixo 8 – Políticas Públicas e Inovação Regulatória',
       coordinator: 'Profº Drº Rafael de Brito Dias (Coord.), Profª Drª Natalia Molina Cetrulo (Adj.)',
+      coordinators: [
+        { name: 'Profº Drº Rafael de Brito Dias', role: 'Coord.', photo: '/assets/FOTO_RAFAEL_EIXO_8.jpg' },
+        { name: 'Profª Drª Natalia Molina Cetrulo', role: 'Adj.', photo: '/assets/FOTO_NATALIA.jpg' }
+      ],
       content: `O Eixo 8 analisa políticas públicas e propõe arranjos que otimizem as agendas.
       Prevê a realização de uma "oficina de inovação regulatória" e criação de um conselho com poder público e sociedade civil.
       ODS: 1, 10, 13, 16 e 17.`,
@@ -497,6 +532,9 @@ export const researchAxes = {
       id: '1',
       title: 'Axis 1 – Waste Inventory and Technology Mapping',
       coordinator: 'Prof. Dr. Rubens Augusto Camargo Lamparelli',
+      coordinators: [
+        { name: 'Prof. Dr. Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/FOTO_RUBENS_LAMPARELLI_EIXO_1.jpg' }
+      ],
       content: `Axis 1 seeks to go beyond traditional biomass potential surveys. The proposal is to work with more detailed and precise data, allowing for a closer look at who produces waste, where they are located, and how they relate to the surrounding infrastructure.
       Using georeferencing techniques, Axis 1 aims to map agro-industrial chains and identify opportunities for waste recovery, whether within the same production chain or by connecting different sectors.
       The idea is to create an accessible digital platform that functions as a bridge between those who generate waste and those who can transform it into new products.
@@ -507,6 +545,10 @@ export const researchAxes = {
       id: '2',
       title: 'Axis 2 – Basic Science and Technology',
       coordinator: 'Prof. Dr. Lucas Tadeu Fuess (Coord.), Prof. Dr. Priscila Rosseto Camiloti (Adj.)',
+      coordinators: [
+        { name: 'Prof. Dr. Lucas Tadeu Fuess', role: 'Coord.', photo: '/assets/FOTO_LUCAS_TADEU_FUESS.jpg' },
+        { name: 'Prof. Dr. Priscila Rosseto Camiloti', role: 'Adj.', photo: '/assets/FOTO_PRISCILA.jpg' }
+      ],
       content: `Axis 2 is dedicated to fundamental scientific research that supports technological advances in the biogas chain. The main challenge is the operation of biological reactors during the sugarcane off-season.
       Research will be organized into three stages: upstream, midstream, and downstream.
       This axis contributes to Sustainable Development Goals: 2, 6, 7, and 9.`,
@@ -516,6 +558,10 @@ export const researchAxes = {
       id: '3',
       title: 'Axis 3 – Process and Bioprocess Engineering',
       coordinator: 'Prof. Dr. Luana Mattos de Oliveira Cruz (Coord.), Prof. Dr. Enelton Fagnani (Adj.)',
+      coordinators: [
+        { name: 'Prof. Dr. Luana Mattos de Oliveira Cruz', role: 'Coord.', photo: '/assets/FOTO_LUANA_EIXO_3.jpg' },
+        { name: 'Prof. Dr. Enelton Fagnani', role: 'Adj.', photo: '/assets/FOTO_ENELTON_EIXO_3.jpg' }
+      ],
       content: `Axis 3 is the moment to put ideas into practice and test them on a larger scale. The goal is to help partners cross the famous technological "valley of death."
       Research will reach technological readiness levels (TRL) 6 and 7. Partnerships with companies are the heart of this axis (SABESP, COPERCANA, Embrapii).
       This axis materializes the bridge between academia and the market. SDGs: 2, 6, 7, 9, and 17.`,
@@ -525,6 +571,9 @@ export const researchAxes = {
       id: '4',
       title: 'Axis 4 – Integrated Socioeconomic, Environmental, and Energy Assessment',
       coordinator: 'Prof. Dr. Marcelo Pereira Cunha',
+      coordinators: [
+        { name: 'Prof. Dr. Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/FOTO_MARCELO_CUNHA_EIXO_4.jpg' }
+      ],
       content: `Axis 4 is the space for critical reflection. Its mission is to assess socioeconomic, environmental, and energy impacts.
       The axis will build and evaluate scenarios that support the formulation of public policies.
       Tools such as Life Cycle Assessment (LCA) and Input-Output Analysis will be used.
@@ -535,6 +584,9 @@ export const researchAxes = {
       id: '5',
       title: 'Axis 5 – Bioproduct Innovation in the Biogas Chain',
       coordinator: 'Prof. Dr. Luis Alberto Follegatti Romero',
+      coordinators: [
+        { name: 'Prof. Dr. Luis Alberto Follegatti Romero', role: 'Coord.', photo: null }
+      ],
       content: `Axis 5 dives into the biorefinery concept. Vinasse is a prime focus, containing high-value organic acids.
       The focus is on biohitane (a combination of hydrogen and methane).
       This axis contributes to Sustainable Development Goals: 7, 9, and 17.`,
@@ -544,6 +596,10 @@ export const researchAxes = {
       id: '6',
       title: 'Axis 6 – Education and Training',
       coordinator: 'Prof. Dr. Renata Piacentini Rodriguez (Coord.), Prof. Dr. Bruna de Souza Moraes (Adj.)',
+      coordinators: [
+        { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/FOTO_RENATA.jpg' },
+        { name: 'Prof. Dr. Bruna de Souza Moraes', role: 'Adj.', photo: '/assets/FOTO_BRUNA.jpg' }
+      ],
       content: `Axis 6 is dedicated to human resources training. CP2B will act as a professional training center offering courses.
       In social development, it will work on socio-environmental education for peripheral communities (e.g., Capadócia Community).
       SDGs: 1, 4, 5, 10, 12, 13, and 16.`,
@@ -553,6 +609,10 @@ export const researchAxes = {
       id: '7',
       title: 'Axis 7 – Scientific Dissemination and Communication',
       coordinator: 'Prof. Dr. Maria Paula Cardeal Volpi (Coord.), Prof. Dr. Renata Piacentini Rodriguez (Adj.)',
+      coordinators: [
+        { name: 'Prof. Dr. Maria Paula Cardeal Volpi', role: 'Coord.', photo: '/assets/FOTO_MARIA_PAULA.jpg' },
+        { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Adj.', photo: '/assets/FOTO_RENATA.jpg' }
+      ],
       content: `Knowledge needs to go beyond the university walls. The center will promote scientific visits, lectures, and projects to stimulate science.
       SDGs: 4, 7, and 17.`,
       sdgs: [4, 7, 17]
@@ -561,6 +621,10 @@ export const researchAxes = {
       id: '8',
       title: 'Axis 8 – Public Policies and Regulatory Innovation',
       coordinator: 'Prof. Dr. Rafael de Brito Dias (Coord.), Prof. Dr. Natalia Molina Cetrulo (Adj.)',
+      coordinators: [
+        { name: 'Prof. Dr. Rafael de Brito Dias', role: 'Coord.', photo: '/assets/FOTO_RAFAEL_EIXO_8.jpg' },
+        { name: 'Prof. Dr. Natalia Molina Cetrulo', role: 'Adj.', photo: '/assets/FOTO_NATALIA.jpg' }
+      ],
       content: `Axis 8 analyzes public policies and proposes arrangements that optimize agendas.
       It foresees the realization of a "regulatory innovation workshop" and the creation of a council with public authorities and civil society.
       SDGs: 1, 10, 13, 16, and 17.`,
