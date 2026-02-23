@@ -40,6 +40,7 @@ const PartnersEditor = () => {
 
   useEffect(() => {
     loadPartners();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const loadPartners = async () => {

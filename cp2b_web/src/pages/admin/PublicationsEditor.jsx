@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Form, Button, Card, Row, Col, Alert, Spinner } from 'react-bootstrap';
+import { Container, Form, Button, Card, Row, Col, Spinner } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useToast } from '../../components/admin';
@@ -36,6 +36,7 @@ const PublicationsEditor = () => {
   useEffect(() => {
     fetchAxes();
     if (isEditing) fetchPublication();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
 
   const fetchAxes = async () => {

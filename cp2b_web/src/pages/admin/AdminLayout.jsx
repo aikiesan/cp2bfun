@@ -10,7 +10,7 @@ const AdminLayout = () => {
   const [newsCount, setNewsCount] = useState(0);
   const [participantCount, setParticipantCount] = useState(0);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
-  const location = useLocation();
+  const _location = useLocation();
 
   // Load collapsed state from localStorage
   const loadCollapsedState = () => {

@@ -150,7 +150,7 @@ const Header = () => {
               src="/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png"
               alt="CP2B Logo"
               className={`me-2 ${isScrolled ? 'logo-shrunk' : ''}`}
-              style={{ height: isScrolled ? '35px' : '55px', transition: 'height 0.3s ease' }}
+              style={{ height: isScrolled ? '35px' : '55px', width: 'auto', transition: 'height 0.3s ease' }}
             />
           </Navbar.Brand>
 

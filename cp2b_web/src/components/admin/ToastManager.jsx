@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 const ToastContext = createContext();
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useToast = () => {
   const context = useContext(ToastContext);
   if (!context) {
@@ -34,6 +35,7 @@ export const ToastProvider = ({ children }) => {
         removeToast(id);
       }, newToast.delay);
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const removeToast = useCallback((id) => {

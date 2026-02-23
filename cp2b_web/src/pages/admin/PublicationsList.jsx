@@ -12,6 +12,7 @@ const PublicationsList = () => {
 
   useEffect(() => {
     fetchPublications();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [filters]);
 
   const fetchPublications = async () => {

@@ -3,7 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Alert, Spinner, Badge } from 'react-bootstrap';
 import { useLanguage } from '../context/LanguageContext';
 import { registerParticipant } from '../services/api';
-import api from '../services/api';
+import _api from '../services/api';
 
 const INVITE_TOKEN = import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
