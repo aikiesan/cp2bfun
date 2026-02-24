@@ -190,6 +190,7 @@ const Header = () => {
               <Nav.Link as={Link} to="/equipe" className="fw-semibold px-2">{t.team}</Nav.Link>
               <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
               <Nav.Link as={Link} to="/projetos" className="fw-semibold px-2">{t.projects}</Nav.Link>
+              <Nav.Link as={Link} to="/eventos" className="fw-semibold px-2">{t.events}</Nav.Link>
               <Nav.Link as={Link} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
               <Nav.Link as={Link} to="/outros" className="fw-semibold px-2">{t.others}</Nav.Link>
               <NavDropdown title={t.forumPaulista} id="nav-dropdown-forum" className="fw-semibold">
