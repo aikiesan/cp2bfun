@@ -10,6 +10,7 @@ const Dashboard = () => {
     featuredNewsCount: 0,
     publicationsCount: 0,
     publicationsThisYear: 0,
+    projectsCount: 0,
     eventsCount: 0,
     upcomingEvents: 0,
     teamCount: 0,
@@ -30,6 +31,7 @@ const Dashboard = () => {
           newsRes,
           featuredNewsRes,
           publicationsRes,
+          projectsRes,
           eventsRes,
           upcomingEventsRes,
           teamRes,
@@ -42,6 +44,7 @@ const Dashboard = () => {
           api.get('/news'),
           api.get('/news/featured'),
           api.get('/publications').catch(() => ({ data: [] })),
+          api.get('/projects').catch(() => ({ data: [] })),
           api.get('/events').catch(() => ({ data: [] })),
           api.get('/events/upcoming').catch(() => ({ data: [] })),
           api.get('/team'),
@@ -61,6 +64,7 @@ const Dashboard = () => {
           featuredNewsCount: featuredCount,
           publicationsCount: publicationsRes.data.length,
           publicationsThisYear,
+          projectsCount: projectsRes.data.length,
           eventsCount: eventsRes.data.length,
           upcomingEvents: upcomingEventsRes.data.length,
           teamCount: teamRes.data.length,
@@ -98,6 +102,14 @@ const Dashboard = () => {
       link: '/admin/publications',
       color: '#1565C0',
       subtitle: stats.publicationsThisYear > 0 ? `${stats.publicationsThisYear} este ano` : null,
+      isNew: true
+    },
+    {
+      title: 'Projetos',
+      count: stats.projectsCount,
+      icon: 'bi-folder',
+      link: '/admin/projects',
+      color: '#00695C',
       isNew: true
     },
     {
@@ -250,6 +262,12 @@ const Dashboard = () => {
                 <Col md={4} sm={6}>
                   <Link to="/admin/publications/new" className="btn btn-outline-primary w-100">
                     <i className="bi bi-journal-plus me-2"></i>Nova Publicação
+                    <Badge bg="success" className="ms-2">NEW</Badge>
+                  </Link>
+                </Col>
+                <Col md={4} sm={6}>
+                  <Link to="/admin/projects/new" className="btn btn-outline-primary w-100">
+                    <i className="bi bi-folder-plus me-2"></i>Novo Projeto
                     <Badge bg="success" className="ms-2">NEW</Badge>
                   </Link>
                 </Col>
