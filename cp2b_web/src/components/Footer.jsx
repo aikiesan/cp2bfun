@@ -51,17 +51,21 @@ const Footer = () => {
             </div>
             
             <h5 className="mb-3 text-uppercase fw-bold">{labels.partners}</h5>
-            <img
-              src="/assets/parceiros.png"
-              alt="Parceiros"
-              style={{ filter: 'brightness(0) invert(1)', opacity: 0.7, maxWidth: '280px' }}
-            />
+            <div style={{ background: '#fff', borderRadius: '8px', padding: '8px 12px', display: 'inline-block' }}>
+              <img
+                src="/assets/parceiros.png"
+                alt="Parceiros"
+                style={{ maxWidth: '240px', display: 'block' }}
+              />
+            </div>
           </Col>
 
           <Col md={4} className="text-md-end">
              <div className="mb-4 d-flex flex-column align-items-md-end gap-3">
                 <img src="/assets/CP2B-LOGO-NEGATIVO-BR@8x.png" alt="CP2B Logo" style={{ maxHeight: '70px', borderRadius: 0 }} />
-                <img src="/assets/logo_Unicamp.png" alt="Unicamp Logo" style={{ maxHeight: '45px', filter: 'brightness(0) invert(1)', borderRadius: 0 }} />
+                <div style={{ background: '#fff', borderRadius: '6px', padding: '4px 10px', display: 'inline-block' }}>
+                  <img src="/assets/logo_Unicamp.png" alt="Unicamp Logo" style={{ maxHeight: '38px', display: 'block' }} />
+                </div>
              </div>
              <p className="small text-white-50" style={{ fontFamily: 'var(--font-mono)' }}>
                &copy; 1969 - {new Date().getFullYear()}<br/>{labels.university}
