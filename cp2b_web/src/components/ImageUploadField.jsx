@@ -28,10 +28,10 @@ const ImageUploadField = ({ label, value, onChange, helperText }) => {
     setError(null);
 
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('image', file);
 
     try {
-      const response = await api.request('/upload', {
+      const response = await api.request('/upload/image', {
         method: 'POST',
         body: formData,
         headers: {}, // Let browser set Content-Type for multipart
