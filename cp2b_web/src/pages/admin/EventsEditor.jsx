@@ -3,6 +3,7 @@ import { Container, Form, Button, Card, Row, Col, Spinner } from 'react-bootstra
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useToast } from '../../components/admin';
+import ImageUploadField from '../../components/ImageUploadField';
 
 const EventsEditor = () => {
   const { id } = useParams();
@@ -326,16 +327,12 @@ const EventsEditor = () => {
                   />
                 </Form.Group>
 
-                <Form.Group className="mb-3">
-                  <Form.Label>URL da Imagem</Form.Label>
-                  <Form.Control
-                    type="url"
-                    name="image_url"
-                    value={formData.image_url}
-                    onChange={handleChange}
-                    placeholder="https://..."
-                  />
-                </Form.Group>
+                <ImageUploadField
+                  label="Imagem do Evento"
+                  value={formData.image_url}
+                  onChange={(url) => setFormData(prev => ({ ...prev, image_url: url }))}
+                  helperText="JPEG, PNG ou WebP · máx. 5MB"
+                />
               </Card.Body>
             </Card>
           </Col>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container, Form, Button, Row, Col, Alert, Spinner, Card } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import ImageUploadField from '../../components/ImageUploadField';
 
 const ProjectsEditor = () => {
   const { slug } = useParams();
@@ -280,24 +281,12 @@ const ProjectsEditor = () => {
                 <h5 className="mb-0">Imagem</h5>
               </Card.Header>
               <Card.Body>
-                <Form.Group className="mb-3">
-                  <Form.Label>URL da Imagem</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="image"
-                    value={formData.image}
-                    onChange={handleChange}
-                    placeholder="/assets/minha-imagem.jpg"
-                  />
-                </Form.Group>
-                {formData.image && (
-                  <img
-                    src={formData.image}
-                    alt="Preview"
-                    className="img-fluid rounded"
-                    style={{ maxHeight: '150px', objectFit: 'cover' }}
-                  />
-                )}
+                <ImageUploadField
+                  label="Imagem de Capa"
+                  value={formData.image}
+                  onChange={(url) => setFormData(prev => ({ ...prev, image: url }))}
+                  helperText="JPEG, PNG ou WebP · máx. 5MB"
+                />
               </Card.Body>
             </Card>
 
