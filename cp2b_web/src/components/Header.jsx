@@ -148,7 +148,7 @@ const Header = () => {
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
             <img
               src="/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png"
-              alt="CP2B Logo"
+              alt="CP2b Logo"
               className={`me-2 ${isScrolled ? 'logo-shrunk' : ''}`}
               style={{ height: isScrolled ? '35px' : '55px', width: 'auto', transition: 'height 0.3s ease' }}
             />

@@ -128,7 +128,6 @@ const Home = () => {
                         whileInView={{ x: 0, opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.6 }}
-                        whileHover={{ scale: 1.02 }}
                         className="hover-zoom position-relative rounded-4 overflow-hidden shadow-lg"
                      >
                         <video

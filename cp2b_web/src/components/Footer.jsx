@@ -62,7 +62,7 @@ const Footer = () => {
 
           <Col md={4} className="text-md-end">
              <div className="mb-4 d-flex flex-column align-items-md-end gap-3">
-                <img src="/assets/CP2B-LOGO-NEGATIVO-BR@8x.png" alt="CP2B Logo" style={{ maxHeight: '70px', borderRadius: 0 }} />
+                <img src="/assets/CP2B-LOGO-NEGATIVO-BR@8x.png" alt="CP2b Logo" style={{ maxHeight: '70px', borderRadius: 0 }} />
                 <div style={{ background: '#fff', borderRadius: '6px', padding: '4px 10px', display: 'inline-block' }}>
                   <img src="/assets/logo_Unicamp.png" alt="Unicamp Logo" style={{ maxHeight: '38px', display: 'block' }} />
                 </div>

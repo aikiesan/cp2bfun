@@ -59,7 +59,7 @@ const Governance = () => {
       <Container className="py-5">
         <Row className="mb-5">
           <Col lg={8}>
-            <span className="mono-label text-success">CP2B</span>
+            <span className="mono-label text-success">CP2b</span>
             <h1 className="display-4 fw-bold mb-4">{content.title}</h1>
             <p className="lead text-muted">{content.description}</p>
           </Col>

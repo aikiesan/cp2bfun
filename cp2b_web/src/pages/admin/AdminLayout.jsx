@@ -124,7 +124,7 @@ const AdminLayout = () => {
   const SidebarContent = () => (
     <>
       <div className="px-3 mb-4">
-        <h5 className="mb-0 fw-bold">CP2B Admin</h5>
+        <h5 className="mb-0 fw-bold">CP2b Admin</h5>
         <small className="text-muted">Sistema de Gerenciamento</small>
       </div>
 
@@ -214,7 +214,7 @@ const AdminLayout = () => {
           >
             <Offcanvas.Header closeButton>
               <Offcanvas.Title>
-                <h5 className="mb-0 fw-bold">CP2B Admin</h5>
+                <h5 className="mb-0 fw-bold">CP2b Admin</h5>
               </Offcanvas.Title>
             </Offcanvas.Header>
             <Offcanvas.Body>

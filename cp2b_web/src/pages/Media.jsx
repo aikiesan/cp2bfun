@@ -10,14 +10,14 @@ const Media = () => {
     pt: {
       tag: 'EM BREVE',
       title: 'Na Mídia',
-      description: 'Cobertura jornalística, entrevistas e menções ao CP2B na mídia nacional e internacional.',
+      description: 'Cobertura jornalística, entrevistas e menções ao CP2b na mídia nacional e internacional.',
       cta: 'Fique atento às novidades',
       ctaLink: '/contato',
     },
     en: {
       tag: 'COMING SOON',
       title: 'In the Media',
-      description: 'Journalistic coverage, interviews and mentions of CP2B in national and international media.',
+      description: 'Journalistic coverage, interviews and mentions of CP2b in national and international media.',
       cta: 'Stay tuned for updates',
       ctaLink: '/contato',
     },

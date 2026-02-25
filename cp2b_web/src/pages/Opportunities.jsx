@@ -10,14 +10,14 @@ const Opportunities = () => {
     pt: {
       tag: 'EM BREVE',
       title: 'Oportunidades',
-      description: 'Vagas de pós-graduação, bolsas e chamadas abertas do CP2B.',
+      description: 'Vagas de pós-graduação, bolsas e chamadas abertas do CP2b.',
       cta: 'Fique atento às novidades',
       ctaLink: '/contato',
     },
     en: {
       tag: 'COMING SOON',
       title: 'Opportunities',
-      description: 'Graduate positions, scholarships and open calls from CP2B.',
+      description: 'Graduate positions, scholarships and open calls from CP2b.',
       cta: 'Stay tuned for updates',
       ctaLink: '/contato',
     },

@@ -63,8 +63,6 @@ const FeaturedVideos = ({ itemA, itemB, itemC }) => {
             justifyContent: 'center',
             transition: 'transform 0.3s ease',
           }}
-          onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
-          onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
         >
           <FaPlay style={{ fontSize: '2rem', color: '#dc3545', marginLeft: '6px' }} />
         </div>

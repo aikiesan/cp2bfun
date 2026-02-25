@@ -31,7 +31,7 @@ const PartnersPage = () => {
   const labels = {
     pt: {
       title: 'Parceiros',
-      description: 'Instituições e empresas que colaboram com o CP2B',
+      description: 'Instituições e empresas que colaboram com o CP2b',
       headquarters: 'Sede',
       public: 'Instituições Públicas',
       companies: 'Empresas Parceiras',
@@ -39,7 +39,7 @@ const PartnersPage = () => {
     },
     en: {
       title: 'Partners',
-      description: 'Institutions and companies collaborating with CP2B',
+      description: 'Institutions and companies collaborating with CP2b',
       headquarters: 'Headquarters',
       public: 'Public Institutions',
       companies: 'Partner Companies',
@@ -78,7 +78,7 @@ const PartnersPage = () => {
       <Container className="py-5">
         <Row className="mb-5">
           <Col lg={8}>
-            <span className="mono-label text-success">CP2B</span>
+            <span className="mono-label text-success">CP2b</span>
             <h1 className="display-4 fw-bold mb-4">{labels.title}</h1>
             <p className="lead text-muted">{labels.description}</p>
           </Col>

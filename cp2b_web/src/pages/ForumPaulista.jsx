@@ -25,7 +25,7 @@ const content = {
     aboutTag: 'SOBRE O EVENTO',
     aboutTitle: 'Um espaço de encontro e debate para a cadeia de biogás',
     aboutP1:
-      'O I Fórum Paulista de Biogás e Bioprodutos é uma iniciativa do CP2B — Centro Paulista de Estudos em Biogás e Bioprodutos, em parceria com o NIPE da Universidade Estadual de Campinas. O evento reúne pesquisadores, estudantes, profissionais e empresas para debater os avanços, desafios e oportunidades da cadeia de biogás e bioprodutos no Estado de São Paulo.',
+      'O I Fórum Paulista de Biogás e Bioprodutos é uma iniciativa do CP2b — Centro Paulista de Estudos em Biogás e Bioprodutos, em parceria com o NIPE da Universidade Estadual de Campinas. O evento reúne pesquisadores, estudantes, profissionais e empresas para debater os avanços, desafios e oportunidades da cadeia de biogás e bioprodutos no Estado de São Paulo.',
     aboutP2:
       'A proposta é criar um ambiente propício à troca de experiências, ao fortalecimento de redes de colaboração e à articulação entre academia, setor produtivo e poder público — elementos essenciais para consolidar o ecossistema de biogás e bioprodutos em âmbito estadual e nacional.',
     aboutInfoDate: '28 de maio de 2026',
@@ -41,7 +41,7 @@ const content = {
       { time: '09:00', title: 'Credenciamento e Coffee' },
       { time: '09:30', title: 'Abertura Institucional' },
       { time: '10:00', title: 'Diálogo sobre fontes de financiamento para P&D' },
-      { time: '10:45', title: 'Apresentações do CP2B — Eixos Temáticos' },
+      { time: '10:45', title: 'Apresentações do CP2b — Eixos Temáticos' },
       { time: '12:30', title: 'Intervalo: Brunch, Pôsteres e Rodadas de Conexão', highlight: true },
       { time: '14:30', title: 'Painel 1: Integração Academia-Indústria' },
       { time: '15:30', title: 'Painel 2: Ecossistema do Mercado de Biogás' },
@@ -113,7 +113,7 @@ const content = {
     aboutTag: 'ABOUT THE EVENT',
     aboutTitle: 'A meeting and discussion space for the biogas chain',
     aboutP1:
-      'The I Fórum Paulista de Biogás e Bioprodutos is an initiative of CP2B — São Paulo Center for Biogas and Bioproducts Studies, in partnership with NIPE at the State University of Campinas. The event brings together researchers, students, professionals and companies to discuss advances, challenges and opportunities in the biogas and bioproducts chain in São Paulo State.',
+      'The I Fórum Paulista de Biogás e Bioprodutos is an initiative of CP2b — São Paulo Center for Biogas and Bioproducts Studies, in partnership with NIPE at the State University of Campinas. The event brings together researchers, students, professionals and companies to discuss advances, challenges and opportunities in the biogas and bioproducts chain in São Paulo State.',
     aboutP2:
       'The goal is to create an environment conducive to the exchange of experiences, strengthening collaboration networks and articulating academia, the productive sector and public authorities — essential elements to consolidate the biogas and bioproducts ecosystem at state and national levels.',
     aboutInfoDate: 'May 28, 2026',
@@ -129,7 +129,7 @@ const content = {
       { time: '09:00', title: 'Check-in and Coffee' },
       { time: '09:30', title: 'Institutional Opening' },
       { time: '10:00', title: 'Dialogue on R&D funding sources' },
-      { time: '10:45', title: 'CP2B Presentations — Research Axes' },
+      { time: '10:45', title: 'CP2b Presentations — Research Axes' },
       { time: '12:30', title: 'Break: Brunch, Posters and Networking Rounds', highlight: true },
       { time: '14:30', title: 'Panel 1: Academia-Industry Integration' },
       { time: '15:30', title: 'Panel 2: Biogas Market Ecosystem' },

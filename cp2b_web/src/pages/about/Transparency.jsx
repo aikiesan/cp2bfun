@@ -57,7 +57,7 @@ const Transparency = () => {
       <Container className="py-5">
         <Row className="mb-5">
           <Col lg={8}>
-            <span className="mono-label text-success">CP2B</span>
+            <span className="mono-label text-success">CP2b</span>
             <h1 className="display-4 fw-bold mb-4">{content.title}</h1>
             <p className="lead text-muted">{content.description}</p>
           </Col>
@@ -99,8 +99,8 @@ const Transparency = () => {
             ) : (
               <p className="text-muted">
                 {language === 'pt'
-                  ? 'Em breve, disponibilizaremos os relatórios anuais do CP2B.'
-                  : 'Annual reports from CP2B will be available soon.'}
+                  ? 'Em breve, disponibilizaremos os relatórios anuais do CP2b.'
+                  : 'Annual reports from CP2b will be available soon.'}
               </p>
             )}
           </Col>

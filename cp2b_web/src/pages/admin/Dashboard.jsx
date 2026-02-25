@@ -175,7 +175,7 @@ const Dashboard = () => {
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
           <h2 className="mb-1">Dashboard</h2>
-          <p className="text-muted mb-0">Visão geral do sistema de gerenciamento CP2B</p>
+          <p className="text-muted mb-0">Visão geral do sistema de gerenciamento CP2b</p>
         </div>
       </div>
 
@@ -315,7 +315,7 @@ const Dashboard = () => {
             <Card.Body>
               <div className="mb-3">
                 <small className="text-muted d-block mb-1">Sistema</small>
-                <p className="mb-0">CP2B CMS</p>
+                <p className="mb-0">CP2b CMS</p>
               </div>
               <div className="mb-3">
                 <small className="text-muted d-block mb-1">Idiomas</small>
