@@ -15,7 +15,9 @@ class ApiClient {
       ...options,
     };
 
-    if (config.body && typeof config.body === 'object') {
+    if (config.body instanceof FormData) {
+      delete config.headers['Content-Type']; // let browser set multipart boundary
+    } else if (config.body && typeof config.body === 'object') {
       config.body = JSON.stringify(config.body);
     }
 
