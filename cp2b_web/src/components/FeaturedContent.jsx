@@ -36,7 +36,6 @@ const FeaturedContent = ({ itemA, itemB, itemC }) => {
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
-          whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.3 }}
         >
           <div className="featured-headline-overlay" />

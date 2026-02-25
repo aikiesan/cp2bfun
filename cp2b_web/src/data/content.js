@@ -76,11 +76,11 @@ export const projectDetails = {
   startDate: '01/02/2025',
   duration: '60 meses',
   pt: {
-    title: 'Centro Paulista de Estudos em Biogás e Bioprodutos - CP2B',
+    title: 'Centro Paulista de Estudos em Biogás e Bioprodutos - CP2b',
     keywords: ['Cadeia de Biogás', 'Ciência e Tecnologia de Base', 'Desenvolvimento Sustentável', 'Engenharia de Processos', 'Inovação em Bioprodutos', 'Politicas Públicas']
   },
   en: {
-    title: 'São Paulo Center for Biogas and Bioproducts Studies - CP2B',
+    title: 'São Paulo Center for Biogas and Bioproducts Studies - CP2b',
     keywords: ['Biogas Chain', 'Basic Science and Technology', 'Sustainable Development', 'Process Engineering', 'Bioproduct Innovation', 'Public Policies']
   }
 };
@@ -106,16 +106,16 @@ export const aboutContent = {
   pt: {
     resumo: `O Centro Paulista de Estudos em Biogás e Bioprodutos é dedicado ao tema "Aproveitamento inteligente de resíduos para o desenvolvimento sustentável" e visa criar competências com base em ciência que conduzam ao desenvolvimento e aplicações de soluções inovadoras de biogás. Os sistemas energéticos sociotécnicos que incluem soluções de biogás têm um desempenho de sustentabilidade bastante positivo uma vez que tratam resíduos, produzem combustível renovável e criam nutrientes renováveis para as plantas. No Estado de São Paulo (ESP) há muito substrato disponível - um potencial de mais de 4,5 bilhões de m3 ano de biogás - assim como uma grande demanda por seus bioprodutos, mas apenas uma fração deste potencial é aproveitada.
 
-O papel do CP2B é criar novos conhecimentos e competências que levem a soluções aplicáveis ao biogás no Estado, e articular ações conjuntas nas esferas industrial, política, social e ambiental. O CP2B tem por principal objetivo contribuir para a gestão de resíduos orgânicos e lignocelulósicos - urbanos e agroindustriais -, com prioridade para as ações voltadas à gestão pública de resíduos em setores estratégicos para a economia do estado.
+O papel do CP2b é criar novos conhecimentos e competências que levem a soluções aplicáveis ao biogás no Estado, e articular ações conjuntas nas esferas industrial, política, social e ambiental. O CP2b tem por principal objetivo contribuir para a gestão de resíduos orgânicos e lignocelulósicos - urbanos e agroindustriais -, com prioridade para as ações voltadas à gestão pública de resíduos em setores estratégicos para a economia do estado.
 
 Em 2022, o setor sucroenergético injetou mais de R$50 bilhões na economia do estado, que responde por 50% da produção nacional de cana, por 44% do etanol e 60% de açúcar (safra 2023/24). O potencial de produção de biogás neste setor representa mais de 50% do potencial nacional, sendo que a integração com outros setores por meio de ecopólos ou ecoparques deve resultar em soluções sustentáveis e inovadoras.
 
 O centro irá atuar de forma transdisciplinar, organizado em oito eixos temáticos integrados, seguindo o conceito de laboratório vivo, com projetos que experimentam em campo novas soluções e tecnologias.`,    
-    objetivos: `O objetivo principal do CP2B é contribuir para a gestão de resíduos orgânicos e lignocelulósicos no ESP nos segmentos urbano e agroindustrial, com prioridade para as ações voltadas à gestão pública de resíduos e setores estratégicos para a economia do estado (como o sucroenergético).
+    objetivos: `O objetivo principal do CP2b é contribuir para a gestão de resíduos orgânicos e lignocelulósicos no ESP nos segmentos urbano e agroindustrial, com prioridade para as ações voltadas à gestão pública de resíduos e setores estratégicos para a economia do estado (como o sucroenergético).
     
     Isso será feito por meio da pesquisa científica e tecnológica visando o desenvolvimento de modelos inovadores de produção de biogás e bioprodutos, explorando e integrando os conceitos de biorrefinaria, bioenergia e bioeconomia.
     
-    A concepção do CP2B e sua própria missão preveem a forte integração das pesquisas básica e aplicada como princípio para criação de soluções inteligentes na temática da gestão de resíduos urbanos e agropecuários com foco no desenvolvimento sustentável.`,
+    A concepção do CP2b e sua própria missão preveem a forte integração das pesquisas básica e aplicada como princípio para criação de soluções inteligentes na temática da gestão de resíduos urbanos e agropecuários com foco no desenvolvimento sustentável.`,
     
     resultados: `Entre os principais resultados esperados estão:
     (i) Arranjos tecnológicos para integração dos setores produtivos com foco na recuperação de bioenergia a partir de resíduos e/ou substratos;
@@ -126,17 +126,17 @@ O centro irá atuar de forma transdisciplinar, organizado em oito eixos temátic
   en: {
     resumo: `The São Paulo Center for Biogas and Bioproducts Studies is dedicated to the theme "Intelligent use of waste for sustainable development" and aims to create science-based skills that lead to the development and applications of innovative biogas solutions. Sociotechnical energy systems that include biogas solutions have a very positive sustainability performance as they treat waste, produce renewable fuel and create renewable nutrients for plants. In the State of São Paulo (ESP) there is a lot of substrate available - a potential of more than 4.5 billion m3 of biogas per year - as well as a great demand for its bioproducts, but only a fraction of this potential is used.
 
-CP2B's role is to create new knowledge and skills that lead to applicable solutions for biogas in the State, and to articulate joint actions in the industrial, political, social and environmental spheres. CP2B's main objective is to contribute to the management of organic and lignocellulosic waste - urban and agro-industrial -, with priority given to actions aimed at public waste management in strategic sectors for the state's economy.
+CP2b's role is to create new knowledge and skills that lead to applicable solutions for biogas in the State, and to articulate joint actions in the industrial, political, social and environmental spheres. CP2b's main objective is to contribute to the management of organic and lignocellulosic waste - urban and agro-industrial -, with priority given to actions aimed at public waste management in strategic sectors for the state's economy.
 
 In 2022, the sugar-energy sector injected more than R$50 billion into the state's economy, which accounts for 50% of national sugarcane production, 44% of ethanol and 60% of sugar (2023/24 harvest). The potential for biogas production in this sector represents more than 50% of the national potential, and integration with other sectors through eco-poles or eco-parks should result in sustainable and innovative solutions.
 
 The center will operate in a transdisciplinary way, organized into eight integrated thematic axes, following the concept of a living laboratory, with projects that experiment in the field with new solutions and technologies.`,
     
-    objetivos: `The main objective of CP2B is to contribute to the management of organic and lignocellulosic waste in the ESP in the urban and agro-industrial segments, with priority for actions aimed at public waste management and strategic sectors for the state's economy (such as the sugar-energy sector).
+    objetivos: `The main objective of CP2b is to contribute to the management of organic and lignocellulosic waste in the ESP in the urban and agro-industrial segments, with priority for actions aimed at public waste management and strategic sectors for the state's economy (such as the sugar-energy sector).
     
     This will be done through scientific and technological research aiming at the development of innovative models for the production of biogas and bioproducts, exploring and integrating the concepts of biorefinery, bioenergy and bioeconomy.
     
-The conception of CP2B and its own mission foresee the strong integration of basic and applied research as a principle for the creation of intelligent solutions in the field of urban and agricultural waste management with a focus on sustainable development.`,
+The conception of CP2b and its own mission foresee the strong integration of basic and applied research as a principle for the creation of intelligent solutions in the field of urban and agricultural waste management with a focus on sustainable development.`,
     
     resultados: `Among the main expected results are:
     (i) Technological arrangements for the integration of productive sectors with a focus on bioenergy recovery from waste and/or substrates;
@@ -177,7 +177,7 @@ export const carouselSlides = {
       image: '/assets/DSC00361-1920x748.jpg',
       badge: 'INOVAÇÃO',
       title: 'Transformando Resíduos em Energia',
-      description: 'O CP2B articula ações para aproveitar o potencial de biogás em São Paulo, atuando como laboratório vivo.',
+      description: 'O CP2b articula ações para aproveitar o potencial de biogás em São Paulo, atuando como laboratório vivo.',
       linkPrimary: '/eixos',
       labelPrimary: 'Explorar Eixos',
       linkSecondary: '/sobre',
@@ -190,7 +190,7 @@ export const carouselSlides = {
       image: '/assets/DSC00361-1920x748.jpg',
       badge: 'INNOVATION',
       title: 'Transforming Waste into Energy',
-      description: 'CP2B coordinates actions to leverage São Paulo\'s biogas potential, acting as a living laboratory.',
+      description: 'CP2b coordinates actions to leverage São Paulo\'s biogas potential, acting as a living laboratory.',
       linkPrimary: '/eixos',
       labelPrimary: 'Explore Axes',
       linkSecondary: '/sobre',
@@ -207,7 +207,7 @@ export const newsItems = {
       image: '/assets/CP2B-AVATAR-BR@8x.png',
       badge: 'Institucional',
       badgeColor: 'success',
-      title: 'Conheça o Metaninho: o novo mascote do CP2B!',
+      title: 'Conheça o Metaninho: o novo mascote do CP2b!',
       description: 'Para celebrar o final de ano, apresentamos nosso mascote que representa a molécula de metano e a identidade visual do centro. Uma ferramenta lúdica para educação científica.',
       link: '#'
     },
@@ -217,7 +217,7 @@ export const newsItems = {
       image: '/assets/DSC00339-500x333.jpg',
       badge: 'Eventos',
       badgeColor: 'primary',
-      title: 'I Workshop Anual do CP2B marca avanços em 2025',
+      title: 'I Workshop Anual do CP2b marca avanços em 2025',
       description: 'Evento reuniu pesquisadores para apresentar resultados dos oito eixos temáticos e assinar o Regimento Interno, consolidando a governança do centro.',
       link: '#'
     },
@@ -237,7 +237,7 @@ export const newsItems = {
       image: '/assets/20250618_Cepid_LUC_6420_Capa-1.jpg',
       badge: 'Internacional',
       badgeColor: 'success',
-      title: 'Delegação da China Agricultural University visita o NIPE e CP2B',
+      title: 'Delegação da China Agricultural University visita o NIPE e CP2b',
       description: 'Visita da China Agricultural University (CAU) para fortalecer laços de pesquisa e cooperação internacional...',
       link: '/noticias/cau-2025'
     }
@@ -249,7 +249,7 @@ export const newsItems = {
       image: '/assets/CP2B-AVATAR-BR@8x.png',
       badge: 'Institutional',
       badgeColor: 'success',
-      title: 'Meet Metaninho: the new CP2B mascot!',
+      title: 'Meet Metaninho: the new CP2b mascot!',
       description: 'To celebrate the end of the year, we present our mascot representing the methane molecule and the center\'s visual identity. A playful tool for scientific education.',
       link: '#'
     },
@@ -259,7 +259,7 @@ export const newsItems = {
       image: '/assets/DSC00339-500x333.jpg',
       badge: 'Events',
       badgeColor: 'primary',
-      title: 'I CP2B Annual Workshop marks advances in 2025',
+      title: 'I CP2b Annual Workshop marks advances in 2025',
       description: 'The event brought together researchers to present results from the eight thematic axes and sign the Internal Regulations, consolidating the center\'s governance.',
       link: '#'
     },
@@ -279,7 +279,7 @@ export const newsItems = {
       image: '/assets/20250618_Cepid_LUC_6420_Capa-1.jpg',
       badge: 'International',
       badgeColor: 'success',
-      title: 'China Agricultural University delegation visits NIPE and CP2B',
+      title: 'China Agricultural University delegation visits NIPE and CP2b',
       description: 'Visit from China Agricultural University (CAU) to strengthen research ties and international cooperation...',
       link: '/noticias/cau-2025'
     }
@@ -498,7 +498,7 @@ export const researchAxes = {
         { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/FOTO_RENATA.jpg' },
         { name: 'Profª Drª Bruna de Souza Moraes', role: 'Adj.', photo: '/assets/FOTO_BRUNA.jpg' }
       ],
-      content: `O Eixo 6 é dedicado à formação de pessoas. O CP2B vai atuar como centro de capacitação profissional oferecendo cursos.
+      content: `O Eixo 6 é dedicado à formação de pessoas. O CP2b vai atuar como centro de capacitação profissional oferecendo cursos.
       No desenvolvimento social, atuará na educação socioambiental de comunidades periféricas (ex: Comunidade Capadócia).
       ODS: 1, 4, 5, 10, 12, 13 e 16.`,
       sdgs: [1, 4, 5, 10, 12, 13, 16]
@@ -602,7 +602,7 @@ export const researchAxes = {
         { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/FOTO_RENATA.jpg' },
         { name: 'Prof. Dr. Bruna de Souza Moraes', role: 'Adj.', photo: '/assets/FOTO_BRUNA.jpg' }
       ],
-      content: `Axis 6 is dedicated to human resources training. CP2B will act as a professional training center offering courses.
+      content: `Axis 6 is dedicated to human resources training. CP2b will act as a professional training center offering courses.
       In social development, it will work on socio-environmental education for peripheral communities (e.g., Capadócia Community).
       SDGs: 1, 4, 5, 10, 12, 13, and 16.`,
       sdgs: [1, 4, 5, 10, 12, 13, 16]
@@ -751,11 +751,11 @@ export const teamMembers = [
 export const governanceContent = {
   pt: {
     title: 'Governança',
-    description: 'Estrutura organizacional e gestão do CP2B',
+    description: 'Estrutura organizacional e gestão do CP2b',
     sections: {
       structure: {
         title: 'Estrutura Organizacional',
-        content: `O CP2B é estruturado como um centro de pesquisa vinculado ao NIPE/UNICAMP, com organização transdisciplinar e colaborativa.
+        content: `O CP2b é estruturado como um centro de pesquisa vinculado ao NIPE/UNICAMP, com organização transdisciplinar e colaborativa.
 
 O centro é organizado em oito eixos temáticos integrados, seguindo o conceito de laboratório vivo, com projetos que experimentam em campo novas soluções e tecnologias para a cadeia do biogás e bioprodutos.
 
@@ -763,7 +763,7 @@ A estrutura conta com pesquisadores de diferentes instituições acadêmicas e p
       },
       committee: {
         title: 'Comitê Gestor',
-        content: `A coordenação científica e administrativa do CP2B é realizada por um Comitê Gestor composto por:
+        content: `A coordenação científica e administrativa do CP2b é realizada por um Comitê Gestor composto por:
 
 - Diretoria: Profª Drª Bruna de Souza Moraes (NIPE/UNICAMP)
 - Vice-Diretoria: Profª Drª Renata Piacentini Rodriguez (ICT/UNIFAL)
@@ -774,7 +774,7 @@ O Comitê Gestor é responsável pelas decisões estratégicas, acompanhamento d
       },
       guidelines: {
         title: 'Diretrizes e Regulamentos',
-        content: `O CP2B opera segundo princípios de transparência, colaboração e compromisso com o desenvolvimento sustentável.
+        content: `O CP2b opera segundo princípios de transparência, colaboração e compromisso com o desenvolvimento sustentável.
 
 Princípios Fundamentais:
 - Excelência científica e tecnológica
@@ -783,17 +783,17 @@ Princípios Fundamentais:
 - Participação democrática e inclusiva
 - Transparência na gestão de recursos
 
-O Regimento Interno do CP2B foi aprovado em 2025 durante o I Workshop Anual, estabelecendo normas de funcionamento, atribuições dos órgãos colegiados e procedimentos administrativos.`
+O Regimento Interno do CP2b foi aprovado em 2025 durante o I Workshop Anual, estabelecendo normas de funcionamento, atribuições dos órgãos colegiados e procedimentos administrativos.`
       }
     }
   },
   en: {
     title: 'Governance',
-    description: 'Organizational structure and management of CP2B',
+    description: 'Organizational structure and management of CP2b',
     sections: {
       structure: {
         title: 'Organizational Structure',
-        content: `CP2B is structured as a research center linked to NIPE/UNICAMP, with a transdisciplinary and collaborative organization.
+        content: `CP2b is structured as a research center linked to NIPE/UNICAMP, with a transdisciplinary and collaborative organization.
 
 The center is organized into eight integrated thematic axes, following the concept of a living laboratory, with projects that experiment in the field with new solutions and technologies for the biogas and bioproducts chain.
 
@@ -801,7 +801,7 @@ The structure includes researchers from different academic institutions and stra
       },
       committee: {
         title: 'Management Committee',
-        content: `The scientific and administrative coordination of CP2B is carried out by a Management Committee composed of:
+        content: `The scientific and administrative coordination of CP2b is carried out by a Management Committee composed of:
 
 - Director: Prof. Dr. Bruna de Souza Moraes (NIPE/UNICAMP)
 - Vice-Director: Prof. Dr. Renata Piacentini Rodriguez (ICT/UNIFAL)
@@ -812,7 +812,7 @@ The Management Committee is responsible for strategic decisions, project monitor
       },
       guidelines: {
         title: 'Guidelines and Regulations',
-        content: `CP2B operates according to principles of transparency, collaboration and commitment to sustainable development.
+        content: `CP2b operates according to principles of transparency, collaboration and commitment to sustainable development.
 
 Fundamental Principles:
 - Scientific and technological excellence
@@ -821,7 +821,7 @@ Fundamental Principles:
 - Democratic and inclusive participation
 - Transparency in resource management
 
-CP2B's Internal Regulations were approved in 2025 during the I Annual Workshop, establishing operating rules, attributions of collegiate bodies and administrative procedures.`
+CP2b's Internal Regulations were approved in 2025 during the I Annual Workshop, establishing operating rules, attributions of collegiate bodies and administrative procedures.`
       }
     }
   }
@@ -843,7 +843,7 @@ export const transparencyContent = {
       },
       financials: {
         title: 'Informações Financeiras',
-        content: `O CP2B é financiado pela FAPESP através do Programa de Centros de Ciências para o Desenvolvimento (PCD - CCD).
+        content: `O CP2b é financiado pela FAPESP através do Programa de Centros de Ciências para o Desenvolvimento (PCD - CCD).
 
 Processo: 2024/01112-1
 Instituição Sede: Núcleo Interdisciplinar de Planejamento Energético/NIPE/UNICAMP
@@ -872,7 +872,7 @@ Para mais informações sobre o financiamento e recursos, consulte o processo co
       },
       financials: {
         title: 'Financial Information',
-        content: `CP2B is funded by FAPESP through the Centers of Sciences for Development Program (PCD - CCD).
+        content: `CP2b is funded by FAPESP through the Centers of Sciences for Development Program (PCD - CCD).
 
 Process: 2024/01112-1
 Host Institution: Interdisciplinary Center for Energy Planning/NIPE/UNICAMP

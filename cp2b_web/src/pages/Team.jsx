@@ -67,7 +67,7 @@ const Team = () => {
       <Row className="mb-5">
         <Col lg={8}>
           <span className="mono-label text-success">{t.team}</span>
-          <h1 className="display-5 fw-bold mb-4">{language === 'pt' ? 'Quem Faz o CP2B' : 'Our Team'}</h1>
+          <h1 className="display-5 fw-bold mb-4">{language === 'pt' ? 'Quem Faz o CP2b' : 'Our Team'}</h1>
           <p className="lead text-muted">
             {language === 'pt'
               ? 'Uma rede multidisciplinar de pesquisadores e especialistas dedicados ao desenvolvimento de solucoes em biogas e bioprodutos.'

@@ -1,24 +1,52 @@
+import { useState, useEffect } from 'react';
 import { Container, Accordion, Row, Col } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { researchAxes, sdgMap, menuLabels } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
+import { fetchAxes } from '../services/api';
+
+const transformApiAxes = (apiAxes, lang) =>
+  apiAxes.map((row) => {
+    const coordinators = [];
+    if (row.coordinator) {
+      coordinators.push({ name: row.coordinator, role: 'Coord.', photo: row.coordinator_image || null });
+    }
+    if (row.sub_coordinator) {
+      coordinators.push({ name: row.sub_coordinator, role: 'Adj.', photo: row.sub_coordinator_image || null });
+    }
+    return {
+      id: String(row.axis_number),
+      title: lang === 'pt' ? row.title_pt : (row.title_en || row.title_pt),
+      coordinators,
+      content: lang === 'pt' ? row.content_pt : (row.content_en || row.content_pt),
+      sdgs: row.sdgs || [],
+    };
+  });
 
 const Research = () => {
   const { language } = useLanguage();
-  const axes = researchAxes[language];
+  const [apiAxes, setApiAxes] = useState(null);
   const t = menuLabels[language];
+
+  useEffect(() => {
+    fetchAxes().then((data) => {
+      if (data && data.length > 0) setApiAxes(data);
+    });
+  }, []);
+
+  const axes = apiAxes ? transformApiAxes(apiAxes, language) : researchAxes[language];
 
   const labels = {
     pt: {
       tag: 'Estrutura de Pesquisa',
-      subtitle: 'A atuação do CP2B está organizada em oito eixos temáticos integrados, cobrindo desde o inventário de resíduos até políticas públicas.',
+      subtitle: 'A atuação do CP2b está organizada em oito eixos temáticos integrados, cobrindo desde o inventário de resíduos até políticas públicas.',
       details: 'Conheça os Eixos',
       axis: 'EIXO',
       sdgs: 'ODS Relacionados:'
     },
     en: {
       tag: 'Research Structure',
-      subtitle: 'CP2B\'s activities are organized into eight integrated thematic axes, covering from waste inventory to public policies.',
+      subtitle: 'CP2b\'s activities are organized into eight integrated thematic axes, covering from waste inventory to public policies.',
       details: 'Discover the Axes',
       axis: 'AXIS',
       sdgs: 'Related SDGs:'

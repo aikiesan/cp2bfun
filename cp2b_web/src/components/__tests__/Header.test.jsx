@@ -7,7 +7,7 @@ import Header from '../Header';
 describe('Header', () => {
   it('renders the logo', () => {
     renderWithProviders(<Header />);
-    expect(screen.getByAltText('CP2B Logo')).toBeInTheDocument();
+    expect(screen.getByAltText('CP2b Logo')).toBeInTheDocument();
   });
 
   it('renders navigation links', () => {

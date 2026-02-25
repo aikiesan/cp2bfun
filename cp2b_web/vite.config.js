@@ -4,13 +4,21 @@ import { VitePWA } from 'vite-plugin-pwa'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    proxy: {
+      '/api': {
+        target: 'http://backend:3001',
+        changeOrigin: true,
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({
       registerType: 'autoUpdate',
       manifest: {
-        name: 'CP2B - Centro Paulista de Estudos em Biogas e Bioprodutos',
-        short_name: 'CP2B',
+        name: 'CP2b - Centro Paulista de Estudos em Biogas e Bioprodutos',
+        short_name: 'CP2b',
         description: 'Centro Paulista de Estudos em Biogas e Bioprodutos - UNICAMP',
         theme_color: '#335C67',
         background_color: '#f8f9fa',

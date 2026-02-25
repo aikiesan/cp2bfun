@@ -13,12 +13,12 @@ const Projects = () => {
 
   const labels = {
     pt: {
-      title: 'Agencia CP2B de Projetos',
+      title: 'Agencia CP2b de Projetos',
       readMore: 'Leia mais',
       latest: 'Ultimas projetos'
     },
     en: {
-      title: 'CP2B Projects Agency',
+      title: 'CP2b Projects Agency',
       readMore: 'Read more',
       latest: 'Latest projects'
     }

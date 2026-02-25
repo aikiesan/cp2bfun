@@ -232,7 +232,7 @@ const VideosEditor = () => {
                     name="title_pt"
                     value={formData.title_pt}
                     onChange={handleChange}
-                    placeholder="Ex: Fórum CP2B - Junho 2025"
+                    placeholder="Ex: Fórum CP2b - Junho 2025"
                     required
                   />
                 </Form.Group>
@@ -263,7 +263,7 @@ const VideosEditor = () => {
                     name="title_en"
                     value={formData.title_en}
                     onChange={handleChange}
-                    placeholder="Ex: CP2B Forum - June 2025"
+                    placeholder="Ex: CP2b Forum - June 2025"
                   />
                 </Form.Group>
                 <Form.Group className="mb-3">
