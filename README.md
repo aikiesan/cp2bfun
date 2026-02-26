@@ -68,21 +68,29 @@ For detailed setup instructions including backend and database configuration, se
 # 4. Start frontend dev server (port 5173)
 ```
 
-## 🐳 Docker Development
+## 🐳 Docker Development (Recommended for New Developers)
 
-Run the entire stack (frontend + backend + database) with Docker:
+Run the entire stack — frontend, backend, and database — with a single command.
+
+**Prerequisite:** [Docker Desktop](https://www.docker.com/products/docker-desktop/) installed and running.
 
 ```bash
-cd cp2b_web
+# Clone the repository
+git clone https://github.com/aikiesan/cp2bfun.git
+cd cp2bfun/cp2b_web
 
-# Development mode (hot reload)
+# Start full dev stack (first run: ~2 min to pull images and build)
 docker-compose up dev
-
-# Production mode (optimized build)
-docker-compose up prod
 ```
 
-See [CLAUDE.md](./CLAUDE.md) for Docker configuration details.
+This starts:
+- **Frontend** at http://localhost:5173 (hot reload)
+- **Backend API** at http://localhost:3001
+- **PostgreSQL** at localhost:**15432** (pre-seeded with sample data)
+
+To stop: `Ctrl+C`, then `docker-compose down`.
+
+**Admin panel:** http://localhost:5173/admin — username `admin`, password `admin123`
 
 ## 🧪 Testing
 
