@@ -15,7 +15,7 @@ const ArticleLayout = ({
 }) => {
   if (!article) return null;
 
-  const { title, description, content, image, badge, badgeColor, date } = article;
+  const { title, description, content, image, badge, badgeColor, date, author, imageCaption, tags } = article;
   const categoryColor = getCategoryColor(badgeColor);
 
   const handleShare = () => {
@@ -63,7 +63,7 @@ const ArticleLayout = ({
           <p className="article-fapesp-deck">{description}</p>
         )}
 
-        {/* 4. Hero image */}
+        {/* 4. Hero image + optional caption */}
         {image && (
           <figure className="article-fapesp-figure">
             <img
@@ -71,6 +71,9 @@ const ArticleLayout = ({
               alt={title}
               className="article-fapesp-hero"
             />
+            {imageCaption && (
+              <figcaption className="article-fapesp-caption">{imageCaption}</figcaption>
+            )}
           </figure>
         )}
 
@@ -80,8 +83,14 @@ const ArticleLayout = ({
           {/* Left sidebar */}
           <aside className="article-fapesp-sidebar">
             <hr className="article-fapesp-hr" />
+            {author && (
+              <span className="article-fapesp-sidebar-author">{author}</span>
+            )}
             {date && (
-              <time className="article-fapesp-sidebar-date">{date}</time>
+              <>
+                {author && <hr className="article-fapesp-hr" />}
+                <time className="article-fapesp-sidebar-date">{date}</time>
+              </>
             )}
             {badge && (
               <>
@@ -107,12 +116,18 @@ const ArticleLayout = ({
 
         </div>
 
-        {/* 6. Tags/keywords */}
-        {badge && (
+        {/* 6. Tags/keywords — use tags field if available, fall back to badge */}
+        {(tags && tags.trim()) ? (
+          <div className="article-fapesp-tags">
+            {tags.split(',').map((t) => t.trim()).filter(Boolean).map((tag) => (
+              <span key={tag} className="article-fapesp-tag-chip">{tag}</span>
+            ))}
+          </div>
+        ) : badge ? (
           <div className="article-fapesp-tags">
             <span className="article-fapesp-tag-chip">{badge}</span>
           </div>
-        )}
+        ) : null}
 
         {/* 7. Footer actions */}
         <div className="article-fapesp-actions d-flex justify-content-between align-items-center">

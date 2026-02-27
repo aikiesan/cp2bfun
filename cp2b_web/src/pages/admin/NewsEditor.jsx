@@ -23,6 +23,10 @@ const NewsEditor = () => {
     badge_color: 'primary',
     date_display: '',
     published_at: '',
+    author: '',
+    image_caption_pt: '',
+    image_caption_en: '',
+    tags: '',
   });
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
@@ -270,6 +274,29 @@ const NewsEditor = () => {
                     ))}
                   </Form.Select>
                 </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Autor</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="author"
+                    value={formData.author}
+                    onChange={handleChange}
+                    placeholder="Ex: João Silva"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Tags</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="tags"
+                    value={formData.tags}
+                    onChange={handleChange}
+                    placeholder="Ex: biogás,energia,pesquisa"
+                  />
+                  <Form.Text className="text-muted">Separe as tags por vírgula</Form.Text>
+                </Form.Group>
               </Card.Body>
             </Card>
 
@@ -284,6 +311,30 @@ const NewsEditor = () => {
                   onChange={(url) => setFormData(prev => ({ ...prev, image: url }))}
                   helperText="JPEG, PNG ou WebP · máx. 5MB"
                 />
+
+                <Form.Group className="mt-3 mb-2">
+                  <Form.Label>Legenda da imagem (PT)</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={2}
+                    name="image_caption_pt"
+                    value={formData.image_caption_pt}
+                    onChange={handleChange}
+                    placeholder="Crédito / Fonte da imagem em português"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-0">
+                  <Form.Label>Legenda da imagem (EN)</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={2}
+                    name="image_caption_en"
+                    value={formData.image_caption_en}
+                    onChange={handleChange}
+                    placeholder="Image credit / source in English"
+                  />
+                </Form.Group>
               </Card.Body>
             </Card>
 

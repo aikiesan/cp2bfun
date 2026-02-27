@@ -1448,6 +1448,14 @@ body.high-contrast .navbar .dropdown-item:hover {
   margin: 0.75rem 0;
 }
 
+.article-fapesp-sidebar-author {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0.5rem 0;
+}
+
 .article-fapesp-sidebar-date {
   display: block;
   font-size: 0.8rem;

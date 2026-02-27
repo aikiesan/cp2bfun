@@ -44,6 +44,11 @@ const NewsDetail = () => {
           badge: apiData.badge,
           badgeColor: apiData.badge_color,
           date: apiData.date_display,
+          author: apiData.author || '',
+          imageCaption: language === 'pt'
+            ? (apiData.image_caption_pt || '')
+            : (apiData.image_caption_en || apiData.image_caption_pt || ''),
+          tags: apiData.tags || '',
         });
 
         // Fetch related news (same source, exclude current slug)
