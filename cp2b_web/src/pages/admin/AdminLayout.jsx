@@ -72,11 +72,11 @@ const AdminLayout = () => {
       icon: 'bi-file-text',
       items: [
         { path: '/admin/news', label: 'Notícias', icon: 'bi-newspaper', badge: newsCount },
-        { path: '/admin/videos', label: 'Vídeos', icon: 'bi-youtube', isNew: true },
-        { path: '/admin/projects', label: 'Projetos', icon: 'bi-folder', isNew: true },
+        { path: '/admin/videos', label: 'Vídeos', icon: 'bi-youtube', },
+        { path: '/admin/projects', label: 'Projetos', icon: 'bi-folder', },
         { path: '/admin/featured', label: 'Destaques', icon: 'bi-star' },
-        { path: '/admin/publications', label: 'Publicações', icon: 'bi-journal', isNew: true },
-        { path: '/admin/events', label: 'Eventos', icon: 'bi-calendar-event', isNew: true }
+        { path: '/admin/publications', label: 'Publicações', icon: 'bi-journal', },
+        { path: '/admin/events', label: 'Eventos', icon: 'bi-calendar-event', }
       ]
     },
     {
