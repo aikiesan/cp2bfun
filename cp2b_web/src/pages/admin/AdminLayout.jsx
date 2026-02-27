@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Container, Row, Col, Nav, Badge, Collapse, Offcanvas } from 'react-bootstrap';
+import { Nav, Badge, Collapse, Offcanvas } from 'react-bootstrap';
 import api from '../../services/api';
 import { ToastProvider } from '../../components/admin';
 import Breadcrumbs from '../../components/admin/Breadcrumbs';
@@ -188,47 +188,47 @@ const AdminLayout = () => {
 
   return (
     <ToastProvider>
-      <Container fluid className="admin-layout">
-        <Row>
-          {/* Desktop Sidebar */}
-          <Col md={3} lg={2} className="admin-sidebar py-4 d-none d-md-block" style={{ minHeight: '100vh', width: '250px' }}>
+      <div className="admin-layout d-flex">
+        {/* Desktop Sidebar — fixed 240 px, sticky scroll */}
+        <div
+          className="admin-sidebar py-4 d-none d-md-flex flex-column flex-shrink-0"
+          style={{ width: '240px' }}
+        >
+          <SidebarContent />
+        </div>
+
+        {/* Mobile Menu Button */}
+        <div className="d-md-none position-fixed top-0 start-0 p-3" style={{ zIndex: 1050 }}>
+          <button className="btn btn-primary" onClick={() => setShowMobileMenu(true)}>
+            <i className="bi bi-list"></i>
+          </button>
+        </div>
+
+        {/* Mobile Offcanvas Menu */}
+        <Offcanvas
+          show={showMobileMenu}
+          onHide={() => setShowMobileMenu(false)}
+          placement="start"
+          className="admin-sidebar"
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>
+              <h5 className="mb-0 fw-bold">CP2b Admin</h5>
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
             <SidebarContent />
-          </Col>
+          </Offcanvas.Body>
+        </Offcanvas>
 
-          {/* Mobile Menu Button */}
-          <div className="d-md-none position-fixed top-0 start-0 p-3" style={{ zIndex: 1050 }}>
-            <button
-              className="btn btn-primary"
-              onClick={() => setShowMobileMenu(true)}
-            >
-              <i className="bi bi-list"></i>
-            </button>
-          </div>
-
-          {/* Mobile Offcanvas Menu */}
-          <Offcanvas
-            show={showMobileMenu}
-            onHide={() => setShowMobileMenu(false)}
-            placement="start"
-            className="admin-sidebar"
-          >
-            <Offcanvas.Header closeButton>
-              <Offcanvas.Title>
-                <h5 className="mb-0 fw-bold">CP2b Admin</h5>
-              </Offcanvas.Title>
-            </Offcanvas.Header>
-            <Offcanvas.Body>
-              <SidebarContent />
-            </Offcanvas.Body>
-          </Offcanvas>
-
-          {/* Main Content Area */}
-          <Col md={9} lg={10} className="admin-content bg-light py-4" style={{ marginLeft: 'auto' }}>
+        {/* Main Content Area — fills remaining width */}
+        <div className="admin-content bg-light py-4 flex-grow-1">
+          <div className="px-3 px-lg-4">
             <Breadcrumbs />
             <Outlet />
-          </Col>
-        </Row>
-      </Container>
+          </div>
+        </div>
+      </div>
     </ToastProvider>
   );
 };

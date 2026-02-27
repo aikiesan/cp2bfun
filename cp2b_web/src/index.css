@@ -289,10 +289,26 @@ img {
 
 }
 
+/* Admin Layout — flex shell */
+.admin-layout {
+  min-height: 100vh;
+}
+
 /* Admin Sidebar - light background, dark text for maximum contrast */
 .admin-sidebar {
   background-color: #fff !important;
   border-right: 1px solid #e9ecef !important;
+  /* Sticky: sidebar stays in view while content scrolls */
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* Admin content area — never overflow horizontally, tables scroll inside */
+.admin-content {
+  min-width: 0;
+  overflow-x: auto;
 }
 
 .admin-sidebar .category-header {
