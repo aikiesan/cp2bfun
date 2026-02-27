@@ -17,6 +17,7 @@
     "test:docker:watch": "docker-compose run --rm test-watch"
   },
   "dependencies": {
+    "@hello-pangea/dnd": "^16.6.0",
     "bootstrap": "^5.3.0",
     "bootstrap-icons": "^1.11.3",
     "dompurify": "^3.3.1",

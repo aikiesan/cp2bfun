@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Container, Table, Button, Badge, Spinner, Form, InputGroup } from 'react-bootstrap';
+import { Container, Table, Button, Badge, Spinner, Form, InputGroup, Alert } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
+import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import api from '../../services/api';
 import { ConfirmDialog, EmptyState, useToast } from '../../components/admin';
 
@@ -54,6 +55,27 @@ const NewsList = () => {
     }
   };
 
+  const handleDragEnd = async (result) => {
+    if (!result.destination) return;
+    if (result.destination.index === result.source.index) return;
+
+    const reordered = Array.from(news);
+    const [moved] = reordered.splice(result.source.index, 1);
+    reordered.splice(result.destination.index, 0, moved);
+
+    setNews(reordered); // optimistic update
+
+    const items = reordered.map((item, index) => ({ id: item.id, sort_order: index + 1 }));
+    try {
+      await api.post('/news/reorder', { items });
+      toast.success('Ordem salva com sucesso.');
+    } catch (err) {
+      toast.error('Erro ao salvar ordem. Recarregando…');
+      console.error(err);
+      fetchNews();
+    }
+  };
+
   const filtered = news.filter((item) => {
     const q = search.toLowerCase();
     return (
@@ -62,6 +84,8 @@ const NewsList = () => {
       item.badge?.toLowerCase().includes(q)
     );
   });
+
+  const isDraggable = !search;
 
   if (loading) {
     return (
@@ -97,6 +121,13 @@ const NewsList = () => {
         )}
       </InputGroup>
 
+      {search && (
+        <Alert variant="info" className="py-2 mb-3">
+          <i className="bi bi-info-circle me-2"></i>
+          Limpe a busca para reordenar as notícias via arrastar e soltar.
+        </Alert>
+      )}
+
       {filtered.length === 0 ? (
         search ? (
           <p className="text-muted text-center py-5">
@@ -113,68 +144,97 @@ const NewsList = () => {
         )
       ) : (
         <div className="card">
-          <Table responsive hover className="mb-0 align-middle">
-            <thead className="bg-light">
-              <tr>
-                <th style={{ width: '80px' }}>Imagem</th>
-                <th>Título</th>
-                <th>Badge</th>
-                <th>Data</th>
-                <th style={{ width: '130px' }} className="text-end">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((item) => (
-                <tr key={item.slug}>
-                  <td>
-                    {item.image && (
-                      <img
-                        src={item.image}
-                        alt=""
-                        style={{ width: '60px', height: '40px', objectFit: 'cover', borderRadius: '4px' }}
-                      />
-                    )}
-                  </td>
-                  <td>
-                    <strong>{item.title_pt}</strong>
-                    {item.title_en && <small className="d-block text-muted">{item.title_en}</small>}
-                  </td>
-                  <td>
-                    {item.badge && <Badge bg={item.badge_color || 'secondary'}>{item.badge}</Badge>}
-                  </td>
-                  <td className="text-nowrap">{item.date_display}</td>
-                  <td className="text-end">
-                    <a
-                      href={`/noticias/${item.slug}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-outline-secondary btn-sm me-1"
-                      title="Ver no site"
-                    >
-                      <i className="bi bi-box-arrow-up-right"></i>
-                    </a>
-                    <Button
-                      variant="outline-primary"
-                      size="sm"
-                      className="me-1"
-                      onClick={() => navigate(`/admin/news/${item.slug}`)}
-                      title="Editar"
-                    >
-                      <i className="bi bi-pencil"></i>
-                    </Button>
-                    <Button
-                      variant="outline-danger"
-                      size="sm"
-                      onClick={() => handleDeleteClick(item)}
-                      title="Excluir"
-                    >
-                      <i className="bi bi-trash"></i>
-                    </Button>
-                  </td>
+          <DragDropContext onDragEnd={handleDragEnd}>
+            <Table responsive hover className="mb-0 align-middle">
+              <thead className="bg-light">
+                <tr>
+                  {isDraggable && <th style={{ width: '40px' }}></th>}
+                  <th style={{ width: '80px' }}>Imagem</th>
+                  <th>Título</th>
+                  <th>Badge</th>
+                  <th>Data</th>
+                  <th style={{ width: '130px' }} className="text-end">Ações</th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <Droppable droppableId="news-list" isDropDisabled={!isDraggable}>
+                {(provided) => (
+                  <tbody ref={provided.innerRef} {...provided.droppableProps}>
+                    {filtered.map((item, index) => (
+                      <Draggable
+                        key={item.id}
+                        draggableId={String(item.id)}
+                        index={index}
+                        isDragDisabled={!isDraggable}
+                      >
+                        {(provided, snapshot) => (
+                          <tr
+                            ref={provided.innerRef}
+                            {...provided.draggableProps}
+                            style={{
+                              ...provided.draggableProps.style,
+                              background: snapshot.isDragging ? '#f0f4ff' : undefined,
+                            }}
+                          >
+                            {isDraggable && (
+                              <td {...provided.dragHandleProps} style={{ cursor: 'grab', color: '#aaa' }}>
+                                <i className="bi bi-grip-vertical fs-5"></i>
+                              </td>
+                            )}
+                            <td>
+                              {item.image && (
+                                <img
+                                  src={item.image}
+                                  alt=""
+                                  style={{ width: '60px', height: '40px', objectFit: 'cover', borderRadius: '4px' }}
+                                />
+                              )}
+                            </td>
+                            <td>
+                              <strong>{item.title_pt}</strong>
+                              {item.title_en && <small className="d-block text-muted">{item.title_en}</small>}
+                            </td>
+                            <td>
+                              {item.badge && <Badge bg={item.badge_color || 'secondary'}>{item.badge}</Badge>}
+                            </td>
+                            <td className="text-nowrap">{item.date_display}</td>
+                            <td className="text-end">
+                              <a
+                                href={`/noticias/${item.slug}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-outline-secondary btn-sm me-1"
+                                title="Ver no site"
+                              >
+                                <i className="bi bi-box-arrow-up-right"></i>
+                              </a>
+                              <Button
+                                variant="outline-primary"
+                                size="sm"
+                                className="me-1"
+                                onClick={() => navigate(`/admin/news/${item.slug}`)}
+                                title="Editar"
+                              >
+                                <i className="bi bi-pencil"></i>
+                              </Button>
+                              <Button
+                                variant="outline-danger"
+                                size="sm"
+                                onClick={() => handleDeleteClick(item)}
+                                title="Excluir"
+                              >
+                                <i className="bi bi-trash"></i>
+                              </Button>
+                            </td>
+                          </tr>
+                        )}
+                      </Draggable>
+                    ))}
+                    {provided.placeholder}
+                  </tbody>
+                )}
+              </Droppable>
+            </Table>
+          </DragDropContext>
         </div>
       )}
 

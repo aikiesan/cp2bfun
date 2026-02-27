@@ -63,14 +63,44 @@ router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, slug, title_pt, title_en, description_pt, description_en,
-              image, badge, badge_color, date_display, published_at, created_at
+              image, badge, badge_color, date_display, published_at, created_at, sort_order
        FROM news
-       ORDER BY published_at DESC NULLS LAST, created_at DESC`
+       ORDER BY sort_order ASC NULLS LAST, published_at DESC NULLS LAST, created_at DESC`
     );
     res.json(result.rows);
   } catch (error) {
     console.error('Error fetching news:', error);
     res.status(500).json({ error: 'Failed to fetch news' });
+  }
+});
+
+// Reorder news articles
+router.post('/reorder', async (req, res) => {
+  try {
+    const { items } = req.body; // Array of { id, sort_order }
+
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
+
+      for (const item of items) {
+        await client.query(
+          'UPDATE news SET sort_order = $1 WHERE id = $2',
+          [item.sort_order, item.id]
+        );
+      }
+
+      await client.query('COMMIT');
+      res.json({ message: 'News reordered successfully' });
+    } catch (e) {
+      await client.query('ROLLBACK');
+      throw e;
+    } finally {
+      client.release();
+    }
+  } catch (error) {
+    console.error('Error reordering news:', error);
+    res.status(500).json({ error: 'Failed to reorder news' });
   }
 });
 

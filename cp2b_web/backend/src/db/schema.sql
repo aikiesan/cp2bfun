@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS news (
   date_display VARCHAR(50),
   published_at TIMESTAMP,
   featured_position VARCHAR(1) CHECK (featured_position IN ('A', 'B', 'C')),
+  sort_order INTEGER,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -133,6 +134,7 @@ CREATE TABLE IF NOT EXISTS events (
 CREATE INDEX IF NOT EXISTS idx_news_slug ON news(slug);
 CREATE INDEX IF NOT EXISTS idx_news_published_at ON news(published_at DESC);
 CREATE INDEX IF NOT EXISTS idx_news_featured ON news(featured_position) WHERE featured_position IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_news_sort_order ON news(sort_order);
 CREATE INDEX IF NOT EXISTS idx_team_category ON team_members(category);
 CREATE INDEX IF NOT EXISTS idx_team_sort ON team_members(sort_order);
 CREATE INDEX IF NOT EXISTS idx_axes_number ON research_axes(axis_number);
