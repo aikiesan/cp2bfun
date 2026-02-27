@@ -1364,3 +1364,340 @@ body.high-contrast .navbar .dropdown-item:hover {
     min-height: 200px;
   }
 }
+
+/* ============================================
+   FAPESP EDITORIAL ARTICLE LAYOUT
+   ============================================ */
+
+/* Page wrapper */
+.article-fapesp-page {
+  background: #fff;
+}
+
+/* Category tag: text-only, uppercase, small */
+.article-fapesp-category {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+  margin-top: 0;
+  font-family: var(--font-main);
+  /* color set via inline style from getCategoryColor() */
+}
+
+/* H1 title: Georgia serif, bold — overrides global h1 color/font rules */
+.article-fapesp-title {
+  font-family: Georgia, 'Times New Roman', Times, serif !important;
+  font-weight: 800 !important;
+  font-size: 2.6rem !important;
+  line-height: 1.15 !important;
+  color: var(--cp2b-black) !important;
+  letter-spacing: -0.01em !important;
+  margin-bottom: 0.75rem;
+}
+
+/* Deck / subtitle */
+.article-fapesp-deck {
+  font-size: 1.1rem;
+  font-weight: 400;
+  color: #555;
+  line-height: 1.55;
+  margin-top: 0.75rem;
+  margin-bottom: 1.75rem;
+}
+
+/* Hero image figure: 16:9, no rounding — overrides global img rule */
+.article-fapesp-figure {
+  margin: 0 0 0 0;
+}
+
+.article-fapesp-hero {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  border-radius: 0 !important; /* override global img { border-radius } */
+  display: block;
+}
+
+/* Image caption */
+.article-fapesp-caption {
+  font-size: 0.75rem;
+  color: #777;
+  margin-top: 0.4rem;
+  line-height: 1.4;
+}
+
+/* Three-column editorial flex grid */
+.article-fapesp-grid {
+  display: flex;
+  gap: 2rem;
+  margin-top: 2.5rem;
+  align-items: flex-start;
+}
+
+/* Left sidebar */
+.article-fapesp-sidebar {
+  width: 180px;
+  flex-shrink: 0;
+}
+
+.article-fapesp-hr {
+  border: none;
+  border-top: 1px solid #ddd;
+  margin: 0.75rem 0;
+}
+
+.article-fapesp-sidebar-date {
+  display: block;
+  font-size: 0.8rem;
+  color: #555;
+  font-family: var(--font-mono);
+  margin: 0.5rem 0;
+}
+
+.article-fapesp-sidebar-tag {
+  display: block;
+  font-size: 0.75rem;
+  color: #777;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0.5rem 0;
+}
+
+/* Center content column */
+.article-fapesp-body {
+  flex: 1;
+  min-width: 0; /* prevent flex overflow */
+  max-width: 680px;
+}
+
+/* Drop cap — accounts for SafeHtml's wrapping <div.article-content> */
+.article-fapesp-body > .article-content > p:first-of-type::first-letter,
+.article-fapesp-body > p:first-of-type::first-letter {
+  float: left;
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  font-size: 4.5rem;
+  line-height: 0.8;
+  padding-right: 0.12em;
+  padding-top: 0.08em;
+  color: var(--cp2b-black);
+}
+
+/* Override article-content typography inside the editorial body */
+.article-fapesp-content {
+  font-size: 1.05rem !important;
+  color: #222;
+  line-height: 1.75;
+}
+
+.article-fapesp-content p {
+  margin-bottom: 1.25rem;
+  color: #222;
+}
+
+.article-fapesp-content a {
+  color: var(--cp2b-petrol);
+  text-decoration: none;
+}
+
+.article-fapesp-content a:hover {
+  text-decoration: underline;
+}
+
+/* Right spacer column */
+.article-fapesp-spacer {
+  width: 120px;
+  flex-shrink: 0;
+}
+
+/* Tags/keywords section */
+.article-fapesp-tags {
+  margin-top: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.article-fapesp-tag-chip {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: #444;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  padding: 0.25rem 0.75rem;
+  background: #fff;
+  font-family: var(--font-main);
+}
+
+/* Sources/references section */
+.article-fapesp-sources {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ddd;
+}
+
+.article-fapesp-sources-label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #888;
+  margin-bottom: 0.75rem;
+}
+
+.article-fapesp-sources-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.article-fapesp-sources-list li {
+  font-size: 0.85rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.article-fapesp-sources-list a {
+  color: var(--cp2b-petrol);
+  text-decoration: none;
+}
+
+.article-fapesp-sources-list a:hover {
+  text-decoration: underline;
+}
+
+/* Footer action buttons row */
+.article-fapesp-actions {
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--cp2b-border);
+}
+
+/* Related posts section */
+.article-related-section {
+  background: var(--cp2b-light-gray);
+  padding: 3rem 0;
+  margin-top: 3rem;
+}
+
+.article-related-heading {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #888;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid var(--cp2b-border);
+  padding-bottom: 0.5rem;
+}
+
+.article-related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.article-related-card {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+  text-decoration: none !important;
+}
+
+.article-related-card:hover {
+  color: inherit;
+}
+
+/* 4:3 image ratio for related cards */
+.article-related-img-wrap {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  margin-bottom: 0.75rem;
+  background: var(--cp2b-border);
+}
+
+.article-related-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0 !important; /* override global img rule */
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.article-related-card:hover .article-related-img {
+  transform: scale(1.03);
+}
+
+.article-related-body {
+  flex: 1;
+}
+
+.article-related-category {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  display: block;
+  margin-bottom: 0.35rem;
+  font-family: var(--font-main);
+}
+
+.article-related-title {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--cp2b-black);
+  line-height: 1.35;
+  margin-bottom: 0.35rem;
+}
+
+.article-related-card:hover .article-related-title {
+  text-decoration: underline;
+}
+
+.article-related-date {
+  font-size: 0.75rem;
+  color: #888;
+  font-family: var(--font-mono);
+}
+
+/* ---- Responsive: Tablet (768–1024px) — hide sidebar & spacer ---- */
+@media (max-width: 1024px) {
+  .article-fapesp-sidebar,
+  .article-fapesp-spacer {
+    display: none;
+  }
+
+  .article-fapesp-body {
+    max-width: 100%;
+  }
+}
+
+/* ---- Responsive: Mobile (<768px) ---- */
+@media (max-width: 767.98px) {
+  .article-fapesp-title {
+    font-size: 1.85rem !important;
+    line-height: 1.2 !important;
+  }
+
+  .article-fapesp-deck {
+    font-size: 1rem;
+  }
+
+  .article-fapesp-grid {
+    flex-direction: column;
+    gap: 0;
+  }
+
+  /* Slightly smaller drop cap on mobile */
+  .article-fapesp-body > .article-content > p:first-of-type::first-letter,
+  .article-fapesp-body > p:first-of-type::first-letter {
+    font-size: 3rem;
+  }
+
+  .article-related-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+}
