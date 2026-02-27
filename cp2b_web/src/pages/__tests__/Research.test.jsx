@@ -21,10 +21,14 @@ describe('Research', () => {
     expect(screen.getByText('Conheça os Eixos')).toBeInTheDocument();
   });
 
-  it('renders SDG tag label', () => {
+  it('renders at least one SDG tag label', () => {
     renderWithProviders(<Research />);
-    // SDG labels appear for axes that have sdgs defined
+    // Several research axes have SDG references defined in content.js.
+    // Using queryAllByText (not getAllByText) lets us count without throwing
+    // if somehow none exist — but we expect at least one to be present.
+    // Note: .toBeGreaterThanOrEqual(0) would ALWAYS pass (array.length >= 0
+    // is a tautology). Use a real lower bound instead.
     const sdgLabels = screen.queryAllByText('ODS Relacionados:');
-    expect(sdgLabels.length).toBeGreaterThanOrEqual(0);
+    expect(sdgLabels.length).toBeGreaterThan(0);
   });
 });
