@@ -17,6 +17,10 @@ CREATE TABLE IF NOT EXISTS news (
   published_at TIMESTAMP,
   featured_position VARCHAR(1) CHECK (featured_position IN ('A', 'B', 'C')),
   sort_order INTEGER,
+  author VARCHAR(255),
+  image_caption_pt TEXT,
+  image_caption_en TEXT,
+  tags TEXT,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -130,6 +134,47 @@ CREATE TABLE IF NOT EXISTS events (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
+-- Projects (same structure as news + migration 010 columns)
+CREATE TABLE IF NOT EXISTS projects (
+  id SERIAL PRIMARY KEY,
+  slug VARCHAR(255) UNIQUE NOT NULL,
+  title_pt TEXT NOT NULL,
+  title_en TEXT,
+  description_pt TEXT,
+  description_en TEXT,
+  content_pt TEXT,
+  content_en TEXT,
+  image VARCHAR(500),
+  badge VARCHAR(50),
+  badge_color VARCHAR(20) DEFAULT 'primary',
+  date_display VARCHAR(50),
+  published_at TIMESTAMP,
+  featured_position VARCHAR(1) CHECK (featured_position IN ('A', 'B', 'C')),
+  author VARCHAR(255),
+  image_caption_pt TEXT,
+  image_caption_en TEXT,
+  tags TEXT,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Featured videos (YouTube embeds with A/B/C position layout)
+CREATE TABLE IF NOT EXISTS featured_videos (
+  id SERIAL PRIMARY KEY,
+  youtube_url VARCHAR(500) NOT NULL,
+  youtube_id VARCHAR(50) NOT NULL,
+  title_pt TEXT NOT NULL,
+  title_en TEXT,
+  description_pt TEXT,
+  description_en TEXT,
+  thumbnail_url VARCHAR(500),
+  date_display VARCHAR(50),
+  position VARCHAR(1) CHECK (position IN ('A', 'B', 'C')),
+  active BOOLEAN DEFAULT TRUE,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
 -- Create indexes for better query performance
 CREATE INDEX IF NOT EXISTS idx_news_slug ON news(slug);
 CREATE INDEX IF NOT EXISTS idx_news_published_at ON news(published_at DESC);
@@ -154,6 +199,11 @@ CREATE INDEX IF NOT EXISTS idx_events_status ON events(status);
 CREATE INDEX IF NOT EXISTS idx_events_start_date ON events(start_date DESC);
 CREATE INDEX IF NOT EXISTS idx_events_featured ON events(featured) WHERE featured = TRUE;
 CREATE INDEX IF NOT EXISTS idx_events_location_type ON events(location_type);
+CREATE INDEX IF NOT EXISTS idx_projects_featured ON projects(featured_position) WHERE featured_position IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_projects_published ON projects(published_at DESC NULLS LAST);
+CREATE INDEX IF NOT EXISTS idx_projects_slug ON projects(slug);
+CREATE INDEX IF NOT EXISTS idx_featured_videos_position ON featured_videos(position) WHERE active = TRUE;
+CREATE INDEX IF NOT EXISTS idx_featured_videos_active ON featured_videos(active);
 
 -- ============================================================
 -- Forum Paulista: Event participation features
