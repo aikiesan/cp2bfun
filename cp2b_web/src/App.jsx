@@ -59,6 +59,7 @@ import {
   MeetupSlotsManager,
   MeetupRequestsPanel,
   ForumDashboard,
+  NewsletterPanel,
 } from './pages/admin';
 import FeaturedContentManager from './pages/admin/FeaturedContentManager';
 import {
@@ -106,6 +107,7 @@ function App() {
             <Route path="forum/participants" element={<ParticipantsPanel />} />
             <Route path="forum/slots"        element={<MeetupSlotsManager />} />
             <Route path="forum/meetups"      element={<MeetupRequestsPanel />} />
+            <Route path="newsletter"         element={<NewsletterPanel />} />
           </Route>
 
           {/* Public Routes - With Header/Footer */}

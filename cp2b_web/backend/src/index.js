@@ -16,6 +16,7 @@ import videosRoutes from './routes/videos.js';
 import participantsRoutes from './routes/participants.js';
 import meetupSlotsRoutes from './routes/meetup-slots.js';
 import meetupRequestsRoutes from './routes/meetup-requests.js';
+import newsletterRoutes from './routes/newsletter.js';
 
 dotenv.config();
 
@@ -46,6 +47,7 @@ app.use('/api/videos', videosRoutes);
 app.use('/api/participants', participantsRoutes);
 app.use('/api/meetup-slots', meetupSlotsRoutes);
 app.use('/api/meetup-requests', meetupRequestsRoutes);
+app.use('/api/newsletter', newsletterRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

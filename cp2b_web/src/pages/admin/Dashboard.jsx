@@ -20,6 +20,7 @@ const Dashboard = () => {
     unreadMessages: 0,
     participantsCount: 0,
     meetupRequestsCount: 0,
+    newsletterSubscribersCount: 0,
   });
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState(false);
@@ -40,6 +41,7 @@ const Dashboard = () => {
           messagesRes,
           participantsRes,
           meetupRequestsRes,
+          newsletterRes,
         ] = await Promise.all([
           api.get('/news'),
           api.get('/news/featured'),
@@ -53,6 +55,7 @@ const Dashboard = () => {
           api.get('/contact').catch(() => ({ data: [] })),
           api.get('/participants').catch(() => ({ data: [] })),
           api.get('/meetup-requests/all').catch(() => ({ data: [] })),
+          api.get('/newsletter/subscribers').catch(() => ({ data: [] })),
         ]);
 
         const currentYear = new Date().getFullYear();
@@ -74,6 +77,7 @@ const Dashboard = () => {
           unreadMessages: messagesRes.data.filter((m) => !m.read).length,
           participantsCount: participantsRes.data.length,
           meetupRequestsCount: meetupRequestsRes.data.length,
+          newsletterSubscribersCount: newsletterRes.data.filter(s => s.active).length,
         });
         setApiError(false);
       } catch (error) {
@@ -162,6 +166,15 @@ const Dashboard = () => {
       icon: 'bi-diagram-2',
       link: '/admin/forum/meetups',
       color: '#AD1457',
+      isNew: true,
+    },
+    {
+      title: 'Newsletter',
+      count: stats.newsletterSubscribersCount,
+      icon: 'bi-envelope-paper',
+      link: '/admin/newsletter',
+      color: '#0277BD',
+      subtitle: stats.newsletterSubscribersCount > 0 ? 'inscritos ativos' : null,
       isNew: true,
     },
   ];
@@ -288,6 +301,12 @@ const Dashboard = () => {
                 <Col md={4} sm={6}>
                   <Link to="/admin/forum" className="btn btn-outline-success w-100">
                     <i className="bi bi-grid-1x2 me-2"></i>Forum Paulista
+                  </Link>
+                </Col>
+                <Col md={4} sm={6}>
+                  <Link to="/admin/newsletter" className="btn btn-outline-primary w-100">
+                    <i className="bi bi-envelope-paper me-2"></i>Newsletter
+                    <Badge bg="success" className="ms-2">NEW</Badge>
                   </Link>
                 </Col>
                 <Col md={4} sm={6}>
