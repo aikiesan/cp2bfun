@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Table, Button, Form, Badge, Alert, Tab, Tabs, Modal } from 'react-bootstrap';
+import { Container, Card, Table, Button, Form, Badge, Alert, Tab, Tabs, Modal } from 'react-bootstrap';
 import api from '../../services/api';
 
 const NewsletterPanel = () => {
@@ -209,7 +209,7 @@ const NewsletterPanel = () => {
           <Modal.Title>Confirmar envio</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Enviar newsletter <strong>"{subject}"</strong> para{' '}
+          Enviar newsletter <strong>&ldquo;{subject}&rdquo;</strong> para{' '}
           <strong>{activeCount}</strong> inscrito{activeCount !== 1 ? 's' : ''}?
         </Modal.Body>
         <Modal.Footer>
