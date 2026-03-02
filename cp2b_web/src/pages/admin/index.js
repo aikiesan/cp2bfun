@@ -18,3 +18,4 @@ export { default as ParticipantsPanel }   from './ParticipantsPanel';
 export { default as MeetupSlotsManager }  from './MeetupSlotsManager';
 export { default as MeetupRequestsPanel } from './MeetupRequestsPanel';
 export { default as ForumDashboard }      from './ForumDashboard';
+export { default as NewsletterPanel }     from './NewsletterPanel';

@@ -2,6 +2,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp } from 'react-icons/fa';
 import { socialLinks } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
+import NewsletterSignup from './NewsletterSignup';
 
 const Footer = () => {
   const { language } = useLanguage();
@@ -26,6 +27,13 @@ const Footer = () => {
   return (
     <footer className="bg-dark text-white py-5 mt-5">
       <Container>
+        <Row className="gy-4 mb-4">
+          <Col md={12}>
+            <div style={{ borderTop: '1px solid #444', paddingTop: '1.5rem' }}>
+              <NewsletterSignup />
+            </div>
+          </Col>
+        </Row>
         <Row className="gy-4">
           <Col md={4}>
             <h5 className="mb-3 text-uppercase fw-bold text-success">NIPE</h5>
