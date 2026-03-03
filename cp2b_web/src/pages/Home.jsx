@@ -243,9 +243,9 @@ const Home = () => {
       </section>
 
       {/* Partners Image Section */}
-      <section className="py-5">
+      <section className="py-5 partners-section">
         <Container>
-          <div className="text-center mb-5">
+          <div className="text-center mb-5 mt-5">
             <h3 className="fw-bold">{labels.partnersTitle}</h3>
           </div>
           <div className="text-center bg-white p-5 rounded-5 shadow-sm">
