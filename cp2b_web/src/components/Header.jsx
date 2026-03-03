@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { FaSpotify, FaLinkedinIn, FaInstagram, FaYoutube } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { menuLabels, socialLinks } from '../data/content';
@@ -93,15 +93,15 @@ const Header = () => {
 
             {/* Social Media Icons */}
             <div className="d-none d-lg-flex align-items-center gap-3 ms-3">
-              {socialLinks.facebook !== '#' && (
+              {socialLinks.spotify !== '#' && (
                 <a
-                  href={socialLinks.facebook}
+                  href={socialLinks.spotify}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted social-icon-top"
-                  aria-label="Facebook"
+                  aria-label="Spotify"
                 >
-                  <FaFacebookF size={14} />
+                  <FaSpotify size={14} />
                 </a>
               )}
               <a

@@ -1,5 +1,5 @@
 import { Container, Row, Col } from 'react-bootstrap';
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp } from 'react-icons/fa';
+import { FaSpotify, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp } from 'react-icons/fa';
 import { socialLinks } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 
@@ -43,7 +43,7 @@ const Footer = () => {
           <Col md={4}>
             <h5 className="mb-3 text-uppercase fw-bold">{labels.connect}</h5>
             <div className="d-flex gap-3 mb-4">
-              <a href={socialLinks.facebook} className="text-white fs-5" target="_blank" rel="noreferrer"><FaFacebookF /></a>
+              <a href={socialLinks.spotify} className="text-white fs-5" target="_blank" rel="noreferrer"><FaSpotify /></a>
               <a href={socialLinks.linkedin} className="text-white fs-5" target="_blank" rel="noreferrer"><FaLinkedinIn /></a>
               <a href={socialLinks.instagram} className="text-white fs-5" target="_blank" rel="noreferrer"><FaInstagram /></a>
               <a href={socialLinks.youtube} className="text-white fs-5" target="_blank" rel="noreferrer"><FaYoutube /></a>

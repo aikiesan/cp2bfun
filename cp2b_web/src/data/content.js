@@ -3,7 +3,8 @@ export const socialLinks = {
   linkedin: 'https://br.linkedin.com/company/centro-paulista-de-estudos-em-biog%C3%A1s-e-bioprodutos-cp2b',
   facebook: 'https://www.facebook.com/nipeunicamp/',
   youtube: 'https://www.youtube.com/@nipeunicamp4034',
-  whatsapp: 'https://wa.me/message/KVJUNJN7SIAZP1'
+  whatsapp: 'https://wa.me/message/KVJUNJN7SIAZP1',
+  spotify: "https://open.spotify.com/intl-pt"
 };
 
 export const menuLabels = {
