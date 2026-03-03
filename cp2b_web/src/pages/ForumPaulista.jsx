@@ -10,7 +10,7 @@ const content = {
     heroBadge: 'I EDIÇÃO • 28 MAI 2026',
     heroTitle: 'I Fórum Paulista de Biogás e Bioprodutos',
     heroSubtitle: 'Encontro da Cadeia de Biogás e Bioprodutos do Estado de São Paulo',
-    heroLocation: 'Campinas, SP',
+    heroLocation: 'Centro de Convencoes Unicamp Auditorio 3',
     heroDate: '28 de maio de 2026',
     meetupBtn: 'Registro Meet-up',
     registerBtn: 'Inscrição e Pagamento',
@@ -29,7 +29,7 @@ const content = {
     aboutP2:
       'A proposta é criar um ambiente propício à troca de experiências, ao fortalecimento de redes de colaboração e à articulação entre academia, setor produtivo e poder público — elementos essenciais para consolidar o ecossistema de biogás e bioprodutos em âmbito estadual e nacional.',
     aboutInfoDate: '28 de maio de 2026',
-    aboutInfoLocation: 'Campinas, SP',
+    aboutInfoLocation: 'Centro de Convencoes Unicamp Auditorio 3',
     aboutInfoOrg: 'NIPE – Universidade Estadual de Campinas',
     aboutInfoAudience: 'Pesquisadores, estudantes, profissionais, empresas',
     aboutInfoAudienceLabel: 'Público',
@@ -86,7 +86,7 @@ const content = {
       },
       {
         q: 'Onde será realizado?',
-        a: 'O evento será realizado em Campinas, SP. O local exato será divulgado em breve.',
+        a: 'O evento será realizado no Centro de Convencoes Unicamp Auditorio 3. O local exato será divulgado em breve.',
       },
       {
         q: 'Posso apresentar trabalho?',
@@ -98,7 +98,7 @@ const content = {
     heroBadge: '1ST EDITION • MAY 28, 2026',
     heroTitle: 'I Fórum Paulista de Biogás e Bioprodutos',
     heroSubtitle: 'São Paulo State Biogas and Bioproducts Chain Meeting',
-    heroLocation: 'Campinas, SP',
+    heroLocation: 'Unicamp Convention Center Auditorium 3',
     heroDate: 'May 28, 2026',
     meetupBtn: 'Meet-up Registration',
     registerBtn: 'Registration & Payment',
@@ -117,7 +117,7 @@ const content = {
     aboutP2:
       'The goal is to create an environment conducive to the exchange of experiences, strengthening collaboration networks and articulating academia, the productive sector and public authorities — essential elements to consolidate the biogas and bioproducts ecosystem at state and national levels.',
     aboutInfoDate: 'May 28, 2026',
-    aboutInfoLocation: 'Campinas, SP',
+    aboutInfoLocation: 'Unicamp Convention Center Auditorium 3',
     aboutInfoOrg: 'NIPE – State University of Campinas',
     aboutInfoAudience: 'Researchers, students, professionals, companies',
     aboutInfoAudienceLabel: 'Audience',
@@ -174,7 +174,7 @@ const content = {
       },
       {
         q: 'Where will it take place?',
-        a: 'The event will take place in Campinas, SP. The exact venue will be announced soon.',
+        a: 'The event will take place in Unicamp Convention Center Auditorium 3. The exact venue will be announced soon.',
       },
       {
         q: 'Can I present a paper?',
