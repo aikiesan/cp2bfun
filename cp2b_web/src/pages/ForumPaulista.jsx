@@ -86,7 +86,7 @@ const content = {
       },
       {
         q: 'Onde será realizado?',
-        a: 'O evento será realizado no Centro de Convencoes Unicamp Auditorio 3. O local exato será divulgado em breve.',
+        a: 'O evento será realizado no Centro de Convencoes Unicamp Auditorio 3.',
       },
       {
         q: 'Posso apresentar trabalho?',
@@ -174,7 +174,7 @@ const content = {
       },
       {
         q: 'Where will it take place?',
-        a: 'The event will take place in Unicamp Convention Center Auditorium 3. The exact venue will be announced soon.',
+        a: 'The event will take place in Unicamp Convention Center Auditorium 3.',
       },
       {
         q: 'Can I present a paper?',
