@@ -646,12 +646,7 @@ body.high-contrast .social-sidebar-item {
 
 .hover-zoom img,
 .hover-zoom video {
-  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.hover-zoom:hover img,
-.hover-zoom:hover video {
-  transform: scale(1.05);
+  transition: none;
 }
 
 /* Hover Overlay (appears on hover) */
@@ -685,21 +680,12 @@ body.high-contrast .social-sidebar-item {
 }
 
 .interactive-card:hover {
-  transform: translateY(-8px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
 }
 
 .card-image-wrapper {
   position: relative;
   overflow: hidden;
-}
-
-.card-image-wrapper img {
-  transition: transform 0.5s ease;
-}
-
-.interactive-card:hover .card-image-wrapper img {
-  transform: scale(1.1);
 }
 
 .card-overlay {
@@ -731,11 +717,6 @@ body.high-contrast .social-sidebar-item {
   .interactive-card,
   .hover-lift {
     transform: none !important;
-  }
-
-  .hover-zoom:hover img,
-  .hover-zoom:hover video {
-    transform: none;
   }
 
   .hover-overlay,
