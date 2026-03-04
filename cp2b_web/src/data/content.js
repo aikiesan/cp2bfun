@@ -75,14 +75,16 @@ export const projectDetails = {
   beneficiary: 'Bruna de Souza Moraes',
   hostInstitution: 'Núcleo Interdisciplinar de Planejamento Energético/NIPE/UNICAMP',
   startDate: '01/02/2025',
-  duration: '60 meses',
+  
   pt: {
     title: 'Centro Paulista de Estudos em Biogás e Bioprodutos - CP2b',
-    keywords: ['Cadeia de Biogás', 'Ciência e Tecnologia de Base', 'Desenvolvimento Sustentável', 'Engenharia de Processos', 'Inovação em Bioprodutos', 'Politicas Públicas']
+    keywords: ['Cadeia de Biogás', 'Ciência e Tecnologia de Base', 'Desenvolvimento Sustentável', 'Engenharia de Processos', 'Inovação em Bioprodutos', 'Politicas Públicas'],
+    duration: '60 meses',
   },
   en: {
     title: 'São Paulo Center for Biogas and Bioproducts Studies - CP2b',
-    keywords: ['Biogas Chain', 'Basic Science and Technology', 'Sustainable Development', 'Process Engineering', 'Bioproduct Innovation', 'Public Policies']
+    keywords: ['Biogas Chain', 'Basic Science and Technology', 'Sustainable Development', 'Process Engineering', 'Bioproduct Innovation', 'Public Policies'],
+    duration: '60 months',
   }
 };
 

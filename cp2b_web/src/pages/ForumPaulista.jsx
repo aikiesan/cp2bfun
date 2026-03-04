@@ -96,7 +96,7 @@ const content = {
   },
   en: {
     heroBadge: '1ST EDITION • MAY 28, 2026',
-    heroTitle: 'I Fórum Paulista de Biogás e Bioprodutos',
+    heroTitle: 'I São Paulo Forum on Biogás and Bioproduts',
     heroSubtitle: 'São Paulo State Biogas and Bioproducts Chain Meeting',
     heroLocation: 'Unicamp Convention Center Auditorium 3',
     heroDate: 'May 28, 2026',
