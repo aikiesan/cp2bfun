@@ -14,6 +14,7 @@ const content = {
     heroDate: '28 de maio de 2026',
     meetupBtn: 'Registro Meet-up',
     registerBtn: 'Inscrição e Pagamento',
+    saveDateBtn: 'Salvar Data na Agenda',
 
     statsParticipants: '90+',
     statsParticipantsLabel: 'Participantes esperados',
@@ -102,6 +103,7 @@ const content = {
     heroDate: 'May 28, 2026',
     meetupBtn: 'Meet-up Registration',
     registerBtn: 'Registration & Payment',
+    saveDateBtn: 'Save Date in Agenda',
 
     statsParticipants: '90+',
     statsParticipantsLabel: 'Expected participants',
@@ -187,6 +189,16 @@ const content = {
 const ForumPaulista = () => {
   const { language } = useLanguage();
   const t = content[language];
+  // --- logica do google calendar (Tarefa M5) ---
+  const eventTitle = encodeURIComponent(t.heroTitle);
+  const eventDetails = encodeURIComponent(t.heroSubtitle);
+  const eventLocation = encodeURIComponent(t.heroLocation);
+  
+  // Data: 28 de Maio de 2026 | Horário: 09:00 às 16:30 (Local) -> 12:00 às 19:30 (UTC)
+  const eventDates = "20260528T120000Z/20260528T193000Z";
+  
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=${eventDates}&details=${eventDetails}&location=${eventLocation}`;
+
 
   return (
     <>
@@ -244,6 +256,18 @@ const ForumPaulista = () => {
                   </Link>
                   <Button variant="outline-light" size="lg" href="#" className="px-4">
                     {t.registerBtn}
+                  </Button>
+                  {/* google calendar button (Tarefa M5) */}
+                  <Button 
+                    variant="light" 
+                    size="lg" 
+                    href={googleCalendarUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 fw-semibold text-success"
+                  >
+                    <i className="bi bi-calendar-plus me-2" />
+                    {t.saveDateBtn}
                   </Button>
                 </div>
               </motion.div>
