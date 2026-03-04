@@ -780,6 +780,17 @@ body.high-contrast .btn-glow:hover {
   padding-left: 2rem;
 }
 
+.navbar .dropdown-item.active,
+.navbar .dropdown-item:active {
+  background: rgba(46, 125, 50, 0.1);
+  color: var(--cp2b-petrol);
+}
+
+.navbar .nav-item.active > .nav-link.dropdown-toggle {
+  color: var(--cp2b-petrol) !important;
+  background: rgba(46, 125, 50, 0.08);
+}
+
 .navbar .dropdown-divider {
   margin: 0.5rem 0;
   border-color: var(--cp2b-border);
