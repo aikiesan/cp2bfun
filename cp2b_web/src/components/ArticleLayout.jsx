@@ -1,6 +1,6 @@
 import { Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { FaArrowLeft, FaShareAlt } from 'react-icons/fa';
+import { FaArrowLeft, FaShareAlt, FaWhatsapp, FaTelegramPlane, FaLinkedinIn } from 'react-icons/fa';
 import { getCategoryColor } from '../utils/categoryColor';
 import { SafeHtml } from '../utils/sanitize.jsx';
 import RelatedPosts from './RelatedPosts';
@@ -16,6 +16,14 @@ const ArticleLayout = ({
   if (!article) return null;
 
   const { title, description, content, image, badge, badgeColor, date, author, imageCaption, tags } = article;
+
+  const url = encodeURIComponent(window.location.href);
+  const tituloEncoded = encodeURIComponent(title); // Adaptado para usar o 'title' do seu arquivo
+
+  const whatsappUrl = `https://wa.me/?text=${tituloEncoded}%20${url}`;
+  const telegramUrl = `https://t.me/share/url?url=${url}&text=${tituloEncoded}`;
+  const linkedinUrl = `https://linkedin.com/sharing/share-offsite/?url=${url}`;
+
   const categoryColor = getCategoryColor(badgeColor);
 
   const handleShare = () => {
@@ -131,6 +139,8 @@ const ArticleLayout = ({
 
         {/* 7. Footer actions */}
         <div className="article-fapesp-actions d-flex justify-content-between align-items-center">
+          
+          {/* Filho 1: Botão Voltar (Fica na esquerda) */}
           <Button
             as={Link}
             to={backLink}
@@ -140,14 +150,40 @@ const ArticleLayout = ({
             <FaArrowLeft className="me-2" />
             {backLabel}
           </Button>
-          <Button
-            variant="outline-primary"
-            className="rounded-pill px-4"
-            onClick={handleShare}
-          >
-            <FaShareAlt className="me-2" />
-            {shareLabel}
-          </Button>
+
+          {/* Filho 2: Caixinha das redes sociais (Fica na direita) */}
+          <div className="d-flex gap-3"> 
+            <Button
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outline-success"
+              className="rounded-pill px-4 border border-success"
+            >
+              <FaWhatsapp className="me-2" size={18} /> WhatsApp
+            </Button>
+            
+            <Button
+              href={telegramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outline-info"
+              className="rounded-pill px-4 border border-info"
+            >
+              <FaTelegramPlane className="me-2" size={18} /> Telegram
+            </Button>
+            
+            <Button
+              href={linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outline-primary"
+              className="rounded-pill px-4"
+            >
+              <FaLinkedinIn className="me-2" size={18} /> LinkedIn
+            </Button>
+          </div>
+          
         </div>
 
       </Container>
