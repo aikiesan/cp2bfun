@@ -1,6 +1,6 @@
 import { Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { FaArrowLeft, FaShareAlt, FaWhatsapp, FaTelegramPlane, FaLinkedinIn } from 'react-icons/fa';
+import { FaArrowLeft, FaWhatsapp, FaTelegramPlane, FaLinkedinIn } from 'react-icons/fa';
 import { getCategoryColor } from '../utils/categoryColor';
 import { SafeHtml } from '../utils/sanitize.jsx';
 import RelatedPosts from './RelatedPosts';
@@ -10,7 +10,6 @@ const ArticleLayout = ({
   relatedPosts,
   backLink,
   backLabel,
-  shareLabel,
   language,
 }) => {
   if (!article) return null;
@@ -26,12 +25,6 @@ const ArticleLayout = ({
 
   const categoryColor = getCategoryColor(badgeColor);
 
-  const handleShare = () => {
-    navigator.share?.({
-      title,
-      url: window.location.href,
-    });
-  };
 
   const renderContent = () => {
     if (content) {
