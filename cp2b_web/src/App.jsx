@@ -31,6 +31,7 @@ import ForumPaulista from './pages/ForumPaulista';
 import Registro from './pages/Registro';
 import AgendaMeetups from './pages/AgendaMeetups';
 import ConfirmarMeetup from './pages/ConfirmarMeetup';
+import Gallery from './pages/Gallery';
 
 // About sub-pages
 import Governance from './pages/about/Governance';
@@ -59,6 +60,8 @@ import {
   MeetupSlotsManager,
   MeetupRequestsPanel,
   ForumDashboard,
+  GalleryList,
+  GalleryUpload,
 } from './pages/admin';
 import FeaturedContentManager from './pages/admin/FeaturedContentManager';
 import {
@@ -106,6 +109,8 @@ function App() {
             <Route path="forum/participants" element={<ParticipantsPanel />} />
             <Route path="forum/slots"        element={<MeetupSlotsManager />} />
             <Route path="forum/meetups"      element={<MeetupRequestsPanel />} />
+            <Route path="gallery" element={<GalleryList />} />
+            <Route path="gallery/upload" element={<GalleryUpload />} />
           </Route>
 
           {/* Public Routes - With Header/Footer */}
@@ -130,6 +135,7 @@ function App() {
                     <Route path="/oportunidades" element={<Opportunities />} />
                     <Route path="/publicacoes" element={<Publications />} />
                     <Route path="/eventos" element={<Events />} />
+                    <Route path="/galeria" element={<Gallery />} />
                     <Route path="/projetos" element={<Projects />} />
                     <Route path="/projetos/:slug" element={<ProjectDetail />} />
                     <Route path="/na-midia" element={<Media />} />

@@ -207,6 +207,7 @@ const Header = () => {
               <Nav.Link as={NavLink} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
               <Nav.Link as={NavLink} to="/projetos" className="fw-semibold px-2">{t.projects}</Nav.Link>
               <Nav.Link as={NavLink} to="/eventos" className="fw-semibold px-2">{t.events}</Nav.Link>
+              <Nav.Link as={NavLink} to="/galeria" className="fw-semibold px-2">{t.gallery}</Nav.Link>
               <Nav.Link as={NavLink} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
               <Nav.Link as={NavLink} to="/outros" className="fw-semibold px-2">{t.others}</Nav.Link>
               <NavDropdown
