@@ -10,10 +10,11 @@ const content = {
     heroBadge: 'I EDIÇÃO • 28 MAI 2026',
     heroTitle: 'I Fórum Paulista de Biogás e Bioprodutos',
     heroSubtitle: 'Encontro da Cadeia de Biogás e Bioprodutos do Estado de São Paulo',
-    heroLocation: 'Campinas, SP',
+    heroLocation: 'Centro de Convencoes Unicamp Auditorio 3',
     heroDate: '28 de maio de 2026',
     meetupBtn: 'Registro Meet-up',
     registerBtn: 'Inscrição e Pagamento',
+    saveDateBtn: 'Salvar Data na Agenda',
 
     statsParticipants: '90+',
     statsParticipantsLabel: 'Participantes esperados',
@@ -29,7 +30,7 @@ const content = {
     aboutP2:
       'A proposta é criar um ambiente propício à troca de experiências, ao fortalecimento de redes de colaboração e à articulação entre academia, setor produtivo e poder público — elementos essenciais para consolidar o ecossistema de biogás e bioprodutos em âmbito estadual e nacional.',
     aboutInfoDate: '28 de maio de 2026',
-    aboutInfoLocation: 'Campinas, SP',
+    aboutInfoLocation: 'Centro de Convencoes Unicamp Auditorio 3',
     aboutInfoOrg: 'NIPE – Universidade Estadual de Campinas',
     aboutInfoAudience: 'Pesquisadores, estudantes, profissionais, empresas',
     aboutInfoAudienceLabel: 'Público',
@@ -86,7 +87,7 @@ const content = {
       },
       {
         q: 'Onde será realizado?',
-        a: 'O evento será realizado em Campinas, SP. O local exato será divulgado em breve.',
+        a: 'O evento será realizado no Centro de Convencoes Unicamp Auditorio 3.',
       },
       {
         q: 'Posso apresentar trabalho?',
@@ -96,12 +97,13 @@ const content = {
   },
   en: {
     heroBadge: '1ST EDITION • MAY 28, 2026',
-    heroTitle: 'I Fórum Paulista de Biogás e Bioprodutos',
+    heroTitle: 'I São Paulo Forum on Biogás and Bioproduts',
     heroSubtitle: 'São Paulo State Biogas and Bioproducts Chain Meeting',
-    heroLocation: 'Campinas, SP',
+    heroLocation: 'Unicamp Convention Center Auditorium 3',
     heroDate: 'May 28, 2026',
     meetupBtn: 'Meet-up Registration',
     registerBtn: 'Registration & Payment',
+    saveDateBtn: 'Save Date in Agenda',
 
     statsParticipants: '90+',
     statsParticipantsLabel: 'Expected participants',
@@ -117,7 +119,7 @@ const content = {
     aboutP2:
       'The goal is to create an environment conducive to the exchange of experiences, strengthening collaboration networks and articulating academia, the productive sector and public authorities — essential elements to consolidate the biogas and bioproducts ecosystem at state and national levels.',
     aboutInfoDate: 'May 28, 2026',
-    aboutInfoLocation: 'Campinas, SP',
+    aboutInfoLocation: 'Unicamp Convention Center Auditorium 3',
     aboutInfoOrg: 'NIPE – State University of Campinas',
     aboutInfoAudience: 'Researchers, students, professionals, companies',
     aboutInfoAudienceLabel: 'Audience',
@@ -174,7 +176,7 @@ const content = {
       },
       {
         q: 'Where will it take place?',
-        a: 'The event will take place in Campinas, SP. The exact venue will be announced soon.',
+        a: 'The event will take place in Unicamp Convention Center Auditorium 3.',
       },
       {
         q: 'Can I present a paper?',
@@ -187,6 +189,16 @@ const content = {
 const ForumPaulista = () => {
   const { language } = useLanguage();
   const t = content[language];
+  // --- logica do google calendar (Tarefa M5) ---
+  const eventTitle = encodeURIComponent(t.heroTitle);
+  const eventDetails = encodeURIComponent(t.heroSubtitle);
+  const eventLocation = encodeURIComponent(t.heroLocation);
+  
+  // Data: 28 de Maio de 2026 | Horário: 09:00 às 16:30 (Local) -> 12:00 às 19:30 (UTC)
+  const eventDates = "20260528T120000Z/20260528T193000Z";
+  
+  const googleCalendarUrl = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventTitle}&dates=${eventDates}&details=${eventDetails}&location=${eventLocation}`;
+
 
   return (
     <>
@@ -244,6 +256,18 @@ const ForumPaulista = () => {
                   </Link>
                   <Button variant="outline-light" size="lg" href="#" className="px-4">
                     {t.registerBtn}
+                  </Button>
+                  {/* google calendar button (Tarefa M5) */}
+                  <Button 
+                    variant="light" 
+                    size="lg" 
+                    href={googleCalendarUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-4 fw-semibold text-success"
+                  >
+                    <i className="bi bi-calendar-plus me-2" />
+                    {t.saveDateBtn}
                   </Button>
                 </div>
               </motion.div>

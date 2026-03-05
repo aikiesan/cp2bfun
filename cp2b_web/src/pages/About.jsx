@@ -82,7 +82,7 @@ const About = () => {
           <h1 className="display-4 fw-bold mb-4">{tTitle}</h1>
           <p className="lead text-muted mb-2"><strong>{labels.process}:</strong> {details.number}</p>
           <p className="text-muted small">
-              <strong>{labels.start}:</strong> {details.startDate} | <strong>{labels.duration}:</strong> {details.duration}
+              <strong>{labels.start}:</strong> {details.startDate} | <strong>{labels.duration}:</strong> {details[language].duration}
           </p>
         </Col>
       </Row>

@@ -1,4 +1,4 @@
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp } from 'react-icons/fa';
+import { FaSpotify, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import { socialLinks } from '../data/content';
 import { motion } from 'framer-motion';
@@ -7,7 +7,7 @@ const SocialSidebar = () => {
   const { pathname } = useLocation();
   if (pathname.startsWith('/admin')) return null;
   const socials = [
-    { icon: FaFacebookF, url: socialLinks.facebook, label: 'Facebook', color: '#1877F2' },
+    { icon: FaSpotify, url: socialLinks.spotify, label: 'Spotify', color: '#1DB954' },
     { icon: FaLinkedinIn, url: socialLinks.linkedin, label: 'LinkedIn', color: '#0A66C2' },
     { icon: FaInstagram, url: socialLinks.instagram, label: 'Instagram', color: '#E4405F' },
     { icon: FaYoutube, url: socialLinks.youtube, label: 'YouTube', color: '#FF0000' },

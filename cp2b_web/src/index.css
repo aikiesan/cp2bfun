@@ -134,9 +134,9 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 1;
 }
 
-/* Images */
-img {
-  border-radius: var(--cp2b-radius);
+/* extra spacing for partners section to clear previous content */
+.partners-section {
+  margin-top: 8rem; /* push it further down so title isn’t overlapped */
 }
 
 /* Accordion */
@@ -169,6 +169,7 @@ img {
   background: linear-gradient(135deg, var(--cp2b-petrol) 0%, var(--cp2b-green) 100%);
 
   -webkit-background-clip: text;
+  background-clip: text;
 
   -webkit-text-fill-color: transparent;
 
@@ -646,12 +647,7 @@ body.high-contrast .social-sidebar-item {
 
 .hover-zoom img,
 .hover-zoom video {
-  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.hover-zoom:hover img,
-.hover-zoom:hover video {
-  transform: scale(1.05);
+  transition: none;
 }
 
 /* Hover Overlay (appears on hover) */
@@ -685,21 +681,12 @@ body.high-contrast .social-sidebar-item {
 }
 
 .interactive-card:hover {
-  transform: translateY(-8px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15) !important;
 }
 
 .card-image-wrapper {
   position: relative;
   overflow: hidden;
-}
-
-.card-image-wrapper img {
-  transition: transform 0.5s ease;
-}
-
-.interactive-card:hover .card-image-wrapper img {
-  transform: scale(1.1);
 }
 
 .card-overlay {
@@ -731,11 +718,6 @@ body.high-contrast .social-sidebar-item {
   .interactive-card,
   .hover-lift {
     transform: none !important;
-  }
-
-  .hover-zoom:hover img,
-  .hover-zoom:hover video {
-    transform: none;
   }
 
   .hover-overlay,
@@ -796,6 +778,17 @@ body.high-contrast .btn-glow:hover {
   background: rgba(46, 125, 50, 0.08);
   color: var(--cp2b-green);
   padding-left: 2rem;
+}
+
+.navbar .dropdown-item.active,
+.navbar .dropdown-item:active {
+  background: rgba(46, 125, 50, 0.1);
+  color: var(--cp2b-petrol);
+}
+
+.navbar .nav-item.active > .nav-link.dropdown-toggle {
+  color: var(--cp2b-petrol) !important;
+  background: rgba(46, 125, 50, 0.08);
 }
 
 .navbar .dropdown-divider {
@@ -960,6 +953,7 @@ body.high-contrast .navbar .dropdown-item:hover {
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 1.5rem;
 }
 
 .featured-news-top,

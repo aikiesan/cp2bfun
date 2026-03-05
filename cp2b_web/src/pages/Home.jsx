@@ -205,7 +205,6 @@ const Home = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
-                    whileHover={{ y: -8 }}
                   >
                     <Card className="h-100 border-0 shadow-sm interactive-card">
                       <div className="card-image-wrapper position-relative" style={{ height: '240px', overflow: 'hidden', borderRadius: '24px 24px 0 0' }}>
@@ -244,9 +243,9 @@ const Home = () => {
       </section>
 
       {/* Partners Image Section */}
-      <section className="py-5">
+      <section className="py-5 partners-section">
         <Container>
-          <div className="text-center mb-5">
+          <div className="text-center mb-5 mt-5">
             <h3 className="fw-bold">{labels.partnersTitle}</h3>
           </div>
           <div className="text-center bg-white p-5 rounded-5 shadow-sm">
