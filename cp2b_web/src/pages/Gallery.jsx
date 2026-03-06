@@ -1,14 +1,31 @@
-import { useState } from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
+import { fetchGallery } from '../services/api';
 
 const Gallery = () => {
-  // 1. O ESTADO: Simulando fotos vindas de um servidor (Mock Data)
-  const [photos, setPhotos] = useState([
-    { id: 1, url: 'https://picsum.photos/id/1018/600/400', title: 'Fórum Paulista - Abertura', date: '28/05/2026' },
-    { id: 2, url: 'https://picsum.photos/id/1015/600/400', title: 'Palestra Principal', date: '28/05/2026' },
-    { id: 3, url: 'https://picsum.photos/id/1019/600/400', title: 'Networking Meet-up', date: '28/05/2026' },
-    { id: 4, url: 'https://picsum.photos/id/1043/600/400', title: 'Encerramento', date: '29/05/2026' },
-  ]);
+  // --- ESTADOS ---
+  const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  // --- BUSCA DE DADOS ---
+  // Carrega as fotos do backend ao montar o componente
+  useEffect(() => {
+    const loadPhotos = async () => {
+      const data = await fetchGallery(); // retorna [] em caso de erro (ver api.js)
+      setPhotos(data);
+      setLoading(false);
+    };
+    loadPhotos();
+  }, []);
+
+  // --- LOADING STATE ---
+  if (loading) {
+    return (
+      <Container className="py-5 text-center">
+        <Spinner animation="border" variant="primary" />
+      </Container>
+    );
+  }
 
   return (
     <Container className="py-5">
@@ -18,25 +35,24 @@ const Gallery = () => {
         <p className="text-muted">Confira os registros dos nossos eventos e projetos.</p>
       </div>
 
-      {/* 2. LÓGICA DE EXIBIÇÃO: Tem foto ou está vazio? */}
+      {/* --- LÓGICA DE EXIBIÇÃO: lista vazia ou grid de fotos --- */}
       {photos.length === 0 ? (
-        // Empty State (Estado Vazio) - O que mostra se não houver fotos
+        // Empty State — exibido quando não há fotos ou a API retornou vazio
         <div className="text-center text-muted py-5">
           <i className="bi bi-camera-fill" style={{ fontSize: '3rem' }}></i>
           <p className="mt-3">Ainda não há fotos publicadas na galeria.</p>
         </div>
       ) : (
-        // O Grid de Fotos usando Bootstrap
+        // Grid de Fotos
         <Row xs={1} md={2} lg={3} className="g-4">
-          {/* 3. O LOOP: map() percorre a lista e cria um Card para cada foto */}
           {photos.map((photo) => (
             <Col key={photo.id}>
               <Card className="h-100 shadow-sm border-0">
-                <Card.Img 
-                  variant="top" 
-                  src={photo.url} 
-                  alt={photo.title} 
-                  style={{ objectFit: 'cover', height: '250px' }} 
+                <Card.Img
+                  variant="top"
+                  src={photo.url}
+                  alt={photo.title}
+                  style={{ objectFit: 'cover', height: '250px' }}
                 />
                 <Card.Body>
                   <Card.Title className="h6 fw-bold">{photo.title}</Card.Title>

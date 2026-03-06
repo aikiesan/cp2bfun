@@ -1,32 +1,46 @@
-import { useState } from 'react';
-import { Container, Button, Table, Image, Badge } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { Container, Button, Table, Image, Badge, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { fetchGallery, deleteGalleryPhoto } from '../../services/api';
 
 const GalleryList = () => {
-  const navigate = useNavigate(); // Ferramenta do React para mudar de página
+  const navigate = useNavigate();
 
-  // Simulando as fotos que viriam do banco de dados
-  const [photos, setPhotos] = useState([
-    { id: 1, url: 'https://picsum.photos/id/1018/600/400', title: 'Fórum Paulista - Abertura', date: '28/05/2026' },
-    { id: 2, url: 'https://picsum.photos/id/1015/600/400', title: 'Palestra Principal', date: '28/05/2026' },
-  ]);
+  // --- ESTADOS ---
+  const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Função para apagar uma foto
-  const handleDelete = (id) => {
-    // window.confirm cria aquela caixinha nativa do navegador perguntando "Tem certeza?"
-    if (window.confirm('Tem certeza que deseja apagar esta foto da galeria?')) {
-      // Filtra a lista, removendo a foto com o ID clicado
-      setPhotos(photos.filter(photo => photo.id !== id));
+  // --- BUSCA DE DADOS ---
+  // Carrega a lista de fotos do backend ao montar o componente
+  useEffect(() => {
+    const loadPhotos = async () => {
+      const data = await fetchGallery();
+      setPhotos(data);
+      setLoading(false);
+    };
+    loadPhotos();
+  }, []);
+
+  // --- EXCLUSÃO ---
+  // Chama a API para apagar a foto e, em caso de sucesso, remove do estado local
+  const handleDelete = async (id) => {
+    if (!window.confirm('Tem certeza que deseja apagar esta foto da galeria?')) return;
+
+    try {
+      await deleteGalleryPhoto(id);
+      // Atualiza a lista local sem precisar rebuscar do servidor
+      setPhotos((prev) => prev.filter((photo) => photo.id !== id));
+    } catch (error) {
+      alert('Erro ao apagar a foto. Tente novamente.');
+      console.error('Error deleting gallery photo:', error);
     }
   };
 
   return (
     <Container className="py-4">
-      {/* CABEÇALHO DA PÁGINA */}
+      {/* CABEÇALHO */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="fw-bold mb-0">Gerenciar Galeria</h2>
-        
-        {/* AQUI ESTÁ O SEU BOTÃO! Ele usa o navigate para ir para a tela de Upload */}
         <Button variant="primary" onClick={() => navigate('/admin/gallery/upload')}>
           <i className="bi bi-plus-lg me-2"></i>
           Nova Foto
@@ -45,8 +59,16 @@ const GalleryList = () => {
             </tr>
           </thead>
           <tbody>
-            {photos.length === 0 ? (
-              // Se não houver fotos, mostra esta mensagem
+            {/* --- LOADING STATE --- */}
+            {loading ? (
+              <tr>
+                <td colSpan="4" className="text-center py-5">
+                  <Spinner animation="border" variant="primary" size="sm" className="me-2" />
+                  Carregando fotos...
+                </td>
+              </tr>
+            ) : photos.length === 0 ? (
+              // Empty State — exibido quando não há fotos cadastradas
               <tr>
                 <td colSpan="4" className="text-center py-5 text-muted">
                   <i className="bi bi-images mb-2 d-block" style={{ fontSize: '2rem' }}></i>
@@ -54,25 +76,25 @@ const GalleryList = () => {
                 </td>
               </tr>
             ) : (
-              // Se houver fotos, cria uma linha (tr) para cada uma
+              // Lista de fotos vindas da API
               photos.map((photo) => (
                 <tr key={photo.id}>
                   <td className="px-4">
-                    <Image 
-                      src={photo.url} 
-                      alt={photo.title} 
-                      width={80} 
-                      height={60} 
-                      rounded 
-                      style={{ objectFit: 'cover' }} 
+                    <Image
+                      src={photo.url}
+                      alt={photo.title}
+                      width={80}
+                      height={60}
+                      rounded
+                      style={{ objectFit: 'cover' }}
                     />
                   </td>
                   <td className="fw-semibold">{photo.title}</td>
                   <td><Badge bg="secondary">{photo.date}</Badge></td>
                   <td className="text-end px-4">
-                    <Button 
-                      variant="outline-danger" 
-                      size="sm" 
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
                       onClick={() => handleDelete(photo.id)}
                     >
                       <i className="bi bi-trash"></i> Apagar

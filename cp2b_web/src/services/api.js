@@ -530,3 +530,36 @@ export const fetchAllMeetupRequests = () => api.get('/meetup-requests/all').then
 export const cancelMeetupRequest = (id) => api.put(`/meetup-requests/${id}/cancel`, {}).then(r => r.data);
 export const deleteMeetupRequest = (id) => api.delete(`/meetup-requests/${id}`).then(r => r.data);
 export const confirmMeetupAdmin = (id) => api.put(`/meetup-requests/${id}/confirm-admin`, {}).then(r => r.data);
+
+// ============================================================
+// Gallery API
+// ============================================================
+
+/** Busca todas as fotos da galeria (usado na página pública e no admin) */
+export const fetchGallery = async () => {
+  try {
+    const response = await api.get('/gallery');
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching gallery:', error);
+    }
+    return [];
+  }
+};
+
+/**
+ * Envia uma nova foto via multipart/form-data.
+ * O ApiClient detecta FormData automaticamente e omite o Content-Type,
+ * deixando o navegador definir o boundary correto.
+ */
+export const uploadGalleryPhoto = async (formData) => {
+  const response = await api.post('/gallery', formData);
+  return response.data;
+};
+
+/** Remove uma foto da galeria pelo ID */
+export const deleteGalleryPhoto = async (id) => {
+  const response = await api.delete(`/gallery/${id}`);
+  return response.data;
+};
