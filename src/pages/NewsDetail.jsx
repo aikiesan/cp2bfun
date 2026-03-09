@@ -1,9 +1,11 @@
 import React from 'react';
 import { Container, Badge, Button } from 'react-bootstrap';
+import { Helmet } from 'react-helmet-async';
 import { useParams, Link } from 'react-router-dom';
 import { newsItems } from '../data/content';
 import { FaArrowLeft, FaCalendarAlt, FaShareAlt } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
+import SEO from '../components/SEO';
 
 const NewsDetail = () => {
   const { slug } = useParams();
@@ -39,8 +41,39 @@ const NewsDetail = () => {
     );
   }
 
+  const articleJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    'headline': article.title,
+    'description': article.description,
+    'image': article.image?.startsWith('http') ? article.image : `https://cp2b.nipe.unicamp.br${article.image}`,
+    'datePublished': article.date,
+    'author': { '@type': 'Organization', 'name': 'CP2B' },
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'CP2B - Centro Paulista de Estudos em Biogás e Bioprodutos',
+      'logo': { '@type': 'ImageObject', 'url': 'https://cp2b.nipe.unicamp.br/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png' }
+    }
+  };
+
   return (
     <article className="py-5">
+      <SEO
+        title={article.title}
+        description={article.description}
+        image={article.image}
+        url={`/noticias/${slug}`}
+        type="article"
+        article={{ publishedTime: article.date, modifiedTime: article.date, author: 'CP2B', tags: article.tags }}
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: language === 'pt' ? 'Notícias' : 'News', url: '/noticias' },
+          { name: article.title, url: `/noticias/${slug}` }
+        ]}
+      />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(articleJsonLd)}</script>
+      </Helmet>
       {/* Hero Image for Article */}
       <div className="w-100 mb-5 position-relative" style={{ height: '50vh', maxHeight: '500px', backgroundColor: '#f0f0f0' }}>
          <img 

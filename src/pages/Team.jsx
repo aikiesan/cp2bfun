@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { teamMembers, menuLabels } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { FaEnvelope, FaPhone } from 'react-icons/fa';
+import SEO from '../components/SEO';
 
 const Team = () => {
   const { language } = useLanguage();
@@ -40,6 +41,20 @@ const Team = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
+      <SEO
+        title={language === 'pt' ? 'Equipe' : 'Team'}
+        description={language === 'pt'
+          ? 'Pesquisadores, docentes e estudantes do CP2B: uma rede multidisciplinar dedicada ao desenvolvimento de soluções em biogás e bioprodutos na UNICAMP.'
+          : 'Researchers, faculty and students of CP2B: a multidisciplinary network dedicated to developing biogas and bioproduct solutions at UNICAMP.'}
+        keywords={language === 'pt'
+          ? 'equipe CP2B, pesquisadores, docentes, UNICAMP, biogás'
+          : 'CP2B team, researchers, faculty, UNICAMP, biogas'}
+        url="/equipe"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: language === 'pt' ? 'Equipe' : 'Team', url: '/equipe' }
+        ]}
+      />
       <Container className="py-5">
         {/* Page Header */}
         <Row className="mb-5 page-header">
