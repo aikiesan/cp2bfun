@@ -3,6 +3,7 @@ import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaEnvelope, FaPhone } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
+import SEO from '../components/SEO';
 
 const Contact = () => {
   const { language } = useLanguage();
@@ -51,6 +52,20 @@ const Contact = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
+      <SEO
+        title={language === 'pt' ? 'Contato' : 'Contact'}
+        description={language === 'pt'
+          ? 'Entre em contato com o CP2B para colaborações, dúvidas ou informações. Estamos localizados no NIPE/UNICAMP, Campinas, São Paulo.'
+          : 'Contact CP2B for collaborations, questions, or information. We are located at NIPE/UNICAMP, Campinas, São Paulo.'}
+        keywords={language === 'pt'
+          ? 'contato CP2B, Campinas, NIPE, UNICAMP, colaboração'
+          : 'contact CP2B, Campinas, NIPE, UNICAMP, collaboration'}
+        url="/contato"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: language === 'pt' ? 'Contato' : 'Contact', url: '/contato' }
+        ]}
+      />
       <Container className="py-5">
         {/* Page Header */}
         <Row className="mb-5 page-header">

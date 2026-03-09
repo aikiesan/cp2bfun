@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { newsItems } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
+import SEO from '../components/SEO';
 
 const News = () => {
   const { language } = useLanguage();
@@ -50,6 +51,20 @@ const News = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
+      <SEO
+        title={language === 'pt' ? 'Notícias' : 'News'}
+        description={language === 'pt'
+          ? 'Últimas notícias, eventos e comunicados do CP2B — Centro Paulista de Estudos em Biogás e Bioprodutos.'
+          : 'Latest news, events and announcements from CP2B — São Paulo Center for Biogas and Bioproducts Studies.'}
+        keywords={language === 'pt'
+          ? 'notícias CP2B, biogás, eventos, comunicados, UNICAMP'
+          : 'CP2B news, biogas, events, announcements, UNICAMP'}
+        url="/noticias"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: language === 'pt' ? 'Notícias' : 'News', url: '/noticias' }
+        ]}
+      />
       <Container className="py-5">
         {/* Page Header */}
         <Row className="mb-5 page-header">
