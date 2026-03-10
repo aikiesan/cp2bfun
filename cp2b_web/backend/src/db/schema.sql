@@ -16,6 +16,11 @@ CREATE TABLE IF NOT EXISTS news (
   date_display VARCHAR(50),
   published_at TIMESTAMP,
   featured_position VARCHAR(1) CHECK (featured_position IN ('A', 'B', 'C')),
+  sort_order INTEGER,
+  author VARCHAR(255),
+  image_caption_pt TEXT,
+  image_caption_en TEXT,
+  tags TEXT,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
@@ -132,7 +137,7 @@ CREATE TABLE IF NOT EXISTS events (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- Projects (same structure as news)
+-- Projects (same structure as news + migration 010 columns)
 CREATE TABLE IF NOT EXISTS projects (
   id SERIAL PRIMARY KEY,
   slug VARCHAR(255) UNIQUE NOT NULL,
@@ -148,11 +153,15 @@ CREATE TABLE IF NOT EXISTS projects (
   date_display VARCHAR(50),
   published_at TIMESTAMP,
   featured_position VARCHAR(1) CHECK (featured_position IN ('A', 'B', 'C')),
+  author VARCHAR(255),
+  image_caption_pt TEXT,
+  image_caption_en TEXT,
+  tags TEXT,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- Featured videos (YouTube embeds for homepage)
+-- Featured videos (YouTube embeds with A/B/C position layout)
 CREATE TABLE IF NOT EXISTS featured_videos (
   id SERIAL PRIMARY KEY,
   youtube_url VARCHAR(500) NOT NULL,
@@ -173,6 +182,7 @@ CREATE TABLE IF NOT EXISTS featured_videos (
 CREATE INDEX IF NOT EXISTS idx_news_slug ON news(slug);
 CREATE INDEX IF NOT EXISTS idx_news_published_at ON news(published_at DESC);
 CREATE INDEX IF NOT EXISTS idx_news_featured ON news(featured_position) WHERE featured_position IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_news_sort_order ON news(sort_order);
 CREATE INDEX IF NOT EXISTS idx_team_category ON team_members(category);
 CREATE INDEX IF NOT EXISTS idx_team_sort ON team_members(sort_order);
 CREATE INDEX IF NOT EXISTS idx_axes_number ON research_axes(axis_number);

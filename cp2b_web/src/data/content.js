@@ -2,8 +2,9 @@ export const socialLinks = {
   instagram: 'https://www.instagram.com/centro_biogas_cp2b/',
   linkedin: 'https://br.linkedin.com/company/centro-paulista-de-estudos-em-biog%C3%A1s-e-bioprodutos-cp2b',
   facebook: 'https://www.facebook.com/nipeunicamp/',
-  youtube: '#',
-  whatsapp: '#'
+  youtube: 'https://www.youtube.com/@nipeunicamp4034',
+  whatsapp: 'https://wa.me/message/KVJUNJN7SIAZP1',
+  spotify: "https://open.spotify.com/intl-pt"
 };
 
 export const menuLabels = {
@@ -25,7 +26,7 @@ export const menuLabels = {
     team: 'Equipe',
     publications: 'Publicações',
     projects: 'Projetos',
-    events: 'Eventos',
+    microscopio: 'Microscópio',
     media: 'Mídia',
     others: 'Outros',
     linkedin: 'LinkedIn',
@@ -54,7 +55,7 @@ export const menuLabels = {
     team: 'Team',
     publications: 'Publications',
     projects: 'Projects',
-    events: 'Events',
+    microscopio: 'Microscópio',
     media: 'Media',
     others: 'Others',
     linkedin: 'LinkedIn',
@@ -74,14 +75,16 @@ export const projectDetails = {
   beneficiary: 'Bruna de Souza Moraes',
   hostInstitution: 'Núcleo Interdisciplinar de Planejamento Energético/NIPE/UNICAMP',
   startDate: '01/02/2025',
-  duration: '60 meses',
+  
   pt: {
     title: 'Centro Paulista de Estudos em Biogás e Bioprodutos - CP2b',
-    keywords: ['Cadeia de Biogás', 'Ciência e Tecnologia de Base', 'Desenvolvimento Sustentável', 'Engenharia de Processos', 'Inovação em Bioprodutos', 'Politicas Públicas']
+    keywords: ['Cadeia de Biogás', 'Ciência e Tecnologia de Base', 'Desenvolvimento Sustentável', 'Engenharia de Processos', 'Inovação em Bioprodutos', 'Politicas Públicas'],
+    duration: '60 meses',
   },
   en: {
     title: 'São Paulo Center for Biogas and Bioproducts Studies - CP2b',
-    keywords: ['Biogas Chain', 'Basic Science and Technology', 'Sustainable Development', 'Process Engineering', 'Bioproduct Innovation', 'Public Policies']
+    keywords: ['Biogas Chain', 'Basic Science and Technology', 'Sustainable Development', 'Process Engineering', 'Bioproduct Innovation', 'Public Policies'],
+    duration: '60 months',
   }
 };
 

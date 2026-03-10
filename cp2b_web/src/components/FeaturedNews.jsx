@@ -31,7 +31,6 @@ const FeaturedNews = ({ newsA, newsB, newsC }) => {
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
-          whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.3 }}
         >
           <div className="featured-headline-overlay" />

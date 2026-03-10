@@ -1,14 +1,18 @@
 import { useState, useEffect } from 'react';
-import { Container, Table, Button, Badge, Spinner, Alert, Form, Row, Col } from 'react-bootstrap';
+import { Container, Table, Button, Badge, Spinner, Form, Row, Col } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
+import { ConfirmDialog, EmptyState, useToast } from '../../components/admin';
 
 const EventsList = () => {
   const navigate = useNavigate();
+  const toast = useToast();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [filters, setFilters] = useState({ status: 'all', type: 'all' });
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState(null);
+  const [deleting, setDeleting] = useState(false);
 
   useEffect(() => {
     fetchEvents();
@@ -25,21 +29,32 @@ const EventsList = () => {
       const response = await api.get(`/events?${params}`);
       setEvents(response.data);
     } catch (err) {
-      setError('Erro ao carregar eventos');
+      toast.error('Erro ao carregar eventos. Verifique se a API está rodando.');
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Tem certeza que deseja excluir este evento?')) return;
+  const handleDeleteClick = (event) => {
+    setItemToDelete(event);
+    setShowDeleteDialog(true);
+  };
 
+  const handleDeleteConfirm = async () => {
+    if (!itemToDelete) return;
+    setDeleting(true);
     try {
-      await api.delete(`/events/${id}`);
-      setEvents(events.filter(e => e.id !== id));
+      await api.delete(`/events/${itemToDelete.id}`);
+      setEvents((prev) => prev.filter((e) => e.id !== itemToDelete.id));
+      toast.success(`Evento "${itemToDelete.title_pt}" excluído com sucesso.`);
     } catch (err) {
-      setError('Erro ao excluir evento');
+      toast.error('Erro ao excluir evento. Tente novamente.');
+      console.error(err);
+    } finally {
+      setDeleting(false);
+      setShowDeleteDialog(false);
+      setItemToDelete(null);
     }
   };
 
@@ -86,12 +101,6 @@ const EventsList = () => {
         </Button>
       </div>
 
-      {error && (
-        <Alert variant="danger" dismissible onClose={() => setError(null)}>
-          {error}
-        </Alert>
-      )}
-
       {/* Filters */}
       <Row className="mb-3">
         <Col md={3}>
@@ -118,63 +127,84 @@ const EventsList = () => {
         </Col>
       </Row>
 
-      <Table responsive hover className="bg-white rounded">
-        <thead>
-          <tr>
-            <th>Título</th>
-            <th>Tipo</th>
-            <th>Data</th>
-            <th>Status</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody>
-          {events.map(event => (
-            <tr key={event.id}>
-              <td>
-                <strong>{event.title_pt}</strong>
-                {event.title_en && (
-                  <small className="d-block text-muted">{event.title_en}</small>
-                )}
-              </td>
-              <td>
-                <Badge bg="info">{typeLabels[event.event_type]}</Badge>
-              </td>
-              <td>
-                {new Date(event.start_date).toLocaleDateString('pt-BR', {
-                  day: '2-digit',
-                  month: '2-digit',
-                  year: 'numeric'
-                })}
-              </td>
-              <td>
-                <Badge bg={statusColors[event.status]}>{statusLabels[event.status]}</Badge>
-              </td>
-              <td>
-                <Button
-                  variant="outline-primary"
-                  size="sm"
-                  className="me-2"
-                  onClick={() => navigate(`/admin/events/${event.id}`)}
-                >
-                  <i className="bi bi-pencil"></i>
-                </Button>
-                <Button
-                  variant="outline-danger"
-                  size="sm"
-                  onClick={() => handleDelete(event.id)}
-                >
-                  <i className="bi bi-trash"></i>
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-
-      {events.length === 0 && (
-        <p className="text-center text-muted py-5">Nenhum evento cadastrado</p>
+      {events.length === 0 ? (
+        <EmptyState
+          icon="bi-calendar-event"
+          title="Nenhum evento cadastrado"
+          message="Crie o primeiro evento para exibir no site."
+          actionLabel="Novo Evento"
+          onAction={() => navigate('/admin/events/new')}
+        />
+      ) : (
+        <div className="card">
+          <Table responsive hover className="mb-0 align-middle">
+            <thead className="bg-light">
+              <tr>
+                <th>Título</th>
+                <th>Tipo</th>
+                <th>Data</th>
+                <th>Status</th>
+                <th style={{ width: '110px' }} className="text-end">Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              {events.map(event => (
+                <tr key={event.id}>
+                  <td>
+                    <strong>{event.title_pt}</strong>
+                    {event.title_en && (
+                      <small className="d-block text-muted">{event.title_en}</small>
+                    )}
+                  </td>
+                  <td>
+                    <Badge bg="info">{typeLabels[event.event_type]}</Badge>
+                  </td>
+                  <td className="text-nowrap">
+                    {new Date(event.start_date).toLocaleDateString('pt-BR', {
+                      day: '2-digit',
+                      month: '2-digit',
+                      year: 'numeric'
+                    })}
+                  </td>
+                  <td>
+                    <Badge bg={statusColors[event.status]}>{statusLabels[event.status]}</Badge>
+                  </td>
+                  <td className="text-end">
+                    <Button
+                      variant="outline-primary"
+                      size="sm"
+                      className="me-1"
+                      onClick={() => navigate(`/admin/events/${event.id}`)}
+                      title="Editar"
+                    >
+                      <i className="bi bi-pencil"></i>
+                    </Button>
+                    <Button
+                      variant="outline-danger"
+                      size="sm"
+                      onClick={() => handleDeleteClick(event)}
+                      title="Excluir"
+                    >
+                      <i className="bi bi-trash"></i>
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       )}
+
+      <ConfirmDialog
+        show={showDeleteDialog}
+        title="Excluir Evento"
+        message={`Tem certeza que deseja excluir o evento "${itemToDelete?.title_pt}"? Esta ação não pode ser desfeita.`}
+        confirmLabel={deleting ? 'Excluindo…' : 'Excluir'}
+        confirmVariant="danger"
+        icon="bi-trash"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => { setShowDeleteDialog(false); setItemToDelete(null); }}
+      />
     </Container>
   );
 };

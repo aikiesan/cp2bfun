@@ -9,6 +9,7 @@ import Timeline from '../components/Timeline';
 import PartnerCarousel from '../components/PartnerCarousel';
 import Newsletter from '../components/Newsletter';
 import SDGWheel from '../components/SDGWheel';
+import SEO from '../components/SEO';
 
 const Home = () => {
   const { language } = useLanguage();
@@ -45,6 +46,7 @@ const Home = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
+      <SEO url="/" />
       {/* Hero Section - Refined Carousel */}
       <section className="hero-section mb-5">
         <Carousel fade interval={10000} controls={false} indicators={true}>

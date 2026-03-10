@@ -2,6 +2,7 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import { useLanguage } from '../context/LanguageContext';
 import { menuLabels } from '../data/content';
+import SEO from '../components/SEO';
 
 const Others = () => {
   const { language } = useLanguage();
@@ -9,6 +10,11 @@ const Others = () => {
 
   return (
     <Container className="py-5">
+      <SEO
+        title={language === 'pt' ? 'Outros Recursos' : 'Other Resources'}
+        url="/outros"
+        noindex
+      />
       <h1 className="display-4 fw-bold mb-4">{t.others}</h1>
       <p className="lead text-muted">
         {language === 'pt' 

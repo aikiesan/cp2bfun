@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { Container, Table, Button, Modal, Form, Alert, Spinner, Tabs, Tab } from 'react-bootstrap';
+import { Container, Table, Button, Modal, Form, Spinner, Tabs, Tab } from 'react-bootstrap';
 import api from '../../services/api';
+import { ConfirmDialog, useToast } from '../../components/admin';
 
 const categories = [
   { value: 'coordinators', pt: 'Pesquisadores Responsaveis', en: 'Lead Researchers' },
@@ -11,13 +12,15 @@ const categories = [
 ];
 
 const TeamEditor = () => {
+  const toast = useToast();
   const [members, setMembers] = useState({});
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [editingMember, setEditingMember] = useState(null);
   const [saving, setSaving] = useState(false);
   const [activeTab, setActiveTab] = useState('coordinators');
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [memberToDelete, setMemberToDelete] = useState(null);
 
   const [formData, setFormData] = useState({
     name: '',
@@ -32,6 +35,7 @@ const TeamEditor = () => {
 
   useEffect(() => {
     fetchMembers();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchMembers = async () => {
@@ -39,7 +43,7 @@ const TeamEditor = () => {
       const response = await api.get('/team/grouped');
       setMembers(response.data);
     } catch (err) {
-      setError('Erro ao carregar equipe');
+      toast.error('Erro ao carregar equipe. Verifique se a API está rodando.');
       console.error(err);
     } finally {
       setLoading(false);
@@ -78,7 +82,6 @@ const TeamEditor = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setEditingMember(null);
-    setError(null);
   };
 
   const handleChange = (e) => {
@@ -89,33 +92,42 @@ const TeamEditor = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
-    setError(null);
 
     try {
       if (editingMember) {
         await api.put(`/team/${editingMember.id}`, formData);
+        toast.success('Membro atualizado com sucesso.');
       } else {
         await api.post('/team', formData);
+        toast.success('Membro adicionado com sucesso.');
       }
       await fetchMembers();
       handleCloseModal();
     } catch (err) {
-      setError(err.response?.data?.error || 'Erro ao salvar membro');
+      toast.error(err.response?.data?.error || 'Erro ao salvar membro. Tente novamente.');
       console.error(err);
     } finally {
       setSaving(false);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm('Tem certeza que deseja excluir este membro?')) return;
+  const handleDeleteClick = (member) => {
+    setMemberToDelete(member);
+    setShowDeleteDialog(true);
+  };
 
+  const handleDeleteConfirm = async () => {
+    if (!memberToDelete) return;
     try {
-      await api.delete(`/team/${id}`);
+      await api.delete(`/team/${memberToDelete.id}`);
       await fetchMembers();
+      toast.success(`Membro "${memberToDelete.name}" excluído com sucesso.`);
     } catch (err) {
-      setError('Erro ao excluir membro');
+      toast.error('Erro ao excluir membro. Tente novamente.');
       console.error(err);
+    } finally {
+      setShowDeleteDialog(false);
+      setMemberToDelete(null);
     }
   };
 
@@ -135,8 +147,6 @@ const TeamEditor = () => {
           <i className="bi bi-person-plus me-2"></i>Novo Membro
         </Button>
       </div>
-
-      {error && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
 
       <Tabs activeKey={activeTab} onSelect={(k) => setActiveTab(k)} className="mb-3">
         {categories.map((cat) => (
@@ -179,7 +189,8 @@ const TeamEditor = () => {
                         <Button
                           variant="outline-danger"
                           size="sm"
-                          onClick={() => handleDelete(member.id)}
+                          onClick={() => handleDeleteClick(member)}
+                          title="Excluir"
                         >
                           <i className="bi bi-trash"></i>
                         </Button>
@@ -189,11 +200,22 @@ const TeamEditor = () => {
                 </tbody>
               </Table>
             ) : (
-              <Alert variant="info">Nenhum membro nesta categoria.</Alert>
+              <p className="text-muted py-3 px-2">Nenhum membro nesta categoria.</p>
             )}
           </Tab>
         ))}
       </Tabs>
+
+      <ConfirmDialog
+        show={showDeleteDialog}
+        title="Excluir Membro"
+        message={`Tem certeza que deseja excluir "${memberToDelete?.name}"? Esta ação não pode ser desfeita.`}
+        confirmLabel="Excluir"
+        confirmVariant="danger"
+        icon="bi-person-x"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => { setShowDeleteDialog(false); setMemberToDelete(null); }}
+      />
 
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
         <Modal.Header closeButton>
@@ -201,7 +223,6 @@ const TeamEditor = () => {
         </Modal.Header>
         <Form onSubmit={handleSubmit}>
           <Modal.Body>
-            {error && <Alert variant="danger">{error}</Alert>}
 
             <Form.Group className="mb-3">
               <Form.Label>Nome *</Form.Label>

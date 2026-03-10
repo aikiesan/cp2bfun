@@ -137,10 +137,12 @@ const Contact = () => {
 
             <Form noValidate onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
-                <Form.Label className="mono-label text-muted">{labels.formName}</Form.Label>
+                <Form.Label htmlFor = "name" className="mono-label text-muted">{labels.formName}</Form.Label>
                 <Form.Control
                   type="text"
                   name="name"
+                  autoComplete = "name"
+                  id = "name"
                   value={formData.name}
                   onChange={handleChange}
                   className="rounded-0 border-dark bg-transparent"
@@ -148,10 +150,12 @@ const Contact = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label className="mono-label text-muted">{labels.formEmail}</Form.Label>
+                <Form.Label htmlFor = "email" className="mono-label text-muted">{labels.formEmail}</Form.Label>
                 <Form.Control
                   type="email"
                   name="email"
+                  id = "email"
+                  autoComplete = "email"
                   value={formData.email}
                   onChange={handleChange}
                   className="rounded-0 border-dark bg-transparent"
@@ -159,10 +163,13 @@ const Contact = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-4">
-                <Form.Label className="mono-label text-muted">{labels.formMsg}</Form.Label>
+                <Form.Label htmlFor = "message"className="mono-label text-muted">{labels.formMsg}</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={5}
+                  autoComplete = "off"
+                  id = "message"
+                  type = "text"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}

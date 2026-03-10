@@ -63,7 +63,8 @@ router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, slug, title_pt, title_en, description_pt, description_en,
-              image, badge, badge_color, date_display, published_at, created_at
+              image, badge, badge_color, date_display, published_at, created_at,
+              author, tags
        FROM projects
        ORDER BY published_at DESC NULLS LAST, created_at DESC`
     );
@@ -99,16 +100,19 @@ router.post('/', async (req, res) => {
   try {
     const {
       slug, title_pt, title_en, description_pt, description_en,
-      content_pt, content_en, image, badge, badge_color, date_display, published_at
+      content_pt, content_en, image, badge, badge_color, date_display, published_at,
+      author, image_caption_pt, image_caption_en, tags
     } = req.body;
 
     const result = await pool.query(
       `INSERT INTO projects (slug, title_pt, title_en, description_pt, description_en,
-                         content_pt, content_en, image, badge, badge_color, date_display, published_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
+                         content_pt, content_en, image, badge, badge_color, date_display,
+                         published_at, author, image_caption_pt, image_caption_en, tags)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
        RETURNING *`,
       [slug, title_pt, title_en, description_pt, description_en,
-       content_pt, content_en, image, badge, badge_color, date_display, published_at]
+       content_pt, content_en, image, badge, badge_color, date_display, published_at,
+       author, image_caption_pt, image_caption_en, tags]
     );
 
     res.status(201).json(result.rows[0]);
@@ -128,7 +132,7 @@ router.put('/:slug', async (req, res) => {
     const {
       title_pt, title_en, description_pt, description_en,
       content_pt, content_en, image, badge, badge_color, date_display, published_at,
-      new_slug
+      new_slug, author, image_caption_pt, image_caption_en, tags
     } = req.body;
 
     const result = await pool.query(
@@ -145,11 +149,16 @@ router.put('/:slug', async (req, res) => {
          badge_color = COALESCE($10, badge_color),
          date_display = COALESCE($11, date_display),
          published_at = COALESCE($12, published_at),
+         author = COALESCE($14, author),
+         image_caption_pt = COALESCE($15, image_caption_pt),
+         image_caption_en = COALESCE($16, image_caption_en),
+         tags = COALESCE($17, tags),
          updated_at = NOW()
        WHERE slug = $13
        RETURNING *`,
       [new_slug, title_pt, title_en, description_pt, description_en,
-       content_pt, content_en, image, badge, badge_color, date_display, published_at, slug]
+       content_pt, content_en, image, badge, badge_color, date_display, published_at, slug,
+       author, image_caption_pt, image_caption_en, tags]
     );
 
     if (result.rows.length === 0) {

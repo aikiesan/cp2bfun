@@ -2,6 +2,7 @@ import React from 'react';
 import { Container } from 'react-bootstrap';
 import { useLanguage } from '../context/LanguageContext';
 import { menuLabels } from '../data/content';
+import SEO from '../components/SEO';
 
 const Media = () => {
   const { language } = useLanguage();
@@ -9,6 +10,11 @@ const Media = () => {
 
   return (
     <Container className="py-5">
+      <SEO
+        title={language === 'pt' ? 'Na Mídia' : 'In the Media'}
+        url="/na-midia"
+        noindex
+      />
       <h1 className="display-4 fw-bold mb-4">{t.media}</h1>
       <p className="lead text-muted">
         {language === 'pt' 

@@ -24,7 +24,7 @@ import Contact from './pages/Contact';
 import Opportunities from './pages/Opportunities';
 import Publications from './pages/Publications';
 import Projects from './pages/Projects';
-import Events from './pages/Events';
+import Microscopio from './pages/Microscopio';
 import Media from './pages/Media';
 import Others from './pages/Others';
 import NotFound from './pages/NotFound';
@@ -138,7 +138,7 @@ function App() {
                     <Route path="/oportunidades" element={<Opportunities />} />
                     <Route path="/oportunidades/:slug" element={<OportunidadesDetail />} />
                     <Route path="/publicacoes" element={<Publications />} />
-                    <Route path="/eventos" element={<Events />} />
+                    <Route path="/microscopio" element={<Microscopio />} />
                     <Route path="/projetos" element={<Projects />} />
                     <Route path="/projetos/:slug" element={<ProjectDetail />} />
                     <Route path="/na-midia" element={<Media />} />

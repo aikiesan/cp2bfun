@@ -1,13 +1,22 @@
 import { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaSpotify, FaLinkedinIn, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { menuLabels, socialLinks } from '../data/content';
 
 const Header = () => {
   const { language, setLanguage } = useLanguage();
   const t = menuLabels[language];
+  const location = useLocation();
+
+  const isAboutActive = location.pathname.startsWith('/sobre');
+  const isNewsActive = ['/noticias', '/na-midia', '/oportunidades'].some(
+    (p) => location.pathname.startsWith(p)
+  );
+  const isForumActive = ['/forum-paulista', '/registro'].some(
+    (p) => location.pathname.startsWith(p)
+  );
 
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('cp2b-font-size');
@@ -93,15 +102,15 @@ const Header = () => {
 
             {/* Social Media Icons */}
             <div className="d-none d-lg-flex align-items-center gap-3 ms-3">
-              {socialLinks.facebook !== '#' && (
+              {socialLinks.spotify !== '#' && (
                 <a
-                  href={socialLinks.facebook}
+                  href={socialLinks.spotify}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted social-icon-top"
-                  aria-label="Facebook"
+                  aria-label="Spotify"
                 >
-                  <FaFacebookF size={14} />
+                  <FaSpotify size={14} />
                 </a>
               )}
               <a
@@ -158,17 +167,21 @@ const Header = () => {
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto align-items-center gap-1">
               {/* About Dropdown */}
-              <NavDropdown title={t.about} id="nav-dropdown-about" className="fw-semibold">
-                <NavDropdown.Item as={Link} to="/sobre">
+              <NavDropdown
+                title={t.about}
+                id="nav-dropdown-about"
+                className={`fw-semibold ${isAboutActive ? 'active' : ''}`}
+              >
+                <NavDropdown.Item as={NavLink} to="/sobre" end>
                   {t.aboutSubmenu.overview}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/sobre/governanca">
+                <NavDropdown.Item as={NavLink} to="/sobre/governanca">
                   {t.aboutSubmenu.governance}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/sobre/transparencia">
+                <NavDropdown.Item as={NavLink} to="/sobre/transparencia">
                   {t.aboutSubmenu.transparency}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/sobre/parceiros">
+                <NavDropdown.Item as={NavLink} to="/sobre/parceiros">
                   {t.aboutSubmenu.partners}
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
@@ -178,14 +191,18 @@ const Header = () => {
               </NavDropdown>
 
               {/* News Dropdown */}
-              <NavDropdown title={t.news} id="nav-dropdown-news" className="fw-semibold">
-                <NavDropdown.Item as={Link} to="/noticias">
+              <NavDropdown
+                title={t.news}
+                id="nav-dropdown-news"
+                className={`fw-semibold ${isNewsActive ? 'active' : ''}`}
+              >
+                <NavDropdown.Item as={NavLink} to="/noticias">
                   {t.newsSubmenu.news}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/na-midia">
+                <NavDropdown.Item as={NavLink} to="/na-midia">
                   {t.newsSubmenu.media}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/oportunidades">
+                <NavDropdown.Item as={NavLink} to="/oportunidades">
                   {t.newsSubmenu.opportunities}
                 </NavDropdown.Item>
               </NavDropdown>
@@ -199,7 +216,7 @@ const Header = () => {
                 <NavDropdown.Item as={Link} to="/forum-paulista">
                   {t.forumAbout}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to={`/registro?convite=${import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta'}`}>
+                <NavDropdown.Item as={NavLink} to={`/registro?convite=${import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta'}`}>
                   {t.forumRegister}
                 </NavDropdown.Item>
               </NavDropdown>

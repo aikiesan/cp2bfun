@@ -2,19 +2,20 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { newsItems, forumData } from '../data/content';
+import { forumData } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
-import { fetchFeaturedContent, fetchPageContent, fetchFeaturedVideos } from '../services/api';
+import api, { fetchFeaturedContent, fetchPageContent, fetchFeaturedVideos } from '../services/api';
 import FeaturedContent from '../components/FeaturedContent';
 import FeaturedVideos from '../components/FeaturedVideos';
 
 const Home = () => {
   const { language } = useLanguage();
-  const news = newsItems[language];
   const [forum, setForum] = useState(forumData[language]);
   const [featuredContent, setFeaturedContent] = useState({ A: null, B: null, C: null });
   const [featuredVideos, setFeaturedVideos] = useState({ A: null, B: null, C: null });
   const [loadingFeatured, setLoadingFeatured] = useState(true);
+  const [latestNews, setLatestNews] = useState([]);
+  const [loadingNews, setLoadingNews] = useState(true);
 
   useEffect(() => {
     const loadFeaturedContent = async () => {
@@ -34,6 +35,23 @@ const Home = () => {
     };
 
     loadFeaturedVideos();
+  }, []);
+
+  useEffect(() => {
+    const loadNews = async () => {
+      try {
+        const response = await api.get('/news');
+        const sorted = (response.data || [])
+          .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
+          .slice(0, 3);
+        setLatestNews(sorted);
+      } catch {
+        setLatestNews([]);
+      } finally {
+        setLoadingNews(false);
+      }
+    };
+    loadNews();
   }, []);
 
   useEffect(() => {
@@ -60,7 +78,7 @@ const Home = () => {
 
   const labels = {
     pt: {
-      newsTitle: 'Novidades',
+      newsTitle: 'Notícias',
       newsAll: 'Ver todas',
       newsLink: 'Ler notícia →',
       videosTitle: 'Vídeos em Destaque',
@@ -76,6 +94,21 @@ const Home = () => {
       videoFallback: 'Your browser does not support the video tag.'
     }
   }[language];
+
+  // Map API news items to the shape the cards expect
+  const displayNews = latestNews.length > 0
+    ? latestNews.map((item) => ({
+        id: item.id,
+        title: language === 'pt' ? item.title_pt : (item.title_en || item.title_pt),
+        badge: item.badge,
+        badgeColor: item.badge_color || 'secondary',
+        description: language === 'pt'
+          ? (item.summary_pt || item.excerpt_pt || '')
+          : (item.summary_en || item.excerpt_en || item.summary_pt || ''),
+        image: item.image,
+        link: `/noticias/${item.slug}`,
+      }))
+    : [];
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
@@ -151,7 +184,7 @@ const Home = () => {
         </Container>
       </section>
 
-      {/* News Highlights - Enhanced Cards with Interactive Hover */}
+      {/* News — 3 most recent from API */}
       <section className="py-5 bg-light-gray">
         <Container>
           <div className="d-flex justify-content-between align-items-center mb-5">
@@ -159,34 +192,43 @@ const Home = () => {
             <Link to="/noticias" className="btn btn-outline-dark rounded-pill btn-sm">{labels.newsAll}</Link>
           </div>
 
-          <Row className="g-4">
-            {news.slice(0, 3).map((item, index) => (
-              <Col md={4} key={item.id}>
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  whileHover={{ y: -8 }}
-                >
-                  <Card className="h-100 border-0 shadow-sm interactive-card">
-                    <div className="card-image-wrapper position-relative" style={{ height: '240px', overflow: 'hidden', borderRadius: '24px 24px 0 0' }}>
-                       <img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover" />
-                       <div className="card-overlay"></div>
-                    </div>
-                    <Card.Body className="p-4">
-                      <span className={`badge bg-${item.badgeColor} bg-opacity-10 text-${item.badgeColor} mb-3 rounded-pill`}>{item.badge}</span>
-                      <Card.Title className="fw-bold mb-3">{item.title}</Card.Title>
-                      <Card.Text className="text-muted small mb-4">
-                        {item.description}
-                      </Card.Text>
-                      <Link to={item.link} className="btn btn-link text-decoration-none p-0 fw-bold text-dark">{labels.newsLink}</Link>
-                    </Card.Body>
-                  </Card>
-                </motion.div>
-              </Col>
-            ))}
-          </Row>
+          {loadingNews ? (
+            <div className="text-center py-5">
+              <Spinner animation="border" variant="secondary" />
+            </div>
+          ) : displayNews.length === 0 ? null : (
+            <Row className="g-4">
+              {displayNews.map((item, index) => (
+                <Col md={4} key={item.id}>
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                  >
+                    <Card className="h-100 border-0 shadow-sm interactive-card">
+                      <div className="card-image-wrapper position-relative" style={{ height: '240px', overflow: 'hidden', borderRadius: '24px 24px 0 0' }}>
+                        <img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover" />
+                        <div className="card-overlay"></div>
+                      </div>
+                      <Card.Body className="p-4">
+                        {item.badge && (
+                          <span className={`badge bg-${item.badgeColor} bg-opacity-10 text-${item.badgeColor} mb-3 rounded-pill`}>{item.badge}</span>
+                        )}
+                        <Card.Title className="fw-bold mb-3">{item.title}</Card.Title>
+                        {item.description && (
+                          <Card.Text className="text-muted small mb-4">
+                            {item.description}
+                          </Card.Text>
+                        )}
+                        <Link to={item.link} className="btn btn-link text-decoration-none p-0 fw-bold text-dark">{labels.newsLink}</Link>
+                      </Card.Body>
+                    </Card>
+                  </motion.div>
+                </Col>
+              ))}
+            </Row>
+          )}
         </Container>
       </section>
 
@@ -201,9 +243,9 @@ const Home = () => {
       </section>
 
       {/* Partners Image Section */}
-      <section className="py-5">
+      <section className="py-5 partners-section">
         <Container>
-          <div className="text-center mb-5">
+          <div className="text-center mb-5 mt-5">
             <h3 className="fw-bold">{labels.partnersTitle}</h3>
           </div>
           <div className="text-center bg-white p-5 rounded-5 shadow-sm">

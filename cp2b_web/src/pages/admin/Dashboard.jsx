@@ -110,7 +110,6 @@ const Dashboard = () => {
       link: '/admin/publications',
       color: '#1565C0',
       subtitle: stats.publicationsThisYear > 0 ? `${stats.publicationsThisYear} este ano` : null,
-      isNew: true
     },
     {
       title: 'Projetos',
@@ -118,7 +117,6 @@ const Dashboard = () => {
       icon: 'bi-folder',
       link: '/admin/projects',
       color: '#00695C',
-      isNew: true
     },
     {
       title: 'Eventos',
@@ -127,7 +125,6 @@ const Dashboard = () => {
       link: '/admin/events',
       color: '#6A1B9A',
       subtitle: stats.upcomingEvents > 0 ? `${stats.upcomingEvents} próximos` : null,
-      isNew: true
     },
     {
       title: 'Mensagens',
@@ -151,7 +148,6 @@ const Dashboard = () => {
       icon: 'bi-building',
       link: '/admin/partners',
       color: '#00897B',
-      isNew: true
     },
     {
       title: 'Eixos de Pesquisa',
