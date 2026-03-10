@@ -21,6 +21,7 @@ const Dashboard = () => {
     participantsCount: 0,
     meetupRequestsCount: 0,
     newsletterSubscribersCount: 0,
+    opportunitiesCount: 0,
   });
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState(false);
@@ -42,6 +43,7 @@ const Dashboard = () => {
           participantsRes,
           meetupRequestsRes,
           newsletterRes,
+          opportunitiesRes,
         ] = await Promise.all([
           api.get('/news'),
           api.get('/news/featured'),
@@ -56,6 +58,7 @@ const Dashboard = () => {
           api.get('/participants').catch(() => ({ data: [] })),
           api.get('/meetup-requests/all').catch(() => ({ data: [] })),
           api.get('/newsletter/subscribers').catch(() => ({ data: [] })),
+          api.get('/opportunities').catch(() => ({ data: [] })),
         ]);
 
         const currentYear = new Date().getFullYear();
@@ -78,6 +81,7 @@ const Dashboard = () => {
           participantsCount: participantsRes.data.length,
           meetupRequestsCount: meetupRequestsRes.data.length,
           newsletterSubscribersCount: newsletterRes.data.filter(s => s.active).length,
+          opportunitiesCount: opportunitiesRes.data.length,
         });
         setApiError(false);
       } catch (error) {
@@ -170,6 +174,14 @@ const Dashboard = () => {
       icon: 'bi-diagram-2',
       link: '/admin/forum/meetups',
       color: '#AD1457',
+      isNew: true,
+    },
+    {
+      title: 'Oportunidades',
+      count: stats.opportunitiesCount,
+      icon: 'bi-briefcase',
+      link: '/admin/oportunidades',
+      color: '#558B2F',
       isNew: true,
     },
     {
@@ -305,6 +317,12 @@ const Dashboard = () => {
                 <Col md={4} sm={6}>
                   <Link to="/admin/forum" className="btn btn-outline-success w-100">
                     <i className="bi bi-grid-1x2 me-2"></i>Forum Paulista
+                  </Link>
+                </Col>
+                <Col md={4} sm={6}>
+                  <Link to="/admin/oportunidades/new" className="btn btn-outline-primary w-100">
+                    <i className="bi bi-briefcase me-2"></i>Nova Oportunidade
+                    <Badge bg="success" className="ms-2">NEW</Badge>
                   </Link>
                 </Col>
                 <Col md={4} sm={6}>

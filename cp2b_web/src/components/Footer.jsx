@@ -86,6 +86,18 @@ const Footer = () => {
              </button>
           </Col>
         </Row>
+        <Row>
+          <Col md={12}>
+            <div style={{ borderTop: '1px solid #444', paddingTop: '1rem', marginTop: '1rem' }}>
+              <small className="text-white-50" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem', lineHeight: '1.6' }}>
+                <strong>Expediente:</strong><br />
+                Jornalista responsável Sofia Silva MTb 0077363/SP<br />
+                Estagiário Antônio Bufalo<br />
+                Estagiária Bárbara Castilho
+              </small>
+            </div>
+          </Col>
+        </Row>
       </Container>
     </footer>
   );

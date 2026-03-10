@@ -18,6 +18,7 @@ import Research from './pages/Research';
 import Team from './pages/Team';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
+import OportunidadesDetail from './pages/OportunidadesDetail';
 import ProjectDetail from './pages/ProjectDetail';
 import Contact from './pages/Contact';
 import Opportunities from './pages/Opportunities';
@@ -60,6 +61,8 @@ import {
   MeetupRequestsPanel,
   ForumDashboard,
   NewsletterPanel,
+  OportunidadesList,
+  OportunidadesEditor,
 } from './pages/admin';
 import FeaturedContentManager from './pages/admin/FeaturedContentManager';
 import {
@@ -108,6 +111,9 @@ function App() {
             <Route path="forum/slots"        element={<MeetupSlotsManager />} />
             <Route path="forum/meetups"      element={<MeetupRequestsPanel />} />
             <Route path="newsletter"         element={<NewsletterPanel />} />
+            <Route path="oportunidades"      element={<OportunidadesList />} />
+            <Route path="oportunidades/new"  element={<OportunidadesEditor />} />
+            <Route path="oportunidades/:slug" element={<OportunidadesEditor />} />
           </Route>
 
           {/* Public Routes - With Header/Footer */}
@@ -130,6 +136,7 @@ function App() {
                     <Route path="/noticias/:slug" element={<NewsDetail />} />
                     <Route path="/contato" element={<Contact />} />
                     <Route path="/oportunidades" element={<Opportunities />} />
+                    <Route path="/oportunidades/:slug" element={<OportunidadesDetail />} />
                     <Route path="/publicacoes" element={<Publications />} />
                     <Route path="/eventos" element={<Events />} />
                     <Route path="/projetos" element={<Projects />} />

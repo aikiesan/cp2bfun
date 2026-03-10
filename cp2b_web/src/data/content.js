@@ -31,7 +31,7 @@ export const menuLabels = {
     linkedin: 'LinkedIn',
     accessibility: 'Acessibilidade',
     search: 'Buscar',
-    axes: 'Eixos de Pesquisa',
+    axes: 'Eixos',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'Sobre o Evento',
     forumRegister: 'Registro Meet-up'
@@ -60,7 +60,7 @@ export const menuLabels = {
     linkedin: 'LinkedIn',
     accessibility: 'Accessibility',
     search: 'Search',
-    axes: 'Research Axes',
+    axes: 'Axes',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'About the Event',
     forumRegister: 'Meet-up Registration'
