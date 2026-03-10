@@ -1703,3 +1703,5 @@ body.high-contrast .navbar .dropdown-item:hover {
     gap: 1.25rem;
   }
 }
+
+.newsletter-input::placeholder { color: rgba(255,255,255,0.5); }

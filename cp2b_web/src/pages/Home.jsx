@@ -233,14 +233,16 @@ const Home = () => {
       </section>
 
       {/* Featured Videos Section */}
-      <section className="py-5">
-        <Container>
-          <div className="text-center mb-5">
-            <h2 className="fw-bold">{labels.videosTitle}</h2>
-          </div>
-        </Container>
-        <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
-      </section>
+      {(featuredVideos.A || featuredVideos.B || featuredVideos.C) && (
+        <section className="py-5">
+          <Container>
+            <div className="text-center mb-5">
+              <h2 className="fw-bold">{labels.videosTitle}</h2>
+            </div>
+          </Container>
+          <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
+        </section>
+      )}
 
       {/* Partners Image Section */}
       <section className="py-5 partners-section">
