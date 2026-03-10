@@ -407,6 +407,97 @@ export const flagshipProjects = {
   ]
 };
 
+export const timelineData = {
+  pt: [
+    {
+      year: '2025',
+      title: 'Living-Lab de Resíduos Sólidos Urbanos',
+      description: 'Planta piloto para gestão de resíduos de restaurantes universitários produzindo biohidrogênio e biometano (Biohitano) para ônibus do campus da UNICAMP.',
+      status: 'ongoing',
+      icon: 'bi-recycle'
+    },
+    {
+      year: '2025',
+      title: 'Unidade Demonstrativa em Cooperativa Agroindustrial',
+      description: 'Sistema de digestão anaeróbia processando resíduos de varejo agroindustrial para gerar eletricidade (189 MWh/ano) ou biometano, substituindo diesel em frotas.',
+      status: 'ongoing',
+      icon: 'bi-lightning-charge'
+    },
+    {
+      year: '2025',
+      title: 'Biorrefinaria de Vinhaça e Resíduos da Cana',
+      description: 'Pesquisa em tecnologias de biorrefinaria para aproveitamento de vinhaça e resíduos da agroindústria sucroenergética, produzindo biohitano e ácidos orgânicos de alto valor.',
+      status: 'ongoing',
+      icon: 'bi-droplet-half'
+    },
+    {
+      year: '2025',
+      title: 'Mapeamento de Resíduos e Oportunidades em São Paulo',
+      description: 'Desenvolvimento de plataforma digital georreferenciada para inventário de resíduos e identificação de oportunidades de aproveitamento energético no Estado de São Paulo.',
+      status: 'ongoing',
+      icon: 'bi-geo-alt'
+    },
+    {
+      year: '2025',
+      title: 'Fórum Paulista de Biogás e Bioprodutos',
+      description: 'Evento anual de articulação entre pesquisadores, governo e setor produtivo para acelerar a cadeia de valor do biogás e bioprodutos no Estado de São Paulo.',
+      status: 'ongoing',
+      icon: 'bi-people'
+    },
+    {
+      year: '2024',
+      title: 'Criação do CP2B — Centro Paulista de Estudos em Biogás e Bioprodutos',
+      description: 'Fundação do centro de pesquisa apoiado pela FAPESP (Processo 2024/01112-1) com sede no NIPE/UNICAMP, iniciando a missão de transformar resíduos em recursos renováveis.',
+      status: 'completed',
+      icon: 'bi-award'
+    }
+  ],
+  en: [
+    {
+      year: '2025',
+      title: 'Urban Solid Waste Living-Lab',
+      description: 'Pilot plant for waste management from university restaurants producing biohydrogen and biomethane (Biohitane) for UNICAMP campus buses.',
+      status: 'ongoing',
+      icon: 'bi-recycle'
+    },
+    {
+      year: '2025',
+      title: 'Demonstration Unit in Agro-industrial Cooperative',
+      description: 'Anaerobic digestion system processing agro-industrial retail waste to generate electricity (189 MWh/year) or biomethane, replacing diesel in vehicle fleets.',
+      status: 'ongoing',
+      icon: 'bi-lightning-charge'
+    },
+    {
+      year: '2025',
+      title: 'Vinasse and Sugarcane Waste Biorefinery',
+      description: 'Research on biorefinery technologies for the utilization of vinasse and sugarcane agro-industry waste, producing biohitane and high-value organic acids.',
+      status: 'ongoing',
+      icon: 'bi-droplet-half'
+    },
+    {
+      year: '2025',
+      title: 'Waste Mapping and Opportunities in São Paulo',
+      description: 'Development of a georeferenced digital platform for waste inventory and identification of energy recovery opportunities in São Paulo State.',
+      status: 'ongoing',
+      icon: 'bi-geo-alt'
+    },
+    {
+      year: '2025',
+      title: 'São Paulo Biogas and Bioproducts Forum',
+      description: 'Annual event connecting researchers, government and industry to accelerate the biogas and bioproducts value chain in São Paulo State.',
+      status: 'ongoing',
+      icon: 'bi-people'
+    },
+    {
+      year: '2024',
+      title: 'CP2B Founded — São Paulo Center for Biogas and Bioproducts Studies',
+      description: 'Research center founded with FAPESP support (Process 2024/01112-1) hosted at NIPE/UNICAMP, beginning its mission to transform waste into renewable resources.',
+      status: 'completed',
+      icon: 'bi-award'
+    }
+  ]
+};
+
 export const sdgMap = {
   1: '/assets/1-erradicacao-da-pobreza.jpeg',
   2: '/assets/2-fome-zero-e-agricultura-sustentavel.jpeg',
