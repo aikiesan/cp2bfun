@@ -20,6 +20,8 @@ vi.mock('../services/api', () => ({
   fetchFeaturedContent: vi.fn().mockResolvedValue(null),
   fetchFeaturedVideos: vi.fn().mockResolvedValue([]),
   fetchAxes: vi.fn().mockResolvedValue([]),
+  fetchOpportunities: vi.fn().mockResolvedValue([]),
+  fetchOpportunity: vi.fn().mockResolvedValue(null),
 }));
 
 import Home from '../pages/Home';
