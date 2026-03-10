@@ -57,37 +57,57 @@ router.get('/', async (req, res) => {
 // POST /api/gallery — faz upload da imagem e cria registro no banco
 // Campos esperados no FormData: image (arquivo), title (texto), date (texto)
 // ============================================================
-router.post('/', upload.single('image'), async (req, res) => {
-  // Multer já processou o arquivo; valida campos de texto
-  if (!req.file) {
-    return res.status(400).json({ error: 'Nenhum arquivo de imagem foi enviado.' });
+router.post('/', upload.array('images', 20), async (req, res) => {
+  
+  if (!req.files || req.files.length === 0) {
+    return res.status(400).json({ error: 'Nenhum arquivo enviado.' });
   }
+
 
   const { title, date } = req.body;
 
+  // 2. Validação de título com loop de limpeza
   if (!title) {
-    // Remove o arquivo já salvo para não deixar lixo no disco
-    fs.unlink(req.file.path, () => {});
+    req.files.forEach(f => fs.unlink(f.path, () => {}));
     return res.status(400).json({ error: 'O campo "title" é obrigatório.' });
   }
 
-  // Monta a URL pública acessível pelo frontend
-  const url = `/uploads/gallery/${req.file.filename}`;
-
+  // 3. Início da Transação
+  const client = await pool.connect();
   try {
-    const result = await pool.query(
-      `INSERT INTO gallery (url, title, date, filename)
-       VALUES ($1, $2, $3, $4)
-       RETURNING id, url, title, date, created_at`,
-      [url, title, date || null, req.file.filename]
-    );
+    await client.query("BEGIN"); // Inicia a transação
 
-    res.status(201).json(result.rows[0]);
+    const savedPhotos = [];
+
+    // 4. Loop para inserir cada arquivo no banco
+    for (const file of req.files) {
+      const url = `/uploads/gallery/${file.filename}`;
+      
+      const result = await client.query(
+        `INSERT INTO gallery (url, title, date, filename)
+         VALUES ($1, $2, $3, $4)
+         RETURNING id, url, title, date, created_at`,
+        [url, title, date || null, file.filename]
+      );
+      
+      savedPhotos.push(result.rows[0]);
+    }
+
+    await client.query("COMMIT"); // Confirma todas as inserções
+    
+    // Retorna a lista de fotos salvas com sucesso
+    res.status(201).json(savedPhotos);
+
   } catch (error) {
-    // Remove arquivo do disco se a inserção no banco falhar
-    fs.unlink(req.file.path, () => {});
-    console.error('Error saving gallery photo:', error);
-    res.status(500).json({ error: 'Failed to save gallery photo' });
+    await client.query("ROLLBACK"); // Desfaz tudo em caso de erro
+    
+    // Remove todos os arquivos do disco
+    req.files.forEach(f => fs.unlink(f.path, () => {}));
+    
+    console.error('Error saving gallery photos:', error);
+    res.status(500).json({ error: 'Failed to save gallery photos' });
+  } finally {
+    client.release(); // Sempre devolve o cliente para o pool
   }
 });
 

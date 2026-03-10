@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Container, Form, Button, Card, Alert, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { uploadGalleryPhoto } from '../../services/api';
+import imageCompression from 'browser-image-compression';
 
 const GalleryUpload = () => {
   const navigate = useNavigate();
@@ -9,8 +10,10 @@ const GalleryUpload = () => {
   // --- ESTADOS DO FORMULÁRIO ---
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
-  const [file, setFile] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
+  const [files, setFiles] = useState([]);
+  const [previews, setPreviews] = useState([]);
+  const[compressionProgress, setProgress] = useState([]);
+  const [isCompressing, setIsCompressing] = useState(false);
 
   // --- ESTADOS DE FEEDBACK (Loading, Sucesso, Erro) ---
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,54 +22,57 @@ const GalleryUpload = () => {
   // --- SELEÇÃO DE ARQUIVO ---
   // Gera uma URL temporária para pré-visualização antes do envio
   const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-      setPreviewUrl(URL.createObjectURL(selectedFile));
-    }
+    const selected = Array.from(e.target.files);
+    setFiles(selected);
+    previews.forEach(url => URL.revokeObjectURL(url));
+    setPreviews(selected.map(f => URL.createObjectURL(f)));
+
+    
   };
+
+  const compressFiles = async (rawFiles) => {
+    const options = {
+      maxSizeMB: 1,              // limite de 1 MB por arquivo
+      maxWidthOrHeight: 1920,    // max 1920px
+      fileType: 'image/webp',    // converte para WebP
+      useWebWorker: true,        // não bloqueia a UI
+    };
+    setIsCompressing(true);
+    setProgress({ current: 0, total: rawFiles.length });
+    const compressed = [];
+    for (let i = 0; i < rawFiles.length; i++) {
+      const result = await imageCompression(rawFiles[i], options);
+      compressed.push(result);
+      setProgress({ current: i + 1, total: rawFiles.length });
+    }
+    setIsCompressing(false);
+    return compressed;
+
+  }
+
 
   // --- ENVIO DO FORMULÁRIO ---
   // Monta um FormData e envia para o backend via POST /gallery
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!file || !title || !date) {
-      setMessage({ type: 'danger', text: 'Por favor, preencha todos os campos e selecione uma imagem.' });
-      return;
-    }
+    if (files.length === 0 || !title || !date) { /* validação */ return; }
+    // 1. Comprime todos os arquivos
+    const compressedFiles = await compressFiles(files);
+    // 2. Monta o FormData com os arquivos comprimidos
+    const formData = new FormData();
+    compressedFiles.forEach((f, index) => {
+      // Pega o nome original, remove a extensão antiga (se tiver) e adiciona .webp
+      const originalName = f.name ? f.name.replace(/\.[^/.]+$/, "") : `foto-${index}`;
+      
+      // O append aceita um 3º parâmetro: o nome explícito do arquivo!
+      formData.append('images', f, `${originalName}.webp`);
+    });
+    formData.append('title', title);
+    formData.append('date', date);
+    // 3. Envia para a API
+    await uploadGalleryPhoto(formData);
 
-    setIsSubmitting(true);
-    setMessage({ type: '', text: '' });
-
-    try {
-      // O campo 'image' deve corresponder ao nome esperado pelo backend
-      const formData = new FormData();
-      formData.append('image', file);
-      formData.append('title', title);
-      formData.append('date', date);
-
-      await uploadGalleryPhoto(formData);
-
-      setMessage({ type: 'success', text: 'Foto enviada com sucesso!' });
-
-      // Limpa o formulário após sucesso
-      setTitle('');
-      setDate('');
-      setFile(null);
-      setPreviewUrl(null);
-
-      // Redireciona para a listagem após 1,5 segundos
-      setTimeout(() => navigate('/admin/gallery'), 1500);
-
-    } catch (error) {
-      // Exibe mensagem de erro sem derrubar a tela
-      const errorMsg = error.response?.data?.error || 'Erro ao enviar a foto. Tente novamente.';
-      setMessage({ type: 'danger', text: errorMsg });
-      console.error('Error uploading gallery photo:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
   };
 
   return (
@@ -116,22 +122,38 @@ const GalleryUpload = () => {
               <Form.Control
                 type="file"
                 accept="image/*"
-                onChange={handleFileChange}
+                onChange={handleFileChange} multiple
               />
             </Form.Group>
-
-            {/* Pré-visualização da imagem selecionada */}
-            {previewUrl && (
-              <div className="mb-4 text-center p-3 border rounded bg-light">
-                <p className="text-muted small mb-2">Pré-visualização</p>
-                <img
-                  src={previewUrl}
-                  alt="Preview"
-                  style={{ maxHeight: '200px', objectFit: 'contain' }}
-                  className="rounded shadow-sm"
-                />
+            {isCompressing && (
+              <div className='mb-3 p-3 border rounded bg-light'>
+                <p className='text-muted small mb-1'>
+                  Preparando imagens ({compressionProgress.current}/{compressionProgress.total})...
+                </p>
+                <div className='progress'>
+                  <div className='progress-bar progress-bar-animated'
+                    style={{ width: `${(compressionProgress.current / compressionProgress.total) * 100}%` }}
+                  />
+                </div>
               </div>
             )}
+
+            {/* Pré-visualização da imagem selecionada */}
+            {previews.length > 0 && (
+              <div className='mb-4 p-3 border rounded bg-light'>
+                <p className='text-muted small mb-2'>
+                  {previews.length} arquivo(s) selecionado(s)
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+                  {previews.map((src, i) => (
+                    <img key={i} src={src} alt={`Preview ${i}`}
+                      style={{ height: '100px', objectFit: 'cover' }}
+                      className='rounded shadow-sm' />
+                  ))}
+                </div>
+              </div>
+            )}
+
 
             {/* Botão de Enviar */}
             <div className="d-grid">

@@ -1,13 +1,18 @@
--- Migration 011: Gallery photo storage
--- Run this against the database before starting the backend
-
+-- Extensão para UUID (opcional, mas boa prática conhecer)
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+ 
+-- Cria a tabela somente se ela ainda não existir
 CREATE TABLE IF NOT EXISTS gallery (
-  id         SERIAL PRIMARY KEY,
-  url        VARCHAR(500) NOT NULL,   -- caminho relativo do arquivo (ex: /uploads/gallery/...)
-  title      TEXT        NOT NULL,
-  date       VARCHAR(50),             -- data formatada para exibição (ex: "28/05/2026")
-  filename   VARCHAR(255) NOT NULL,   -- nome do arquivo no disco (para deleção física)
-  created_at TIMESTAMP DEFAULT NOW()
+  id          SERIAL         PRIMARY KEY,
+  url         VARCHAR(500)  NOT NULL,
+  filename    VARCHAR(255)  NOT NULL,
+  title       VARCHAR(255)  NOT NULL,
+  date        DATE           NULL,
+  created_at  TIMESTAMPTZ  NOT NULL DEFAULT NOW()
 );
-
-CREATE INDEX IF NOT EXISTS idx_gallery_created_at ON gallery(created_at DESC);
+ 
+-- Índice para acelerar buscas por data
+CREATE INDEX IF NOT EXISTS idx_gallery_date ON gallery (date DESC);
+ 
+-- Índice para buscas por título (LIKE)
+CREATE INDEX IF NOT EXISTS idx_gallery_title ON gallery (title);
