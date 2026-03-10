@@ -83,8 +83,8 @@ const NewsletterSignup = () => {
             placeholder={t.namePlaceholder}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mb-2 bg-dark text-white border-secondary"
-            style={{ fontSize: '0.85rem' }}
+            className="mb-2 bg-dark text-white border-secondary newsletter-input"
+            style={{ fontSize: '0.85rem', color: 'white' }}
           />
           <InputGroup>
             <Form.Control
@@ -93,8 +93,8 @@ const NewsletterSignup = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-dark text-white border-secondary"
-              style={{ fontSize: '0.85rem' }}
+              className="bg-dark text-white border-secondary newsletter-input"
+              style={{ fontSize: '0.85rem', color: 'white' }}
             />
             <Button
               type="submit"
