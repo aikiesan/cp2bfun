@@ -520,6 +520,46 @@ export const createMeetupRequest = (data) => api.post('/meetup-requests', data).
 export const getMyMeetups = (email) => api.get(`/meetup-requests/my?email=${encodeURIComponent(email)}`).then(r => r.data);
 export const confirmMeetup = (token) => api.get(`/meetup-requests/confirm?token=${encodeURIComponent(token)}`).then(r => r.data);
 
+// Opportunities API functions
+export const fetchOpportunities = async () => {
+  try {
+    const response = await api.get('/opportunities');
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching opportunities:', error);
+    }
+    return null;
+  }
+};
+
+export const fetchOpportunity = async (slug) => {
+  try {
+    const response = await api.get(`/opportunities/${slug}`);
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching opportunity:', error);
+    }
+    return null;
+  }
+};
+
+export const createOpportunity = async (data) => {
+  const response = await api.post('/opportunities', data);
+  return response.data;
+};
+
+export const updateOpportunity = async (slug, data) => {
+  const response = await api.put(`/opportunities/${slug}`, data);
+  return response.data;
+};
+
+export const deleteOpportunity = async (slug) => {
+  const response = await api.delete(`/opportunities/${slug}`);
+  return response.data;
+};
+
 // Admin: Forum Paulista
 export const fetchAllParticipants = () => api.get('/participants').then(r => r.data);
 export const deleteParticipant   = (id) => api.delete(`/participants/${id}`).then(r => r.data);

@@ -77,7 +77,7 @@ const NewsletterSignup = () => {
       )}
 
       {status !== 'success' && (
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} style={{ maxWidth: '480px' }}>
           <Form.Control
             type="text"
             placeholder={t.namePlaceholder}
