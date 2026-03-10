@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { forumData } from '../data/content';
+import { forumData, timelineData } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import api, { fetchFeaturedContent, fetchPageContent, fetchFeaturedVideos } from '../services/api';
 import FeaturedContent from '../components/FeaturedContent';
 import FeaturedVideos from '../components/FeaturedVideos';
+import Timeline from '../components/Timeline';
 
 const Home = () => {
   const { language } = useLanguage();
@@ -229,6 +230,19 @@ const Home = () => {
               ))}
             </Row>
           )}
+        </Container>
+      </section>
+
+      {/* Research Timeline Section */}
+      <section className="py-5" style={{ background: 'var(--cp2b-light-gray)' }}>
+        <Container>
+          <div className="text-center mb-5">
+            <span className="badge mb-2 px-3 py-2" style={{ background: 'var(--cp2b-petrol)' }}>
+              {language === 'pt' ? 'Nossa Trajetória' : 'Our Journey'}
+            </span>
+            <h2 className="fw-bold mt-2">{language === 'pt' ? 'Projetos em Destaque' : 'Featured Projects'}</h2>
+          </div>
+          <Timeline items={timelineData[language]} />
         </Container>
       </section>
 
