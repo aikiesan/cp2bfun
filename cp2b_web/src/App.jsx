@@ -19,8 +19,7 @@ import Team from './pages/Team';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
 import OportunidadesDetail from './pages/OportunidadesDetail';
-import Eventos from './pages/Eventos';
-import EventosDetail from './pages/EventosDetail';
+import MicroscopioDetail from './pages/MicroscopioDetail';
 import ProjectDetail from './pages/ProjectDetail';
 import Contact from './pages/Contact';
 import Opportunities from './pages/Opportunities';
@@ -54,8 +53,8 @@ import {
   PartnersEditor,
   PublicationsList,
   PublicationsEditor,
-  EventsList,
-  EventsEditor,
+  MicroscopioList,
+  MicroscopioEditor,
   ProjectsList,
   ProjectsEditor,
   ParticipantsPanel,
@@ -94,9 +93,9 @@ function App() {
             <Route path="publications" element={<PublicationsList />} />
             <Route path="publications/new" element={<PublicationsEditor />} />
             <Route path="publications/:id" element={<PublicationsEditor />} />
-            <Route path="events" element={<EventsList />} />
-            <Route path="events/new" element={<EventsEditor />} />
-            <Route path="events/:slug" element={<EventsEditor />} />
+            <Route path="microscopio" element={<MicroscopioList />} />
+            <Route path="microscopio/new" element={<MicroscopioEditor />} />
+            <Route path="microscopio/:slug" element={<MicroscopioEditor />} />
             <Route path="projects" element={<ProjectsList />} />
             <Route path="projects/new" element={<ProjectsEditor />} />
             <Route path="projects/:slug" element={<ProjectsEditor />} />
@@ -139,10 +138,9 @@ function App() {
                     <Route path="/contato" element={<Contact />} />
                     <Route path="/oportunidades" element={<Opportunities />} />
                     <Route path="/oportunidades/:slug" element={<OportunidadesDetail />} />
-                    <Route path="/eventos" element={<Eventos />} />
-                    <Route path="/eventos/:slug" element={<EventosDetail />} />
                     <Route path="/publicacoes" element={<Publications />} />
                     <Route path="/microscopio" element={<Microscopio />} />
+                    <Route path="/microscopio/:slug" element={<MicroscopioDetail />} />
                     <Route path="/projetos" element={<Projects />} />
                     <Route path="/projetos/:slug" element={<ProjectDetail />} />
                     <Route path="/na-midia" element={<Media />} />

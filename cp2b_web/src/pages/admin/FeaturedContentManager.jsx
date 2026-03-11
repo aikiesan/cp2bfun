@@ -211,59 +211,130 @@ const FeaturedContentManager = () => {
         </Card.Body>
       </Card>
 
-      {/* Preview section */}
+      {/* Visual preview — mirrors FeaturedContent.jsx layout */}
       <Card>
         <Card.Body>
           <Card.Title>Pré-visualização</Card.Title>
-          <div className="row">
-            <div className="col-md-6">
-              {positionA.slug && (
-                <div className="border p-3 bg-light">
-                  <strong>Posição A (Principal)</strong>
-                  <p className="mb-0">
-                    {positionA.type === 'news'
-                      ? allNews.find(n => n.slug === positionA.slug)?.title_pt
-                      : allProjects.find(p => p.slug === positionA.slug)?.title_pt}
-                  </p>
-                  <small className="text-muted">
-                    {positionA.type === 'news' ? 'Notícia' : 'Projeto'}
-                  </small>
+          <Card.Text className="text-muted small mb-3">
+            Representação aproximada do layout na página inicial.
+          </Card.Text>
+          {(() => {
+            const findItem = (pos) => {
+              if (!pos.slug) return null;
+              return pos.type === 'news'
+                ? allNews.find(n => n.slug === pos.slug)
+                : allProjects.find(p => p.slug === pos.slug);
+            };
+            const itemA = findItem(positionA);
+            const itemB = findItem(positionB);
+            const itemC = findItem(positionC);
+
+            const overlayStyle = {
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              padding: '12px',
+            };
+
+            const emptyStyle = {
+              background: '#dee2e6',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#adb5bd',
+              fontSize: '0.8rem',
+              fontStyle: 'italic',
+            };
+
+            const cardBase = (item) => ({
+              position: 'relative',
+              borderRadius: '6px',
+              overflow: 'hidden',
+              backgroundImage: item?.image ? `url(${item.image})` : 'none',
+              backgroundSize: 'cover',
+              backgroundPosition: item?.image_position || 'center center',
+              ...(item?.image ? {} : emptyStyle),
+            });
+
+            return (
+              <div style={{ display: 'flex', gap: '6px', height: '280px' }}>
+                {/* Card A — portrait, left half */}
+                <div style={{ flex: 1, ...cardBase(itemA) }}>
+                  {itemA?.image ? (
+                    <div style={overlayStyle}>
+                      {itemA.badge && (
+                        <span className={`badge bg-${itemA.badge_color || 'primary'} mb-1`} style={{ alignSelf: 'flex-start', fontSize: '0.65rem' }}>
+                          {itemA.badge}
+                        </span>
+                      )}
+                      <div style={{ color: '#fff', fontWeight: '600', fontSize: '0.85rem', lineHeight: '1.3' }}>
+                        {itemA.title_pt}
+                      </div>
+                      {itemA.date_display && (
+                        <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.7rem', marginTop: '4px' }}>
+                          {itemA.date_display}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <span>Posição A vazia</span>
+                  )}
                 </div>
-              )}
-            </div>
-            <div className="col-md-6">
-              <div className="mb-2">
-                {positionB.slug && (
-                  <div className="border p-2 bg-light">
-                    <strong>Posição B</strong>
-                    <p className="mb-0 small">
-                      {positionB.type === 'news'
-                        ? allNews.find(n => n.slug === positionB.slug)?.title_pt
-                        : allProjects.find(p => p.slug === positionB.slug)?.title_pt}
-                    </p>
-                    <small className="text-muted">
-                      {positionB.type === 'news' ? 'Notícia' : 'Projeto'}
-                    </small>
+
+                {/* Right half — Cards B and C stacked */}
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {/* Card B — landscape top */}
+                  <div style={{ flex: 1, ...cardBase(itemB) }}>
+                    {itemB?.image ? (
+                      <div style={overlayStyle}>
+                        {itemB.badge && (
+                          <span className={`badge bg-${itemB.badge_color || 'primary'} mb-1`} style={{ alignSelf: 'flex-start', fontSize: '0.65rem' }}>
+                            {itemB.badge}
+                          </span>
+                        )}
+                        <div style={{ color: '#fff', fontWeight: '600', fontSize: '0.8rem', lineHeight: '1.3' }}>
+                          {itemB.title_pt}
+                        </div>
+                        {itemB.date_display && (
+                          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.65rem', marginTop: '3px' }}>
+                            {itemB.date_display}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span>Posição B vazia</span>
+                    )}
                   </div>
-                )}
-              </div>
-              <div>
-                {positionC.slug && (
-                  <div className="border p-2 bg-light">
-                    <strong>Posição C</strong>
-                    <p className="mb-0 small">
-                      {positionC.type === 'news'
-                        ? allNews.find(n => n.slug === positionC.slug)?.title_pt
-                        : allProjects.find(p => p.slug === positionC.slug)?.title_pt}
-                    </p>
-                    <small className="text-muted">
-                      {positionC.type === 'news' ? 'Notícia' : 'Projeto'}
-                    </small>
+
+                  {/* Card C — landscape bottom */}
+                  <div style={{ flex: 1, ...cardBase(itemC) }}>
+                    {itemC?.image ? (
+                      <div style={overlayStyle}>
+                        {itemC.badge && (
+                          <span className={`badge bg-${itemC.badge_color || 'primary'} mb-1`} style={{ alignSelf: 'flex-start', fontSize: '0.65rem' }}>
+                            {itemC.badge}
+                          </span>
+                        )}
+                        <div style={{ color: '#fff', fontWeight: '600', fontSize: '0.8rem', lineHeight: '1.3' }}>
+                          {itemC.title_pt}
+                        </div>
+                        {itemC.date_display && (
+                          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.65rem', marginTop: '3px' }}>
+                            {itemC.date_display}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span>Posição C vazia</span>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
-            </div>
-          </div>
+            );
+          })()}
         </Card.Body>
       </Card>
     </div>

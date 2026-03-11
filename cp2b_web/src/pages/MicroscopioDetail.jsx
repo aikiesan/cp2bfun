@@ -2,10 +2,10 @@ import { useState, useEffect } from 'react';
 import { Container, Spinner, Button } from 'react-bootstrap';
 import { useParams, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
-import { fetchOpportunity, fetchOpportunities } from '../services/api';
+import { fetchMicroscopio, fetchMicroscopia } from '../services/api';
 import ArticleLayout from '../components/ArticleLayout';
 
-const OportunidadesDetail = () => {
+const MicroscopioDetail = () => {
   const { slug } = useParams();
   const { language } = useLanguage();
   const [article, setArticle] = useState(null);
@@ -14,14 +14,14 @@ const OportunidadesDetail = () => {
 
   const labels = {
     pt: {
-      notFound: 'Oportunidade não encontrada',
-      backBtn: 'Voltar para Oportunidades',
+      notFound: 'Artigo não encontrado',
+      backBtn: 'Voltar para Microscópio',
       back: 'Voltar',
       share: 'Compartilhar',
     },
     en: {
-      notFound: 'Opportunity not found',
-      backBtn: 'Back to Opportunities',
+      notFound: 'Article not found',
+      backBtn: 'Back to Microscópio',
       back: 'Back',
       share: 'Share',
     },
@@ -31,7 +31,7 @@ const OportunidadesDetail = () => {
     const loadArticle = async () => {
       setLoading(true);
 
-      const data = await fetchOpportunity(slug);
+      const data = await fetchMicroscopio(slug);
 
       if (data) {
         setArticle({
@@ -49,10 +49,10 @@ const OportunidadesDetail = () => {
           tags: data.tags || '',
         });
 
-        const allOpportunities = await fetchOpportunities();
-        if (allOpportunities && allOpportunities.length > 0) {
+        const allArticles = await fetchMicroscopia();
+        if (allArticles && allArticles.length > 0) {
           setRelatedPosts(
-            allOpportunities
+            allArticles
               .filter((item) => item.slug !== slug)
               .slice(0, 3)
               .map((item) => ({
@@ -63,7 +63,7 @@ const OportunidadesDetail = () => {
                 badge: item.badge,
                 badgeColor: item.badge_color,
                 date: item.date_display,
-                link: `/oportunidades/${item.slug}`,
+                link: `/microscopio/${item.slug}`,
               }))
           );
         }
@@ -87,7 +87,7 @@ const OportunidadesDetail = () => {
     return (
       <Container className="py-5 text-center">
         <h2>{labels.notFound}</h2>
-        <Button as={Link} to="/oportunidades" variant="primary" className="mt-3">
+        <Button as={Link} to="/microscopio" variant="primary" className="mt-3">
           {labels.backBtn}
         </Button>
       </Container>
@@ -98,7 +98,7 @@ const OportunidadesDetail = () => {
     <ArticleLayout
       article={article}
       relatedPosts={relatedPosts}
-      backLink="/oportunidades"
+      backLink="/microscopio"
       backLabel={labels.back}
       shareLabel={labels.share}
       language={language}
@@ -106,4 +106,4 @@ const OportunidadesDetail = () => {
   );
 };
 
-export default OportunidadesDetail;
+export default MicroscopioDetail;
