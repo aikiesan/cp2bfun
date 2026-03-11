@@ -11,7 +11,7 @@ const Header = () => {
   const location = useLocation();
 
   const isAboutActive = location.pathname.startsWith('/sobre');
-  const isNewsActive = ['/noticias', '/na-midia', '/oportunidades', '/microscopio'].some(
+  const isNewsActive = ['/noticias', '/na-midia', '/oportunidades'].some(
     (p) => location.pathname.startsWith(p)
   );
   const [fontSize, setFontSize] = useState(() => {
@@ -201,14 +201,12 @@ const Header = () => {
                 <NavDropdown.Item as={NavLink} to="/oportunidades">
                   {t.newsSubmenu.opportunities}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to="/microscopio">
-                  {t.newsSubmenu.microscopio}
-                </NavDropdown.Item>
               </NavDropdown>
 
               {/* Keep existing items */}
               <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
               <Nav.Link as={Link} to="/projetos" className="fw-semibold px-2">{t.projects}</Nav.Link>
+              <Nav.Link as={Link} to="/microscopio" className="fw-semibold px-2">{t.microscopio}</Nav.Link>
               <Nav.Link as={Link} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
               <NavDropdown title={t.forumPaulista} id="nav-dropdown-forum" className="fw-semibold">
                 <NavDropdown.Item as={Link} to="/forum-paulista">
