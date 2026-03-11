@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
     const queries = Object.entries(TYPE_TO_TABLE).map(([type, table]) =>
       pool.query(
         `SELECT id, slug, title_pt, title_en, description_pt, description_en,
-                image, image_position, badge, badge_color, date_display, featured_position,
+                image, badge, badge_color, date_display, featured_position,
                 '${type}' as content_type
          FROM ${table}
          WHERE featured_position IN ('A', 'B', 'C')`
