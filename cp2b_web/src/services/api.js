@@ -54,6 +54,8 @@ const api = new ApiClient(API_URL);
 
 export default api;
 
+
+
 // Utility functions for common data fetching patterns
 export const fetchNews = async () => {
   try {
@@ -104,6 +106,8 @@ export const updateFeaturedNews = async (positionA, positionB, positionC) => {
     throw error;
   }
 };
+
+
 
 export const fetchTeam = async () => {
   try {
@@ -539,7 +543,20 @@ export const confirmMeetupAdmin = (id) => api.put(`/meetup-requests/${id}/confir
 export const fetchGallery = async () => {
   try {
     const response = await api.get('/gallery');
-    return response.data;
+    
+    // CORREÇÃO: Força o uso do endereço completo do backend.
+    // Se a variável VITE_API_URL existir e começar com http (produção), usa ela. 
+    // Caso contrário (local), força o localhost na porta do Node.js.
+    const backendHost = import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.startsWith('http')
+      ? import.meta.env.VITE_API_URL.replace(/\/api$/, '')
+      : 'http://localhost:3001';
+
+    const photosWithFullUrl = response.data.map(photo => ({
+      ...photo,
+      url: `${backendHost}${photo.url}` 
+    }));
+
+    return photosWithFullUrl;
   } catch (error) {
     if (error.response?.status && error.response.status >= 500) {
       console.error('Error fetching gallery:', error);

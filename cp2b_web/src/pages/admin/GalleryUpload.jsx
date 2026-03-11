@@ -57,23 +57,45 @@ const GalleryUpload = () => {
     e.preventDefault();
 
     if (files.length === 0 || !title || !date) { /* validação */ return; }
-    // 1. Comprime todos os arquivos
-    const compressedFiles = await compressFiles(files);
-    // 2. Monta o FormData com os arquivos comprimidos
-    const formData = new FormData();
-    compressedFiles.forEach((f, index) => {
-      // Pega o nome original, remove a extensão antiga (se tiver) e adiciona .webp
-      const originalName = f.name ? f.name.replace(/\.[^/.]+$/, "") : `foto-${index}`;
-      
-      // O append aceita um 3º parâmetro: o nome explícito do arquivo!
-      formData.append('images', f, `${originalName}.webp`);
-    });
-    formData.append('title', title);
-    formData.append('date', date);
-    // 3. Envia para a API
-    await uploadGalleryPhoto(formData);
 
-  };
+    setIsSubmitting(true);
+    setMessage({ type: '', text: '' }); // Limpa mensagens anteriores
+    try {
+      // 1. Comprime todos os arquivos
+      const compressedFiles = await compressFiles(files);
+      // 2. Monta o FormData com os arquivos comprimidos
+      const formData = new FormData();
+      compressedFiles.forEach((f, index) => {
+        // Pega o nome original, remove a extensão antiga (se tiver) e adiciona .webp
+        const originalName = f.name ? f.name.replace(/\.[^/.]+$/, "") : `foto-${index}`;
+        
+        // O append aceita um 3º parâmetro: o nome explícito do arquivo
+        formData.append('images', f, `${originalName}.webp`);
+      });
+    
+      formData.append('title', title);
+      formData.append('date', date);
+      // 3. Envia para a API
+      await uploadGalleryPhoto(formData);
+      setMessage({ type: 'success', text: 'Fotos enviadas com sucesso para a galeria!' });
+
+      // 6. Limpa o formulário para o próximo envio
+      setTitle('');
+      setDate('');
+      setFiles([]);
+      setPreviews([]);
+      setProgress({ current: 0, total: 0 });
+    }
+    catch (error) {
+      console.error('Erro ao enviar fotos:', error);
+      setMessage({ type: 'danger', text: 'Ocorreu um erro ao enviar as fotos. Tente novamente.' });
+
+    } 
+    finally {
+      // 7. Reabilita o botão de envio
+      setIsSubmitting(false);
+    };
+  }
 
   return (
     <Container className="py-4" style={{ maxWidth: '800px' }}>

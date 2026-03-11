@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Container, Button, Table, Image, Badge, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { fetchGallery, deleteGalleryPhoto } from '../../services/api';
+import {ConfirmDialog} from '../../components/admin';
 
 const GalleryList = () => {
   const navigate = useNavigate();
@@ -9,6 +10,9 @@ const GalleryList = () => {
   // --- ESTADOS ---
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
+  // --- ESTADOS DO MODAL DE CONFIRMAÇÃO ---
+  const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+  const [photoToDelete, setPhotoToDelete] = useState(null);
 
   // --- BUSCA DE DADOS ---
   // Carrega a lista de fotos do backend ao montar o componente
@@ -23,18 +27,30 @@ const GalleryList = () => {
 
   // --- EXCLUSÃO ---
   // Chama a API para apagar a foto e, em caso de sucesso, remove do estado local
-  const handleDelete = async (id) => {
-    if (!window.confirm('Tem certeza que deseja apagar esta foto da galeria?')) return;
+  
 
-    try {
-      await deleteGalleryPhoto(id);
-      // Atualiza a lista local sem precisar rebuscar do servidor
-      setPhotos((prev) => prev.filter((photo) => photo.id !== id));
-    } catch (error) {
-      alert('Erro ao apagar a foto. Tente novamente.');
-      console.error('Error deleting gallery photo:', error);
-    }
+  const requestDelete = (id) => {
+    setPhotoToDelete(id); // Guarda o ID da foto selecionada
+    setIsConfirmOpen(true); // Abre o modal na tela
   };
+
+  // Função ligada ao botão "Sim" dentro do modal
+  const executeDelete = async () => {
+    try {
+      await deleteGalleryPhoto(photoToDelete);
+      setPhotos((prev) => prev.filter((photo) => photo.id !== photoToDelete));
+      
+      // Aqui entraria o useToast de SUCESSO!
+      
+    } catch (error) {
+      console.error('Error deleting gallery photo:', error);
+      // Aqui entraria o useToast de ERRO!
+    } finally {
+      // Independentemente de dar certo ou errado, limpa o estado e fecha o modal
+      setIsConfirmOpen(false);
+      setPhotoToDelete(null);
+    }
+  }
 
   return (
     <Container className="py-4">
@@ -81,7 +97,7 @@ const GalleryList = () => {
                 <tr key={photo.id}>
                   <td className="px-4">
                     <Image
-                      src={photo.url}
+                      src={`${photo.url}`}
                       alt={photo.title}
                       width={80}
                       height={60}
@@ -90,12 +106,12 @@ const GalleryList = () => {
                     />
                   </td>
                   <td className="fw-semibold">{photo.title}</td>
-                  <td><Badge bg="secondary">{photo.date}</Badge></td>
+                  <td><Badge bg="secondary">{new Date(photo.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</Badge></td>
                   <td className="text-end px-4">
                     <Button
                       variant="outline-danger"
                       size="sm"
-                      onClick={() => handleDelete(photo.id)}
+                      onClick={() => requestDelete(photo.id)}
                     >
                       <i className="bi bi-trash"></i> Apagar
                     </Button>
@@ -106,6 +122,14 @@ const GalleryList = () => {
           </tbody>
         </Table>
       </div>
+      {/* RENDERIZA O MODAL AQUI */}
+      <ConfirmDialog 
+        show={isConfirmOpen} 
+        onCancel={() => setIsConfirmOpen(false)}
+        onConfirm={executeDelete}
+        title="Apagar Foto"
+        message="Tem certeza que deseja apagar esta foto da galeria? Esta ação não pode ser desfeita."
+      />
     </Container>
   );
 };

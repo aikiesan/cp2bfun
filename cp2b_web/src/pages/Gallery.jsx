@@ -50,7 +50,7 @@ const Gallery = () => {
               <Card className="h-100 shadow-sm border-0">
                 <Card.Img
                   variant="top"
-                  src={photo.url}
+                  src={`${photo.url}`}
                   alt={photo.title}
                   style={{ objectFit: 'cover', height: '250px' }}
                 />
@@ -58,7 +58,7 @@ const Gallery = () => {
                   <Card.Title className="h6 fw-bold">{photo.title}</Card.Title>
                   <Card.Text className="text-muted small mb-0">
                     <i className="bi bi-calendar-event me-2"></i>
-                    {photo.date}
+                    {new Date(photo.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
                   </Card.Text>
                 </Card.Body>
               </Card>
