@@ -11,7 +11,7 @@ const Header = () => {
   const location = useLocation();
 
   const isAboutActive = location.pathname.startsWith('/sobre');
-  const isNewsActive = ['/noticias', '/na-midia', '/oportunidades'].some(
+  const isNewsActive = ['/noticias', '/na-midia', '/oportunidades', '/eventos'].some(
     (p) => location.pathname.startsWith(p)
   );
   const [fontSize, setFontSize] = useState(() => {
@@ -200,6 +200,9 @@ const Header = () => {
                 </NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to="/oportunidades">
                   {t.newsSubmenu.opportunities}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/eventos">
+                  {t.newsSubmenu.events}
                 </NavDropdown.Item>
               </NavDropdown>
 

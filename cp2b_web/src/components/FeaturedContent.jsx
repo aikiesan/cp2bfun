@@ -34,7 +34,7 @@ const FeaturedContent = ({ itemA, itemB, itemC }) => {
           style={{
             backgroundImage: `url(${item.image})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            backgroundPosition: item.image_position || 'center center'
           }}
           transition={{ duration: 0.3 }}
         >

@@ -21,7 +21,8 @@ export const menuLabels = {
     newsSubmenu: {
       news: 'Notícias',
       media: 'Na Mídia',
-      opportunities: 'Oportunidades'
+      opportunities: 'Oportunidades',
+      events: 'Eventos'
     },
     team: 'Equipe',
     publications: 'Publicações',
@@ -50,7 +51,8 @@ export const menuLabels = {
     newsSubmenu: {
       news: 'News',
       media: 'In the Media',
-      opportunities: 'Opportunities'
+      opportunities: 'Opportunities',
+      events: 'Events'
     },
     team: 'Team',
     publications: 'Publications',

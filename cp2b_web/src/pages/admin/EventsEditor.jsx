@@ -1,102 +1,102 @@
 import { useState, useEffect } from 'react';
-import { Container, Form, Button, Card, Row, Col, Spinner } from 'react-bootstrap';
+import { Container, Form, Button, Row, Col, Alert, Spinner, Card } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
-import { useToast } from '../../components/admin';
+import { RichTextEditor } from '../../components/admin';
 import ImageUploadField from '../../components/ImageUploadField';
 
 const EventsEditor = () => {
-  const { id } = useParams();
+  const { slug } = useParams();
   const navigate = useNavigate();
-  const isEditing = Boolean(id);
-  const toast = useToast();
+  const isEditing = Boolean(slug);
 
   const [formData, setFormData] = useState({
+    slug: '',
     title_pt: '',
     title_en: '',
     description_pt: '',
     description_en: '',
-    event_type: 'workshop',
-    location: '',
-    location_type: 'in-person',
-    start_date: '',
-    start_time: '',
-    end_date: '',
-    end_time: '',
-    registration_url: '',
-    image_url: '',
-    organizer: '',
-    max_participants: '',
-    status: 'upcoming',
-    featured: false
+    content_pt: '',
+    content_en: '',
+    image: '',
+    image_position: 'center center',
+    badge: '',
+    badge_color: 'primary',
+    date_display: '',
+    published_at: '',
+    author: '',
+    image_caption_pt: '',
+    image_caption_en: '',
+    tags: '',
   });
-
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (isEditing) fetchEvent();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+    if (isEditing) {
+      fetchItem();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug]);
 
-  const fetchEvent = async () => {
+  const fetchItem = async () => {
     try {
-      const response = await api.get(`/events/${id}`);
+      const response = await api.get(`/events/${slug}`);
       const data = response.data;
-
-      // Split datetime into date and time
-      const startDate = new Date(data.start_date);
-      const endDate = new Date(data.end_date);
-
       setFormData({
         ...data,
-        start_date: startDate.toISOString().split('T')[0],
-        start_time: startDate.toTimeString().slice(0, 5),
-        end_date: endDate.toISOString().split('T')[0],
-        end_time: endDate.toTimeString().slice(0, 5),
-        max_participants: data.max_participants || '',
-        registration_url: data.registration_url || '',
-        image_url: data.image_url || ''
+        tags: Array.isArray(data.tags) ? data.tags.join(',') : (data.tags || ''),
+        published_at: data.published_at ? data.published_at.split('T')[0] : '',
       });
     } catch (err) {
-      toast.error('Erro ao carregar evento');
+      setError('Erro ao carregar artigo de evento');
+      console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: type === 'checkbox' ? checked : value
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === 'title_pt' && !isEditing) {
+      const generatedSlug = value
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)/g, '')
+        .substring(0, 50);
+      setFormData((prev) => ({ ...prev, slug: generatedSlug }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaving(true);
+    setError(null);
+    setSuccess(false);
 
     try {
-      // Combine date and time
       const payload = {
         ...formData,
-        start_date: `${formData.start_date}T${formData.start_time}:00`,
-        end_date: `${formData.end_date}T${formData.end_time}:00`,
-        max_participants: formData.max_participants ? parseInt(formData.max_participants) : null
+        published_at: formData.published_at || null,
       };
 
       if (isEditing) {
-        await api.put(`/events/${id}`, payload);
-        toast.success('Evento atualizado com sucesso!');
+        await api.put(`/events/${slug}`, payload);
       } else {
         await api.post('/events', payload);
-        toast.success('Evento criado com sucesso!');
       }
 
+      setSuccess(true);
       setTimeout(() => navigate('/admin/events'), 1500);
     } catch (err) {
-      toast.error(err.response?.data?.error || 'Erro ao salvar evento');
+      setError(err.response?.data?.error || 'Erro ao salvar artigo');
+      console.error(err);
     } finally {
       setSaving(false);
     }
@@ -110,48 +110,37 @@ const EventsEditor = () => {
     );
   }
 
-  const eventTypes = [
-    { value: 'workshop', label: 'Workshop' },
-    { value: 'forum', label: 'Fórum' },
-    { value: 'conference', label: 'Conferência' },
-    { value: 'meeting', label: 'Reunião' },
-    { value: 'webinar', label: 'Webinar' },
-    { value: 'course', label: 'Curso' }
-  ];
-
-  const locationTypes = [
-    { value: 'in-person', label: 'Presencial' },
-    { value: 'online', label: 'Online' },
-    { value: 'hybrid', label: 'Híbrido' }
-  ];
-
-  const statusOptions = [
-    { value: 'upcoming', label: 'Próximo' },
-    { value: 'ongoing', label: 'Em Andamento' },
-    { value: 'completed', label: 'Concluído' },
-    { value: 'cancelled', label: 'Cancelado' }
+  const badgeColors = [
+    { value: 'primary', label: 'Azul' },
+    { value: 'success', label: 'Verde' },
+    { value: 'info', label: 'Ciano' },
+    { value: 'warning', label: 'Amarelo' },
+    { value: 'danger', label: 'Vermelho' },
+    { value: 'secondary', label: 'Cinza' },
   ];
 
   return (
     <Container>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>{isEditing ? 'Editar Evento' : 'Novo Evento'}</h2>
+        <h2>{isEditing ? 'Editar Artigo de Evento' : 'Novo Artigo de Evento'}</h2>
         <Button variant="outline-secondary" onClick={() => navigate('/admin/events')}>
           <i className="bi bi-arrow-left me-2"></i>Voltar
         </Button>
       </div>
 
+      {error && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
+      {success && <Alert variant="success">Artigo salvo com sucesso!</Alert>}
+
       <Form onSubmit={handleSubmit}>
         <Row>
           <Col md={8}>
-            {/* Portuguese Content */}
             <Card className="mb-4">
               <Card.Header className="bg-white">
-                <h5 className="mb-0">Conteúdo em Português</h5>
+                <h5 className="mb-0">Conteudo em Portugues</h5>
               </Card.Header>
               <Card.Body>
                 <Form.Group className="mb-3">
-                  <Form.Label>Título (PT) *</Form.Label>
+                  <Form.Label>Titulo (PT) *</Form.Label>
                   <Form.Control
                     type="text"
                     name="title_pt"
@@ -160,28 +149,35 @@ const EventsEditor = () => {
                     required
                   />
                 </Form.Group>
-
                 <Form.Group className="mb-3">
-                  <Form.Label>Descrição (PT)</Form.Label>
+                  <Form.Label>Descricao (PT)</Form.Label>
                   <Form.Control
                     as="textarea"
-                    rows={5}
+                    rows={3}
                     name="description_pt"
                     value={formData.description_pt}
                     onChange={handleChange}
                   />
                 </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Conteudo Completo (PT)</Form.Label>
+                  <RichTextEditor
+                    value={formData.content_pt}
+                    onChange={(value) => setFormData(prev => ({ ...prev, content_pt: value }))}
+                    placeholder="Conteudo completo do artigo em portugues..."
+                    height="500px"
+                  />
+                </Form.Group>
               </Card.Body>
             </Card>
 
-            {/* English Content */}
             <Card className="mb-4">
               <Card.Header className="bg-white">
-                <h5 className="mb-0">Content in English</h5>
+                <h5 className="mb-0">Conteudo em Ingles</h5>
               </Card.Header>
               <Card.Body>
                 <Form.Group className="mb-3">
-                  <Form.Label>Title (EN)</Form.Label>
+                  <Form.Label>Titulo (EN)</Form.Label>
                   <Form.Control
                     type="text"
                     name="title_en"
@@ -189,200 +185,157 @@ const EventsEditor = () => {
                     onChange={handleChange}
                   />
                 </Form.Group>
-
                 <Form.Group className="mb-3">
-                  <Form.Label>Description (EN)</Form.Label>
+                  <Form.Label>Descricao (EN)</Form.Label>
                   <Form.Control
                     as="textarea"
-                    rows={5}
+                    rows={3}
                     name="description_en"
                     value={formData.description_en}
                     onChange={handleChange}
                   />
                 </Form.Group>
-              </Card.Body>
-            </Card>
-
-            {/* Event Details */}
-            <Card className="mb-4">
-              <Card.Header className="bg-white">
-                <h5 className="mb-0">Detalhes do Evento</h5>
-              </Card.Header>
-              <Card.Body>
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Data de Início *</Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="start_date"
-                        value={formData.start_date}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Horário de Início *</Form.Label>
-                      <Form.Control
-                        type="time"
-                        name="start_time"
-                        value={formData.start_time}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Data de Término *</Form.Label>
-                      <Form.Control
-                        type="date"
-                        name="end_date"
-                        value={formData.end_date}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Horário de Término *</Form.Label>
-                      <Form.Control
-                        type="time"
-                        name="end_time"
-                        value={formData.end_time}
-                        onChange={handleChange}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-
-                <Row>
-                  <Col md={8}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Local</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="location"
-                        value={formData.location}
-                        onChange={handleChange}
-                        placeholder="Ex: Auditório Principal, Zoom, etc."
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={4}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Tipo de Local *</Form.Label>
-                      <Form.Select
-                        name="location_type"
-                        value={formData.location_type}
-                        onChange={handleChange}
-                        required
-                      >
-                        {locationTypes.map(type => (
-                          <option key={type.value} value={type.value}>
-                            {type.label}
-                          </option>
-                        ))}
-                      </Form.Select>
-                    </Form.Group>
-                  </Col>
-                </Row>
-
                 <Form.Group className="mb-3">
-                  <Form.Label>Organizador</Form.Label>
-                  <Form.Control
-                    type="text"
-                    name="organizer"
-                    value={formData.organizer}
-                    onChange={handleChange}
+                  <Form.Label>Conteudo Completo (EN)</Form.Label>
+                  <RichTextEditor
+                    value={formData.content_en}
+                    onChange={(value) => setFormData(prev => ({ ...prev, content_en: value }))}
+                    placeholder="Full article content in English..."
+                    height="500px"
                   />
                 </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>Máximo de Participantes</Form.Label>
-                  <Form.Control
-                    type="number"
-                    name="max_participants"
-                    value={formData.max_participants}
-                    onChange={handleChange}
-                    min="1"
-                  />
-                </Form.Group>
-
-                <Form.Group className="mb-3">
-                  <Form.Label>URL de Inscrição</Form.Label>
-                  <Form.Control
-                    type="url"
-                    name="registration_url"
-                    value={formData.registration_url}
-                    onChange={handleChange}
-                    placeholder="https://..."
-                  />
-                </Form.Group>
-
-                <ImageUploadField
-                  label="Imagem do Evento"
-                  value={formData.image_url}
-                  onChange={(url) => setFormData(prev => ({ ...prev, image_url: url }))}
-                  helperText="JPEG, PNG ou WebP · máx. 5MB"
-                />
               </Card.Body>
             </Card>
           </Col>
 
           <Col md={4}>
-            {/* Settings */}
             <Card className="mb-4">
               <Card.Header className="bg-white">
-                <h5 className="mb-0">Configurações</h5>
+                <h5 className="mb-0">Configuracoes</h5>
               </Card.Header>
               <Card.Body>
                 <Form.Group className="mb-3">
-                  <Form.Label>Tipo de Evento *</Form.Label>
-                  <Form.Select
-                    name="event_type"
-                    value={formData.event_type}
+                  <Form.Label>Slug (URL) *</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="slug"
+                    value={formData.slug}
                     onChange={handleChange}
                     required
+                    disabled={isEditing}
+                  />
+                  <Form.Text className="text-muted">
+                    Ex: /eventos/{formData.slug || 'meu-artigo'}
+                  </Form.Text>
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Data de Exibicao</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="date_display"
+                    value={formData.date_display}
+                    onChange={handleChange}
+                    placeholder="Ex: 18 DEZ 2025"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Data de Publicacao</Form.Label>
+                  <Form.Control
+                    type="date"
+                    name="published_at"
+                    value={formData.published_at}
+                    onChange={handleChange}
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Badge</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="badge"
+                    value={formData.badge}
+                    onChange={handleChange}
+                    placeholder="Ex: Opiniao, Analise, Relatorio"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-3">
+                  <Form.Label>Cor do Badge</Form.Label>
+                  <Form.Select
+                    name="badge_color"
+                    value={formData.badge_color}
+                    onChange={handleChange}
                   >
-                    {eventTypes.map(type => (
-                      <option key={type.value} value={type.value}>
-                        {type.label}
+                    {badgeColors.map((color) => (
+                      <option key={color.value} value={color.value}>
+                        {color.label}
                       </option>
                     ))}
                   </Form.Select>
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Label>Status *</Form.Label>
-                  <Form.Select
-                    name="status"
-                    value={formData.status}
+                  <Form.Label>Autor</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="author"
+                    value={formData.author}
                     onChange={handleChange}
-                    required
-                  >
-                    {statusOptions.map(status => (
-                      <option key={status.value} value={status.value}>
-                        {status.label}
-                      </option>
-                    ))}
-                  </Form.Select>
+                    placeholder="Ex: Joao Silva"
+                  />
                 </Form.Group>
 
                 <Form.Group className="mb-3">
-                  <Form.Check
-                    type="checkbox"
-                    name="featured"
-                    label="Marcar como destaque"
-                    checked={formData.featured}
+                  <Form.Label>Tags</Form.Label>
+                  <Form.Control
+                    type="text"
+                    name="tags"
+                    value={formData.tags}
                     onChange={handleChange}
+                    placeholder="Ex: biogás,energia,pesquisa"
+                  />
+                  <Form.Text className="text-muted">Separe as tags por virgula</Form.Text>
+                </Form.Group>
+              </Card.Body>
+            </Card>
+
+            <Card className="mb-4">
+              <Card.Header className="bg-white">
+                <h5 className="mb-0">Imagem</h5>
+              </Card.Header>
+              <Card.Body>
+                <ImageUploadField
+                  label="Imagem de Capa"
+                  value={formData.image}
+                  onChange={(url) => setFormData(prev => ({ ...prev, image: url }))}
+                  helperText="JPEG, PNG ou WebP · max. 5MB"
+                  positionValue={formData.image_position}
+                  onPositionChange={(pos) => setFormData(prev => ({ ...prev, image_position: pos }))}
+                />
+
+                <Form.Group className="mt-3 mb-2">
+                  <Form.Label>Legenda da imagem (PT)</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={2}
+                    name="image_caption_pt"
+                    value={formData.image_caption_pt}
+                    onChange={handleChange}
+                    placeholder="Credito / Fonte da imagem em portugues"
+                  />
+                </Form.Group>
+
+                <Form.Group className="mb-0">
+                  <Form.Label>Legenda da imagem (EN)</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={2}
+                    name="image_caption_en"
+                    value={formData.image_caption_en}
+                    onChange={handleChange}
+                    placeholder="Image credit / source in English"
                   />
                 </Form.Group>
               </Card.Body>
@@ -398,7 +351,7 @@ const EventsEditor = () => {
                 ) : (
                   <>
                     <i className="bi bi-check-circle me-2"></i>
-                    {isEditing ? 'Atualizar' : 'Criar'} Evento
+                    {isEditing ? 'Atualizar Artigo' : 'Criar Artigo'}
                   </>
                 )}
               </Button>

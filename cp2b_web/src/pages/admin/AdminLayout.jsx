@@ -76,7 +76,7 @@ const AdminLayout = () => {
         { path: '/admin/projects', label: 'Projetos', icon: 'bi-folder', },
         { path: '/admin/featured', label: 'Destaques', icon: 'bi-star' },
         { path: '/admin/publications', label: 'Publicações', icon: 'bi-journal', isNew: true },
-        { path: '/admin/events', label: 'Eventos', icon: 'bi-calendar-event', isNew: true },
+        { path: '/admin/events', label: 'Eventos', icon: 'bi-calendar-event' },
         { path: '/admin/oportunidades', label: 'Oportunidades', icon: 'bi-briefcase', isNew: true }
       ]
     },
