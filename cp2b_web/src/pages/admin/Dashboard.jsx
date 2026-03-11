@@ -11,8 +11,7 @@ const Dashboard = () => {
     publicationsCount: 0,
     publicationsThisYear: 0,
     projectsCount: 0,
-    eventsCount: 0,
-    upcomingEvents: 0,
+    microscopioCount: 0,
     teamCount: 0,
     partnersCount: 0,
     axesCount: 0,
@@ -34,8 +33,7 @@ const Dashboard = () => {
           featuredNewsRes,
           publicationsRes,
           projectsRes,
-          eventsRes,
-          upcomingEventsRes,
+          microscopioRes,
           teamRes,
           partnersRes,
           axesRes,
@@ -49,8 +47,7 @@ const Dashboard = () => {
           api.get('/news/featured'),
           api.get('/publications').catch(() => ({ data: [] })),
           api.get('/projects').catch(() => ({ data: [] })),
-          api.get('/events').catch(() => ({ data: [] })),
-          api.get('/events/upcoming').catch(() => ({ data: [] })),
+          api.get('/microscopio').catch(() => ({ data: [] })),
           api.get('/team'),
           api.get('/partners').catch(() => ({ data: [] })),
           api.get('/axes'),
@@ -71,8 +68,7 @@ const Dashboard = () => {
           publicationsCount: publicationsRes.data.length,
           publicationsThisYear,
           projectsCount: projectsRes.data.length,
-          eventsCount: eventsRes.data.length,
-          upcomingEvents: upcomingEventsRes.data.length,
+          microscopioCount: microscopioRes.data.length,
           teamCount: teamRes.data.length,
           partnersCount: partnersRes.data.length,
           axesCount: axesRes.data.length,
@@ -119,12 +115,11 @@ const Dashboard = () => {
       color: '#00695C',
     },
     {
-      title: 'Eventos',
-      count: stats.eventsCount,
-      icon: 'bi-calendar-event',
-      link: '/admin/events',
+      title: 'Microscópio',
+      count: stats.microscopioCount,
+      icon: 'bi-binoculars',
+      link: '/admin/microscopio',
       color: '#6A1B9A',
-      subtitle: stats.upcomingEvents > 0 ? `${stats.upcomingEvents} próximos` : null,
     },
     {
       title: 'Mensagens',
@@ -275,9 +270,8 @@ const Dashboard = () => {
                   </Link>
                 </Col>
                 <Col md={4} sm={6}>
-                  <Link to="/admin/events/new" className="btn btn-outline-primary w-100">
-                    <i className="bi bi-calendar-plus me-2"></i>Novo Evento
-                    <Badge bg="success" className="ms-2">NEW</Badge>
+                  <Link to="/admin/microscopio/new" className="btn btn-outline-primary w-100">
+                    <i className="bi bi-binoculars me-2"></i>Novo Artigo Microscópio
                   </Link>
                 </Col>
                 <Col md={4} sm={6}>
@@ -361,7 +355,7 @@ const Dashboard = () => {
                 <small className="text-muted d-block mb-1">Recursos</small>
                 <p className="mb-0">
                   <Badge bg="success" className="me-1">Notícias</Badge>
-                  <Badge bg="success" className="me-1">Eventos</Badge>
+                  <Badge bg="success" className="me-1">Microscópio</Badge>
                   <Badge bg="success" className="me-1">Publicações</Badge>
                   <Badge bg="success">Parceiros</Badge>
                 </p>
