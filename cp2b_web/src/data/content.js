@@ -22,7 +22,7 @@ export const menuLabels = {
       news: 'Notícias',
       media: 'Na Mídia',
       opportunities: 'Oportunidades',
-      events: 'Eventos'
+      microscopio: 'Microscópio'
     },
     team: 'Equipe',
     publications: 'Publicações',
@@ -52,7 +52,7 @@ export const menuLabels = {
       news: 'News',
       media: 'In the Media',
       opportunities: 'Opportunities',
-      events: 'Events'
+      microscopio: 'Microscópio'
     },
     team: 'Team',
     publications: 'Publications',

@@ -1,53 +1,115 @@
-import { Container, Row, Col } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { Container, Row, Col, Card, Badge, Spinner } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-
-const content = {
-  pt: {
-    tag: 'MICROSCÓPIO DE IDEIAS',
-    title: 'Microscópio de Ideias',
-    subtitle: 'Um espaço para artigos de opinião e reflexões dos pesquisadores do CP2B.',
-    comingSoon: 'Em breve, artigos e ideias dos pesquisadores do CP2B.',
-  },
-  en: {
-    tag: 'MICROSCÓPIO DE IDEIAS',
-    title: 'Microscópio de Ideias',
-    subtitle: 'A space for opinion articles and reflections from CP2B researchers.',
-    comingSoon: 'Coming soon: articles and ideas from CP2B researchers.',
-  },
-};
+import { fetchMicroscopia } from '../services/api';
 
 const Microscopio = () => {
   const { language } = useLanguage();
-  const t = content[language];
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const labels = {
+    pt: {
+      tag: 'MICROSCÓPIO DE IDEIAS',
+      title: 'Microscópio de Ideias',
+      description: 'Um espaço para artigos de opinião e reflexões dos pesquisadores do CP2B.',
+      empty: 'Nenhum artigo disponível no momento.',
+      readMore: 'Saiba mais',
+    },
+    en: {
+      tag: 'MICROSCÓPIO DE IDEIAS',
+      title: 'Microscópio de Ideias',
+      description: 'A space for opinion articles and reflections from CP2B researchers.',
+      empty: 'No articles available at the moment.',
+      readMore: 'Read more',
+    },
+  }[language];
+
+  useEffect(() => {
+    const loadItems = async () => {
+      const data = await fetchMicroscopia();
+      setItems(data || []);
+      setLoading(false);
+    };
+    loadItems();
+  }, []);
 
   return (
-    <section className="py-5">
-      <Container>
-        <Row className="justify-content-center">
-          <Col lg={8}>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-            >
-              <span className="mono-label text-success">{t.tag}</span>
-              <h1 className="fw-bold mt-2 mb-3">{t.title}</h1>
-              <p className="lead text-muted mb-5">{t.subtitle}</p>
-
-              {/* Empty state */}
-              <div
-                className="text-center py-5 rounded-4"
-                style={{ background: '#f8f9fa', border: '1px dashed #dee2e6' }}
-              >
-                <div className="mb-3" style={{ fontSize: '2.5rem' }}>🔬</div>
-                <p className="text-muted mb-0">{t.comingSoon}</p>
-              </div>
-            </motion.div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4 }}
+    >
+      <Container className="py-5">
+        <Row className="mb-5">
+          <Col>
+            <span className="mono-label text-success text-uppercase">{labels.tag}</span>
+            <h1 className="display-5 fw-bold mt-2 mb-2">{labels.title}</h1>
+            <p className="lead text-muted">{labels.description}</p>
           </Col>
         </Row>
+
+        {loading ? (
+          <div className="text-center py-5">
+            <Spinner animation="border" variant="success" />
+          </div>
+        ) : items.length === 0 ? (
+          <Row className="justify-content-center text-center">
+            <Col lg={6}>
+              <i className="bi bi-binoculars text-success" style={{ fontSize: '4rem', opacity: 0.5 }}></i>
+              <p className="lead text-muted mt-3">{labels.empty}</p>
+            </Col>
+          </Row>
+        ) : (
+          <Row className="g-4">
+            {items.map((item) => (
+              <Col lg={4} md={6} key={item.slug}>
+                <Card className="h-100 border-0 shadow-sm" style={{ transition: 'transform 0.2s' }}
+                  onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
+                  onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
+                >
+                  {item.image && (
+                    <Card.Img
+                      variant="top"
+                      src={item.image}
+                      style={{ height: '180px', objectFit: 'cover' }}
+                    />
+                  )}
+                  <Card.Body className="d-flex flex-column">
+                    {item.badge && (
+                      <Badge bg={item.badge_color || 'success'} className="mb-2 align-self-start">
+                        {item.badge}
+                      </Badge>
+                    )}
+                    <Card.Title className="fw-bold">
+                      {language === 'pt' ? item.title_pt : (item.title_en || item.title_pt)}
+                    </Card.Title>
+                    <Card.Text className="text-muted flex-grow-1" style={{ fontSize: '0.9rem' }}>
+                      {language === 'pt' ? item.description_pt : (item.description_en || item.description_pt)}
+                    </Card.Text>
+                    <div className="d-flex justify-content-between align-items-center mt-3">
+                      {item.date_display && (
+                        <small className="text-muted" style={{ fontFamily: 'var(--font-mono)' }}>
+                          {item.date_display}
+                        </small>
+                      )}
+                      <Link
+                        to={`/microscopio/${item.slug}`}
+                        className="btn btn-outline-success btn-sm ms-auto"
+                      >
+                        {labels.readMore}
+                      </Link>
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        )}
       </Container>
-    </section>
+    </motion.div>
   );
 };
 

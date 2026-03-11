@@ -3,44 +3,44 @@ import pool from '../db/connection.js';
 
 const router = Router();
 
-// Get all events (articles)
+// Get all microscopio articles
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, slug, title_pt, title_en, description_pt, description_en,
               image, image_position, badge, badge_color, date_display, published_at, created_at,
               author, tags
-       FROM events
+       FROM microscopio
        ORDER BY published_at DESC NULLS LAST, created_at DESC`
     );
     res.json(result.rows);
   } catch (error) {
-    console.error('Error fetching events:', error);
-    res.status(500).json({ error: 'Failed to fetch events' });
+    console.error('Error fetching microscopio articles:', error);
+    res.status(500).json({ error: 'Failed to fetch microscopio articles' });
   }
 });
 
-// Get single event by slug
+// Get single microscopio article by slug
 router.get('/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
     const result = await pool.query(
-      `SELECT * FROM events WHERE slug = $1`,
+      `SELECT * FROM microscopio WHERE slug = $1`,
       [slug]
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Event not found' });
+      return res.status(404).json({ error: 'Article not found' });
     }
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error fetching event:', error);
-    res.status(500).json({ error: 'Failed to fetch event' });
+    console.error('Error fetching microscopio article:', error);
+    res.status(500).json({ error: 'Failed to fetch microscopio article' });
   }
 });
 
-// Create event article
+// Create microscopio article
 router.post('/', async (req, res) => {
   try {
     const {
@@ -54,7 +54,7 @@ router.post('/', async (req, res) => {
     }
 
     const result = await pool.query(
-      `INSERT INTO events (slug, title_pt, title_en, description_pt, description_en,
+      `INSERT INTO microscopio (slug, title_pt, title_en, description_pt, description_en,
                            content_pt, content_en, image, image_position, badge, badge_color,
                            date_display, published_at, author, image_caption_pt, image_caption_en, tags)
        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
@@ -66,15 +66,15 @@ router.post('/', async (req, res) => {
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
-    console.error('Error creating event:', error);
+    console.error('Error creating microscopio article:', error);
     if (error.code === '23505') {
-      return res.status(400).json({ error: 'An event with this slug already exists' });
+      return res.status(400).json({ error: 'An article with this slug already exists' });
     }
-    res.status(500).json({ error: 'Failed to create event' });
+    res.status(500).json({ error: 'Failed to create microscopio article' });
   }
 });
 
-// Update event article
+// Update microscopio article
 router.put('/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
@@ -86,7 +86,7 @@ router.put('/:slug', async (req, res) => {
     } = req.body;
 
     const result = await pool.query(
-      `UPDATE events SET
+      `UPDATE microscopio SET
          slug = COALESCE($1, slug),
          title_pt = COALESCE($2, title_pt),
          title_en = COALESCE($3, title_en),
@@ -113,33 +113,33 @@ router.put('/:slug', async (req, res) => {
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Event not found' });
+      return res.status(404).json({ error: 'Article not found' });
     }
 
     res.json(result.rows[0]);
   } catch (error) {
-    console.error('Error updating event:', error);
-    res.status(500).json({ error: 'Failed to update event' });
+    console.error('Error updating microscopio article:', error);
+    res.status(500).json({ error: 'Failed to update microscopio article' });
   }
 });
 
-// Delete event article
+// Delete microscopio article
 router.delete('/:slug', async (req, res) => {
   try {
     const { slug } = req.params;
     const result = await pool.query(
-      'DELETE FROM events WHERE slug = $1 RETURNING id',
+      'DELETE FROM microscopio WHERE slug = $1 RETURNING id',
       [slug]
     );
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Event not found' });
+      return res.status(404).json({ error: 'Article not found' });
     }
 
-    res.json({ message: 'Event deleted successfully' });
+    res.json({ message: 'Article deleted successfully' });
   } catch (error) {
-    console.error('Error deleting event:', error);
-    res.status(500).json({ error: 'Failed to delete event' });
+    console.error('Error deleting microscopio article:', error);
+    res.status(500).json({ error: 'Failed to delete microscopio article' });
   }
 });
 

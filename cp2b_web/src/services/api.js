@@ -273,44 +273,29 @@ export const deletePublication = async (id) => {
   return response.data;
 };
 
-// Events API functions (article-based, slug-keyed)
-export const fetchEvents = async () => {
+// Microscopio API functions (article-based, slug-keyed)
+export const fetchMicroscopia = async () => {
   try {
-    const response = await api.get('/events');
+    const response = await api.get('/microscopio');
     return response.data;
   } catch (error) {
     if (error.response?.status && error.response.status >= 500) {
-      console.error('Error fetching events:', error);
+      console.error('Error fetching microscopio articles:', error);
     }
     return null;
   }
 };
 
-export const fetchEvent = async (slug) => {
+export const fetchMicroscopio = async (slug) => {
   try {
-    const response = await api.get(`/events/${slug}`);
+    const response = await api.get(`/microscopio/${slug}`);
     return response.data;
   } catch (error) {
     if (error.response?.status && error.response.status >= 500) {
-      console.error('Error fetching event:', error);
+      console.error('Error fetching microscopio article:', error);
     }
     return null;
   }
-};
-
-export const createEvent = async (data) => {
-  const response = await api.post('/events', data);
-  return response.data;
-};
-
-export const updateEvent = async (slug, data) => {
-  const response = await api.put(`/events/${slug}`, data);
-  return response.data;
-};
-
-export const deleteEvent = async (slug) => {
-  const response = await api.delete(`/events/${slug}`);
-  return response.data;
 };
 
 // Projects API functions (duplicate of news API)
