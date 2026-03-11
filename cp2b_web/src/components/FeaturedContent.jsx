@@ -23,9 +23,12 @@ const FeaturedContent = ({ itemA, itemB, itemC }) => {
     const description = language === 'pt' ? item.description_pt : item.description_en || item.description_pt;
 
     // Determine link path based on content type
-    const linkPath = item.content_type === 'project'
-      ? `/projetos/${item.slug}`
-      : `/noticias/${item.slug}`;
+    const linkPaths = {
+      project: `/projetos/${item.slug}`,
+      microscopio: `/microscopio/${item.slug}`,
+      opportunity: `/oportunidades/${item.slug}`,
+    };
+    const linkPath = linkPaths[item.content_type] || `/noticias/${item.slug}`;
 
     return (
       <Link to={linkPath} className="text-decoration-none">

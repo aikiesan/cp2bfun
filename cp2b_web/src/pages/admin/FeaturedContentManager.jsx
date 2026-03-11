@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Alert, Spinner, Card, Row, Col } from 'react-bootstrap';
-import { fetchNews, fetchProjects, fetchFeaturedContent, updateFeaturedContent } from '../../services/api';
+import { fetchNews, fetchProjects, fetchMicroscopia, fetchOpportunities, fetchFeaturedContent, updateFeaturedContent } from '../../services/api';
 
 const FeaturedContentManager = () => {
   const [allNews, setAllNews] = useState([]);
   const [allProjects, setAllProjects] = useState([]);
+  const [allMicroscopia, setAllMicroscopia] = useState([]);
+  const [allOpportunities, setAllOpportunities] = useState([]);
   const [currentFeatured, setCurrentFeatured] = useState({ A: null, B: null, C: null });
 
   // Each position has type and slug
@@ -23,14 +25,18 @@ const FeaturedContentManager = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [newsData, projectsData, featuredData] = await Promise.all([
+      const [newsData, projectsData, microscopiaData, opportunitiesData, featuredData] = await Promise.all([
         fetchNews(),
         fetchProjects(),
+        fetchMicroscopia(),
+        fetchOpportunities(),
         fetchFeaturedContent()
       ]);
 
       setAllNews(newsData || []);
       setAllProjects(projectsData || []);
+      setAllMicroscopia(microscopiaData || []);
+      setAllOpportunities(opportunitiesData || []);
       setCurrentFeatured(featuredData);
 
       // Set dropdown values to current selections
@@ -91,8 +97,22 @@ const FeaturedContentManager = () => {
     }
   };
 
+  const typeLabels = {
+    news: 'Notícia',
+    project: 'Projeto',
+    microscopio: 'Microscópio',
+    opportunity: 'Oportunidade',
+  };
+
+  const itemsByType = {
+    news: allNews,
+    project: allProjects,
+    microscopio: allMicroscopia,
+    opportunity: allOpportunities,
+  };
+
   const renderPositionSelector = (position, setPosition, label, currentItem) => {
-    const items = position.type === 'news' ? allNews : allProjects;
+    const items = itemsByType[position.type] || [];
 
     return (
       <Card className="mb-3">
@@ -110,6 +130,8 @@ const FeaturedContentManager = () => {
                   <option value="">-- Selecione --</option>
                   <option value="news">Notícia</option>
                   <option value="project">Projeto</option>
+                  <option value="microscopio">Microscópio</option>
+                  <option value="opportunity">Oportunidade</option>
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -117,7 +139,7 @@ const FeaturedContentManager = () => {
             <Col md={8}>
               {position.type && (
                 <Form.Group className="mb-3">
-                  <Form.Label>Selecionar {position.type === 'news' ? 'Notícia' : 'Projeto'}</Form.Label>
+                  <Form.Label>Selecionar {typeLabels[position.type]}</Form.Label>
                   <Form.Select
                     value={position.slug}
                     onChange={(e) => setPosition({ ...position, slug: e.target.value })}
@@ -136,7 +158,7 @@ const FeaturedContentManager = () => {
 
           {currentItem && (
             <Form.Text className="text-muted">
-              <strong>Atual:</strong> {currentItem.content_type === 'news' ? 'Notícia' : 'Projeto'} - {currentItem.title_pt}
+              <strong>Atual:</strong> {typeLabels[currentItem.content_type] || currentItem.content_type} - {currentItem.title_pt}
             </Form.Text>
           )}
         </Card.Body>
@@ -221,9 +243,7 @@ const FeaturedContentManager = () => {
           {(() => {
             const findItem = (pos) => {
               if (!pos.slug) return null;
-              return pos.type === 'news'
-                ? allNews.find(n => n.slug === pos.slug)
-                : allProjects.find(p => p.slug === pos.slug);
+              return (itemsByType[pos.type] || []).find(i => i.slug === pos.slug);
             };
             const itemA = findItem(positionA);
             const itemB = findItem(positionB);
