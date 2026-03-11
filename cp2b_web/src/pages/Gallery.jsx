@@ -2,7 +2,9 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
 import { fetchGallery } from '../services/api';
 
+
 const Gallery = () => {
+
   // --- ESTADOS ---
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);

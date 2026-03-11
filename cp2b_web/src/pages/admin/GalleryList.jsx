@@ -3,9 +3,13 @@ import { Container, Button, Table, Image, Badge, Spinner } from 'react-bootstrap
 import { useNavigate } from 'react-router-dom';
 import { fetchGallery, deleteGalleryPhoto } from '../../services/api';
 import {ConfirmDialog} from '../../components/admin';
+import { useToast } from '../../components/admin'; 
 
 const GalleryList = () => {
   const navigate = useNavigate();
+  
+  // 2. Desestruture apenas as funções que você vai usar
+  const { success, error } = useToast();
 
   // --- ESTADOS ---
   const [photos, setPhotos] = useState([]);
@@ -40,13 +44,15 @@ const GalleryList = () => {
       await deleteGalleryPhoto(photoToDelete);
       setPhotos((prev) => prev.filter((photo) => photo.id !== photoToDelete));
       
-      // Aqui entraria o useToast de SUCESSO!
+      // 3. Chame a função de sucesso diretamente
+      success('Foto excluída com sucesso!');
       
-    } catch (error) {
-      console.error('Error deleting gallery photo:', error);
-      // Aqui entraria o useToast de ERRO!
+    } catch (err) {
+      console.error('Error deleting gallery photo:', err);
+      
+      // 4. Chame a função de erro
+      error('Ocorreu um erro ao excluir a foto. Tente novamente.');
     } finally {
-      // Independentemente de dar certo ou errado, limpa o estado e fecha o modal
       setIsConfirmOpen(false);
       setPhotoToDelete(null);
     }

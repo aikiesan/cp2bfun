@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Container, Form, Button, Card, Alert, Spinner } from 'react-bootstrap';
+import { Container, Form, Button, Card, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { uploadGalleryPhoto } from '../../services/api';
 import imageCompression from 'browser-image-compression';
+import { useToast } from '../../components/admin'; 
 
 const GalleryUpload = () => {
   const navigate = useNavigate();
+  const { success, error } = useToast();
 
   // --- ESTADOS DO FORMULÁRIO ---
   const [title, setTitle] = useState('');
@@ -17,7 +19,6 @@ const GalleryUpload = () => {
 
   // --- ESTADOS DE FEEDBACK (Loading, Sucesso, Erro) ---
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [message, setMessage] = useState({ type: '', text: '' });
 
   // --- SELEÇÃO DE ARQUIVO ---
   // Gera uma URL temporária para pré-visualização antes do envio
@@ -53,46 +54,44 @@ const GalleryUpload = () => {
 
   // --- ENVIO DO FORMULÁRIO ---
   // Monta um FormData e envia para o backend via POST /gallery
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (files.length === 0 || !title || !date) { /* validação */ return; }
+    if (files.length === 0 || !title || !date) { return; }
 
     setIsSubmitting(true);
-    setMessage({ type: '', text: '' }); // Limpa mensagens anteriores
+    
     try {
-      // 1. Comprime todos os arquivos
       const compressedFiles = await compressFiles(files);
-      // 2. Monta o FormData com os arquivos comprimidos
       const formData = new FormData();
+      
       compressedFiles.forEach((f, index) => {
-        // Pega o nome original, remove a extensão antiga (se tiver) e adiciona .webp
         const originalName = f.name ? f.name.replace(/\.[^/.]+$/, "") : `foto-${index}`;
-        
-        // O append aceita um 3º parâmetro: o nome explícito do arquivo
         formData.append('images', f, `${originalName}.webp`);
       });
     
       formData.append('title', title);
       formData.append('date', date);
-      // 3. Envia para a API
+      
       await uploadGalleryPhoto(formData);
-      setMessage({ type: 'success', text: 'Fotos enviadas com sucesso para a galeria!' });
+      
+      // 4. Mostre o toast de sucesso
+      success('Fotos enviadas com sucesso para a galeria!');
 
-      // 6. Limpa o formulário para o próximo envio
+      // Limpa os campos
       setTitle('');
       setDate('');
       setFiles([]);
       setPreviews([]);
       setProgress({ current: 0, total: 0 });
     }
-    catch (error) {
-      console.error('Erro ao enviar fotos:', error);
-      setMessage({ type: 'danger', text: 'Ocorreu um erro ao enviar as fotos. Tente novamente.' });
-
+    catch (err) {
+      console.error('Erro ao enviar fotos:', err);
+      
+      // 5. Mostre o toast de erro
+      error('Ocorreu um erro ao enviar as fotos. Tente novamente.');
     } 
     finally {
-      // 7. Reabilita o botão de envio
       setIsSubmitting(false);
     };
   }
@@ -106,12 +105,6 @@ const GalleryUpload = () => {
         </Button>
       </div>
 
-      {/* --- FEEDBACK (sucesso ou erro) --- */}
-      {message.text && (
-        <Alert variant={message.type} dismissible onClose={() => setMessage({ type: '', text: '' })}>
-          {message.text}
-        </Alert>
-      )}
 
       <Card className="shadow-sm border-0">
         <Card.Body className="p-4">
