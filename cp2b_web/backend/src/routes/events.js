@@ -3,43 +3,16 @@ import pool from '../db/connection.js';
 
 const router = Router();
 
-// Get all events with optional filters
+// Get all events (articles)
 router.get('/', async (req, res) => {
   try {
-    const { status, type, from, to } = req.query;
-
-    let query = `SELECT * FROM events WHERE 1=1`;
-    const params = [];
-    let paramCount = 1;
-
-    // Apply filters
-    if (status) {
-      query += ` AND status = $${paramCount}`;
-      params.push(status);
-      paramCount++;
-    }
-
-    if (type) {
-      query += ` AND event_type = $${paramCount}`;
-      params.push(type);
-      paramCount++;
-    }
-
-    if (from) {
-      query += ` AND start_date >= $${paramCount}`;
-      params.push(from);
-      paramCount++;
-    }
-
-    if (to) {
-      query += ` AND start_date <= $${paramCount}`;
-      params.push(to);
-      paramCount++;
-    }
-
-    query += ` ORDER BY start_date DESC`;
-
-    const result = await pool.query(query, params);
+    const result = await pool.query(
+      `SELECT id, slug, title_pt, title_en, description_pt, description_en,
+              image, image_position, badge, badge_color, date_display, published_at, created_at,
+              author, tags
+       FROM events
+       ORDER BY published_at DESC NULLS LAST, created_at DESC`
+    );
     res.json(result.rows);
   } catch (error) {
     console.error('Error fetching events:', error);
@@ -47,43 +20,13 @@ router.get('/', async (req, res) => {
   }
 });
 
-// Get upcoming events
-router.get('/upcoming', async (req, res) => {
+// Get single event by slug
+router.get('/:slug', async (req, res) => {
   try {
+    const { slug } = req.params;
     const result = await pool.query(
-      `SELECT * FROM events
-       WHERE status = 'upcoming' AND start_date > NOW()
-       ORDER BY start_date ASC`
-    );
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error fetching upcoming events:', error);
-    res.status(500).json({ error: 'Failed to fetch upcoming events' });
-  }
-});
-
-// Get featured events
-router.get('/featured', async (req, res) => {
-  try {
-    const result = await pool.query(
-      `SELECT * FROM events
-       WHERE featured = TRUE
-       ORDER BY start_date DESC`
-    );
-    res.json(result.rows);
-  } catch (error) {
-    console.error('Error fetching featured events:', error);
-    res.status(500).json({ error: 'Failed to fetch featured events' });
-  }
-});
-
-// Get single event by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await pool.query(
-      `SELECT * FROM events WHERE id = $1`,
-      [id]
+      `SELECT * FROM events WHERE slug = $1`,
+      [slug]
     );
 
     if (result.rows.length === 0) {
@@ -97,138 +40,76 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// Create event
+// Create event article
 router.post('/', async (req, res) => {
   try {
     const {
-      title_pt, title_en, description_pt, description_en, event_type,
-      location, location_type, start_date, end_date, registration_url,
-      image, organizer, max_participants, current_participants, status, featured
+      slug, title_pt, title_en, description_pt, description_en,
+      content_pt, content_en, image, image_position, badge, badge_color,
+      date_display, published_at, author, image_caption_pt, image_caption_en, tags
     } = req.body;
 
-    // Validate required fields
-    if (!title_pt || !start_date) {
-      return res.status(400).json({ error: 'title_pt and start_date are required' });
-    }
-
-    // Validate event type if provided
-    if (event_type) {
-      const validTypes = ['workshop', 'forum', 'conference', 'meeting', 'webinar', 'course'];
-      if (!validTypes.includes(event_type)) {
-        return res.status(400).json({
-          error: 'Invalid event_type. Must be one of: workshop, forum, conference, meeting, webinar, course'
-        });
-      }
-    }
-
-    // Validate location type if provided
-    if (location_type) {
-      const validLocationTypes = ['in-person', 'online', 'hybrid'];
-      if (!validLocationTypes.includes(location_type)) {
-        return res.status(400).json({
-          error: 'Invalid location_type. Must be one of: in-person, online, hybrid'
-        });
-      }
-    }
-
-    // Validate status if provided
-    if (status) {
-      const validStatuses = ['upcoming', 'ongoing', 'completed', 'cancelled'];
-      if (!validStatuses.includes(status)) {
-        return res.status(400).json({
-          error: 'Invalid status. Must be one of: upcoming, ongoing, completed, cancelled'
-        });
-      }
+    if (!slug || !title_pt) {
+      return res.status(400).json({ error: 'slug and title_pt are required' });
     }
 
     const result = await pool.query(
-      `INSERT INTO events (
-         title_pt, title_en, description_pt, description_en, event_type,
-         location, location_type, start_date, end_date, registration_url,
-         image, organizer, max_participants, current_participants, status, featured
-       )
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+      `INSERT INTO events (slug, title_pt, title_en, description_pt, description_en,
+                           content_pt, content_en, image, image_position, badge, badge_color,
+                           date_display, published_at, author, image_caption_pt, image_caption_en, tags)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
        RETURNING *`,
-      [
-        title_pt, title_en, description_pt, description_en, event_type || 'workshop',
-        location, location_type || 'in-person', start_date, end_date, registration_url,
-        image, organizer, max_participants, current_participants || 0, status || 'upcoming', featured || false
-      ]
+      [slug, title_pt, title_en, description_pt, description_en,
+       content_pt, content_en, image, image_position || 'center center', badge, badge_color || 'primary',
+       date_display, published_at, author, image_caption_pt, image_caption_en, tags]
     );
 
     res.status(201).json(result.rows[0]);
   } catch (error) {
     console.error('Error creating event:', error);
+    if (error.code === '23505') {
+      return res.status(400).json({ error: 'An event with this slug already exists' });
+    }
     res.status(500).json({ error: 'Failed to create event' });
   }
 });
 
-// Update event
-router.put('/:id', async (req, res) => {
+// Update event article
+router.put('/:slug', async (req, res) => {
   try {
-    const { id } = req.params;
+    const { slug } = req.params;
     const {
-      title_pt, title_en, description_pt, description_en, event_type,
-      location, location_type, start_date, end_date, registration_url,
-      image, organizer, max_participants, current_participants, status, featured
+      title_pt, title_en, description_pt, description_en,
+      content_pt, content_en, image, image_position, badge, badge_color,
+      date_display, published_at, author, image_caption_pt, image_caption_en, tags,
+      new_slug
     } = req.body;
-
-    // Validate event type if provided
-    if (event_type) {
-      const validTypes = ['workshop', 'forum', 'conference', 'meeting', 'webinar', 'course'];
-      if (!validTypes.includes(event_type)) {
-        return res.status(400).json({
-          error: 'Invalid event_type. Must be one of: workshop, forum, conference, meeting, webinar, course'
-        });
-      }
-    }
-
-    // Validate location type if provided
-    if (location_type) {
-      const validLocationTypes = ['in-person', 'online', 'hybrid'];
-      if (!validLocationTypes.includes(location_type)) {
-        return res.status(400).json({
-          error: 'Invalid location_type. Must be one of: in-person, online, hybrid'
-        });
-      }
-    }
-
-    // Validate status if provided
-    if (status) {
-      const validStatuses = ['upcoming', 'ongoing', 'completed', 'cancelled'];
-      if (!validStatuses.includes(status)) {
-        return res.status(400).json({
-          error: 'Invalid status. Must be one of: upcoming, ongoing, completed, cancelled'
-        });
-      }
-    }
 
     const result = await pool.query(
       `UPDATE events SET
-         title_pt = COALESCE($1, title_pt),
-         title_en = COALESCE($2, title_en),
-         description_pt = COALESCE($3, description_pt),
-         description_en = COALESCE($4, description_en),
-         event_type = COALESCE($5, event_type),
-         location = COALESCE($6, location),
-         location_type = COALESCE($7, location_type),
-         start_date = COALESCE($8, start_date),
-         end_date = COALESCE($9, end_date),
-         registration_url = COALESCE($10, registration_url),
-         image = COALESCE($11, image),
-         organizer = COALESCE($12, organizer),
-         max_participants = COALESCE($13, max_participants),
-         current_participants = COALESCE($14, current_participants),
-         status = COALESCE($15, status),
-         featured = COALESCE($16, featured),
+         slug = COALESCE($1, slug),
+         title_pt = COALESCE($2, title_pt),
+         title_en = COALESCE($3, title_en),
+         description_pt = COALESCE($4, description_pt),
+         description_en = COALESCE($5, description_en),
+         content_pt = COALESCE($6, content_pt),
+         content_en = COALESCE($7, content_en),
+         image = COALESCE($8, image),
+         image_position = COALESCE($9, image_position),
+         badge = COALESCE($10, badge),
+         badge_color = COALESCE($11, badge_color),
+         date_display = COALESCE($12, date_display),
+         published_at = COALESCE($13, published_at),
+         author = COALESCE($15, author),
+         image_caption_pt = COALESCE($16, image_caption_pt),
+         image_caption_en = COALESCE($17, image_caption_en),
+         tags = COALESCE($18, tags),
          updated_at = NOW()
-       WHERE id = $17
+       WHERE slug = $14
        RETURNING *`,
-      [
-        title_pt, title_en, description_pt, description_en, event_type,
-        location, location_type, start_date, end_date, registration_url,
-        image, organizer, max_participants, current_participants, status, featured, id
-      ]
+      [new_slug, title_pt, title_en, description_pt, description_en,
+       content_pt, content_en, image, image_position, badge, badge_color,
+       date_display, published_at, slug, author, image_caption_pt, image_caption_en, tags]
     );
 
     if (result.rows.length === 0) {
@@ -242,43 +123,13 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// Update event participant count
-router.put('/:id/participants', async (req, res) => {
+// Delete event article
+router.delete('/:slug', async (req, res) => {
   try {
-    const { id } = req.params;
-    const { current_participants } = req.body;
-
-    if (current_participants === undefined) {
-      return res.status(400).json({ error: 'current_participants is required' });
-    }
-
+    const { slug } = req.params;
     const result = await pool.query(
-      `UPDATE events SET
-         current_participants = $1,
-         updated_at = NOW()
-       WHERE id = $2
-       RETURNING *`,
-      [current_participants, id]
-    );
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Event not found' });
-    }
-
-    res.json(result.rows[0]);
-  } catch (error) {
-    console.error('Error updating event participants:', error);
-    res.status(500).json({ error: 'Failed to update event participants' });
-  }
-});
-
-// Delete event
-router.delete('/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const result = await pool.query(
-      'DELETE FROM events WHERE id = $1 RETURNING id',
-      [id]
+      'DELETE FROM events WHERE slug = $1 RETURNING id',
+      [slug]
     );
 
     if (result.rows.length === 0) {

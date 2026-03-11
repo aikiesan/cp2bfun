@@ -273,52 +273,28 @@ export const deletePublication = async (id) => {
   return response.data;
 };
 
-// Events API functions
-export const fetchEvents = async (filters = {}) => {
+// Events API functions (article-based, slug-keyed)
+export const fetchEvents = async () => {
   try {
-    const queryParams = new URLSearchParams();
-    if (filters.status) queryParams.append('status', filters.status);
-    if (filters.type) queryParams.append('type', filters.type);
-    if (filters.from) queryParams.append('from', filters.from);
-    if (filters.to) queryParams.append('to', filters.to);
-
-    const queryString = queryParams.toString();
-    const endpoint = queryString ? `/events?${queryString}` : '/events';
-    const response = await api.get(endpoint);
+    const response = await api.get('/events');
     return response.data;
   } catch (error) {
-    console.error('Error fetching events:', error);
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching events:', error);
+    }
     return null;
   }
 };
 
-export const fetchEvent = async (id) => {
+export const fetchEvent = async (slug) => {
   try {
-    const response = await api.get(`/events/${id}`);
+    const response = await api.get(`/events/${slug}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching event:', error);
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching event:', error);
+    }
     return null;
-  }
-};
-
-export const fetchUpcomingEvents = async () => {
-  try {
-    const response = await api.get('/events/upcoming');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching upcoming events:', error);
-    return [];
-  }
-};
-
-export const fetchFeaturedEvents = async () => {
-  try {
-    const response = await api.get('/events/featured');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching featured events:', error);
-    return [];
   }
 };
 
@@ -327,18 +303,13 @@ export const createEvent = async (data) => {
   return response.data;
 };
 
-export const updateEvent = async (id, data) => {
-  const response = await api.put(`/events/${id}`, data);
+export const updateEvent = async (slug, data) => {
+  const response = await api.put(`/events/${slug}`, data);
   return response.data;
 };
 
-export const updateEventParticipants = async (id, current_participants) => {
-  const response = await api.put(`/events/${id}/participants`, { current_participants });
-  return response.data;
-};
-
-export const deleteEvent = async (id) => {
-  const response = await api.delete(`/events/${id}`);
+export const deleteEvent = async (slug) => {
+  const response = await api.delete(`/events/${slug}`);
   return response.data;
 };
 
