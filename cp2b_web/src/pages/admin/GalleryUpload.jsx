@@ -111,7 +111,7 @@ const handleSubmit = async (e) => {
           <Form onSubmit={handleSubmit}>
 
             {/* Campo Título */}
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3" controlId="photoTitle">
               <Form.Label className="fw-semibold">Título da Foto</Form.Label>
               <Form.Control
                 type="text"
@@ -122,7 +122,7 @@ const handleSubmit = async (e) => {
             </Form.Group>
 
             {/* Campo Data */}
-            <Form.Group className="mb-3">
+            <Form.Group className="mb-3" controlId="photoDate">
               <Form.Label className="fw-semibold">Data do Evento</Form.Label>
               <Form.Control
                 type="date"
@@ -132,7 +132,7 @@ const handleSubmit = async (e) => {
             </Form.Group>
 
             {/* Campo de Arquivo */}
-            <Form.Group className="mb-4">
+            <Form.Group className="mb-4" controlId="photoFile">
               <Form.Label className="fw-semibold">Selecionar Imagem</Form.Label>
               <Form.Control
                 type="file"
