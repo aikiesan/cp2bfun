@@ -1,15 +1,18 @@
 import { render } from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import { LanguageProvider } from '../context/LanguageContext';
 
 export function renderWithProviders(ui, options = {}) {
   function Wrapper({ children }) {
     return (
-      <LanguageProvider>
-        <BrowserRouter>
-          {children}
-        </BrowserRouter>
-      </LanguageProvider>
+      <HelmetProvider>
+        <LanguageProvider>
+          <BrowserRouter>
+            {children}
+          </BrowserRouter>
+        </LanguageProvider>
+      </HelmetProvider>
     );
   }
 
