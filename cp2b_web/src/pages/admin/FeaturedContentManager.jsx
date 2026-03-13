@@ -275,7 +275,7 @@ const FeaturedContentManager = () => {
               overflow: 'hidden',
               backgroundImage: item?.image ? `url(${item.image})` : 'none',
               backgroundSize: 'cover',
-              backgroundPosition: item?.image_position || 'center center',
+              backgroundPosition: item?.image_position || '50% 50%',
               ...(item?.image ? {} : emptyStyle),
             });
 

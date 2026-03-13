@@ -19,7 +19,7 @@ const MicroscopioEditor = () => {
     content_pt: '',
     content_en: '',
     image: '',
-    image_position: 'center center',
+    image_position: '50% 50%',
     badge: '',
     badge_color: 'primary',
     date_display: '',
