@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 import { Container, Spinner, Button } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { newsItems } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchNewsArticle, fetchNews } from '../services/api';
 import ArticleLayout from '../components/ArticleLayout';
+import SeoHead from '../components/SeoHead';
 
 const NewsDetail = () => {
+  const DOMAIN = 'https://cp2b.unicamp.br';
   const { slug } = useParams();
+  const { pathname } = useLocation();
   const { language } = useLanguage();
   const [article, setArticle] = useState(null);
   const [relatedPosts, setRelatedPosts] = useState([]);
@@ -108,15 +111,39 @@ const NewsDetail = () => {
     );
   }
 
+  const articleJsonLd = article ? {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: article.title,
+    description: article.description,
+    image: article.image ? (article.image.startsWith('http') ? article.image : `${DOMAIN}${article.image}`) : undefined,
+    datePublished: article.date,
+    author: { '@type': 'Organization', name: 'CP2b' },
+    publisher: { '@type': 'Organization', name: 'CP2b', logo: { '@type': 'ImageObject', url: 'https://cp2b.unicamp.br/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png' } },
+  } : null;
+
   return (
-    <ArticleLayout
-      article={article}
+    <>
+      {article && (
+        <SeoHead
+          title={article.title}
+          description={article.description}
+          path={pathname}
+          image={article.image}
+          type="article"
+          language={language}
+          jsonLd={articleJsonLd}
+        />
+      )}
+      <ArticleLayout
+        article={article}
       relatedPosts={relatedPosts}
       backLink="/noticias"
       backLabel={labels.back}
       shareLabel={labels.share}
       language={language}
     />
+    </>
   );
 };
 

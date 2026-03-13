@@ -3,6 +3,39 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
 import { LanguageProvider } from './context/LanguageContext';
+import SeoHead from './components/SeoHead';
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ResearchOrganization',
+  name: 'CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos',
+  alternateName: 'CP2b',
+  url: 'https://cp2b.unicamp.br',
+  logo: 'https://cp2b.unicamp.br/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png',
+  description: 'Centro de pesquisa vinculado ao NIPE-UNICAMP dedicado ao estudo de biogás, bioprodutos e políticas públicas para energia renovável no Estado de São Paulo.',
+  email: 'nipe@nipe.unicamp.br',
+  telephone: '+55-19-3521-1244',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Rua Cora Coralina, 330',
+    addressLocality: 'Campinas',
+    addressRegion: 'SP',
+    postalCode: '13083-896',
+    addressCountry: 'BR',
+  },
+  parentOrganization: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Universidade Estadual de Campinas',
+    alternateName: 'UNICAMP',
+    url: 'https://www.unicamp.br',
+  },
+  sameAs: [
+    'https://www.instagram.com/centro_biogas_cp2b/',
+    'https://br.linkedin.com/company/centro-paulista-de-estudos-em-biog%C3%A1s-e-bioprodutos-cp2b',
+    'https://www.youtube.com/@nipeunicamp4034',
+  ],
+  knowsAbout: ['biogás', 'bioprodutos', 'energia renovável', 'resíduos sólidos', 'saneamento', 'políticas públicas', 'biogas', 'bioproducts', 'renewable energy'],
+};
 
 // Components
 import Header from './components/Header';
@@ -77,6 +110,7 @@ function App() {
   return (
     <LanguageProvider>
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <SeoHead jsonLd={organizationJsonLd} />
         <ScrollToTop />
         <SocialSidebar />
         <Routes>

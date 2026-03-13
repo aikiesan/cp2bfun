@@ -3,9 +3,14 @@ import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext';
 import { motion } from 'framer-motion';
 import { fetchPartnersGrouped } from '../../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../../data/content';
+import SeoHead from '../../components/SeoHead';
 
 const PartnersPage = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.partners[language] || pageSeo.partners.pt;
   const [partners, setPartners] = useState({ host: [], public: [], research: [], companies: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -70,7 +75,9 @@ const PartnersPage = () => {
   const hostPartner = partners.host[0]; // Get first host partner
 
   return (
-    <motion.div
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -163,6 +170,7 @@ const PartnersPage = () => {
         )}
       </Container>
     </motion.div>
+    </>
   );
 };
 

@@ -4,6 +4,9 @@ import { motion } from 'framer-motion';
 import { teamMembers as staticTeamMembers, menuLabels } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchTeam } from '../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const categoryLabels = {
   coordinators: { pt: 'Pesquisadores Responsaveis', en: 'Lead Researchers' },
@@ -17,6 +20,8 @@ const categoryOrder = ['coordinators', 'principals', 'associates', 'support', 's
 
 const Team = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.team[language] || pageSeo.team.pt;
   const t = menuLabels[language];
   const [teamData, setTeamData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -62,7 +67,9 @@ const Team = () => {
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <Container className="py-5">
       <Row className="mb-5">
         <Col lg={8}>
@@ -107,6 +114,7 @@ const Team = () => {
       ))}
     </Container>
     </motion.div>
+    </>
   );
 };
 

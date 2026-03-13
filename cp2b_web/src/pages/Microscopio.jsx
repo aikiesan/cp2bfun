@@ -4,9 +4,14 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchMicroscopia } from '../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const Microscopio = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.microscopio[language] || pageSeo.microscopio.pt;
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -37,7 +42,9 @@ const Microscopio = () => {
   }, []);
 
   return (
-    <motion.div
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -110,6 +117,7 @@ const Microscopio = () => {
         )}
       </Container>
     </motion.div>
+    </>
   );
 };
 

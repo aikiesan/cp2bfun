@@ -3,9 +3,14 @@ import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { aboutContent as staticAboutContent, partners, projectDetails } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchPageContent } from '../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const About = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.about[language] || pageSeo.about.pt;
   const [content, setContent] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -75,7 +80,9 @@ const About = () => {
   }
 
   return (
-    <Container className="py-5">
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <Container className="py-5">
       <Row className="mb-5 align-items-center">
         <Col lg={8}>
           <span className="mono-label text-success">{labels.tag}</span>
@@ -158,6 +165,7 @@ const About = () => {
           </Row>
       </section>
     </Container>
+    </>
   );
 };
 
