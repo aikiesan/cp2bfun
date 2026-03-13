@@ -33,24 +33,20 @@ const GalleryList = () => {
   // Chama a API para apagar a foto e, em caso de sucesso, remove do estado local
   
 
-  const requestDelete = (id) => {
-    setPhotoToDelete(id); // Guarda o ID da foto selecionada
-    setIsConfirmOpen(true); // Abre o modal na tela
+  const requestDelete = (photo) => { // AGORA RECEBE O OBJETO INTEIRO
+    setPhotoToDelete(photo);
+    setIsConfirmOpen(true);
   };
 
-  // Função ligada ao botão "Sim" dentro do modal
   const executeDelete = async () => {
     try {
-      await deleteGalleryPhoto(photoToDelete);
-      setPhotos((prev) => prev.filter((photo) => photo.id !== photoToDelete));
+      // Usa photoToDelete.id em vez de apenas photoToDelete
+      await deleteGalleryPhoto(photoToDelete.id); 
+      setPhotos((prev) => prev.filter((photo) => photo.id !== photoToDelete.id));
       
-      // 3. Chame a função de sucesso diretamente
       success('Foto excluída com sucesso!');
-      
     } catch (err) {
       console.error('Error deleting gallery photo:', err);
-      
-      // 4. Chame a função de erro
       error('Ocorreu um erro ao excluir a foto. Tente novamente.');
     } finally {
       setIsConfirmOpen(false);
@@ -111,13 +107,19 @@ const GalleryList = () => {
                       style={{ objectFit: 'cover' }}
                     />
                   </td>
-                  <td className="fw-semibold">{photo.title}</td>
+                  <td className="fw-semibold">
+                    {photo.title}
+                    {photo.is_cover && (
+                    <Badge bg="warning" text="dark" className="ms-2">Capa do Álbum</Badge>
+                    )}
+                    
+                  </td>
                   <td><Badge bg="secondary">{new Date(photo.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</Badge></td>
                   <td className="text-end px-4">
                     <Button
                       variant="outline-danger"
                       size="sm"
-                      onClick={() => requestDelete(photo.id)}
+                      onClick={() => requestDelete(photo)}
                     >
                       <i className="bi bi-trash"></i> Apagar
                     </Button>
@@ -133,8 +135,12 @@ const GalleryList = () => {
         show={isConfirmOpen} 
         onCancel={() => setIsConfirmOpen(false)}
         onConfirm={executeDelete}
-        title="Apagar Foto"
-        message="Tem certeza que deseja apagar esta foto da galeria? Esta ação não pode ser desfeita."
+        title={photoToDelete?.is_cover ? "⚠️ ALERTA: Apagar Capa do Álbum" : "Apagar Foto"}
+        message={
+          photoToDelete?.is_cover 
+            ? `Tem certeza que deseja apagar a capa do álbum "${photoToDelete?.title}"? ALERTA: Sem a capa, o álbum inteiro deixará de aparecer no site público, e as fotos internas ficarão "órfãs".` 
+            : "Tem certeza que deseja apagar esta foto da galeria? Esta ação não pode ser desfeita."
+        }
       />
     </Container>
   );

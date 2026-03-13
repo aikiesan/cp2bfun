@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
 import { fetchGallery } from '../services/api';
+import { useNavigate } from 'react-router-dom';
 
 
 const Gallery = () => {
-
+  const navigate = useNavigate();
   // --- ESTADOS ---
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,31 +37,41 @@ const Gallery = () => {
         <h1 className="fw-bold text-primary">Galeria de Fotos</h1>
         <p className="text-muted">Confira os registros dos nossos eventos e projetos.</p>
       </div>
-
-      {/* --- LÓGICA DE EXIBIÇÃO: lista vazia ou grid de fotos --- */}
+      {/* --- LÓGICA DE EXIBIÇÃO: lista vazia ou grid de álbuns --- */}
       {photos.length === 0 ? (
-        // Empty State — exibido quando não há fotos ou a API retornou vazio
         <div className="text-center text-muted py-5">
           <i className="bi bi-camera-fill" style={{ fontSize: '3rem' }}></i>
-          <p className="mt-3">Ainda não há fotos publicadas na galeria.</p>
+          <p className="mt-3">Ainda não há álbuns publicados na galeria.</p>
         </div>
       ) : (
-        // Grid de Fotos
+        // Grid de Álbuns (Mostra SÓ as capas)
         <Row xs={1} md={2} lg={3} className="g-4">
-          {photos.map((photo) => (
-            <Col key={photo.id}>
-              <Card className="h-100 shadow-sm border-0">
+          {photos
+            .filter((photo) => photo.is_cover) // O Pulo do Gato: Filtra só as capas!
+            .map((album) => (
+            <Col key={album.id}>
+              {/* Transformamos o Card em um botão clicável */}
+              <Card 
+                className="h-100 shadow-sm border-0"
+                style={{ cursor: 'pointer', transition: 'transform 0.2s' }}
+                onClick={() => navigate(`/gallery/${album.album_id}`)}
+                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
+                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+              >
                 <Card.Img
                   variant="top"
-                  src={`${photo.url}`}
-                  alt={photo.title}
+                  src={album.url}
+                  alt={album.title}
                   style={{ objectFit: 'cover', height: '250px' }}
                 />
                 <Card.Body>
-                  <Card.Title className="h6 fw-bold">{photo.title}</Card.Title>
-                  <Card.Text className="text-muted small mb-0">
-                    <i className="bi bi-calendar-event me-2"></i>
-                    {new Date(photo.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
+                  <Card.Title className="h6 fw-bold">{album.title}</Card.Title>
+                  <Card.Text className="text-muted small mb-0 d-flex justify-content-between align-items-center">
+                    <span>
+                      <i className="bi bi-calendar-event me-2"></i>
+                      {new Date(album.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
+                    </span>
+                    <i className="bi bi-folder2-open text-primary fs-5"></i>
                   </Card.Text>
                 </Card.Body>
               </Card>
@@ -68,6 +79,8 @@ const Gallery = () => {
           ))}
         </Row>
       )}
+      
+      
     </Container>
   );
 };

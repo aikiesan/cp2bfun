@@ -41,10 +41,12 @@ const upload = multer({
 // ============================================================
 // GET /api/gallery — lista todas as fotos, mais recentes primeiro
 // ============================================================
+// GET /api/gallery
 router.get('/', async (req, res) => {
   try {
+    // Adicionamos album_id e is_cover no SELECT
     const result = await pool.query(
-      'SELECT id, url, title, date, created_at FROM gallery ORDER BY created_at DESC'
+      'SELECT id, url, title, date, album_id, is_cover, created_at FROM gallery ORDER BY created_at DESC'
     );
     res.json(result.rows);
   } catch (error) {
@@ -57,60 +59,65 @@ router.get('/', async (req, res) => {
 // POST /api/gallery — faz upload da imagem e cria registro no banco
 // Campos esperados no FormData: image (arquivo), title (texto), date (texto)
 // ============================================================
-router.post('/', upload.array('images', 20), async (req, res) => {
+// Rota POST atualizada para aceitar múltiplos campos
+router.post('/', upload.fields([{ name: 'cover', maxCount: 1 }, { name: 'images', maxCount: 20 }]), async (req, res) => {  
   
-  if (!req.files || req.files.length === 0) {
-    return res.status(400).json({ error: 'Nenhum arquivo enviado.' });
+  // CORREÇÃO 1: req.files agora é um objeto
+  if (!req.files || !req.files.cover || !req.files.images) {
+    return res.status(400).json({ error: 'É obrigatório enviar a foto de capa e as imagens internas.' });
   }
-
 
   const { title, date } = req.body;
 
-  // 2. Validação de título com loop de limpeza
+  // Função auxiliar para limpar arquivos do disco caso dê erro
+  const clearUploadedFiles = () => {
+    Object.values(req.files).flat().forEach(f => fs.unlink(f.path, () => {}));
+  };
+
   if (!title) {
-    req.files.forEach(f => fs.unlink(f.path, () => {}));
+    clearUploadedFiles();
     return res.status(400).json({ error: 'O campo "title" é obrigatório.' });
   }
 
-  // 3. Início da Transação
+  // CORREÇÃO 2: Criando o ID do álbum
+  const albumId = 'album-' + Date.now() + '-' + Math.round(Math.random() * 1e9);
+
   const client = await pool.connect();
   try {
-    await client.query("BEGIN"); // Inicia a transação
-
+    await client.query("BEGIN"); 
     const savedPhotos = [];
 
-    // 4. Loop para inserir cada arquivo no banco
-    for (const file of req.files) {
-      const url = `/uploads/gallery/${file.filename}`;
-      
-      const result = await client.query(
-        `INSERT INTO gallery (url, title, date, filename)
-         VALUES ($1, $2, $3, $4)
-         RETURNING id, url, title, date, created_at`,
-        [url, title, date || null, file.filename]
+    // Salva a capa
+    const coverFile = req.files.cover[0];
+    const coverUrl = `/uploads/gallery/${coverFile.filename}`;
+    const coverResult = await client.query(
+      `INSERT INTO gallery (url, title, date, filename, album_id, is_cover) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+      [coverUrl, title, date || null, coverFile.filename, albumId, true]
+    );
+    savedPhotos.push(coverResult.rows[0]);
+
+    // Salva as fotos internas
+    for (const file of req.files.images) {
+      const imgUrl = `/uploads/gallery/${file.filename}`;
+      const imgResult = await client.query(
+        `INSERT INTO gallery (url, title, date, filename, album_id, is_cover) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+        [imgUrl, title, date || null, file.filename, albumId, false]
       );
-      
-      savedPhotos.push(result.rows[0]);
+      savedPhotos.push(imgResult.rows[0]);
     }
 
-    await client.query("COMMIT"); // Confirma todas as inserções
-    
-    // Retorna a lista de fotos salvas com sucesso
+    await client.query("COMMIT"); 
     res.status(201).json(savedPhotos);
 
   } catch (error) {
-    await client.query("ROLLBACK"); // Desfaz tudo em caso de erro
-    
-    // Remove todos os arquivos do disco
-    req.files.forEach(f => fs.unlink(f.path, () => {}));
-    
+    await client.query("ROLLBACK"); 
+    clearUploadedFiles();
     console.error('Error saving gallery photos:', error);
     res.status(500).json({ error: 'Failed to save gallery photos' });
   } finally {
-    client.release(); // Sempre devolve o cliente para o pool
+    client.release(); 
   }
 });
-
 // ============================================================
 // DELETE /api/gallery/:id — remove registro do banco e arquivo do disco
 // ============================================================

@@ -13,8 +13,10 @@ const GalleryUpload = () => {
   const [title, setTitle] = useState('');
   const [date, setDate] = useState('');
   const [files, setFiles] = useState([]);
+  const [coverFile, setCoverFile] = useState(null);
+  const [coverPreview, setCoverPreview] = useState(null);
   const [previews, setPreviews] = useState([]);
-  const[compressionProgress, setProgress] = useState([]);
+  const[compressionProgress, setProgress] = useState({ current: 0, total: 0 })
   const [isCompressing, setIsCompressing] = useState(false);
 
   // --- ESTADOS DE FEEDBACK (Loading, Sucesso, Erro) ---
@@ -29,6 +31,15 @@ const GalleryUpload = () => {
     setPreviews(selected.map(f => URL.createObjectURL(f)));
 
     
+  };
+  // Seleção exclusiva da Foto de Capa
+  const handleCoverChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setCoverFile(file);
+      if (coverPreview) URL.revokeObjectURL(coverPreview);
+      setCoverPreview(URL.createObjectURL(file));
+    }
   };
 
   const compressFiles = async (rawFiles) => {
@@ -57,15 +68,27 @@ const GalleryUpload = () => {
 const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (files.length === 0 || !title || !date) { return; }
+    // 1. Validação (usando o toast de erro que você já importou)
+    if (!coverFile || files.length === 0 || !title || !date) { 
+      error('Preencha todos os campos e selecione a capa e as imagens internas.');
+      return; 
+    }
 
     setIsSubmitting(true);
     
     try {
-      const compressedFiles = await compressFiles(files);
+      // 2. Comprime a capa e as imagens
+      const [compressedCover] = await compressFiles([coverFile]);
+      const compressedImages = await compressFiles(files);
+      
       const formData = new FormData();
       
-      compressedFiles.forEach((f, index) => {
+      // 3. Adiciona a Capa (com a chave 'cover')
+      const coverName = coverFile.name ? coverFile.name.replace(/\.[^/.]+$/, "") : 'capa';
+      formData.append('cover', compressedCover, `${coverName}.webp`);
+
+      // 4. Adiciona as imagens internas (com a chave 'images')
+      compressedImages.forEach((f, index) => {
         const originalName = f.name ? f.name.replace(/\.[^/.]+$/, "") : `foto-${index}`;
         formData.append('images', f, `${originalName}.webp`);
       });
@@ -73,23 +96,24 @@ const handleSubmit = async (e) => {
       formData.append('title', title);
       formData.append('date', date);
       
+      // 5. Envia para a API
       await uploadGalleryPhoto(formData);
       
-      // 4. Mostre o toast de sucesso
-      success('Fotos enviadas com sucesso para a galeria!');
+      // 6. Mostra o toast de sucesso
+      success('Álbum e fotos enviados com sucesso para a galeria!');
 
-      // Limpa os campos
+      // 7. Limpa todos os campos para um novo envio
       setTitle('');
       setDate('');
       setFiles([]);
       setPreviews([]);
+      setCoverFile(null);
+      setCoverPreview(null);
       setProgress({ current: 0, total: 0 });
     }
     catch (err) {
       console.error('Erro ao enviar fotos:', err);
-      
-      // 5. Mostre o toast de erro
-      error('Ocorreu um erro ao enviar as fotos. Tente novamente.');
+      error('Ocorreu um erro ao enviar o álbum. Tente novamente.');
     } 
     finally {
       setIsSubmitting(false);
@@ -112,7 +136,7 @@ const handleSubmit = async (e) => {
 
             {/* Campo Título */}
             <Form.Group className="mb-3" controlId="photoTitle">
-              <Form.Label className="fw-semibold">Título da Foto</Form.Label>
+              <Form.Label className="fw-semibold">Título do Álbum</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Ex: Abertura do Fórum"
@@ -130,6 +154,24 @@ const handleSubmit = async (e) => {
                 onChange={(e) => setDate(e.target.value)}
               />
             </Form.Group>
+
+           {/* --- NOVO: Campo de Foto de Capa --- */}
+            <Form.Group className="mb-3" controlId="coverFile">
+              <Form.Label className="fw-semibold">Foto de Capa do Álbum</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/*"
+                onChange={handleCoverChange} 
+              />
+            </Form.Group>
+
+            {/* Preview da Capa */}
+            {coverPreview && (
+              <div className='mb-4 p-3 border rounded bg-light'>
+                <p className='text-muted small mb-2'>Preview da Capa</p>
+                <img src={coverPreview} alt="Preview Capa" style={{ height: '150px', objectFit: 'cover' }} className='rounded shadow-sm' />
+              </div>
+            )}
 
             {/* Campo de Arquivo */}
             <Form.Group className="mb-4" controlId="photoFile">

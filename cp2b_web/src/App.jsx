@@ -32,6 +32,7 @@ import Registro from './pages/Registro';
 import AgendaMeetups from './pages/AgendaMeetups';
 import ConfirmarMeetup from './pages/ConfirmarMeetup';
 import Gallery from './pages/Gallery';
+import AlbumView from './pages/AlbumView';
 
 // About sub-pages
 import Governance from './pages/about/Governance';
@@ -136,6 +137,7 @@ function App() {
                     <Route path="/publicacoes" element={<Publications />} />
                     <Route path="/eventos" element={<Events />} />
                     <Route path="/galeria" element={<Gallery />} />
+                    <Route path="/gallery/:albumId" element={<AlbumView />} />
                     <Route path="/projetos" element={<Projects />} />
                     <Route path="/projetos/:slug" element={<ProjectDetail />} />
                     <Route path="/na-midia" element={<Media />} />
