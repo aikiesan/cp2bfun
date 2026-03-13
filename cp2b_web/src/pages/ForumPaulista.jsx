@@ -189,13 +189,7 @@ const content = {
 const ForumPaulista = () => {
   const { language } = useLanguage();
   const t = content[language];
-  // --- logica do google calendar (Tarefa M5) ---
-  const eventTitle = encodeURIComponent(t.heroTitle);
-  const eventDetails = encodeURIComponent(t.heroSubtitle);
-  const eventLocation = encodeURIComponent(t.heroLocation);
   
-  // Data: 28 de Maio de 2026 | Horário: 09:00 às 16:30 (Local) -> 12:00 às 19:30 (UTC)
-  const eventDates = "20260528T120000Z/20260528T193000Z";
   
   const googleCalendarUrl = "https://calendar.google.com/calendar/event?action=TEMPLATE&tmeid=MjZsNzI0aGRnbWE4NXEzY2VqaGlyOGIyYm4gY182ODAwMDZmOTM2NDBlOWViNGE4YmY0NTQxZmY2ZTM4ZDM2MTQ2OGQxNjM0ZDlhODk5ODg1OGQ5ZmZjYjY4MGQ1QGc&tmsrc=c_680006f93640e9eb4a8bf4541ff6e38d361468d1634d9a8998858d9ffcb680d5%40group.calendar.google.com";
 

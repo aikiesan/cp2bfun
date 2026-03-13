@@ -4,6 +4,7 @@ import { renderWithProviders } from '../../test/utils';
 import GalleryUpload from './GalleryUpload';
 import userEvent from '@testing-library/user-event';
 import { waitFor } from '@testing-library/react';
+import {test, expect} from 'vitest';
 
 test('smoke: renders without crashing', () => {
   expect(() =>

@@ -117,7 +117,7 @@ const handleSubmit = async (e) => {
     } 
     finally {
       setIsSubmitting(false);
-    };
+    }
   }
 
   return (
