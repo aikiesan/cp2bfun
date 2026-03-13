@@ -39,6 +39,7 @@ const OportunidadesDetail = () => {
           description: language === 'pt' ? data.description_pt : (data.description_en || data.description_pt),
           content: language === 'pt' ? data.content_pt : (data.content_en || data.content_pt),
           image: data.image,
+          imagePosition: data.image_position || 'center center',
           badge: data.badge,
           badgeColor: data.badge_color,
           date: data.date_display,

@@ -1083,6 +1083,7 @@ body.high-contrast .navbar .dropdown-item:hover {
   .featured-news-main,
   .featured-news-top,
   .featured-news-bottom {
+    height: 50vh;
     min-height: 50vh;
   }
 
@@ -1408,7 +1409,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 
 .article-fapesp-hero {
   width: 100%;
-  aspect-ratio: 16 / 9;
+  aspect-ratio: 5 / 2;
   object-fit: cover;
   border-radius: 0 !important; /* override global img { border-radius } */
   display: block;
@@ -1701,6 +1702,10 @@ body.high-contrast .navbar .dropdown-item:hover {
   .article-related-grid {
     grid-template-columns: 1fr;
     gap: 1.25rem;
+  }
+
+  .article-fapesp-hero {
+    aspect-ratio: 4 / 3;
   }
 }
 
