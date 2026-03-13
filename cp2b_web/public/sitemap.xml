@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Home -->
+  <url>
+    <loc>https://cp2b.unicamp.br/</loc>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/"/>
+  </url>
+
+  <!-- Sobre -->
+  <url>
+    <loc>https://cp2b.unicamp.br/sobre</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/sobre"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/sobre"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/sobre"/>
+  </url>
+  <url>
+    <loc>https://cp2b.unicamp.br/sobre/governanca</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/sobre/governanca"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/sobre/governanca"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/sobre/governanca"/>
+  </url>
+  <url>
+    <loc>https://cp2b.unicamp.br/sobre/transparencia</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/sobre/transparencia"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/sobre/transparencia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/sobre/transparencia"/>
+  </url>
+  <url>
+    <loc>https://cp2b.unicamp.br/sobre/parceiros</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/sobre/parceiros"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/sobre/parceiros"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/sobre/parceiros"/>
+  </url>
+
+  <!-- Eixos de Pesquisa -->
+  <url>
+    <loc>https://cp2b.unicamp.br/eixos</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/eixos"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/eixos"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/eixos"/>
+  </url>
+
+  <!-- Equipe -->
+  <url>
+    <loc>https://cp2b.unicamp.br/equipe</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/equipe"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/equipe"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/equipe"/>
+  </url>
+
+  <!-- Notícias -->
+  <url>
+    <loc>https://cp2b.unicamp.br/noticias</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/noticias"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/noticias"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/noticias"/>
+  </url>
+
+  <!-- Oportunidades -->
+  <url>
+    <loc>https://cp2b.unicamp.br/oportunidades</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/oportunidades"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/oportunidades"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/oportunidades"/>
+  </url>
+
+  <!-- Publicações -->
+  <url>
+    <loc>https://cp2b.unicamp.br/publicacoes</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/publicacoes"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/publicacoes"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/publicacoes"/>
+  </url>
+
+  <!-- Projetos -->
+  <url>
+    <loc>https://cp2b.unicamp.br/projetos</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/projetos"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/projetos"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/projetos"/>
+  </url>
+
+  <!-- Microscópio -->
+  <url>
+    <loc>https://cp2b.unicamp.br/microscopio</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/microscopio"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/microscopio"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/microscopio"/>
+  </url>
+
+  <!-- Na Mídia -->
+  <url>
+    <loc>https://cp2b.unicamp.br/na-midia</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/na-midia"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/na-midia"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/na-midia"/>
+  </url>
+
+  <!-- Fórum Paulista -->
+  <url>
+    <loc>https://cp2b.unicamp.br/forum-paulista</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/forum-paulista"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/forum-paulista"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/forum-paulista"/>
+  </url>
+
+  <!-- Agenda Meetups -->
+  <url>
+    <loc>https://cp2b.unicamp.br/agenda-meetups</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/agenda-meetups"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/agenda-meetups"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/agenda-meetups"/>
+  </url>
+
+  <!-- Contato -->
+  <url>
+    <loc>https://cp2b.unicamp.br/contato</loc>
+    <changefreq>yearly</changefreq>
+    <priority>0.5</priority>
+    <xhtml:link rel="alternate" hreflang="pt-BR" href="https://cp2b.unicamp.br/contato"/>
+    <xhtml:link rel="alternate" hreflang="en"    href="https://cp2b.unicamp.br/contato"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cp2b.unicamp.br/contato"/>
+  </url>
+
+  <!--
+    Dynamic article URLs (/noticias/:slug, /oportunidades/:slug, /projetos/:slug, /microscopio/:slug)
+    are served by the backend sitemap endpoint. Add a sitemap index if needed:
+    <sitemapindex>
+      <sitemap><loc>https://cp2b.unicamp.br/sitemap.xml</loc></sitemap>
+      <sitemap><loc>https://cp2b.unicamp.br/api/sitemap-news.xml</loc></sitemap>
+    </sitemapindex>
+  -->
+
+</urlset>

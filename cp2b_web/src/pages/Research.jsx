@@ -4,6 +4,9 @@ import { motion } from 'framer-motion';
 import { researchAxes, sdgMap, menuLabels } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchAxes } from '../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const transformApiAxes = (apiAxes, lang) =>
   apiAxes.map((row) => {
@@ -25,6 +28,8 @@ const transformApiAxes = (apiAxes, lang) =>
 
 const Research = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.research[language] || pageSeo.research.pt;
   const [apiAxes, setApiAxes] = useState(null);
   const t = menuLabels[language];
 
@@ -54,7 +59,9 @@ const Research = () => {
   }[language];
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <Container className="py-5">
       <Row className="mb-5">
         <Col lg={8}>
@@ -131,6 +138,7 @@ const Research = () => {
       </div>
     </Container>
     </motion.div>
+    </>
   );
 };
 

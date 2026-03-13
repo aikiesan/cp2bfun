@@ -3,9 +3,14 @@ import { Container, Row, Col, Card, Form, Spinner, Badge } from 'react-bootstrap
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import api from '../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const Publications = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.publications[language] || pageSeo.publications.pt;
   const [publications, setPublications] = useState([]);
   const [groupedByYear, setGroupedByYear] = useState({});
   const [loading, setLoading] = useState(true);
@@ -67,7 +72,9 @@ const Publications = () => {
   const sortedYears = Object.keys(groupedByYear).sort((a, b) => b - a);
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <Container className="py-5">
       <h1 className="mb-4">{language === 'pt' ? 'Publicações' : 'Publications'}</h1>
 
@@ -186,6 +193,7 @@ const Publications = () => {
       )}
     </Container>
     </motion.div>
+    </>
   );
 };
 

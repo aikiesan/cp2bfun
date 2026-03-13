@@ -3,9 +3,14 @@ import { Container, Row, Col, Form, Button, Alert, Spinner } from 'react-bootstr
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import api from '../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const Contact = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.contact[language] || pageSeo.contact.pt;
 
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState({ loading: false, success: false, error: null });
@@ -83,7 +88,9 @@ const Contact = () => {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <Container className="py-5">
       <Row className="justify-content-center">
         <Col lg={8} className="text-center mb-5">
@@ -190,6 +197,7 @@ const Contact = () => {
       </Row>
     </Container>
     </motion.div>
+    </>
   );
 };
 

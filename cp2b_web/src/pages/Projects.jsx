@@ -4,9 +4,14 @@ import { Link } from 'react-router-dom';
 import { projectsItems } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchProjects } from '../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const Projects = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.projects[language] || pageSeo.projects.pt;
   const [projects, setProjects] = useState(null);
   const [loading, setLoading] = useState(true);
   const [_error, setError] = useState(false);
@@ -67,7 +72,9 @@ const Projects = () => {
   const others = projects.slice(1);
 
   return (
-    <Container className="py-5">
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <Container className="py-5">
       <h1 className="fw-bold mb-5 border-bottom pb-3" style={{ color: '#004a80' }}>{labels.title}</h1>
 
       {/* Featured Projects - FAPESP Style */}
@@ -115,6 +122,7 @@ const Projects = () => {
         ))}
       </Row>
     </Container>
+    </>
   );
 };
 

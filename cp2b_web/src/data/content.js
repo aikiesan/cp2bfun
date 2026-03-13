@@ -983,3 +983,156 @@ For more information about funding and resources, consult the complete process o
     }
   }
 };
+
+export const pageSeo = {
+  home: {
+    pt: {
+      title: 'CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos',
+      description: 'Pesquisa, inovação e políticas públicas para a cadeia de biogás e bioprodutos no Estado de São Paulo. Vinculado ao NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'CP2b - São Paulo Center for Biogas and Bioproducts Studies',
+      description: 'Research, innovation and public policy for the biogas and bioproducts chain in São Paulo State. Affiliated with NIPE-UNICAMP.',
+    },
+  },
+  about: {
+    pt: {
+      title: 'Sobre o CP2b',
+      description: 'Conheça o Centro Paulista de Estudos em Biogás e Bioprodutos: missão, estrutura e vínculo com o NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'About CP2b',
+      description: 'Learn about the São Paulo Center for Biogas and Bioproducts Studies: mission, structure and affiliation with NIPE-UNICAMP.',
+    },
+  },
+  research: {
+    pt: {
+      title: 'Eixos de Pesquisa',
+      description: 'Os 8 eixos de pesquisa do CP2b: biogás, bioprodutos, resíduos, saneamento, logística reversa, políticas públicas e mais.',
+    },
+    en: {
+      title: 'Research Axes',
+      description: 'The 8 CP2b research axes: biogas, bioproducts, waste, sanitation, reverse logistics, public policy and more.',
+    },
+  },
+  team: {
+    pt: {
+      title: 'Equipe',
+      description: 'Pesquisadores, colaboradores e parceiros do Centro Paulista de Estudos em Biogás e Bioprodutos.',
+    },
+    en: {
+      title: 'Team',
+      description: 'Researchers, collaborators and partners of the São Paulo Center for Biogas and Bioproducts Studies.',
+    },
+  },
+  news: {
+    pt: {
+      title: 'Notícias',
+      description: 'Últimas notícias do CP2b sobre biogás, bioprodutos, energia renovável e políticas públicas no Brasil.',
+    },
+    en: {
+      title: 'News',
+      description: 'Latest CP2b news on biogas, bioproducts, renewable energy and public policy in Brazil.',
+    },
+  },
+  opportunities: {
+    pt: {
+      title: 'Oportunidades',
+      description: 'Bolsas, vagas e oportunidades de pesquisa em biogás e bioprodutos no CP2b-UNICAMP.',
+    },
+    en: {
+      title: 'Opportunities',
+      description: 'Scholarships, positions and research opportunities in biogas and bioproducts at CP2b-UNICAMP.',
+    },
+  },
+  publications: {
+    pt: {
+      title: 'Publicações',
+      description: 'Artigos científicos, relatórios e estudos técnicos sobre biogás e bioprodutos publicados pelo CP2b.',
+    },
+    en: {
+      title: 'Publications',
+      description: 'Scientific articles, reports and technical studies on biogas and bioproducts published by CP2b.',
+    },
+  },
+  projects: {
+    pt: {
+      title: 'Projetos',
+      description: 'Projetos de pesquisa do CP2b em biogás, saneamento, logística reversa de óleo de cozinha e energia renovável.',
+    },
+    en: {
+      title: 'Projects',
+      description: 'CP2b research projects in biogas, sanitation, cooking oil reverse logistics and renewable energy.',
+    },
+  },
+  microscopio: {
+    pt: {
+      title: 'Microscópio CP2b',
+      description: 'Análises aprofundadas e artigos de opinião do CP2b sobre biogás, sustentabilidade e políticas energéticas.',
+    },
+    en: {
+      title: 'CP2b Microscope',
+      description: 'In-depth analyses and opinion pieces from CP2b on biogas, sustainability and energy policy.',
+    },
+  },
+  media: {
+    pt: {
+      title: 'Na Mídia',
+      description: 'CP2b na imprensa: cobertura jornalística sobre biogás, bioprodutos e políticas de energia renovável.',
+    },
+    en: {
+      title: 'In the Media',
+      description: 'CP2b in the press: journalism coverage on biogas, bioproducts and renewable energy policy.',
+    },
+  },
+  forum: {
+    pt: {
+      title: 'I Fórum Paulista de Biogás e Bioprodutos',
+      description: 'Encontro da Cadeia de Biogás e Bioprodutos do Estado de São Paulo — 28 de maio de 2026, UNICAMP.',
+    },
+    en: {
+      title: 'I São Paulo Biogas and Bioproducts Forum',
+      description: 'Meeting of the Biogas and Bioproducts Chain of São Paulo State — May 28, 2026, UNICAMP.',
+    },
+  },
+  contact: {
+    pt: {
+      title: 'Contato',
+      description: 'Entre em contato com o CP2b — Centro Paulista de Estudos em Biogás e Bioprodutos no NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'Contact',
+      description: 'Get in touch with CP2b — São Paulo Center for Biogas and Bioproducts Studies at NIPE-UNICAMP.',
+    },
+  },
+  governance: {
+    pt: {
+      title: 'Governança',
+      description: 'Estrutura de governança e comitês do CP2b, vinculado ao NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'Governance',
+      description: 'Governance structure and committees of CP2b, affiliated with NIPE-UNICAMP.',
+    },
+  },
+  transparency: {
+    pt: {
+      title: 'Transparência',
+      description: 'Documentos de transparência, relatórios e prestação de contas do CP2b.',
+    },
+    en: {
+      title: 'Transparency',
+      description: 'Transparency documents, reports and accountability information from CP2b.',
+    },
+  },
+  partners: {
+    pt: {
+      title: 'Parceiros e Apoiadores',
+      description: 'Instituições, empresas e organizações parceiras do CP2b no avanço da cadeia de biogás e bioprodutos.',
+    },
+    en: {
+      title: 'Partners & Supporters',
+      description: 'Institutions, companies and organizations partnering with CP2b to advance the biogas and bioproducts chain.',
+    },
+  },
+};

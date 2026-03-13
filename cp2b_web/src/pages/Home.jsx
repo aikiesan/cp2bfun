@@ -8,9 +8,14 @@ import api, { fetchFeaturedContent, fetchPageContent, fetchFeaturedVideos } from
 import FeaturedContent from '../components/FeaturedContent';
 import FeaturedVideos from '../components/FeaturedVideos';
 import Timeline from '../components/Timeline';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const Home = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.home[language] || pageSeo.home.pt;
   const [forum, setForum] = useState(forumData[language]);
   const [featuredContent, setFeaturedContent] = useState({ A: null, B: null, C: null });
   const [featuredVideos, setFeaturedVideos] = useState({ A: null, B: null, C: null });
@@ -112,7 +117,9 @@ const Home = () => {
     : [];
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       {/* Featured News Headlines Section */}
       <section className="position-relative overflow-hidden mb-5">
         {loadingFeatured ? (
@@ -275,6 +282,7 @@ const Home = () => {
         </Container>
       </section>
     </motion.div>
+    </>
   );
 };
 

@@ -2,6 +2,9 @@ import { Container, Row, Col, Button, Accordion, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const inviteToken = import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta';
 
@@ -186,6 +189,8 @@ const content = {
 
 const ForumPaulista = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.forum[language] || pageSeo.forum.pt;
   const t = content[language];
   // --- logica do google calendar (Tarefa M5) ---
   const eventTitle = encodeURIComponent(t.heroTitle);
@@ -200,6 +205,7 @@ const ForumPaulista = () => {
 
   return (
     <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       {/* ── Section 1: Hero ── */}
       <section
         style={{
