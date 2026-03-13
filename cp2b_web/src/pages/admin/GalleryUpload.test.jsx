@@ -28,11 +28,16 @@ test('submit button is disabled while submitting', async () => {
   expect(submitBtn).not.toBeDisabled();
 
   // 2. Preenche os campos obrigatórios para passar na validação
-  const titleInput = screen.getByLabelText(/título da foto/i);
+  const titleInput = screen.getByLabelText(/título do álbum/i);
   await user.type(titleInput, 'Abertura do Evento');
 
   const dateInput = screen.getByLabelText(/data do evento/i);
   await user.type(dateInput, '2026-03-12');
+
+  // Criamos um arquivo falso para simular o upload da capa
+  const coverInput = screen.getByLabelText(/foto de capa/i);
+  const fakeCover = new File(['(⌐□_□)'], 'capa.png', { type: 'image/png' });
+  await user.upload(coverInput, fakeCover);
 
   // Cria um arquivo falso (Mock) e faz o upload
   const fileInput = screen.getByLabelText(/selecionar imagem/i);
