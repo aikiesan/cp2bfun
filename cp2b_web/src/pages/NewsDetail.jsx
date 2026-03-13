@@ -41,7 +41,7 @@ const NewsDetail = () => {
           description: language === 'pt' ? apiData.description_pt : (apiData.description_en || apiData.description_pt),
           content: language === 'pt' ? apiData.content_pt : (apiData.content_en || apiData.content_pt),
           image: apiData.image,
-          imagePosition: apiData.image_position || 'center center',
+          imagePosition: apiData.image_position || '50% 50%',
           badge: apiData.badge,
           badgeColor: apiData.badge_color,
           date: apiData.date_display,

@@ -1,13 +1,11 @@
 import PropTypes from 'prop-types';
 
-const POSITIONS = [
-  ['top left',    'top center',    'top right'],
-  ['center left', 'center center', 'center right'],
-  ['bottom left', 'bottom center', 'bottom right'],
-];
+const STEPS = [0, 25, 50, 75, 100];
+
+const POSITIONS = STEPS.map((y) => STEPS.map((x) => `${x}% ${y}%`));
 
 const ImagePositionPicker = ({ imageUrl, value, onChange }) => {
-  const current = value || 'center center';
+  const current = value || '50% 50%';
 
   const previewStyle = (pos) => ({
     backgroundImage: `url(${imageUrl})`,
@@ -36,8 +34,8 @@ const ImagePositionPicker = ({ imageUrl, value, onChange }) => {
         </div>
       )}
 
-      {/* 3×3 position grid */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '4px', maxWidth: '180px' }}>
+      {/* 5×5 position grid */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px', maxWidth: '180px' }}>
         {POSITIONS.flat().map((pos) => (
           <button
             key={pos}
@@ -45,7 +43,7 @@ const ImagePositionPicker = ({ imageUrl, value, onChange }) => {
             title={pos}
             onClick={() => onChange(pos)}
             style={{
-              height: '32px',
+              height: '28px',
               border: current === pos ? '2px solid #0d6efd' : '1px solid #dee2e6',
               borderRadius: '4px',
               backgroundColor: current === pos ? '#e8f0fe' : '#f8f9fa',
@@ -58,8 +56,8 @@ const ImagePositionPicker = ({ imageUrl, value, onChange }) => {
           >
             <span style={{
               display: 'block',
-              width: '6px',
-              height: '6px',
+              width: '5px',
+              height: '5px',
               borderRadius: '50%',
               backgroundColor: current === pos ? '#0d6efd' : '#adb5bd',
             }} />
