@@ -32,9 +32,9 @@ const SeoHead = ({
         : <meta name="robots" content="index, follow" />
       }
       <link rel="canonical" href={canonical} />
-      <link rel="alternate" hreflang="pt-BR" href={canonical} />
-      <link rel="alternate" hreflang="en" href={canonical} />
-      <link rel="alternate" hreflang="x-default" href={canonical} />
+      <link rel="alternate" hrefLang="pt-BR" href={canonical} />
+      <link rel="alternate" hrefLang="en" href={canonical} />
+      <link rel="alternate" hrefLang="x-default" href={canonical} />
 
       <meta property="og:type" content={type} />
       <meta property="og:site_name" content={SITE_NAME} />
