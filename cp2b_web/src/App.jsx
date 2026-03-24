@@ -66,6 +66,7 @@ import ForumPaulista from './pages/ForumPaulista';
 import Registro from './pages/Registro';
 import AgendaMeetups from './pages/AgendaMeetups';
 import ConfirmarMeetup from './pages/ConfirmarMeetup';
+import Events from './pages/Events';
 import Gallery from './pages/Gallery';
 import AlbumView from './pages/AlbumView';
 
@@ -172,6 +173,8 @@ function App() {
                     <Route path="/oportunidades" element={<Opportunities />} />
                     <Route path="/oportunidades/:slug" element={<OportunidadesDetail />} />
                     <Route path="/publicacoes" element={<Publications />} />
+                    <Route path="/microscopio" element={<Microscopio />} />
+                    <Route path="/microscopio/:slug" element={<MicroscopioDetail />} />
                     <Route path="/eventos" element={<Events />} />
                     <Route path="/galeria" element={<Gallery />} />
                     <Route path="/gallery/:albumId" element={<AlbumView />} />
