@@ -526,3 +526,23 @@ export const fetchAllMeetupRequests = () => api.get('/meetup-requests/all').then
 export const cancelMeetupRequest = (id) => api.put(`/meetup-requests/${id}/cancel`, {}).then(r => r.data);
 export const deleteMeetupRequest = (id) => api.delete(`/meetup-requests/${id}`).then(r => r.data);
 export const confirmMeetupAdmin = (id) => api.put(`/meetup-requests/${id}/confirm-admin`, {}).then(r => r.data);
+
+// ============================================================
+// Gallery API
+// ============================================================
+
+export const fetchGallery = async () => {
+  try {
+    const response = await api.get('/gallery');
+    const backendHost = import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.startsWith('http')
+      ? import.meta.env.VITE_API_URL.replace(/\/api$/, '')
+      : 'http://localhost:3001';
+    return response.data.map(photo => ({ ...photo, url: `${backendHost}${photo.url}` }));
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) console.error('Error fetching gallery:', error);
+    return [];
+  }
+};
+
+export const uploadGalleryPhoto = async (formData) => (await api.post('/gallery', formData)).data;
+export const deleteGalleryPhoto = async (id) => (await api.delete(`/gallery/${id}`)).data;

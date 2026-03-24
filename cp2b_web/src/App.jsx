@@ -66,6 +66,9 @@ import ForumPaulista from './pages/ForumPaulista';
 import Registro from './pages/Registro';
 import AgendaMeetups from './pages/AgendaMeetups';
 import ConfirmarMeetup from './pages/ConfirmarMeetup';
+import Events from './pages/Events';
+import Gallery from './pages/Gallery';
+import AlbumView from './pages/AlbumView';
 
 // About sub-pages
 import Governance from './pages/about/Governance';
@@ -97,6 +100,8 @@ import {
   NewsletterPanel,
   OportunidadesList,
   OportunidadesEditor,
+  GalleryList,
+  GalleryUpload,
 } from './pages/admin';
 import FeaturedContentManager from './pages/admin/FeaturedContentManager';
 import {
@@ -149,6 +154,8 @@ function App() {
             <Route path="oportunidades"      element={<OportunidadesList />} />
             <Route path="oportunidades/new"  element={<OportunidadesEditor />} />
             <Route path="oportunidades/:slug" element={<OportunidadesEditor />} />
+            <Route path="gallery"        element={<GalleryList />} />
+            <Route path="gallery/upload" element={<GalleryUpload />} />
           </Route>
 
           {/* Public Routes - With Header/Footer */}
@@ -183,6 +190,9 @@ function App() {
                     <Route path="/registro" element={<Registro />} />
                     <Route path="/agenda-meetups" element={<AgendaMeetups />} />
                     <Route path="/confirmar-meetup" element={<ConfirmarMeetup />} />
+                    <Route path="/eventos"          element={<Events />} />
+                    <Route path="/galeria"          element={<Gallery />} />
+                    <Route path="/gallery/:albumId" element={<AlbumView />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>

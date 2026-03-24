@@ -208,6 +208,8 @@ const Header = () => {
               <Nav.Link as={Link} to="/projetos" className="fw-semibold px-2">{t.projects}</Nav.Link>
               <Nav.Link as={Link} to="/microscopio" className="fw-semibold px-2">{t.microscopio}</Nav.Link>
               <Nav.Link as={Link} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
+              <Nav.Link as={Link} to="/eventos" className="fw-semibold px-2">{t.events}</Nav.Link>
+              <Nav.Link as={Link} to="/galeria" className="fw-semibold px-2">{t.gallery}</Nav.Link>
               <NavDropdown title={t.forumPaulista} id="nav-dropdown-forum" className="fw-semibold">
                 <NavDropdown.Item as={Link} to="/forum-paulista">
                   {t.forumAbout}
