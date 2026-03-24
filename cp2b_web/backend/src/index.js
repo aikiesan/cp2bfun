@@ -19,6 +19,7 @@ import galleryRoutes from './routes/gallery.js';
 import microscopioRoutes from './routes/microscopio.js';
 import opportunitiesRoutes from './routes/opportunities.js';
 import eventsRoutes from './routes/events.js';
+import newsletterRoutes from './routes/newsletter.js';
 
 dotenv.config();
 
@@ -52,6 +53,7 @@ app.use('/api/gallery', galleryRoutes);
 app.use('/api/microscopio', microscopioRoutes);
 app.use('/api/opportunities', opportunitiesRoutes);
 app.use('/api/events', eventsRoutes);
+app.use('/api/newsletter', newsletterRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
