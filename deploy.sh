@@ -22,6 +22,8 @@ echo "==> [3/5] Gerando build de produção..."
 npm run build
 
 echo "==> [4/5] Reiniciando backend..."
+# Kill any orphan process holding port 3001 before restarting
+sudo kill -9 $(sudo lsof -t -i :3001) 2>/dev/null || true
 pm2 restart cp2b-backend
 pm2 save
 
