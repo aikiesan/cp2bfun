@@ -258,7 +258,7 @@ const ForumPaulista = () => {
                   >
                     {t.meetupBtn}
                   </Link>
-                  <Button variant="outline-light" size="lg" href="#" className="px-4">
+                  <Button variant="outline-light" size="lg" href="https://proceedings.science/cfp/100701?lang=pt-br" target="_blank" rel="noopener noreferrer" className="px-4">
                     {t.registerBtn}
                   </Button>
                   {/* google calendar button (Tarefa M5) */}
@@ -458,7 +458,7 @@ const ForumPaulista = () => {
               </table>
 
               <div className="d-flex justify-content-center gap-3 flex-wrap">
-                <Button variant="success" size="lg" href="#" className="px-5">
+                <Button variant="success" size="lg" href="https://proceedings.science/cfp/100701?lang=pt-br" target="_blank" rel="noopener noreferrer" className="px-5">
                   {t.regCta}
                 </Button>
                 <Link
