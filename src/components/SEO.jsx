@@ -9,7 +9,9 @@ const SEO = ({
   image = '/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png',
   url,
   type = 'website',
-  article = null
+  article = null,
+  breadcrumbs = null,
+  noindex = false
 }) => {
   const { language } = useLanguage();
 
@@ -35,6 +37,17 @@ const SEO = ({
     url: url ? `${siteUrl}${url}` : siteUrl
   };
 
+  const breadcrumbJsonLd = breadcrumbs ? {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': breadcrumbs.map((crumb, index) => ({
+      '@type': 'ListItem',
+      'position': index + 1,
+      'name': crumb.name,
+      'item': crumb.url.startsWith('http') ? crumb.url : `${siteUrl}${crumb.url}`
+    }))
+  } : null;
+
   return (
     <Helmet>
       {/* Primary Meta Tags */}
@@ -43,9 +56,15 @@ const SEO = ({
       <meta name="description" content={seo.description} />
       <meta name="keywords" content={seo.keywords} />
       <link rel="canonical" href={seo.url} />
+      {noindex && <meta name="robots" content="noindex, nofollow" />}
 
       {/* Language */}
       <html lang={language === 'pt' ? 'pt-BR' : 'en'} />
+
+      {/* hreflang alternates */}
+      <link rel="alternate" hreflang="pt-BR" href={seo.url} />
+      <link rel="alternate" hreflang="en" href={seo.url} />
+      <link rel="alternate" hreflang="x-default" href={seo.url} />
 
       {/* Open Graph / Facebook */}
       <meta property="og:type" content={type} />
@@ -72,6 +91,13 @@ const SEO = ({
             <meta key={index} property="article:tag" content={tag} />
           ))}
         </>
+      )}
+
+      {/* BreadcrumbList JSON-LD */}
+      {breadcrumbJsonLd && (
+        <script type="application/ld+json">
+          {JSON.stringify(breadcrumbJsonLd)}
+        </script>
       )}
     </Helmet>
   );

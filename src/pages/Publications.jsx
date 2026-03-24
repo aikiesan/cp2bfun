@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { FaSearch, FaFilter, FaExternalLinkAlt, FaDownload, FaBook, FaFileAlt, FaNewspaper } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
 import { menuLabels } from '../data/content';
+import SEO from '../components/SEO';
 
 const Publications = () => {
   const { language } = useLanguage();
@@ -129,6 +130,20 @@ const Publications = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
+      <SEO
+        title={language === 'pt' ? 'Publicações' : 'Publications'}
+        description={language === 'pt'
+          ? 'Publicações científicas do CP2B: artigos, livros e capítulos produzidos pelos pesquisadores do centro em biogás e bioprodutos.'
+          : 'Scientific publications from CP2B: articles, books, and chapters produced by center researchers in biogas and bioproducts.'}
+        keywords={language === 'pt'
+          ? 'publicações CP2B, artigos científicos, pesquisa, biogás, bioprodutos'
+          : 'CP2B publications, scientific articles, research, biogas, bioproducts'}
+        url="/publicacoes"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: language === 'pt' ? 'Publicações' : 'Publications', url: '/publicacoes' }
+        ]}
+      />
       <Container className="py-5">
         {/* Page Header */}
         <Row className="mb-5 page-header">

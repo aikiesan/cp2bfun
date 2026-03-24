@@ -19,6 +19,7 @@ const NewsEditor = () => {
     content_pt: '',
     content_en: '',
     image: '',
+    image_position: '50% 50%',
     badge: '',
     badge_color: 'primary',
     date_display: '',
@@ -310,6 +311,8 @@ const NewsEditor = () => {
                   value={formData.image}
                   onChange={(url) => setFormData(prev => ({ ...prev, image: url }))}
                   helperText="JPEG, PNG ou WebP · máx. 5MB"
+                  positionValue={formData.image_position}
+                  onPositionChange={(pos) => setFormData(prev => ({ ...prev, image_position: pos }))}
                 />
 
                 <Form.Group className="mt-3 mb-2">

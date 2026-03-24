@@ -14,10 +14,6 @@ const Header = () => {
   const isNewsActive = ['/noticias', '/na-midia', '/oportunidades'].some(
     (p) => location.pathname.startsWith(p)
   );
-  const isForumActive = ['/forum-paulista', '/registro'].some(
-    (p) => location.pathname.startsWith(p)
-  );
-
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('cp2b-font-size');
     return saved ? Number(saved) : 100;
@@ -183,6 +179,10 @@ const Header = () => {
                 </NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to="/sobre/parceiros">
                   {t.aboutSubmenu.partners}
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={Link} to="/equipe">
+                  {t.team}
                 </NavDropdown.Item>
               </NavDropdown>
 

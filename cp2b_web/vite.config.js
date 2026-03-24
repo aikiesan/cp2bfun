@@ -44,6 +44,7 @@ export default defineConfig({
         ],
       },
       workbox: {
+        globIgnores: ['**/CP2B-LOGO-COLOR-DEGRADE@8x.png'],
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api\//],
         cleanupOutdatedCaches: true,

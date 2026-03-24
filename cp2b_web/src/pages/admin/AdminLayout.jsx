@@ -76,8 +76,9 @@ const AdminLayout = () => {
         { path: '/admin/projects', label: 'Projetos', icon: 'bi-folder', },
         { path: '/admin/gallery', label: 'Galeria', icon: 'bi-images', },
         { path: '/admin/featured', label: 'Destaques', icon: 'bi-star' },
-        { path: '/admin/publications', label: 'Publicações', icon: 'bi-journal', },
-        { path: '/admin/events', label: 'Eventos', icon: 'bi-calendar-event', }
+        { path: '/admin/publications', label: 'Publicações', icon: 'bi-journal', isNew: true },
+        { path: '/admin/microscopio', label: 'Microscópio', icon: 'bi-binoculars' },
+        { path: '/admin/oportunidades', label: 'Oportunidades', icon: 'bi-briefcase', isNew: true }
       ]
     },
     {

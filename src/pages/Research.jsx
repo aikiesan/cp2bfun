@@ -1,8 +1,10 @@
 import React from 'react';
 import { Container, Accordion, Row, Col } from 'react-bootstrap';
 import { motion } from 'framer-motion';
+import { Helmet } from 'react-helmet-async';
 import { researchAxes, sdgMap, menuLabels } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
+import SEO from '../components/SEO';
 
 const Research = () => {
   const { language } = useLanguage();
@@ -45,12 +47,40 @@ const Research = () => {
     'var(--cp2b-petrol)'
   ];
 
+  const itemListJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    'name': language === 'pt' ? 'Eixos Temáticos de Pesquisa do CP2B' : 'CP2B Research Thematic Axes',
+    'itemListElement': axes.map((axis, index) => ({
+      '@type': 'ListItem',
+      'position': index + 1,
+      'name': axis.title
+    }))
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
+      <SEO
+        title={language === 'pt' ? 'Linhas de Pesquisa' : 'Research'}
+        description={language === 'pt'
+          ? '8 eixos temáticos de pesquisa em biogás e bioprodutos no CP2B: biorrefinaria, metanização, inventário de resíduos, políticas públicas e mais.'
+          : '8 thematic research axes in biogas and bioproducts at CP2B: biorefinery, methanation, waste inventory, public policies and more.'}
+        keywords={language === 'pt'
+          ? 'eixos de pesquisa, biorrefinaria, metanização, biogás, bioprodutos, CP2B'
+          : 'research axes, biorefinery, methanation, biogas, bioproducts, CP2B'}
+        url="/pesquisa"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: language === 'pt' ? 'Pesquisa' : 'Research', url: '/pesquisa' }
+        ]}
+      />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(itemListJsonLd)}</script>
+      </Helmet>
       <Container className="py-5">
         {/* Page Header */}
         <Row className="mb-5 page-header">

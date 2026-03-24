@@ -29,7 +29,7 @@ const FeaturedNews = ({ newsA, newsB, newsC }) => {
           style={{
             backgroundImage: `url(${news.image})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            backgroundPosition: news.image_position || '50% 50%'
           }}
           transition={{ duration: 0.3 }}
         >

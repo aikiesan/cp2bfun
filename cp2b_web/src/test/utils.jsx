@@ -1,4 +1,5 @@
 import { render } from '@testing-library/react';
+import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import { LanguageProvider } from '../context/LanguageContext';
 import { ToastProvider } from '../components/admin';

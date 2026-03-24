@@ -14,7 +14,7 @@ const ArticleLayout = ({
 }) => {
   if (!article) return null;
 
-  const { title, description, content, image, badge, badgeColor, date, author, imageCaption, tags } = article;
+  const { title, description, content, image, imagePosition, badge, badgeColor, date, author, imageCaption, tags } = article;
 
   const url = encodeURIComponent(window.location.href);
   const tituloEncoded = encodeURIComponent(title); // Adaptado para usar o 'title' do seu arquivo
@@ -71,6 +71,7 @@ const ArticleLayout = ({
               src={image}
               alt={title}
               className="article-fapesp-hero"
+              style={imagePosition ? { objectPosition: imagePosition } : undefined}
             />
             {imageCaption && (
               <figcaption className="article-fapesp-caption">{imageCaption}</figcaption>

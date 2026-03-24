@@ -21,18 +21,19 @@ export const menuLabels = {
     newsSubmenu: {
       news: 'Notícias',
       media: 'Na Mídia',
-      opportunities: 'Oportunidades'
+      opportunities: 'Oportunidades',
+      microscopio: 'Microscópio'
     },
     team: 'Equipe',
     publications: 'Publicações',
     projects: 'Projetos',
-    events: 'Eventos',
+    microscopio: 'Microscópio',
     media: 'Mídia',
     others: 'Outros',
     linkedin: 'LinkedIn',
     accessibility: 'Acessibilidade',
     search: 'Buscar',
-    axes: 'Eixos de Pesquisa',
+    axes: 'Eixos',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'Sobre o Evento',
     forumRegister: 'Registro Meet-up',
@@ -51,18 +52,19 @@ export const menuLabels = {
     newsSubmenu: {
       news: 'News',
       media: 'In the Media',
-      opportunities: 'Opportunities'
+      opportunities: 'Opportunities',
+      microscopio: 'Microscópio'
     },
     team: 'Team',
     publications: 'Publications',
     projects: 'Projects',
-    events: 'Events',
+    microscopio: 'Microscópio',
     media: 'Media',
     others: 'Others',
     linkedin: 'LinkedIn',
     accessibility: 'Accessibility',
     search: 'Search',
-    axes: 'Research Axes',
+    axes: 'Axes',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'About the Event',
     forumRegister: 'Meet-up Registration',
@@ -405,6 +407,97 @@ export const flagshipProjects = {
       title: 'Urban Solid Waste Living-Lab (OFMSW)',
       description: 'Pilot plant for waste management of university restaurants using a two-phase reactor, producing biohydrogen and biomethane (Biohitane) for campus buses.',
       image: '/assets/DSC00617-1024x683.jpg'
+    }
+  ]
+};
+
+export const timelineData = {
+  pt: [
+    {
+      year: '2025',
+      title: 'Living-Lab de Resíduos Sólidos Urbanos',
+      description: 'Planta piloto para gestão de resíduos de restaurantes universitários produzindo biohidrogênio e biometano (Biohitano) para ônibus do campus da UNICAMP.',
+      status: 'ongoing',
+      icon: 'bi-recycle'
+    },
+    {
+      year: '2025',
+      title: 'Unidade Demonstrativa em Cooperativa Agroindustrial',
+      description: 'Sistema de digestão anaeróbia processando resíduos de varejo agroindustrial para gerar eletricidade (189 MWh/ano) ou biometano, substituindo diesel em frotas.',
+      status: 'ongoing',
+      icon: 'bi-lightning-charge'
+    },
+    {
+      year: '2025',
+      title: 'Biorrefinaria de Vinhaça e Resíduos da Cana',
+      description: 'Pesquisa em tecnologias de biorrefinaria para aproveitamento de vinhaça e resíduos da agroindústria sucroenergética, produzindo biohitano e ácidos orgânicos de alto valor.',
+      status: 'ongoing',
+      icon: 'bi-droplet-half'
+    },
+    {
+      year: '2025',
+      title: 'Mapeamento de Resíduos e Oportunidades em São Paulo',
+      description: 'Desenvolvimento de plataforma digital georreferenciada para inventário de resíduos e identificação de oportunidades de aproveitamento energético no Estado de São Paulo.',
+      status: 'ongoing',
+      icon: 'bi-geo-alt'
+    },
+    {
+      year: '2025',
+      title: 'Fórum Paulista de Biogás e Bioprodutos',
+      description: 'Evento anual de articulação entre pesquisadores, governo e setor produtivo para acelerar a cadeia de valor do biogás e bioprodutos no Estado de São Paulo.',
+      status: 'ongoing',
+      icon: 'bi-people'
+    },
+    {
+      year: '2024',
+      title: 'Criação do CP2B — Centro Paulista de Estudos em Biogás e Bioprodutos',
+      description: 'Fundação do centro de pesquisa apoiado pela FAPESP (Processo 2024/01112-1) com sede no NIPE/UNICAMP, iniciando a missão de transformar resíduos em recursos renováveis.',
+      status: 'completed',
+      icon: 'bi-award'
+    }
+  ],
+  en: [
+    {
+      year: '2025',
+      title: 'Urban Solid Waste Living-Lab',
+      description: 'Pilot plant for waste management from university restaurants producing biohydrogen and biomethane (Biohitane) for UNICAMP campus buses.',
+      status: 'ongoing',
+      icon: 'bi-recycle'
+    },
+    {
+      year: '2025',
+      title: 'Demonstration Unit in Agro-industrial Cooperative',
+      description: 'Anaerobic digestion system processing agro-industrial retail waste to generate electricity (189 MWh/year) or biomethane, replacing diesel in vehicle fleets.',
+      status: 'ongoing',
+      icon: 'bi-lightning-charge'
+    },
+    {
+      year: '2025',
+      title: 'Vinasse and Sugarcane Waste Biorefinery',
+      description: 'Research on biorefinery technologies for the utilization of vinasse and sugarcane agro-industry waste, producing biohitane and high-value organic acids.',
+      status: 'ongoing',
+      icon: 'bi-droplet-half'
+    },
+    {
+      year: '2025',
+      title: 'Waste Mapping and Opportunities in São Paulo',
+      description: 'Development of a georeferenced digital platform for waste inventory and identification of energy recovery opportunities in São Paulo State.',
+      status: 'ongoing',
+      icon: 'bi-geo-alt'
+    },
+    {
+      year: '2025',
+      title: 'São Paulo Biogas and Bioproducts Forum',
+      description: 'Annual event connecting researchers, government and industry to accelerate the biogas and bioproducts value chain in São Paulo State.',
+      status: 'ongoing',
+      icon: 'bi-people'
+    },
+    {
+      year: '2024',
+      title: 'CP2B Founded — São Paulo Center for Biogas and Bioproducts Studies',
+      description: 'Research center founded with FAPESP support (Process 2024/01112-1) hosted at NIPE/UNICAMP, beginning its mission to transform waste into renewable resources.',
+      status: 'completed',
+      icon: 'bi-award'
     }
   ]
 };
@@ -891,4 +984,157 @@ For more information about funding and resources, consult the complete process o
       }
     }
   }
+};
+
+export const pageSeo = {
+  home: {
+    pt: {
+      title: 'CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos',
+      description: 'Pesquisa, inovação e políticas públicas para a cadeia de biogás e bioprodutos no Estado de São Paulo. Vinculado ao NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'CP2b - São Paulo Center for Biogas and Bioproducts Studies',
+      description: 'Research, innovation and public policy for the biogas and bioproducts chain in São Paulo State. Affiliated with NIPE-UNICAMP.',
+    },
+  },
+  about: {
+    pt: {
+      title: 'Sobre o CP2b',
+      description: 'Conheça o Centro Paulista de Estudos em Biogás e Bioprodutos: missão, estrutura e vínculo com o NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'About CP2b',
+      description: 'Learn about the São Paulo Center for Biogas and Bioproducts Studies: mission, structure and affiliation with NIPE-UNICAMP.',
+    },
+  },
+  research: {
+    pt: {
+      title: 'Eixos de Pesquisa',
+      description: 'Os 8 eixos de pesquisa do CP2b: biogás, bioprodutos, resíduos, saneamento, logística reversa, políticas públicas e mais.',
+    },
+    en: {
+      title: 'Research Axes',
+      description: 'The 8 CP2b research axes: biogas, bioproducts, waste, sanitation, reverse logistics, public policy and more.',
+    },
+  },
+  team: {
+    pt: {
+      title: 'Equipe',
+      description: 'Pesquisadores, colaboradores e parceiros do Centro Paulista de Estudos em Biogás e Bioprodutos.',
+    },
+    en: {
+      title: 'Team',
+      description: 'Researchers, collaborators and partners of the São Paulo Center for Biogas and Bioproducts Studies.',
+    },
+  },
+  news: {
+    pt: {
+      title: 'Notícias',
+      description: 'Últimas notícias do CP2b sobre biogás, bioprodutos, energia renovável e políticas públicas no Brasil.',
+    },
+    en: {
+      title: 'News',
+      description: 'Latest CP2b news on biogas, bioproducts, renewable energy and public policy in Brazil.',
+    },
+  },
+  opportunities: {
+    pt: {
+      title: 'Oportunidades',
+      description: 'Bolsas, vagas e oportunidades de pesquisa em biogás e bioprodutos no CP2b-UNICAMP.',
+    },
+    en: {
+      title: 'Opportunities',
+      description: 'Scholarships, positions and research opportunities in biogas and bioproducts at CP2b-UNICAMP.',
+    },
+  },
+  publications: {
+    pt: {
+      title: 'Publicações',
+      description: 'Artigos científicos, relatórios e estudos técnicos sobre biogás e bioprodutos publicados pelo CP2b.',
+    },
+    en: {
+      title: 'Publications',
+      description: 'Scientific articles, reports and technical studies on biogas and bioproducts published by CP2b.',
+    },
+  },
+  projects: {
+    pt: {
+      title: 'Projetos',
+      description: 'Projetos de pesquisa do CP2b em biogás, saneamento, logística reversa de óleo de cozinha e energia renovável.',
+    },
+    en: {
+      title: 'Projects',
+      description: 'CP2b research projects in biogas, sanitation, cooking oil reverse logistics and renewable energy.',
+    },
+  },
+  microscopio: {
+    pt: {
+      title: 'Microscópio CP2b',
+      description: 'Análises aprofundadas e artigos de opinião do CP2b sobre biogás, sustentabilidade e políticas energéticas.',
+    },
+    en: {
+      title: 'CP2b Microscope',
+      description: 'In-depth analyses and opinion pieces from CP2b on biogas, sustainability and energy policy.',
+    },
+  },
+  media: {
+    pt: {
+      title: 'Na Mídia',
+      description: 'CP2b na imprensa: cobertura jornalística sobre biogás, bioprodutos e políticas de energia renovável.',
+    },
+    en: {
+      title: 'In the Media',
+      description: 'CP2b in the press: journalism coverage on biogas, bioproducts and renewable energy policy.',
+    },
+  },
+  forum: {
+    pt: {
+      title: 'I Fórum Paulista de Biogás e Bioprodutos',
+      description: 'Encontro da Cadeia de Biogás e Bioprodutos do Estado de São Paulo — 28 de maio de 2026, UNICAMP.',
+    },
+    en: {
+      title: 'I São Paulo Biogas and Bioproducts Forum',
+      description: 'Meeting of the Biogas and Bioproducts Chain of São Paulo State — May 28, 2026, UNICAMP.',
+    },
+  },
+  contact: {
+    pt: {
+      title: 'Contato',
+      description: 'Entre em contato com o CP2b — Centro Paulista de Estudos em Biogás e Bioprodutos no NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'Contact',
+      description: 'Get in touch with CP2b — São Paulo Center for Biogas and Bioproducts Studies at NIPE-UNICAMP.',
+    },
+  },
+  governance: {
+    pt: {
+      title: 'Governança',
+      description: 'Estrutura de governança e comitês do CP2b, vinculado ao NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'Governance',
+      description: 'Governance structure and committees of CP2b, affiliated with NIPE-UNICAMP.',
+    },
+  },
+  transparency: {
+    pt: {
+      title: 'Transparência',
+      description: 'Documentos de transparência, relatórios e prestação de contas do CP2b.',
+    },
+    en: {
+      title: 'Transparency',
+      description: 'Transparency documents, reports and accountability information from CP2b.',
+    },
+  },
+  partners: {
+    pt: {
+      title: 'Parceiros e Apoiadores',
+      description: 'Instituições, empresas e organizações parceiras do CP2b no avanço da cadeia de biogás e bioprodutos.',
+    },
+    en: {
+      title: 'Partners & Supporters',
+      description: 'Institutions, companies and organizations partnering with CP2b to advance the biogas and bioproducts chain.',
+    },
+  },
 };

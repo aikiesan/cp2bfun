@@ -3,6 +3,7 @@ import { Container, Row, Col, Card } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { aboutContent, partners, projectDetails } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
+import SEO from '../components/SEO';
 
 const About = () => {
   const { language } = useLanguage();
@@ -54,6 +55,20 @@ const About = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
+      <SEO
+        title={language === 'pt' ? 'Sobre o CP2B' : 'About CP2B'}
+        description={language === 'pt'
+          ? 'Conheça o projeto CP2B: centro de pesquisa financiado pela FAPESP, sediado no NIPE/UNICAMP, dedicado a soluções inovadoras para a cadeia do biogás em São Paulo.'
+          : 'Learn about CP2B: a research center funded by FAPESP, headquartered at NIPE/UNICAMP, dedicated to innovative solutions for the biogas chain in São Paulo.'}
+        keywords={language === 'pt'
+          ? 'sobre CP2B, biogás, FAPESP, UNICAMP, pesquisa aplicada, bioprodutos'
+          : 'about CP2B, biogas, FAPESP, UNICAMP, applied research, bioproducts'}
+        url="/sobre"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: language === 'pt' ? 'Sobre' : 'About', url: '/sobre' }
+        ]}
+      />
       <Container className="py-5">
         {/* Page Header */}
         <Row className="mb-5 page-header">

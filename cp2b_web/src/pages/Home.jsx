@@ -2,14 +2,20 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { forumData } from '../data/content';
+import { forumData, timelineData } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import api, { fetchFeaturedContent, fetchPageContent, fetchFeaturedVideos } from '../services/api';
 import FeaturedContent from '../components/FeaturedContent';
 import FeaturedVideos from '../components/FeaturedVideos';
+import Timeline from '../components/Timeline';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const Home = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.home[language] || pageSeo.home.pt;
   const [forum, setForum] = useState(forumData[language]);
   const [featuredContent, setFeaturedContent] = useState({ A: null, B: null, C: null });
   const [featuredVideos, setFeaturedVideos] = useState({ A: null, B: null, C: null });
@@ -111,7 +117,9 @@ const Home = () => {
     : [];
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
       {/* Featured News Headlines Section */}
       <section className="position-relative overflow-hidden mb-5">
         {loadingFeatured ? (
@@ -232,15 +240,30 @@ const Home = () => {
         </Container>
       </section>
 
-      {/* Featured Videos Section */}
-      <section className="py-5">
+      {/* Research Timeline Section */}
+      <section className="py-5" style={{ background: 'var(--cp2b-light-gray)' }}>
         <Container>
           <div className="text-center mb-5">
-            <h2 className="fw-bold">{labels.videosTitle}</h2>
+            <span className="badge mb-2 px-3 py-2" style={{ background: 'var(--cp2b-petrol)' }}>
+              {language === 'pt' ? 'Nossa Trajetória' : 'Our Journey'}
+            </span>
+            <h2 className="fw-bold mt-2">{language === 'pt' ? 'Projetos em Destaque' : 'Featured Projects'}</h2>
           </div>
+          <Timeline items={timelineData[language]} />
         </Container>
-        <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
       </section>
+
+      {/* Featured Videos Section */}
+      {(featuredVideos.A || featuredVideos.B || featuredVideos.C) && (
+        <section className="py-5">
+          <Container>
+            <div className="text-center mb-5">
+              <h2 className="fw-bold">{labels.videosTitle}</h2>
+            </div>
+          </Container>
+          <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
+        </section>
+      )}
 
       {/* Partners Image Section */}
       <section className="py-5 partners-section">
@@ -259,6 +282,7 @@ const Home = () => {
         </Container>
       </section>
     </motion.div>
+    </>
   );
 };
 

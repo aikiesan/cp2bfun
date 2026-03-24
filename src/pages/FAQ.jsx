@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Container, Row, Col, Accordion, Form } from 'react-bootstrap';
+import { Helmet } from 'react-helmet-async';
 import { motion } from 'framer-motion';
 import { FaSearch, FaQuestionCircle } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
+import SEO from '../components/SEO';
 
 const FAQ = () => {
   const { language } = useLanguage();
@@ -205,12 +207,44 @@ const FAQ = () => {
     )
   })).filter(category => category.questions.length > 0);
 
+  const faqJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    'mainEntity': faqs.flatMap(category =>
+      category.questions.map(faq => ({
+        '@type': 'Question',
+        'name': faq.q,
+        'acceptedAnswer': {
+          '@type': 'Answer',
+          'text': faq.a
+        }
+      }))
+    )
+  };
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.4 }}
     >
+      <SEO
+        title={language === 'pt' ? 'Perguntas Frequentes' : 'FAQ'}
+        description={language === 'pt'
+          ? 'Perguntas frequentes sobre o CP2B: o que é, como colaborar, oportunidades para estudantes, eixos de pesquisa em biogás e financiamento FAPESP.'
+          : 'Frequently asked questions about CP2B: what it is, how to collaborate, student opportunities, biogas research axes, and FAPESP funding.'}
+        keywords={language === 'pt'
+          ? 'FAQ CP2B, dúvidas, biogás, FAPESP, oportunidades, pesquisa'
+          : 'FAQ CP2B, questions, biogas, FAPESP, opportunities, research'}
+        url="/faq"
+        breadcrumbs={[
+          { name: 'Home', url: '/' },
+          { name: 'FAQ', url: '/faq' }
+        ]}
+      />
+      <Helmet>
+        <script type="application/ld+json">{JSON.stringify(faqJsonLd)}</script>
+      </Helmet>
       <Container className="py-5">
         {/* Page Header */}
         <Row className="mb-5 page-header">

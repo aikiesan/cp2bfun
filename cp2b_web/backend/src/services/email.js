@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-const FROM = process.env.SMTP_FROM || 'CP2b Forum Paulista <noreply@cp2b.org>';
+const FROM = process.env.SMTP_FROM || 'Forum Paulista CP2b <forucp2b@unicamp.br>';
 
 export async function sendMeetupInvitation(inviteeEmail, inviteeName, requesterName, slot, tableNumber, confirmLink) {
   const subject = `Convite de reunião — Forum Paulista CP2b`;
@@ -47,6 +47,42 @@ export async function sendMeetupConfirmation(toEmail, toName, otherName, slot, t
     <p style="color:#888;font-size:12px">Forum Paulista — CP2b</p>
   `;
   await transporter.sendMail({ from: FROM, to: toEmail, subject, html });
+}
+
+export async function sendNewsletterConfirmation(toEmail, toName, unsubscribeLink) {
+  const subject = `Inscrição confirmada — Newsletter CP2b`;
+  const greeting = toName ? `Olá, <strong>${toName}</strong>!` : 'Olá!';
+  const html = `
+    <p>${greeting}</p>
+    <p>Sua inscrição na newsletter do <strong>Centro Paulista de Estudos em Biogas e Bioprodutos (CP2b)</strong> foi confirmada.</p>
+    <p>Você receberá novidades sobre pesquisas, eventos e publicações do CP2b.</p>
+    <hr/>
+    <p style="color:#888;font-size:12px">
+      Para cancelar sua inscrição, <a href="${unsubscribeLink}">clique aqui</a>.
+    </p>
+    <p style="color:#888;font-size:12px">Forum Paulista — CP2b</p>
+  `;
+  await transporter.sendMail({ from: FROM, to: toEmail, subject, html });
+}
+
+export async function sendNewsletterBroadcast(subscribers, subject, htmlContent) {
+  for (const subscriber of subscribers) {
+    const greeting = subscriber.name ? `<p>Olá, <strong>${subscriber.name}</strong>!</p>` : '';
+    const footer = `
+      <hr/>
+      <p style="color:#888;font-size:12px">
+        Você está recebendo este e-mail por estar inscrito na newsletter do CP2b.<br/>
+        Para cancelar sua inscrição, <a href="${subscriber.unsubscribeLink}">clique aqui</a>.
+      </p>
+      <p style="color:#888;font-size:12px">Forum Paulista — CP2b</p>
+    `;
+    const html = greeting + htmlContent + footer;
+    try {
+      await transporter.sendMail({ from: FROM, to: subscriber.email, subject, html });
+    } catch (err) {
+      console.error(`Failed to send newsletter to ${subscriber.email}:`, err.message);
+    }
+  }
 }
 
 export async function sendWelcomeEmail(toEmail, toName) {

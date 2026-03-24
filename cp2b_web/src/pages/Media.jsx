@@ -2,9 +2,14 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const Media = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.media[language] || pageSeo.media.pt;
 
   const labels = {
     pt: {
@@ -24,7 +29,9 @@ const Media = () => {
   }[language];
 
   return (
-    <motion.div
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
@@ -45,6 +52,7 @@ const Media = () => {
         </Row>
       </Container>
     </motion.div>
+    </>
   );
 };
 

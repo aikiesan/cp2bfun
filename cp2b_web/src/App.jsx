@@ -3,6 +3,39 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
 import { LanguageProvider } from './context/LanguageContext';
+import SeoHead from './components/SeoHead';
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ResearchOrganization',
+  name: 'CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos',
+  alternateName: 'CP2b',
+  url: 'https://cp2b.unicamp.br',
+  logo: 'https://cp2b.unicamp.br/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png',
+  description: 'Centro de pesquisa vinculado ao NIPE-UNICAMP dedicado ao estudo de biogás, bioprodutos e políticas públicas para energia renovável no Estado de São Paulo.',
+  email: 'nipe@nipe.unicamp.br',
+  telephone: '+55-19-3521-1244',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Rua Cora Coralina, 330',
+    addressLocality: 'Campinas',
+    addressRegion: 'SP',
+    postalCode: '13083-896',
+    addressCountry: 'BR',
+  },
+  parentOrganization: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Universidade Estadual de Campinas',
+    alternateName: 'UNICAMP',
+    url: 'https://www.unicamp.br',
+  },
+  sameAs: [
+    'https://www.instagram.com/centro_biogas_cp2b/',
+    'https://br.linkedin.com/company/centro-paulista-de-estudos-em-biog%C3%A1s-e-bioprodutos-cp2b',
+    'https://www.youtube.com/@nipeunicamp4034',
+  ],
+  knowsAbout: ['biogás', 'bioprodutos', 'energia renovável', 'resíduos sólidos', 'saneamento', 'políticas públicas', 'biogas', 'bioproducts', 'renewable energy'],
+};
 
 // Components
 import Header from './components/Header';
@@ -18,12 +51,14 @@ import Research from './pages/Research';
 import Team from './pages/Team';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
+import OportunidadesDetail from './pages/OportunidadesDetail';
+import MicroscopioDetail from './pages/MicroscopioDetail';
 import ProjectDetail from './pages/ProjectDetail';
 import Contact from './pages/Contact';
 import Opportunities from './pages/Opportunities';
 import Publications from './pages/Publications';
 import Projects from './pages/Projects';
-import Events from './pages/Events';
+import Microscopio from './pages/Microscopio';
 import Media from './pages/Media';
 import Others from './pages/Others';
 import NotFound from './pages/NotFound';
@@ -53,8 +88,8 @@ import {
   PartnersEditor,
   PublicationsList,
   PublicationsEditor,
-  EventsList,
-  EventsEditor,
+  MicroscopioList,
+  MicroscopioEditor,
   ProjectsList,
   ProjectsEditor,
   ParticipantsPanel,
@@ -76,6 +111,7 @@ function App() {
   return (
     <LanguageProvider>
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <SeoHead jsonLd={organizationJsonLd} />
         <ScrollToTop />
         <SocialSidebar />
         <Routes>
@@ -92,9 +128,9 @@ function App() {
             <Route path="publications" element={<PublicationsList />} />
             <Route path="publications/new" element={<PublicationsEditor />} />
             <Route path="publications/:id" element={<PublicationsEditor />} />
-            <Route path="events" element={<EventsList />} />
-            <Route path="events/new" element={<EventsEditor />} />
-            <Route path="events/:id" element={<EventsEditor />} />
+            <Route path="microscopio" element={<MicroscopioList />} />
+            <Route path="microscopio/new" element={<MicroscopioEditor />} />
+            <Route path="microscopio/:slug" element={<MicroscopioEditor />} />
             <Route path="projects" element={<ProjectsList />} />
             <Route path="projects/new" element={<ProjectsEditor />} />
             <Route path="projects/:slug" element={<ProjectsEditor />} />
@@ -134,6 +170,7 @@ function App() {
                     <Route path="/noticias/:slug" element={<NewsDetail />} />
                     <Route path="/contato" element={<Contact />} />
                     <Route path="/oportunidades" element={<Opportunities />} />
+                    <Route path="/oportunidades/:slug" element={<OportunidadesDetail />} />
                     <Route path="/publicacoes" element={<Publications />} />
                     <Route path="/eventos" element={<Events />} />
                     <Route path="/galeria" element={<Gallery />} />

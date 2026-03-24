@@ -4,9 +4,14 @@ import { governanceContent } from '../../data/content';
 import { useLanguage } from '../../context/LanguageContext';
 import { fetchPageContent } from '../../services/api';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../../data/content';
+import SeoHead from '../../components/SeoHead';
 
 const Governance = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.governance[language] || pageSeo.governance.pt;
   const staticContent = governanceContent[language];
   const [content, setContent] = useState({
     title: staticContent.title,
@@ -51,7 +56,9 @@ const Governance = () => {
   }, [language]);
 
   return (
-    <motion.div
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -96,6 +103,7 @@ const Governance = () => {
         </Row>
       </Container>
     </motion.div>
+    </>
   );
 };
 

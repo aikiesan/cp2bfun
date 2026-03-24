@@ -14,9 +14,9 @@ describe('Header', () => {
     renderWithProviders(<Header />);
     // Default language is pt
     expect(screen.getByText('Sobre')).toBeInTheDocument();
-    expect(screen.getByText('Equipe')).toBeInTheDocument();
     expect(screen.getByText('Notícias')).toBeInTheDocument();
     expect(screen.getByText('Publicações')).toBeInTheDocument();
+    expect(screen.getByText('Eixos')).toBeInTheDocument();
   });
 
   it('does not render a search bar', () => {

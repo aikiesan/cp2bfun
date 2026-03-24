@@ -277,73 +277,29 @@ export const deletePublication = async (id) => {
   return response.data;
 };
 
-// Events API functions
-export const fetchEvents = async (filters = {}) => {
+// Microscopio API functions (article-based, slug-keyed)
+export const fetchMicroscopia = async () => {
   try {
-    const queryParams = new URLSearchParams();
-    if (filters.status) queryParams.append('status', filters.status);
-    if (filters.type) queryParams.append('type', filters.type);
-    if (filters.from) queryParams.append('from', filters.from);
-    if (filters.to) queryParams.append('to', filters.to);
-
-    const queryString = queryParams.toString();
-    const endpoint = queryString ? `/events?${queryString}` : '/events';
-    const response = await api.get(endpoint);
+    const response = await api.get('/microscopio');
     return response.data;
   } catch (error) {
-    console.error('Error fetching events:', error);
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching microscopio articles:', error);
+    }
     return null;
   }
 };
 
-export const fetchEvent = async (id) => {
+export const fetchMicroscopio = async (slug) => {
   try {
-    const response = await api.get(`/events/${id}`);
+    const response = await api.get(`/microscopio/${slug}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching event:', error);
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching microscopio article:', error);
+    }
     return null;
   }
-};
-
-export const fetchUpcomingEvents = async () => {
-  try {
-    const response = await api.get('/events/upcoming');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching upcoming events:', error);
-    return [];
-  }
-};
-
-export const fetchFeaturedEvents = async () => {
-  try {
-    const response = await api.get('/events/featured');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching featured events:', error);
-    return [];
-  }
-};
-
-export const createEvent = async (data) => {
-  const response = await api.post('/events', data);
-  return response.data;
-};
-
-export const updateEvent = async (id, data) => {
-  const response = await api.put(`/events/${id}`, data);
-  return response.data;
-};
-
-export const updateEventParticipants = async (id, current_participants) => {
-  const response = await api.put(`/events/${id}/participants`, { current_participants });
-  return response.data;
-};
-
-export const deleteEvent = async (id) => {
-  const response = await api.delete(`/events/${id}`);
-  return response.data;
 };
 
 // Projects API functions (duplicate of news API)
@@ -523,6 +479,46 @@ export const fetchMeetupSlots = () => api.get('/meetup-slots').then(r => r.data)
 export const createMeetupRequest = (data) => api.post('/meetup-requests', data).then(r => r.data);
 export const getMyMeetups = (email) => api.get(`/meetup-requests/my?email=${encodeURIComponent(email)}`).then(r => r.data);
 export const confirmMeetup = (token) => api.get(`/meetup-requests/confirm?token=${encodeURIComponent(token)}`).then(r => r.data);
+
+// Opportunities API functions
+export const fetchOpportunities = async () => {
+  try {
+    const response = await api.get('/opportunities');
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching opportunities:', error);
+    }
+    return null;
+  }
+};
+
+export const fetchOpportunity = async (slug) => {
+  try {
+    const response = await api.get(`/opportunities/${slug}`);
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching opportunity:', error);
+    }
+    return null;
+  }
+};
+
+export const createOpportunity = async (data) => {
+  const response = await api.post('/opportunities', data);
+  return response.data;
+};
+
+export const updateOpportunity = async (slug, data) => {
+  const response = await api.put(`/opportunities/${slug}`, data);
+  return response.data;
+};
+
+export const deleteOpportunity = async (slug) => {
+  const response = await api.delete(`/opportunities/${slug}`);
+  return response.data;
+};
 
 // Admin: Forum Paulista
 export const fetchAllParticipants = () => api.get('/participants').then(r => r.data);

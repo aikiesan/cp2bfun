@@ -4,9 +4,14 @@ import { Link } from 'react-router-dom';
 import { newsItems } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchNews } from '../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const News = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.news[language] || pageSeo.news.pt;
   const [news, setNews] = useState(null);
   const [loading, setLoading] = useState(true);
   const [_error, setError] = useState(false);
@@ -67,7 +72,9 @@ const News = () => {
   const others = news.slice(1);
 
   return (
-    <Container className="py-5">
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <Container className="py-5">
       <h1 className="fw-bold mb-5 border-bottom pb-3" style={{ color: '#004a80' }}>{labels.title}</h1>
 
       {/* Featured News - FAPESP Style */}
@@ -115,6 +122,7 @@ const News = () => {
         ))}
       </Row>
     </Container>
+    </>
   );
 };
 

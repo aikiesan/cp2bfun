@@ -2,6 +2,9 @@ import { Container, Row, Col, Button, Accordion, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const inviteToken = import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta';
 
@@ -39,7 +42,7 @@ const content = {
     programTitle: 'Agenda do Dia',
     programNotice: 'Programação sujeita a alterações.',
     program: [
-      { time: '09:00', title: 'Credenciamento e Coffee' },
+      { time: '09:00', title: 'Credenciamento' },
       { time: '09:30', title: 'Abertura Institucional' },
       { time: '10:00', title: 'Diálogo sobre fontes de financiamento para P&D' },
       { time: '10:45', title: 'Apresentações do CP2b — Eixos Temáticos' },
@@ -63,11 +66,10 @@ const content = {
     ],
 
     regTag: 'INSCRIÇÕES',
-    regTitle: 'Taxas de Participação',
+    regTitle: 'Taxa de Participação',
     regTableHeader: ['Categoria', 'Valor'],
     regFees: [
-      { cat: 'Estudante de Graduação', val: 'R$ 60,00' },
-      { cat: 'Pós-Graduando / Pesquisador / Profissional', val: 'R$ 120,00' },
+      { cat: 'Todos os participantes', val: 'R$ 60,00' },
     ],
     regCta: 'Inscreva-se',
 
@@ -83,7 +85,7 @@ const content = {
       },
       {
         q: 'O evento tem custo?',
-        a: 'Sim. A taxa de participação varia conforme a categoria: R$ 60,00 para graduandos e R$ 120,00 para pós-graduandos, pesquisadores e profissionais.',
+        a: 'Sim. A taxa de participação é R$ 60,00 para todos os participantes.',
       },
       {
         q: 'Onde será realizado?',
@@ -128,7 +130,7 @@ const content = {
     programTitle: 'Day Schedule',
     programNotice: 'Schedule subject to change.',
     program: [
-      { time: '09:00', title: 'Check-in and Coffee' },
+      { time: '09:00', title: 'Check-in' },
       { time: '09:30', title: 'Institutional Opening' },
       { time: '10:00', title: 'Dialogue on R&D funding sources' },
       { time: '10:45', title: 'CP2b Presentations — Research Axes' },
@@ -152,11 +154,10 @@ const content = {
     ],
 
     regTag: 'REGISTRATION',
-    regTitle: 'Participation Fees',
+    regTitle: 'Participation Fee',
     regTableHeader: ['Category', 'Fee'],
     regFees: [
-      { cat: 'Undergraduate Student', val: 'R$ 60.00' },
-      { cat: 'Graduate Student / Researcher / Professional', val: 'R$ 120.00' },
+      { cat: 'All participants', val: 'R$ 60.00' },
     ],
     regCta: 'Register Now',
 
@@ -172,7 +173,7 @@ const content = {
       },
       {
         q: 'Is there a registration fee?',
-        a: 'Yes. The participation fee varies by category: R$ 60.00 for undergraduate students and R$ 120.00 for graduate students, researchers and professionals.',
+        a: 'Yes. The participation fee is R$ 60.00 for all participants.',
       },
       {
         q: 'Where will it take place?',
@@ -188,6 +189,8 @@ const content = {
 
 const ForumPaulista = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.forum[language] || pageSeo.forum.pt;
   const t = content[language];
   
   
@@ -196,6 +199,7 @@ const ForumPaulista = () => {
 
   return (
     <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       {/* ── Section 1: Hero ── */}
       <section
         style={{
@@ -248,7 +252,7 @@ const ForumPaulista = () => {
                   >
                     {t.meetupBtn}
                   </Link>
-                  <Button variant="outline-light" size="lg" href="#" className="px-4">
+                  <Button variant="outline-light" size="lg" href="https://proceedings.science/cfp/100701?lang=pt-br" target="_blank" rel="noopener noreferrer" className="px-4">
                     {t.registerBtn}
                   </Button>
                   {/* google calendar button (Tarefa M5) */}
@@ -448,7 +452,7 @@ const ForumPaulista = () => {
               </table>
 
               <div className="d-flex justify-content-center gap-3 flex-wrap">
-                <Button variant="success" size="lg" href="#" className="px-5">
+                <Button variant="success" size="lg" href="https://proceedings.science/cfp/100701?lang=pt-br" target="_blank" rel="noopener noreferrer" className="px-5">
                   {t.regCta}
                 </Button>
                 <Link

@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { Container, Row, Col, Form, Button, Alert, Spinner, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Form, Button, Alert, Spinner, Badge, Card } from 'react-bootstrap';
 import { useLanguage } from '../context/LanguageContext';
 import { registerParticipant } from '../services/api';
-import _api from '../services/api';
 
 const INVITE_TOKEN = import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
@@ -11,7 +10,23 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 const labels = {
   pt: {
     tag: 'FORUM PAULISTA',
-    title: 'Cadastro de Participante',
+    heroTitle: 'CP2B Meet-up: Conecte-se com a Rede',
+    heroSubtitle: 'Um evento de conexões de 15 minutos entre pesquisadores, empresas, autoridades e estudantes',
+    profileTypes: [
+      { value: 'pesquisador', label: 'Pesquisador', icon: 'bi-mortarboard' },
+      { value: 'empresa', label: 'Empresa', icon: 'bi-building' },
+      { value: 'autoridade', label: 'Autoridade', icon: 'bi-bank' },
+      { value: 'estudante', label: 'Estudante', icon: 'bi-person-workspace' },
+    ],
+    howItWorks: 'Como funciona',
+    step1: 'Registre-se',
+    step1Desc: 'Preencha seu perfil com suas áreas de interesse',
+    step2: 'Escolha seus matches',
+    step2Desc: 'Explore os participantes e selecione com quem quer conversar',
+    step3: 'Agende conversas',
+    step3Desc: 'Reserve slots de 15 minutos com seus matches',
+    formTitle: 'Criar meu perfil',
+    profileType: 'Perfil *',
     name: 'Nome completo *',
     affiliation: 'Afiliação / Instituição *',
     email: 'E-mail *',
@@ -20,19 +35,36 @@ const labels = {
     photo: 'Foto de perfil',
     photoHint: 'JPG, PNG ou WEBP — máx. 5MB',
     keywords: 'Palavras-chave / Áreas de interesse (separadas por vírgula)',
-    abstract: 'Resumo / Abstract',
-    submit: 'CADASTRAR',
+    discussion: 'O que você quer discutir?',
+    discussionPlaceholder: 'Descreva os temas, projetos ou questões sobre os quais gostaria de conversar...',
+    submit: 'CRIAR MEU PERFIL',
     submitting: 'Cadastrando...',
-    success: 'Cadastro realizado! Você receberá um e-mail de confirmação.',
+    success: 'Perfil criado! Você receberá um e-mail de confirmação. Explore os participantes e agende suas conversas.',
+    viewParticipants: 'Ver participantes',
     requiredFields: 'Preencha os campos obrigatórios (nome, afiliação, e-mail).',
     invalidEmail: 'E-mail inválido.',
     bioTooLong: 'A mini-bio deve ter no máximo 100 palavras.',
     words: 'palavras',
-    unauthorized: 'Link de convite inválido.',
   },
   en: {
     tag: 'FORUM PAULISTA',
-    title: 'Participant Registration',
+    heroTitle: 'CP2B Meet-up: Connect with the Network',
+    heroSubtitle: 'A 15-minute connection event between researchers, companies, authorities and students',
+    profileTypes: [
+      { value: 'pesquisador', label: 'Researcher', icon: 'bi-mortarboard' },
+      { value: 'empresa', label: 'Company', icon: 'bi-building' },
+      { value: 'autoridade', label: 'Authority', icon: 'bi-bank' },
+      { value: 'estudante', label: 'Student', icon: 'bi-person-workspace' },
+    ],
+    howItWorks: 'How it works',
+    step1: 'Register',
+    step1Desc: 'Fill in your profile with your areas of interest',
+    step2: 'Choose your matches',
+    step2Desc: 'Browse participants and select who you want to meet',
+    step3: 'Schedule conversations',
+    step3Desc: 'Book 15-minute slots with your matches',
+    formTitle: 'Create my profile',
+    profileType: 'Profile *',
     name: 'Full name *',
     affiliation: 'Affiliation / Institution *',
     email: 'E-mail *',
@@ -41,15 +73,16 @@ const labels = {
     photo: 'Profile photo',
     photoHint: 'JPG, PNG or WEBP — max 5MB',
     keywords: 'Keywords / Areas of interest (comma-separated)',
-    abstract: 'Abstract',
-    submit: 'REGISTER',
+    discussion: 'What do you want to discuss?',
+    discussionPlaceholder: 'Describe the topics, projects, or questions you would like to talk about...',
+    submit: 'CREATE MY PROFILE',
     submitting: 'Registering...',
-    success: 'Registration complete! You will receive a confirmation email.',
+    success: 'Profile created! You will receive a confirmation email. Explore participants and schedule your conversations.',
+    viewParticipants: 'View participants',
     requiredFields: 'Please fill in the required fields (name, affiliation, email).',
     invalidEmail: 'Invalid email address.',
     bioTooLong: 'Mini-bio must be 100 words or fewer.',
     words: 'words',
-    unauthorized: 'Invalid invite link.',
   },
 };
 
@@ -66,6 +99,7 @@ const Registro = () => {
   const fileRef = useRef(null);
 
   const [authorized, setAuthorized] = useState(false);
+  const [profileType, setProfileType] = useState('');
   const [formData, setFormData] = useState({
     name: '', affiliation: '', email: '', mini_bio: '', keywords: '', abstract: '',
   });
@@ -112,7 +146,6 @@ const Registro = () => {
     try {
       let photo_url = null;
 
-      // Upload photo if selected
       if (photoFile) {
         const fd = new FormData();
         fd.append('image', photoFile);
@@ -131,11 +164,13 @@ const Registro = () => {
         photo_url,
         keywords: formData.keywords || undefined,
         abstract: formData.abstract.trim() || undefined,
+        profile_type: profileType || undefined,
       });
 
       setStatus({ loading: false, success: true, error: null });
       setFormData({ name: '', affiliation: '', email: '', mini_bio: '', keywords: '', abstract: '' });
       setPhotoFile(null);
+      setProfileType('');
       if (fileRef.current) fileRef.current.value = '';
     } catch (err) {
       const msg = err.response?.data?.error || err.message || 'Erro ao cadastrar.';
@@ -144,134 +179,207 @@ const Registro = () => {
   };
 
   return (
-    <Container className="py-5">
-      <Row className="justify-content-center">
-        <Col lg={7} className="text-center mb-5">
-          <span className="mono-label text-success">{t.tag}</span>
-          <h1 className="display-5 fw-bold mt-2">{t.title}</h1>
-        </Col>
-      </Row>
-
-      <Row className="justify-content-center">
-        <Col lg={7}>
-          <div className="bg-light p-4 border border-dark">
-            {status.success && (
-              <Alert variant="success" dismissible onClose={() => setStatus(s => ({ ...s, success: false }))}>
-                {t.success}
-              </Alert>
-            )}
-            {status.error && (
-              <Alert variant="danger" dismissible onClose={() => setStatus(s => ({ ...s, error: null }))}>
-                {status.error}
-              </Alert>
-            )}
-
-            <Form noValidate onSubmit={handleSubmit}>
-              <Form.Group className="mb-3">
-                <Form.Label className="mono-label text-muted">{t.name}</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  className="rounded-0 border-dark bg-transparent"
-                  disabled={status.loading}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label className="mono-label text-muted">{t.affiliation}</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="affiliation"
-                  value={formData.affiliation}
-                  onChange={handleChange}
-                  className="rounded-0 border-dark bg-transparent"
-                  disabled={status.loading}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label className="mono-label text-muted">{t.email}</Form.Label>
-                <Form.Control
-                  type="email"
-                  name="email"
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="rounded-0 border-dark bg-transparent"
-                  disabled={status.loading}
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Label className="mono-label text-muted">
-                  {t.miniBio}{' '}
-                  <Badge bg={wordCount > 100 ? 'danger' : 'secondary'} className="ms-1">
-                    {wordCount} {t.words}
+    <>
+      {/* Hero Section */}
+      <div className="bg-dark text-white py-5">
+        <Container>
+          <Row className="justify-content-center text-center">
+            <Col lg={8}>
+              <span className="mono-label text-success">{t.tag}</span>
+              <h1 className="display-5 fw-bold mt-2 mb-3">{t.heroTitle}</h1>
+              <p className="lead text-white-50 mb-4">{t.heroSubtitle}</p>
+              <div className="d-flex flex-wrap justify-content-center gap-2">
+                {t.profileTypes.map((pt) => (
+                  <Badge key={pt.value} bg="secondary" className="px-3 py-2 fs-6 fw-normal">
+                    <i className={`bi ${pt.icon} me-2`}></i>{pt.label}
                   </Badge>
-                </Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={4}
-                  name="mini_bio"
-                  value={formData.mini_bio}
-                  onChange={handleChange}
-                  placeholder={t.miniBioPlaceholder}
-                  className="rounded-0 border-dark bg-transparent"
-                  disabled={status.loading}
-                />
-              </Form.Group>
+                ))}
+              </div>
+            </Col>
+          </Row>
 
-              <Form.Group className="mb-3">
-                <Form.Label className="mono-label text-muted">{t.photo}</Form.Label>
-                <Form.Control
-                  type="file"
-                  accept="image/jpeg,image/png,image/webp"
-                  ref={fileRef}
-                  onChange={e => setPhotoFile(e.target.files[0] || null)}
-                  className="rounded-0 border-dark bg-transparent"
-                  disabled={status.loading}
-                />
-                <Form.Text className="text-muted">{t.photoHint}</Form.Text>
-              </Form.Group>
+          {/* How it works */}
+          <Row className="justify-content-center mt-5">
+            <Col lg={10}>
+              <h5 className="text-center text-white-50 text-uppercase mb-4" style={{ letterSpacing: '0.1em', fontSize: '0.8rem' }}>
+                {t.howItWorks}
+              </h5>
+              <Row className="g-4 text-center">
+                {[
+                  { num: '01', title: t.step1, desc: t.step1Desc, icon: 'bi-person-plus' },
+                  { num: '02', title: t.step2, desc: t.step2Desc, icon: 'bi-people' },
+                  { num: '03', title: t.step3, desc: t.step3Desc, icon: 'bi-calendar-check' },
+                ].map((step) => (
+                  <Col md={4} key={step.num}>
+                    <div className="p-4 border border-secondary rounded">
+                      <div className="text-success mb-2" style={{ fontSize: '2rem' }}>
+                        <i className={`bi ${step.icon}`}></i>
+                      </div>
+                      <div className="text-white-50 mb-1" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{step.num}</div>
+                      <h6 className="fw-bold mb-2">{step.title}</h6>
+                      <small className="text-white-50">{step.desc}</small>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            </Col>
+          </Row>
+        </Container>
+      </div>
 
-              <Form.Group className="mb-3">
-                <Form.Label className="mono-label text-muted">{t.keywords}</Form.Label>
-                <Form.Control
-                  type="text"
-                  name="keywords"
-                  value={formData.keywords}
-                  onChange={handleChange}
-                  className="rounded-0 border-dark bg-transparent"
-                  disabled={status.loading}
-                />
-              </Form.Group>
+      {/* Registration Form */}
+      <Container className="py-5">
+        <Row className="justify-content-center">
+          <Col lg={7}>
+            <h2 className="fw-bold mb-4">{t.formTitle}</h2>
 
-              <Form.Group className="mb-4">
-                <Form.Label className="mono-label text-muted">{t.abstract}</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={5}
-                  name="abstract"
-                  value={formData.abstract}
-                  onChange={handleChange}
-                  className="rounded-0 border-dark bg-transparent"
-                  disabled={status.loading}
-                />
-              </Form.Group>
-
-              <Button variant="dark" type="submit" className="w-100 py-3" disabled={status.loading}>
-                {status.loading ? (
-                  <><Spinner animation="border" size="sm" className="me-2" />{t.submitting}</>
-                ) : (
-                  t.submit
+            {status.success ? (
+              <Alert variant="success" className="p-4">
+                <i className="bi bi-check-circle-fill me-2 fs-5"></i>
+                <strong>{t.success}</strong>
+                <div className="mt-3">
+                  <Button variant="success" onClick={() => navigate('/agenda-meetups')}>
+                    <i className="bi bi-people me-2"></i>{t.viewParticipants}
+                  </Button>
+                </div>
+              </Alert>
+            ) : (
+              <div className="bg-light p-4 border border-dark">
+                {status.error && (
+                  <Alert variant="danger" dismissible onClose={() => setStatus(s => ({ ...s, error: null }))}>
+                    {status.error}
+                  </Alert>
                 )}
-              </Button>
-            </Form>
-          </div>
-        </Col>
-      </Row>
-    </Container>
+
+                <Form noValidate onSubmit={handleSubmit}>
+                  {/* Profile Type */}
+                  <Form.Group className="mb-4">
+                    <Form.Label className="mono-label text-muted">{t.profileType}</Form.Label>
+                    <div className="d-flex flex-wrap gap-2 mt-2">
+                      {t.profileTypes.map((pt) => (
+                        <Card
+                          key={pt.value}
+                          onClick={() => setProfileType(pt.value)}
+                          className={`cursor-pointer border-2 ${profileType === pt.value ? 'border-success bg-success bg-opacity-10' : 'border-secondary'}`}
+                          style={{ cursor: 'pointer', minWidth: '110px' }}
+                        >
+                          <Card.Body className="text-center p-3">
+                            <i className={`bi ${pt.icon} d-block mb-1 fs-4 ${profileType === pt.value ? 'text-success' : 'text-muted'}`}></i>
+                            <small className={`fw-semibold ${profileType === pt.value ? 'text-success' : 'text-muted'}`}>{pt.label}</small>
+                          </Card.Body>
+                        </Card>
+                      ))}
+                    </div>
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="mono-label text-muted">{t.name}</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleChange}
+                      className="rounded-0 border-dark bg-transparent"
+                      disabled={status.loading}
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="mono-label text-muted">{t.affiliation}</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="affiliation"
+                      value={formData.affiliation}
+                      onChange={handleChange}
+                      className="rounded-0 border-dark bg-transparent"
+                      disabled={status.loading}
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="mono-label text-muted">{t.email}</Form.Label>
+                    <Form.Control
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      className="rounded-0 border-dark bg-transparent"
+                      disabled={status.loading}
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="mono-label text-muted">
+                      {t.miniBio}{' '}
+                      <Badge bg={wordCount > 100 ? 'danger' : 'secondary'} className="ms-1">
+                        {wordCount} {t.words}
+                      </Badge>
+                    </Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={4}
+                      name="mini_bio"
+                      value={formData.mini_bio}
+                      onChange={handleChange}
+                      placeholder={t.miniBioPlaceholder}
+                      className="rounded-0 border-dark bg-transparent"
+                      disabled={status.loading}
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="mono-label text-muted">{t.photo}</Form.Label>
+                    <Form.Control
+                      type="file"
+                      accept="image/jpeg,image/png,image/webp"
+                      ref={fileRef}
+                      onChange={e => setPhotoFile(e.target.files[0] || null)}
+                      className="rounded-0 border-dark bg-transparent"
+                      disabled={status.loading}
+                    />
+                    <Form.Text className="text-muted">{t.photoHint}</Form.Text>
+                  </Form.Group>
+
+                  <Form.Group className="mb-3">
+                    <Form.Label className="mono-label text-muted">{t.keywords}</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="keywords"
+                      value={formData.keywords}
+                      onChange={handleChange}
+                      className="rounded-0 border-dark bg-transparent"
+                      disabled={status.loading}
+                    />
+                  </Form.Group>
+
+                  <Form.Group className="mb-4">
+                    <Form.Label className="mono-label text-muted">{t.discussion}</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={5}
+                      name="abstract"
+                      value={formData.abstract}
+                      onChange={handleChange}
+                      placeholder={t.discussionPlaceholder}
+                      className="rounded-0 border-dark bg-transparent"
+                      disabled={status.loading}
+                    />
+                  </Form.Group>
+
+                  <Button variant="dark" type="submit" className="w-100 py-3" disabled={status.loading}>
+                    {status.loading ? (
+                      <><Spinner animation="border" size="sm" className="me-2" />{t.submitting}</>
+                    ) : (
+                      t.submit
+                    )}
+                  </Button>
+                </Form>
+              </div>
+            )}
+          </Col>
+        </Row>
+      </Container>
+    </>
   );
 };
 
