@@ -180,8 +180,9 @@ function App() {
                     <Route path="/oportunidades" element={<Opportunities />} />
                     <Route path="/oportunidades/:slug" element={<OportunidadesDetail />} />
                     <Route path="/publicacoes" element={<Publications />} />
-                    <Route path="/microscopio" element={<Microscopio />} />
-                    <Route path="/microscopio/:slug" element={<MicroscopioDetail />} />
+                    <Route path="/eventos" element={<Events />} />
+                    <Route path="/galeria" element={<Gallery />} />
+                    <Route path="/gallery/:albumId" element={<AlbumView />} />
                     <Route path="/projetos" element={<Projects />} />
                     <Route path="/projetos/:slug" element={<ProjectDetail />} />
                     <Route path="/na-midia" element={<Media />} />

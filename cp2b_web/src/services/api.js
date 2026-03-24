@@ -54,6 +54,8 @@ const api = new ApiClient(API_URL);
 
 export default api;
 
+
+
 // Utility functions for common data fetching patterns
 export const fetchNews = async () => {
   try {
@@ -104,6 +106,8 @@ export const updateFeaturedNews = async (positionA, positionB, positionC) => {
     throw error;
   }
 };
+
+
 
 export const fetchTeam = async () => {
   try {

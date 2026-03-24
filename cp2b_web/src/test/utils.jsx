@@ -2,17 +2,18 @@ import { render } from '@testing-library/react';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
 import { LanguageProvider } from '../context/LanguageContext';
+import { ToastProvider } from '../components/admin';
 
 export function renderWithProviders(ui, options = {}) {
   function Wrapper({ children }) {
     return (
-      <HelmetProvider>
-        <LanguageProvider>
-          <BrowserRouter>
+      <LanguageProvider>
+        <BrowserRouter>
+          <ToastProvider>
             {children}
-          </BrowserRouter>
-        </LanguageProvider>
-      </HelmetProvider>
+          </ToastProvider>
+        </BrowserRouter>
+      </LanguageProvider>
     );
   }
 
