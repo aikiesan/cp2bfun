@@ -12,11 +12,10 @@ test('smoke: renders without crashing', () => {
   ).not.toThrow();
 });
 
-test('submit button is disabled while submitting', () => {
+test('submit button is enabled initially', () => {
   renderWithProviders(<GalleryUpload />);
-  const btn = screen.getByRole('button', { name: /guardar foto/i });
+  const btn = screen.getByRole('button', { name: /guardar álbum na galeria/i });
   expect(btn).not.toBeDisabled();
-  // Simule isSubmitting=true e verifique que btn fica disabled
 });
 
 test('submit button is disabled while submitting', async () => {
@@ -25,7 +24,7 @@ test('submit button is disabled while submitting', async () => {
   renderWithProviders(<GalleryUpload />);
   
   // Pegamos o botão e verificamos que ele começa habilitado
-  const submitBtn = screen.getByRole('button', { name: /guardar foto/i });
+  const submitBtn = screen.getByRole('button', { name: /guardar álbum na galeria/i });
   expect(submitBtn).not.toBeDisabled();
 
   // 2. Preenche os campos obrigatórios para passar na validação
@@ -41,7 +40,7 @@ test('submit button is disabled while submitting', async () => {
   await user.upload(coverInput, fakeCover);
 
   // Cria um arquivo falso (Mock) e faz o upload
-  const fileInput = screen.getByLabelText(/selecionar imagem/i);
+  const fileInput = screen.getByLabelText(/fotos internas do álbum/i);
   const fakeFile = new File(['(⌐□_□)'], 'foto.png', { type: 'image/png' });
   await user.upload(fileInput, fakeFile);
 
@@ -53,6 +52,6 @@ test('submit button is disabled while submitting', async () => {
   await waitFor(() => {
     expect(submitBtn).toBeDisabled();
     // Bônus: verifica se o texto do botão mudou para indicar o carregamento
-    expect(screen.getByText(/enviando foto/i)).toBeInTheDocument();
+    expect(screen.getByText(/enviando álbum/i)).toBeInTheDocument();
   });
 });
