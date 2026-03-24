@@ -11,7 +11,6 @@ const Header = () => {
   const location = useLocation();
 
   const isAboutActive = location.pathname.startsWith('/sobre');
-  const isForumActive = location.pathname.startsWith('/forum-paulista');
   const isNewsActive = ['/noticias', '/na-midia', '/oportunidades'].some(
     (p) => location.pathname.startsWith(p)
   );
