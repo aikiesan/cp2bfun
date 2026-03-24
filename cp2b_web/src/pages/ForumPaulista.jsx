@@ -52,6 +52,21 @@ const content = {
       { time: '16:30', title: 'Encerramento' },
     ],
 
+    templatesTag: 'TEMPLATES DO EVENTO',
+    templatesTitle: 'Submissão de Trabalhos',
+    templatesSubtitle: 'Utilize os templates oficiais para preparar sua apresentação',
+    templatesInstructions: 'Faça uma cópia ou baixe o template para ajustar com seu projeto. Os templates estão disponíveis no Google Drive e podem ser editados diretamente ou baixados em formato compatível.',
+    templatesAbstract: 'Template de Resumo',
+    templatesAbstractDesc: 'Use este template para submeter o resumo do seu trabalho. Siga as instruções de formatação incluídas no documento.',
+    templatesPoster: 'Template de Pôster',
+    templatesPosterDesc: 'Utilize este template para criar seu pôster. As apresentações de pôsteres ocorrerão durante o intervalo do evento.',
+    templatesDownloadBtn: 'Acessar Template',
+    templatesHowTo: 'Como usar os templates:',
+    templatesStep1: 'Clique no botão "Acessar Template" para abrir o documento no Google Drive',
+    templatesStep2: 'Selecione "Arquivo" → "Fazer uma cópia" para criar sua própria versão editável',
+    templatesStep3: 'Alternativamente, selecione "Arquivo" → "Fazer download" para baixar em formato compatível',
+    templatesStep4: 'Edite o template com as informações do seu projeto seguindo as instruções fornecidas',
+
     committeeTag: 'ORGANIZAÇÃO',
     committeeTitle: 'Comissão Organizadora',
     committee: [
@@ -139,6 +154,21 @@ const content = {
       { time: '15:30', title: 'Panel 2: Biogas Market Ecosystem' },
       { time: '16:30', title: 'Closing' },
     ],
+
+    templatesTag: 'EVENT TEMPLATES',
+    templatesTitle: 'Work Submission',
+    templatesSubtitle: 'Use the official templates to prepare your presentation',
+    templatesInstructions: 'Make a copy or download the template to customize with your project. Templates are available on Google Drive and can be edited directly or downloaded in compatible formats.',
+    templatesAbstract: 'Abstract Template',
+    templatesAbstractDesc: 'Use this template to submit your work abstract. Follow the formatting instructions included in the document.',
+    templatesPoster: 'Poster Template',
+    templatesPosterDesc: 'Use this template to create your poster. Poster presentations will take place during the event break.',
+    templatesDownloadBtn: 'Access Template',
+    templatesHowTo: 'How to use the templates:',
+    templatesStep1: 'Click the "Access Template" button to open the document on Google Drive',
+    templatesStep2: 'Select "File" → "Make a copy" to create your own editable version',
+    templatesStep3: 'Alternatively, select "File" → "Download" to download in a compatible format',
+    templatesStep4: 'Edit the template with your project information following the provided instructions',
 
     committeeTag: 'ORGANIZATION',
     committeeTitle: 'Organizing Committee',
@@ -397,6 +427,104 @@ const ForumPaulista = () => {
               </div>
 
               <p className="text-muted small mt-3 fst-italic">* {t.programNotice}</p>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+
+      {/* ── Section 4.5: Templates ── */}
+      <section className="py-5 bg-white">
+        <Container>
+          <Row className="justify-content-center">
+            <Col lg={10}>
+              <div className="text-center mb-4">
+                <span className="mono-label text-success">{t.templatesTag}</span>
+                <h2 className="fw-bold mt-2 mb-3">{t.templatesTitle}</h2>
+                <p className="lead text-muted">{t.templatesSubtitle}</p>
+              </div>
+
+              {/* Alert box with instructions */}
+              <div className="alert alert-info d-flex align-items-start mb-4 rounded-4 border-0 shadow-sm" style={{ background: 'rgba(13, 110, 253, 0.08)' }}>
+                <i className="bi bi-info-circle-fill text-primary me-3 mt-1" style={{ fontSize: '1.25rem' }} />
+                <div>
+                  <p className="mb-0">{t.templatesInstructions}</p>
+                </div>
+              </div>
+
+              {/* Templates Cards */}
+              <Row className="g-4 mb-4">
+                {/* Abstract Template */}
+                <Col md={6}>
+                  <Card className="border-0 shadow-sm rounded-4 h-100 hover-lift">
+                    <Card.Body className="p-4">
+                      <div className="d-flex align-items-center mb-3">
+                        <div className="bg-success bg-opacity-10 rounded-3 p-3 me-3">
+                          <i className="bi bi-file-earmark-text-fill text-success" style={{ fontSize: '2rem' }} />
+                        </div>
+                        <div>
+                          <h4 className="fw-bold mb-1">{t.templatesAbstract}</h4>
+                          <span className="badge bg-success bg-opacity-10 text-success">Google Docs</span>
+                        </div>
+                      </div>
+                      <p className="text-muted mb-4">{t.templatesAbstractDesc}</p>
+                      <Button
+                        variant="success"
+                        className="w-100"
+                        href="https://docs.google.com/document/d/1--jMkO5zX2LcDtSMMFW0KdM3i5rd7Irh/edit?usp=sharing&ouid=108256720482212850515&rtpof=true&sd=true"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i className="bi bi-download me-2" />
+                        {t.templatesDownloadBtn}
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+
+                {/* Poster Template */}
+                <Col md={6}>
+                  <Card className="border-0 shadow-sm rounded-4 h-100 hover-lift">
+                    <Card.Body className="p-4">
+                      <div className="d-flex align-items-center mb-3">
+                        <div className="bg-success bg-opacity-10 rounded-3 p-3 me-3">
+                          <i className="bi bi-easel-fill text-success" style={{ fontSize: '2rem' }} />
+                        </div>
+                        <div>
+                          <h4 className="fw-bold mb-1">{t.templatesPoster}</h4>
+                          <span className="badge bg-success bg-opacity-10 text-success">Google Slides</span>
+                        </div>
+                      </div>
+                      <p className="text-muted mb-4">{t.templatesPosterDesc}</p>
+                      <Button
+                        variant="success"
+                        className="w-100"
+                        href="https://docs.google.com/presentation/d/1NMprzfNv4N5z-cnIRXoxhEmfrCnLH1Wx3L8edkIwcp4/edit?usp=sharing"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i className="bi bi-download me-2" />
+                        {t.templatesDownloadBtn}
+                      </Button>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+
+              {/* How to use instructions */}
+              <Card className="border-0 bg-light rounded-4">
+                <Card.Body className="p-4">
+                  <h5 className="fw-bold mb-3">
+                    <i className="bi bi-question-circle-fill text-success me-2" />
+                    {t.templatesHowTo}
+                  </h5>
+                  <ol className="mb-0" style={{ lineHeight: '2' }}>
+                    <li>{t.templatesStep1}</li>
+                    <li>{t.templatesStep2}</li>
+                    <li>{t.templatesStep3}</li>
+                    <li>{t.templatesStep4}</li>
+                  </ol>
+                </Card.Body>
+              </Card>
             </Col>
           </Row>
         </Container>
