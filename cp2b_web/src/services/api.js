@@ -535,44 +535,18 @@ export const confirmMeetupAdmin = (id) => api.put(`/meetup-requests/${id}/confir
 // Gallery API
 // ============================================================
 
-/** Busca todas as fotos da galeria (usado na página pública e no admin) */
 export const fetchGallery = async () => {
   try {
     const response = await api.get('/gallery');
-    
-    // CORREÇÃO: Força o uso do endereço completo do backend.
-    // Se a variável VITE_API_URL existir e começar com http (produção), usa ela. 
-    // Caso contrário (local), força o localhost na porta do Node.js.
     const backendHost = import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.startsWith('http')
       ? import.meta.env.VITE_API_URL.replace(/\/api$/, '')
       : 'http://localhost:3001';
-
-    const photosWithFullUrl = response.data.map(photo => ({
-      ...photo,
-      url: `${backendHost}${photo.url}` 
-    }));
-
-    return photosWithFullUrl;
+    return response.data.map(photo => ({ ...photo, url: `${backendHost}${photo.url}` }));
   } catch (error) {
-    if (error.response?.status && error.response.status >= 500) {
-      console.error('Error fetching gallery:', error);
-    }
+    if (error.response?.status && error.response.status >= 500) console.error('Error fetching gallery:', error);
     return [];
   }
 };
 
-/**
- * Envia uma nova foto via multipart/form-data.
- * O ApiClient detecta FormData automaticamente e omite o Content-Type,
- * deixando o navegador definir o boundary correto.
- */
-export const uploadGalleryPhoto = async (formData) => {
-  const response = await api.post('/gallery', formData);
-  return response.data;
-};
-
-/** Remove uma foto da galeria pelo ID */
-export const deleteGalleryPhoto = async (id) => {
-  const response = await api.delete(`/gallery/${id}`);
-  return response.data;
-};
+export const uploadGalleryPhoto = async (formData) => (await api.post('/gallery', formData)).data;
+export const deleteGalleryPhoto = async (id) => (await api.delete(`/gallery/${id}`)).data;

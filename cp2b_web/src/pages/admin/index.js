@@ -18,5 +18,8 @@ export { default as ParticipantsPanel }   from './ParticipantsPanel';
 export { default as MeetupSlotsManager }  from './MeetupSlotsManager';
 export { default as MeetupRequestsPanel } from './MeetupRequestsPanel';
 export { default as ForumDashboard }      from './ForumDashboard';
+export { default as NewsletterPanel }     from './NewsletterPanel';
+export { default as OportunidadesList }  from './OportunidadesList';
+export { default as OportunidadesEditor } from './OportunidadesEditor';
 export { default as GalleryList }         from './GalleryList';
 export { default as GalleryUpload }       from './GalleryUpload';

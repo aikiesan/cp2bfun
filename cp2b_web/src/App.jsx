@@ -97,6 +97,9 @@ import {
   MeetupSlotsManager,
   MeetupRequestsPanel,
   ForumDashboard,
+  NewsletterPanel,
+  OportunidadesList,
+  OportunidadesEditor,
   GalleryList,
   GalleryUpload,
 } from './pages/admin';
@@ -147,7 +150,11 @@ function App() {
             <Route path="forum/participants" element={<ParticipantsPanel />} />
             <Route path="forum/slots"        element={<MeetupSlotsManager />} />
             <Route path="forum/meetups"      element={<MeetupRequestsPanel />} />
-            <Route path="gallery" element={<GalleryList />} />
+            <Route path="newsletter"         element={<NewsletterPanel />} />
+            <Route path="oportunidades"      element={<OportunidadesList />} />
+            <Route path="oportunidades/new"  element={<OportunidadesEditor />} />
+            <Route path="oportunidades/:slug" element={<OportunidadesEditor />} />
+            <Route path="gallery"        element={<GalleryList />} />
             <Route path="gallery/upload" element={<GalleryUpload />} />
           </Route>
 

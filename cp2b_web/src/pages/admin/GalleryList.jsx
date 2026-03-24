@@ -2,24 +2,17 @@ import { useState, useEffect } from 'react';
 import { Container, Button, Table, Image, Badge, Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { fetchGallery, deleteGalleryPhoto } from '../../services/api';
-import {ConfirmDialog} from '../../components/admin';
-import { useToast } from '../../components/admin'; 
+import { ConfirmDialog, useToast } from '../../components/admin';
 
 const GalleryList = () => {
   const navigate = useNavigate();
-  
-  // 2. Desestruture apenas as funções que você vai usar
   const { success, error } = useToast();
 
-  // --- ESTADOS ---
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
-  // --- ESTADOS DO MODAL DE CONFIRMAÇÃO ---
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [photoToDelete, setPhotoToDelete] = useState(null);
 
-  // --- BUSCA DE DADOS ---
-  // Carrega a lista de fotos do backend ao montar o componente
   useEffect(() => {
     const loadPhotos = async () => {
       const data = await fetchGallery();
@@ -29,21 +22,15 @@ const GalleryList = () => {
     loadPhotos();
   }, []);
 
-  // --- EXCLUSÃO ---
-  // Chama a API para apagar a foto e, em caso de sucesso, remove do estado local
-  
-
-  const requestDelete = (photo) => { // AGORA RECEBE O OBJETO INTEIRO
+  const requestDelete = (photo) => {
     setPhotoToDelete(photo);
     setIsConfirmOpen(true);
   };
 
   const executeDelete = async () => {
     try {
-      // Usa photoToDelete.id em vez de apenas photoToDelete
-      await deleteGalleryPhoto(photoToDelete.id); 
+      await deleteGalleryPhoto(photoToDelete.id);
       setPhotos((prev) => prev.filter((photo) => photo.id !== photoToDelete.id));
-      
       success('Foto excluída com sucesso!');
     } catch (err) {
       console.error('Error deleting gallery photo:', err);
@@ -52,11 +39,10 @@ const GalleryList = () => {
       setIsConfirmOpen(false);
       setPhotoToDelete(null);
     }
-  }
+  };
 
   return (
     <Container className="py-4">
-      {/* CABEÇALHO */}
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h2 className="fw-bold mb-0">Gerenciar Galeria</h2>
         <Button variant="primary" onClick={() => navigate('/admin/gallery/upload')}>
@@ -65,7 +51,6 @@ const GalleryList = () => {
         </Button>
       </div>
 
-      {/* TABELA DE FOTOS */}
       <div className="bg-white rounded shadow-sm overflow-hidden">
         <Table responsive hover className="mb-0 align-middle">
           <thead className="bg-light">
@@ -77,7 +62,6 @@ const GalleryList = () => {
             </tr>
           </thead>
           <tbody>
-            {/* --- LOADING STATE --- */}
             {loading ? (
               <tr>
                 <td colSpan="4" className="text-center py-5">
@@ -86,7 +70,6 @@ const GalleryList = () => {
                 </td>
               </tr>
             ) : photos.length === 0 ? (
-              // Empty State — exibido quando não há fotos cadastradas
               <tr>
                 <td colSpan="4" className="text-center py-5 text-muted">
                   <i className="bi bi-images mb-2 d-block" style={{ fontSize: '2rem' }}></i>
@@ -94,12 +77,11 @@ const GalleryList = () => {
                 </td>
               </tr>
             ) : (
-              // Lista de fotos vindas da API
               photos.map((photo) => (
                 <tr key={photo.id}>
                   <td className="px-4">
                     <Image
-                      src={`${photo.url}`}
+                      src={photo.url}
                       alt={photo.title}
                       width={80}
                       height={60}
@@ -110,11 +92,14 @@ const GalleryList = () => {
                   <td className="fw-semibold">
                     {photo.title}
                     {photo.is_cover && (
-                    <Badge bg="warning" text="dark" className="ms-2">Capa do Álbum</Badge>
+                      <Badge bg="warning" text="dark" className="ms-2">Capa do Álbum</Badge>
                     )}
-                    
                   </td>
-                  <td><Badge bg="secondary">{new Date(photo.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}</Badge></td>
+                  <td>
+                    <Badge bg="secondary">
+                      {new Date(photo.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
+                    </Badge>
+                  </td>
                   <td className="text-end px-4">
                     <Button
                       variant="outline-danger"
@@ -130,16 +115,16 @@ const GalleryList = () => {
           </tbody>
         </Table>
       </div>
-      {/* RENDERIZA O MODAL AQUI */}
-      <ConfirmDialog 
-        show={isConfirmOpen} 
+
+      <ConfirmDialog
+        show={isConfirmOpen}
         onCancel={() => setIsConfirmOpen(false)}
         onConfirm={executeDelete}
-        title={photoToDelete?.is_cover ? "⚠️ ALERTA: Apagar Capa do Álbum" : "Apagar Foto"}
+        title={photoToDelete?.is_cover ? '⚠️ ALERTA: Apagar Capa do Álbum' : 'Apagar Foto'}
         message={
-          photoToDelete?.is_cover 
-            ? `Tem certeza que deseja apagar a capa do álbum "${photoToDelete?.title}"? ALERTA: Sem a capa, o álbum inteiro deixará de aparecer no site público, e as fotos internas ficarão "órfãs".` 
-            : "Tem certeza que deseja apagar esta foto da galeria? Esta ação não pode ser desfeita."
+          photoToDelete?.is_cover
+            ? `Tem certeza que deseja apagar a capa do álbum "${photoToDelete?.title}"? ALERTA: Sem a capa, o álbum inteiro deixará de aparecer no site público, e as fotos internas ficarão "órfãs".`
+            : 'Tem certeza que deseja apagar esta foto da galeria? Esta ação não pode ser desfeita.'
         }
       />
     </Container>

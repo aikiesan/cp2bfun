@@ -6,22 +6,18 @@ import { useNavigate } from 'react-router-dom';
 
 const Gallery = () => {
   const navigate = useNavigate();
-  // --- ESTADOS ---
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // --- BUSCA DE DADOS ---
-  // Carrega as fotos do backend ao montar o componente
   useEffect(() => {
     const loadPhotos = async () => {
-      const data = await fetchGallery(); // retorna [] em caso de erro (ver api.js)
+      const data = await fetchGallery();
       setPhotos(data);
       setLoading(false);
     };
     loadPhotos();
   }, []);
 
-  // --- LOADING STATE ---
   if (loading) {
     return (
       <Container className="py-5 text-center">
@@ -32,26 +28,22 @@ const Gallery = () => {
 
   return (
     <Container className="py-5">
-      {/* Cabeçalho da Página */}
       <div className="text-center mb-5">
         <h1 className="fw-bold text-primary">Galeria de Fotos</h1>
         <p className="text-muted">Confira os registros dos nossos eventos e projetos.</p>
       </div>
-      {/* --- LÓGICA DE EXIBIÇÃO: lista vazia ou grid de álbuns --- */}
       {photos.length === 0 ? (
         <div className="text-center text-muted py-5">
           <i className="bi bi-camera-fill" style={{ fontSize: '3rem' }}></i>
           <p className="mt-3">Ainda não há álbuns publicados na galeria.</p>
         </div>
       ) : (
-        // Grid de Álbuns (Mostra SÓ as capas)
         <Row xs={1} md={2} lg={3} className="g-4">
           {photos
-            .filter((photo) => photo.is_cover) // O Pulo do Gato: Filtra só as capas!
+            .filter((photo) => photo.is_cover)
             .map((album) => (
             <Col key={album.id}>
-              {/* Transformamos o Card em um botão clicável */}
-              <Card 
+              <Card
                 className="h-100 shadow-sm border-0"
                 style={{ cursor: 'pointer', transition: 'transform 0.2s' }}
                 onClick={() => navigate(`/gallery/${album.album_id}`)}
@@ -79,8 +71,6 @@ const Gallery = () => {
           ))}
         </Row>
       )}
-      
-      
     </Container>
   );
 };
