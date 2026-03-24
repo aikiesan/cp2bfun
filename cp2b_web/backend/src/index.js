@@ -9,15 +9,14 @@ import uploadRoutes from './routes/upload.js';
 import contactRoutes from './routes/contact.js';
 import partnersRoutes from './routes/partners.js';
 import publicationsRoutes from './routes/publications.js';
-import microscopioRoutes from './routes/microscopio.js';
+import eventsRoutes from './routes/events.js';
 import projectsRoutes from './routes/projects.js';
 import featuredRoutes from './routes/featured.js';
 import videosRoutes from './routes/videos.js';
 import participantsRoutes from './routes/participants.js';
 import meetupSlotsRoutes from './routes/meetup-slots.js';
 import meetupRequestsRoutes from './routes/meetup-requests.js';
-import newsletterRoutes from './routes/newsletter.js';
-import opportunitiesRoutes from './routes/opportunities.js';
+import galleryRoutes from './routes/gallery.js';
 
 dotenv.config();
 
@@ -41,15 +40,14 @@ app.use('/api/upload', uploadRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/partners', partnersRoutes);
 app.use('/api/publications', publicationsRoutes);
-app.use('/api/microscopio', microscopioRoutes);
+app.use('/api/events', eventsRoutes);
 app.use('/api/projects', projectsRoutes);
 app.use('/api/featured', featuredRoutes);
 app.use('/api/videos', videosRoutes);
 app.use('/api/participants', participantsRoutes);
 app.use('/api/meetup-slots', meetupSlotsRoutes);
 app.use('/api/meetup-requests', meetupRequestsRoutes);
-app.use('/api/newsletter', newsletterRoutes);
-app.use('/api/opportunities', opportunitiesRoutes);
+app.use('/api/gallery', galleryRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

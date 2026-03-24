@@ -74,6 +74,7 @@ const AdminLayout = () => {
         { path: '/admin/news', label: 'Notícias', icon: 'bi-newspaper', badge: newsCount },
         { path: '/admin/videos', label: 'Vídeos', icon: 'bi-youtube', },
         { path: '/admin/projects', label: 'Projetos', icon: 'bi-folder', },
+        { path: '/admin/gallery', label: 'Galeria', icon: 'bi-images', },
         { path: '/admin/featured', label: 'Destaques', icon: 'bi-star' },
         { path: '/admin/publications', label: 'Publicações', icon: 'bi-journal', isNew: true },
         { path: '/admin/microscopio', label: 'Microscópio', icon: 'bi-binoculars' },

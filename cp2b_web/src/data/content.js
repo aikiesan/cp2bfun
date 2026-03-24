@@ -36,7 +36,8 @@ export const menuLabels = {
     axes: 'Eixos',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'Sobre o Evento',
-    forumRegister: 'Registro Meet-up'
+    forumRegister: 'Registro Meet-up',
+    gallery: 'Galeria'
   },
   en: {
     about: 'About',
@@ -66,7 +67,8 @@ export const menuLabels = {
     axes: 'Axes',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'About the Event',
-    forumRegister: 'Meet-up Registration'
+    forumRegister: 'Meet-up Registration',
+    gallery: 'Gallery'
   }
 };
 

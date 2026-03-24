@@ -203,13 +203,19 @@ const Header = () => {
                 </NavDropdown.Item>
               </NavDropdown>
 
-              {/* Keep existing items */}
-              <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
-              <Nav.Link as={Link} to="/projetos" className="fw-semibold px-2">{t.projects}</Nav.Link>
-              <Nav.Link as={Link} to="/microscopio" className="fw-semibold px-2">{t.microscopio}</Nav.Link>
-              <Nav.Link as={Link} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
-              <NavDropdown title={t.forumPaulista} id="nav-dropdown-forum" className="fw-semibold">
-                <NavDropdown.Item as={Link} to="/forum-paulista">
+              <Nav.Link as={NavLink} to="/equipe" className="fw-semibold px-2">{t.team}</Nav.Link>
+              <Nav.Link as={NavLink} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
+              <Nav.Link as={NavLink} to="/projetos" className="fw-semibold px-2">{t.projects}</Nav.Link>
+              <Nav.Link as={NavLink} to="/eventos" className="fw-semibold px-2">{t.events}</Nav.Link>
+              <Nav.Link as={NavLink} to="/galeria" className="fw-semibold px-2">{t.gallery}</Nav.Link>
+              <Nav.Link as={NavLink} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
+              <Nav.Link as={NavLink} to="/outros" className="fw-semibold px-2">{t.others}</Nav.Link>
+              <NavDropdown
+                title={t.forumPaulista}
+                id="nav-dropdown-forum"
+                className={`fw-semibold ${isForumActive ? 'active' : ''}`}
+              >
+                <NavDropdown.Item as={NavLink} to="/forum-paulista">
                   {t.forumAbout}
                 </NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to={`/registro?convite=${import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta'}`}>
