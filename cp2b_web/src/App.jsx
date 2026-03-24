@@ -180,6 +180,8 @@ function App() {
                     <Route path="/oportunidades" element={<Opportunities />} />
                     <Route path="/oportunidades/:slug" element={<OportunidadesDetail />} />
                     <Route path="/publicacoes" element={<Publications />} />
+                    <Route path="/microscopio" element={<Microscopio />} />
+                    <Route path="/microscopio/:slug" element={<MicroscopioDetail />} />
                     <Route path="/eventos" element={<Events />} />
                     <Route path="/galeria" element={<Gallery />} />
                     <Route path="/gallery/:albumId" element={<AlbumView />} />
@@ -191,9 +193,6 @@ function App() {
                     <Route path="/registro" element={<Registro />} />
                     <Route path="/agenda-meetups" element={<AgendaMeetups />} />
                     <Route path="/confirmar-meetup" element={<ConfirmarMeetup />} />
-                    <Route path="/eventos"          element={<Events />} />
-                    <Route path="/galeria"          element={<Gallery />} />
-                    <Route path="/gallery/:albumId" element={<AlbumView />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>
