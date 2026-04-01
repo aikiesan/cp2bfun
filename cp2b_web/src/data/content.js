@@ -14,18 +14,22 @@ export const menuLabels = {
       overview: 'Visão Geral',
       governance: 'Governança',
       transparency: 'Transparência',
-      partners: 'Parceiros'
+      partners: 'Parceiros',
+      opportunities: 'Oportunidades',
+      events: 'Eventos'
     },
     opportunities: 'Oportunidades',
-    news: 'Notícias',
+    news: 'Comunicação',
     newsSubmenu: {
       news: 'Notícias',
+      microscopio: 'Coluna Microscópio',
+      entrevistas: 'Entrevistas',
+      gallery: 'Galeria de Fotos',
+      pressKit: 'Press Kit',
       media: 'Na Mídia',
-      opportunities: 'Oportunidades',
-      microscopio: 'Microscópio'
     },
     team: 'Equipe',
-    publications: 'Publicações',
+    publications: 'Publicações Científicas',
     projects: 'Projetos',
     microscopio: 'Microscópio',
     media: 'Mídia',
@@ -46,18 +50,22 @@ export const menuLabels = {
       overview: 'Overview',
       governance: 'Governance',
       transparency: 'Transparency',
-      partners: 'Partners'
+      partners: 'Partners',
+      opportunities: 'Opportunities',
+      events: 'Events'
     },
     opportunities: 'Opportunities',
-    news: 'News',
+    news: 'Communication',
     newsSubmenu: {
       news: 'News',
+      microscopio: 'Microscope Column',
+      entrevistas: 'Interviews',
+      gallery: 'Photo Gallery',
+      pressKit: 'Press Kit',
       media: 'In the Media',
-      opportunities: 'Opportunities',
-      microscopio: 'Microscópio'
     },
     team: 'Team',
-    publications: 'Publications',
+    publications: 'Scientific Publications',
     projects: 'Projects',
     microscopio: 'Microscópio',
     media: 'Media',
@@ -1137,6 +1145,16 @@ export const pageSeo = {
     en: {
       title: 'Partners & Supporters',
       description: 'Institutions, companies and organizations partnering with CP2b to advance the biogas and bioproducts chain.',
+    },
+  },
+  pressKit: {
+    pt: {
+      title: 'Press Kit',
+      description: 'Materiais de imprensa do CP2b: logos, fotos e arquivos para download.',
+    },
+    en: {
+      title: 'Press Kit',
+      description: 'CP2b press materials: logos, photos and files for download.',
     },
   },
 };
