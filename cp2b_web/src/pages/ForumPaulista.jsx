@@ -38,6 +38,15 @@ const content = {
     aboutInfoAudience: 'Pesquisadores, estudantes, profissionais, empresas',
     aboutInfoAudienceLabel: 'Público',
 
+    axesTag: 'EIXOS TEMÁTICOS',
+    axesTitle: 'Eixos Temáticos do Evento',
+    axes: [
+      { icon: 'bi-shield-check',   title: 'Governança, Regulação e Políticas para o Setor de Biogás' },
+      { icon: 'bi-recycle',        title: 'Sustentabilidade e Economia Circular na Cadeia do Biogás' },
+      { icon: 'bi-flask',          title: 'Pesquisa, Desenvolvimento e Inovação (PD&I) na Cadeia do Biogás' },
+      { icon: 'bi-graph-up-arrow', title: 'Economia e Modelos de Negócio do Biogás e Bioprodutos' },
+    ],
+
     programTag: 'PROGRAMAÇÃO',
     programTitle: 'Agenda do Dia',
     programNotice: 'Programação sujeita a alterações.',
@@ -140,6 +149,15 @@ const content = {
     aboutInfoOrg: 'NIPE – State University of Campinas',
     aboutInfoAudience: 'Researchers, students, professionals, companies',
     aboutInfoAudienceLabel: 'Audience',
+
+    axesTag: 'THEMATIC AXES',
+    axesTitle: 'Event Thematic Axes',
+    axes: [
+      { icon: 'bi-shield-check',   title: 'Governance, Regulation and Policies for the Biogas Sector' },
+      { icon: 'bi-recycle',        title: 'Sustainability and Circular Economy in the Biogas Chain' },
+      { icon: 'bi-flask',          title: 'Research, Development and Innovation (RD&I) in the Biogas Chain' },
+      { icon: 'bi-graph-up-arrow', title: 'Economics and Business Models of Biogas and Bioproducts' },
+    ],
 
     programTag: 'PROGRAM',
     programTitle: 'Day Schedule',
@@ -380,6 +398,33 @@ const ForumPaulista = () => {
                 </video>
               </div>
             </Col>
+          </Row>
+        </Container>
+      </section>
+
+      {/* ── Section 3.5: Eixos Temáticos ── */}
+      <section className="py-5" style={{ background: '#f8f9fa' }}>
+        <Container>
+          <div className="text-center mb-5">
+            <span className="mono-label text-success">{t.axesTag}</span>
+            <h2 className="fw-bold mt-2">{t.axesTitle}</h2>
+          </div>
+          <Row className="g-4 justify-content-center">
+            {t.axes.map((axis, i) => (
+              <Col md={6} lg={3} key={i}>
+                <Card className="border-0 shadow-sm rounded-4 h-100 hover-lift text-center">
+                  <Card.Body className="p-4 d-flex flex-column align-items-center">
+                    <div
+                      className="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3"
+                      style={{ width: '64px', height: '64px', flexShrink: 0 }}
+                    >
+                      <i className={`bi ${axis.icon} text-success`} style={{ fontSize: '1.75rem' }} />
+                    </div>
+                    <p className="fw-semibold mb-0">{axis.title}</p>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
           </Row>
         </Container>
       </section>
