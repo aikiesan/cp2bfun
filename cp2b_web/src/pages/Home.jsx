@@ -240,6 +240,18 @@ const Home = () => {
         </Container>
       </section>
 
+      {/* Featured Videos Section */}
+      {(featuredVideos.A || featuredVideos.B || featuredVideos.C) && (
+        <section className="py-5">
+          <Container>
+            <div className="text-center mb-5">
+              <h2 className="fw-bold">{labels.videosTitle}</h2>
+            </div>
+          </Container>
+          <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
+        </section>
+      )}
+
       {/* Research Timeline Section */}
       <section className="py-5" style={{ background: 'var(--cp2b-light-gray)' }}>
         <Container>
@@ -252,18 +264,6 @@ const Home = () => {
           <Timeline items={timelineData[language]} />
         </Container>
       </section>
-
-      {/* Featured Videos Section */}
-      {(featuredVideos.A || featuredVideos.B || featuredVideos.C) && (
-        <section className="py-5">
-          <Container>
-            <div className="text-center mb-5">
-              <h2 className="fw-bold">{labels.videosTitle}</h2>
-            </div>
-          </Container>
-          <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
-        </section>
-      )}
 
       {/* Partners Image Section */}
       <section className="py-5 partners-section">

@@ -60,6 +60,7 @@ import Publications from './pages/Publications';
 import Projects from './pages/Projects';
 import Microscopio from './pages/Microscopio';
 import Media from './pages/Media';
+import PressKit from './pages/PressKit';
 import Others from './pages/Others';
 import NotFound from './pages/NotFound';
 import ForumPaulista from './pages/ForumPaulista';
@@ -188,6 +189,7 @@ function App() {
                     <Route path="/projetos" element={<Projects />} />
                     <Route path="/projetos/:slug" element={<ProjectDetail />} />
                     <Route path="/na-midia" element={<Media />} />
+                    <Route path="/press-kit" element={<PressKit />} />
                     <Route path="/outros" element={<Others />} />
                     <Route path="/forum-paulista" element={<ForumPaulista />} />
                     <Route path="/registro" element={<Registro />} />

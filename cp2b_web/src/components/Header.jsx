@@ -10,8 +10,10 @@ const Header = () => {
   const t = menuLabels[language];
   const location = useLocation();
 
-  const isAboutActive = location.pathname.startsWith('/sobre');
-  const isNewsActive = ['/noticias', '/na-midia', '/oportunidades'].some(
+  const isAboutActive = ['/sobre', '/oportunidades', '/eventos'].some(
+    (p) => location.pathname.startsWith(p)
+  );
+  const isNewsActive = ['/noticias', '/na-midia', '/microscopio', '/projetos', '/galeria', '/press-kit'].some(
     (p) => location.pathname.startsWith(p)
   );
   const [fontSize, setFontSize] = useState(() => {
@@ -184,9 +186,16 @@ const Header = () => {
                 <NavDropdown.Item as={Link} to="/equipe">
                   {t.team}
                 </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={NavLink} to="/oportunidades">
+                  {t.aboutSubmenu.opportunities}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/eventos">
+                  {t.aboutSubmenu.events}
+                </NavDropdown.Item>
               </NavDropdown>
 
-              {/* News Dropdown */}
+              {/* Comunicação Dropdown */}
               <NavDropdown
                 title={t.news}
                 id="nav-dropdown-news"
@@ -195,21 +204,25 @@ const Header = () => {
                 <NavDropdown.Item as={NavLink} to="/noticias">
                   {t.newsSubmenu.news}
                 </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/microscopio">
+                  {t.newsSubmenu.microscopio}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/projetos">
+                  {t.newsSubmenu.entrevistas}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/galeria">
+                  {t.newsSubmenu.gallery}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/press-kit">
+                  {t.newsSubmenu.pressKit}
+                </NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to="/na-midia">
                   {t.newsSubmenu.media}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to="/oportunidades">
-                  {t.newsSubmenu.opportunities}
-                </NavDropdown.Item>
               </NavDropdown>
 
-              {/* Keep existing items */}
               <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
-              <Nav.Link as={Link} to="/projetos" className="fw-semibold px-2">{t.projects}</Nav.Link>
-              <Nav.Link as={Link} to="/microscopio" className="fw-semibold px-2">{t.microscopio}</Nav.Link>
               <Nav.Link as={Link} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
-              <Nav.Link as={Link} to="/eventos" className="fw-semibold px-2">{t.events}</Nav.Link>
-              <Nav.Link as={Link} to="/galeria" className="fw-semibold px-2">{t.gallery}</Nav.Link>
               <NavDropdown title={t.forumPaulista} id="nav-dropdown-forum" className="fw-semibold">
                 <NavDropdown.Item as={Link} to="/forum-paulista">
                   {t.forumAbout}
