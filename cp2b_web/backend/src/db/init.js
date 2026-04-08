@@ -42,9 +42,12 @@ async function initializeDatabase() {
           await client.query(migrationSql);
           console.log(`✅ Migration ${file} completed`);
         } catch (error) {
-          // If error is about already existing objects, it's okay (already migrated)
-          if (error.code === '42P07' || error.code === '42710') {
-            console.log(`⚠️  Migration ${file} already applied (skipping)`);
+          // Swallow errors for already-applied or ordering-dependent migrations:
+          //   42P07 - duplicate_table (table already exists)
+          //   42710 - duplicate_object (index/constraint already exists)
+          //   42P01 - undefined_table (migration targets a table renamed by a later migration)
+          if (error.code === '42P07' || error.code === '42710' || error.code === '42P01') {
+            console.log(`⚠️  Migration ${file} skipped (${error.code}): ${error.message}`);
           } else {
             throw error;
           }
