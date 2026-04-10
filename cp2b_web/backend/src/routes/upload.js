@@ -17,6 +17,12 @@ if (!fs.existsSync(newsImagesDir)) {
   fs.mkdirSync(newsImagesDir, { recursive: true });
 }
 
+// Ensure press-kit subdirectory exists
+const pressKitDir = path.join(uploadsDir, 'press-kit');
+if (!fs.existsSync(pressKitDir)) {
+  fs.mkdirSync(pressKitDir, { recursive: true });
+}
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -80,6 +86,35 @@ router.post('/news-image', newsImageUpload.single('image'), (req, res) => {
 
   const imageUrl = `/uploads/news-images/${req.file.filename}`;
   res.json({ imageUrl });
+});
+
+// Upload press kit file (PDF, ZIP, PPTX, etc.)
+const pressKitFileFilter = (req, file, cb) => {
+  const allowedTypes = /pdf|zip|pptx|ppt|docx|doc/;
+  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+  if (extname) return cb(null, true);
+  cb(new Error('Only document files are allowed (PDF, ZIP, PPTX, DOCX)'));
+};
+
+const pressKitStorage = multer.diskStorage({
+  destination: (req, file, cb) => { cb(null, pressKitDir); },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const pressKitUpload = multer({
+  storage: pressKitStorage,
+  fileFilter: pressKitFileFilter,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+});
+
+router.post('/file', pressKitUpload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  res.json({ url: `/uploads/press-kit/${req.file.filename}`, filename: req.file.filename });
 });
 
 // Delete image

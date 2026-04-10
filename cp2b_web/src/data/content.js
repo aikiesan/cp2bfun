@@ -24,6 +24,7 @@ export const menuLabels = {
       news: 'Notícias',
       microscopio: 'Coluna Microscópio',
       entrevistas: 'Entrevistas',
+      podcast: 'Podcast',
       gallery: 'Galeria de Fotos',
       pressKit: 'Press Kit',
       media: 'Na Mídia',
@@ -60,6 +61,7 @@ export const menuLabels = {
       news: 'News',
       microscopio: 'Microscope Column',
       entrevistas: 'Interviews',
+      podcast: 'Podcast',
       gallery: 'Photo Gallery',
       pressKit: 'Press Kit',
       media: 'In the Media',
@@ -313,7 +315,7 @@ export const projectsItems = {
       badgeColor: 'primary',
       title: 'Living-Lab de Resíduos Sólidos Urbanos',
       description: 'Planta piloto para gestão de resíduos de restaurantes universitários produzindo biohidrogênio e biometano (Biohitano) para ônibus do campus da UNICAMP.',
-      link: '/projetos/living-lab-ofmsw'
+      link: '/entrevistas/living-lab-ofmsw'
     },
     {
       id: 2,
@@ -323,7 +325,7 @@ export const projectsItems = {
       badgeColor: 'success',
       title: 'Unidade Demonstrativa em Cooperativa Agroindustrial',
       description: 'Sistema de digestão anaeróbia processando resíduos de varejo agroindustrial para gerar eletricidade ou biometano, substituindo diesel em frotas.',
-      link: '/projetos/cooperativa-agroindustrial'
+      link: '/entrevistas/cooperativa-agroindustrial'
     },
     {
       id: 3,
@@ -333,7 +335,7 @@ export const projectsItems = {
       badgeColor: 'info',
       title: 'Biorrefinaria de Vinhaça e Resíduos da Cana',
       description: 'Pesquisa em tecnologias de biorrefinaria para aproveitamento de vinhaça e resíduos da agroindústria sucroenergética, produzindo biohitano e ácidos orgânicos de alto valor.',
-      link: '/projetos/biorrefinaria-vinhaca'
+      link: '/entrevistas/biorrefinaria-vinhaca'
     },
     {
       id: 4,
@@ -343,7 +345,7 @@ export const projectsItems = {
       badgeColor: 'warning',
       title: 'Mapeamento de Resíduos e Oportunidades no Estado de São Paulo',
       description: 'Desenvolvimento de plataforma digital georreferenciada para inventário de resíduos e identificação de oportunidades de aproveitamento energético em São Paulo.',
-      link: '/projetos/mapeamento-residuos-sp'
+      link: '/entrevistas/mapeamento-residuos-sp'
     }
   ],
   en: [
@@ -355,7 +357,7 @@ export const projectsItems = {
       badgeColor: 'primary',
       title: 'Urban Solid Waste Living-Lab',
       description: 'Pilot plant for waste management of university restaurants producing biohydrogen and biomethane (Biohitane) for UNICAMP campus buses.',
-      link: '/projetos/living-lab-ofmsw'
+      link: '/entrevistas/living-lab-ofmsw'
     },
     {
       id: 2,
@@ -365,7 +367,7 @@ export const projectsItems = {
       badgeColor: 'success',
       title: 'Demonstration Unit in Agro-industrial Cooperative',
       description: 'Anaerobic digestion system processing agro-industrial retail waste to generate electricity or biomethane, replacing diesel in fleets.',
-      link: '/projetos/cooperativa-agroindustrial'
+      link: '/entrevistas/cooperativa-agroindustrial'
     },
     {
       id: 3,
@@ -375,7 +377,7 @@ export const projectsItems = {
       badgeColor: 'info',
       title: 'Vinasse and Sugarcane Waste Biorefinery',
       description: 'Research on biorefinery technologies for the utilization of vinasse and sugarcane agro-industry waste, producing biohitane and high-value organic acids.',
-      link: '/projetos/biorrefinaria-vinhaca'
+      link: '/entrevistas/biorrefinaria-vinhaca'
     },
     {
       id: 4,
@@ -385,7 +387,7 @@ export const projectsItems = {
       badgeColor: 'warning',
       title: 'Waste Mapping and Opportunities in São Paulo State',
       description: 'Development of georeferenced digital platform for waste inventory and identification of energy recovery opportunities in São Paulo.',
-      link: '/projetos/mapeamento-residuos-sp'
+      link: '/entrevistas/mapeamento-residuos-sp'
     }
   ]
 };
@@ -1075,6 +1077,26 @@ export const pageSeo = {
     en: {
       title: 'Projects',
       description: 'CP2b research projects in biogas, sanitation, cooking oil reverse logistics and renewable energy.',
+    },
+  },
+  entrevistas: {
+    pt: {
+      title: 'Entrevistas CP2b',
+      description: 'Entrevistas com pesquisadores e especialistas do CP2b sobre biogás, bioprodutos e políticas de energia renovável.',
+    },
+    en: {
+      title: 'CP2b Interviews',
+      description: 'Interviews with CP2b researchers and experts on biogas, bioproducts and renewable energy policy.',
+    },
+  },
+  podcast: {
+    pt: {
+      title: 'Podcast CP2b',
+      description: 'Episódios do podcast CP2b sobre biogás, bioprodutos e transição energética no Brasil.',
+    },
+    en: {
+      title: 'CP2b Podcast',
+      description: 'CP2b podcast episodes on biogas, bioproducts and energy transition in Brazil.',
     },
   },
   microscopio: {

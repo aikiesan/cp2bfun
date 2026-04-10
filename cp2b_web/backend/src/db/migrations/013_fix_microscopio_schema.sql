@@ -32,6 +32,10 @@ ALTER TABLE microscopio ADD COLUMN IF NOT EXISTS image_caption_en TEXT;
 ALTER TABLE microscopio ADD COLUMN IF NOT EXISTS tags TEXT;
 ALTER TABLE microscopio ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
 
+-- Fix tags column type: change from TEXT[] to TEXT to match frontend string format
+-- (frontend sends comma-separated string; TEXT[] causes type mismatch on INSERT)
+ALTER TABLE microscopio ALTER COLUMN tags TYPE TEXT USING array_to_string(tags, ',');
+
 -- Ensure indexes exist
 CREATE INDEX IF NOT EXISTS idx_microscopio_slug ON microscopio(slug);
 CREATE INDEX IF NOT EXISTS idx_microscopio_published_at ON microscopio(published_at DESC NULLS LAST);

@@ -1,37 +1,62 @@
-import { Container, Row, Col, Button } from 'react-bootstrap';
+import { useState, useEffect } from 'react';
+import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+import api from '../services/api';
+
+const STATIC_ITEMS = {
+  pt: [
+    { title_pt: 'Logotipos', icon: 'bi-images', file_url: '#' },
+    { title_pt: 'Fotos Institucionais', icon: 'bi-camera', file_url: '#' },
+    { title_pt: 'Apresentação CP2b', icon: 'bi-file-earmark-slides', file_url: '#' },
+  ],
+  en: [
+    { title_pt: 'Logos', icon: 'bi-images', file_url: '#' },
+    { title_pt: 'Institutional Photos', icon: 'bi-camera', file_url: '#' },
+    { title_pt: 'CP2b Presentation', icon: 'bi-file-earmark-slides', file_url: '#' },
+  ],
+};
 
 const PressKit = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
   const seo = pageSeo.pressKit[language] || pageSeo.pressKit.pt;
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const labels = {
     pt: {
       tag: 'IMPRENSA',
       title: 'Press Kit',
       description: 'Baixe os materiais de imprensa do CP2b: logos, fotos institucionais e apresentações.',
-      downloads: [
-        { label: 'Logotipos', icon: 'bi-images' },
-        { label: 'Fotos Institucionais', icon: 'bi-camera' },
-        { label: 'Apresentação CP2b', icon: 'bi-file-earmark-slides' },
-      ],
+      download: 'Baixar',
     },
     en: {
       tag: 'PRESS',
       title: 'Press Kit',
       description: 'Download CP2b press materials: logos, institutional photos and presentations.',
-      downloads: [
-        { label: 'Logos', icon: 'bi-images' },
-        { label: 'Institutional Photos', icon: 'bi-camera' },
-        { label: 'CP2b Presentation', icon: 'bi-file-earmark-slides' },
-      ],
+      download: 'Download',
     },
   }[language];
+
+  useEffect(() => {
+    api.get('/press-kit')
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          setItems(res.data);
+        } else {
+          setItems(STATIC_ITEMS[language]);
+        }
+      })
+      .catch(() => setItems(STATIC_ITEMS[language]))
+      .finally(() => setLoading(false));
+  }, [language]);
+
+  const getTitle = (item) =>
+    language === 'pt' ? item.title_pt : (item.title_en || item.title_pt);
 
   return (
     <>
@@ -49,20 +74,28 @@ const PressKit = () => {
                 <span className="mono-label text-success text-uppercase">{labels.tag}</span>
                 <h1 className="display-5 fw-bold mt-2 mb-3">{labels.title}</h1>
                 <p className="lead text-muted mb-5">{labels.description}</p>
-                <Row className="justify-content-center g-3">
-                  {labels.downloads.map((item) => (
-                    <Col xs={12} sm={4} key={item.label}>
-                      <Button
-                        variant="outline-success"
-                        className="w-100 px-3 py-3 d-flex flex-column align-items-center gap-2"
-                        href="#"
-                      >
-                        <i className={`bi ${item.icon}`} style={{ fontSize: '1.5rem' }}></i>
-                        <span>{item.label}</span>
-                      </Button>
-                    </Col>
-                  ))}
-                </Row>
+
+                {loading ? (
+                  <Spinner animation="border" variant="success" />
+                ) : (
+                  <Row className="justify-content-center g-3">
+                    {items.map((item, idx) => (
+                      <Col xs={12} sm={6} md={4} key={idx}>
+                        <Button
+                          variant="outline-success"
+                          className="w-100 px-3 py-3 d-flex flex-column align-items-center gap-2"
+                          href={item.file_url !== '#' ? item.file_url : undefined}
+                          target={item.file_url !== '#' ? '_blank' : undefined}
+                          rel="noopener noreferrer"
+                          disabled={item.file_url === '#'}
+                        >
+                          <i className={`bi ${item.icon || 'bi-file-earmark-pdf'}`} style={{ fontSize: '1.5rem' }}></i>
+                          <span>{getTitle(item)}</span>
+                        </Button>
+                      </Col>
+                    ))}
+                  </Row>
+                )}
               </div>
             </Col>
           </Row>

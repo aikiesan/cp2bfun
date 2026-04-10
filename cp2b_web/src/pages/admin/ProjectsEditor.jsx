@@ -121,7 +121,7 @@ const ProjectsEditor = () => {
   return (
     <Container>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h2>{isEditing ? 'Editar Projeto' : 'Nova Projeto'}</h2>
+        <h2>{isEditing ? 'Editar Entrevista' : 'Nova Entrevista'}</h2>
         <Button variant="outline-secondary" onClick={() => navigate('/admin/projects')}>
           <i className="bi bi-arrow-left me-2"></i>Voltar
         </Button>
@@ -348,7 +348,7 @@ const ProjectsEditor = () => {
                 ) : (
                   <>
                     <i className="bi bi-check-circle me-2"></i>
-                    {isEditing ? 'Atualizar Projeto' : 'Criar Projeto'}
+                    {isEditing ? 'Atualizar Entrevista' : 'Criar Entrevista'}
                   </>
                 )}
               </Button>

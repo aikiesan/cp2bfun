@@ -11,21 +11,21 @@ import SeoHead from '../components/SeoHead';
 const Projects = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
-  const seo = pageSeo.projects[language] || pageSeo.projects.pt;
+  const seo = (pageSeo.entrevistas || pageSeo.projects)[language] || (pageSeo.entrevistas || pageSeo.projects).pt;
   const [projects, setProjects] = useState(null);
   const [loading, setLoading] = useState(true);
   const [_error, setError] = useState(false);
 
   const labels = {
     pt: {
-      title: 'Agencia CP2b de Projetos',
+      title: 'Entrevistas CP2b',
       readMore: 'Leia mais',
-      latest: 'Ultimas projetos'
+      latest: 'Mais entrevistas'
     },
     en: {
-      title: 'CP2b Projects Agency',
+      title: 'CP2b Interviews',
       readMore: 'Read more',
-      latest: 'Latest projects'
+      latest: 'More interviews'
     }
   }[language];
 
@@ -44,7 +44,7 @@ const Projects = () => {
           badgeColor: item.badge_color,
           title: language === 'pt' ? item.title_pt : (item.title_en || item.title_pt),
           description: language === 'pt' ? item.description_pt : (item.description_en || item.description_pt),
-          link: `/projetos/${item.slug}`
+          link: `/entrevistas/${item.slug}`
         }));
         setProjects(transformed);
       } else {
