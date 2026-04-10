@@ -61,6 +61,7 @@ import Projects from './pages/Projects';
 import Microscopio from './pages/Microscopio';
 import Media from './pages/Media';
 import PressKit from './pages/PressKit';
+import Podcast from './pages/Podcast';
 import Others from './pages/Others';
 import NotFound from './pages/NotFound';
 import ForumPaulista from './pages/ForumPaulista';
@@ -103,13 +104,17 @@ import {
   OportunidadesEditor,
   GalleryList,
   GalleryUpload,
+  PressKitAdmin,
+  PodcastList,
+  PodcastEditor,
 } from './pages/admin';
 import FeaturedContentManager from './pages/admin/FeaturedContentManager';
 import {
   HomeContentEditor,
   AboutContentEditor,
   GovernanceContentEditor,
-  TransparencyContentEditor
+  TransparencyContentEditor,
+  MicroscopioContentEditor
 } from './pages/admin/content';
 
 function App() {
@@ -145,6 +150,7 @@ function App() {
             <Route path="content/about" element={<AboutContentEditor />} />
             <Route path="content/governance" element={<GovernanceContentEditor />} />
             <Route path="content/transparency" element={<TransparencyContentEditor />} />
+            <Route path="content/microscopio" element={<MicroscopioContentEditor />} />
             <Route path="partners" element={<PartnersEditor />} />
             <Route path="messages" element={<MessagesPanel />} />
             <Route path="forum" element={<ForumDashboard />} />
@@ -157,6 +163,10 @@ function App() {
             <Route path="oportunidades/:slug" element={<OportunidadesEditor />} />
             <Route path="gallery"        element={<GalleryList />} />
             <Route path="gallery/upload" element={<GalleryUpload />} />
+            <Route path="press-kit"      element={<PressKitAdmin />} />
+            <Route path="podcast"        element={<PodcastList />} />
+            <Route path="podcast/new"    element={<PodcastEditor />} />
+            <Route path="podcast/:id"    element={<PodcastEditor />} />
           </Route>
 
           {/* Public Routes - With Header/Footer */}
@@ -186,10 +196,11 @@ function App() {
                     <Route path="/eventos" element={<Events />} />
                     <Route path="/galeria" element={<Gallery />} />
                     <Route path="/gallery/:albumId" element={<AlbumView />} />
-                    <Route path="/projetos" element={<Projects />} />
-                    <Route path="/projetos/:slug" element={<ProjectDetail />} />
+                    <Route path="/entrevistas" element={<Projects />} />
+                    <Route path="/entrevistas/:slug" element={<ProjectDetail />} />
                     <Route path="/na-midia" element={<Media />} />
                     <Route path="/press-kit" element={<PressKit />} />
+                    <Route path="/podcast" element={<Podcast />} />
                     <Route path="/outros" element={<Others />} />
                     <Route path="/forum-paulista" element={<ForumPaulista />} />
                     <Route path="/registro" element={<Registro />} />

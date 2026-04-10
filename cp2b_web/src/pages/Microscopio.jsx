@@ -3,10 +3,15 @@ import { Container, Row, Col, Card, Badge, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
-import { fetchMicroscopia } from '../services/api';
+import { fetchMicroscopia, fetchPageContent } from '../services/api';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+
+const STATIC_DESCRIPTIONS = {
+  pt: 'Um espaço para artigos de opinião e reflexões dos pesquisadores do CP2B.',
+  en: 'A space for opinion articles and reflections from CP2B researchers.',
+};
 
 const Microscopio = () => {
   const { language } = useLanguage();
@@ -14,19 +19,18 @@ const Microscopio = () => {
   const seo = pageSeo.microscopio[language] || pageSeo.microscopio.pt;
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [description, setDescription] = useState(STATIC_DESCRIPTIONS[language]);
 
   const labels = {
     pt: {
       tag: 'MICROSCÓPIO DE IDEIAS',
       title: 'Microscópio de Ideias',
-      description: 'Um espaço para artigos de opinião e reflexões dos pesquisadores do CP2B.',
       empty: 'Nenhum artigo disponível no momento.',
       readMore: 'Saiba mais',
     },
     en: {
       tag: 'MICROSCÓPIO DE IDEIAS',
       title: 'Microscópio de Ideias',
-      description: 'A space for opinion articles and reflections from CP2B researchers.',
       empty: 'No articles available at the moment.',
       readMore: 'Read more',
     },
@@ -41,6 +45,19 @@ const Microscopio = () => {
     loadItems();
   }, []);
 
+  useEffect(() => {
+    fetchPageContent('microscopio').then((data) => {
+      if (data) {
+        const langContent = language === 'pt' ? data.content_pt : data.content_en;
+        if (langContent?.page_description) {
+          setDescription(langContent.page_description);
+        } else {
+          setDescription(STATIC_DESCRIPTIONS[language]);
+        }
+      }
+    });
+  }, [language]);
+
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
@@ -54,7 +71,7 @@ const Microscopio = () => {
           <Col>
             <span className="mono-label text-success text-uppercase">{labels.tag}</span>
             <h1 className="display-5 fw-bold mt-2 mb-2">{labels.title}</h1>
-            <p className="lead text-muted">{labels.description}</p>
+            <p className="lead text-muted">{description}</p>
           </Col>
         </Row>
 

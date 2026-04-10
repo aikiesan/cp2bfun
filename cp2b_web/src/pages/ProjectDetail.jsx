@@ -18,16 +18,18 @@ const ProjectsDetail = () => {
 
   const labels = {
     pt: {
-      notFound: 'Projeto não encontrado',
-      backBtn: 'Voltar para Projetos',
+      notFound: 'Entrevista não encontrada',
+      backBtn: 'Voltar para Entrevistas',
       back: 'Voltar',
       share: 'Compartilhar',
+      interviewedBy: 'Entrevistado por',
     },
     en: {
-      notFound: 'Project not found',
-      backBtn: 'Back to Projects',
+      notFound: 'Interview not found',
+      backBtn: 'Back to Interviews',
       back: 'Back',
       share: 'Share',
+      interviewedBy: 'Interviewed by',
     },
   }[language];
 
@@ -70,7 +72,7 @@ const ProjectsDetail = () => {
                 badge: item.badge,
                 badgeColor: item.badge_color,
                 date: item.date_display,
-                link: `/projetos/${item.slug}`,
+                link: `/entrevistas/${item.slug}`,
               }))
           );
         }
@@ -104,7 +106,7 @@ const ProjectsDetail = () => {
     return (
       <Container className="py-5 text-center">
         <h2>{labels.notFound}</h2>
-        <Button as={Link} to="/projetos" variant="primary" className="mt-3">
+        <Button as={Link} to="/entrevistas" variant="primary" className="mt-3">
           {labels.backBtn}
         </Button>
       </Container>
@@ -138,7 +140,7 @@ const ProjectsDetail = () => {
       <ArticleLayout
         article={article}
       relatedPosts={relatedPosts}
-      backLink="/projetos"
+      backLink="/entrevistas"
       backLabel={labels.back}
       shareLabel={labels.share}
       language={language}

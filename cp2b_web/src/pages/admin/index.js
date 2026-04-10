@@ -23,3 +23,6 @@ export { default as OportunidadesList }  from './OportunidadesList';
 export { default as OportunidadesEditor } from './OportunidadesEditor';
 export { default as GalleryList }         from './GalleryList';
 export { default as GalleryUpload }       from './GalleryUpload';
+export { default as PressKitAdmin }       from './PressKitAdmin';
+export { default as PodcastList }         from './PodcastList';
+export { default as PodcastEditor }       from './PodcastEditor';

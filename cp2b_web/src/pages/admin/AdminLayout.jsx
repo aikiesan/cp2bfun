@@ -73,12 +73,14 @@ const AdminLayout = () => {
       items: [
         { path: '/admin/news', label: 'Notícias', icon: 'bi-newspaper', badge: newsCount },
         { path: '/admin/videos', label: 'Vídeos', icon: 'bi-youtube', },
-        { path: '/admin/projects', label: 'Projetos', icon: 'bi-folder', },
+        { path: '/admin/projects', label: 'Entrevistas', icon: 'bi-mic', },
         { path: '/admin/gallery', label: 'Galeria', icon: 'bi-images', },
         { path: '/admin/featured', label: 'Destaques', icon: 'bi-star' },
         { path: '/admin/publications', label: 'Publicações', icon: 'bi-journal', isNew: true },
         { path: '/admin/microscopio', label: 'Microscópio', icon: 'bi-binoculars' },
-        { path: '/admin/oportunidades', label: 'Oportunidades', icon: 'bi-briefcase', isNew: true }
+        { path: '/admin/oportunidades', label: 'Oportunidades', icon: 'bi-briefcase', isNew: true },
+        { path: '/admin/press-kit', label: 'Press Kit', icon: 'bi-file-earmark-zip' },
+        { path: '/admin/podcast', label: 'Podcast', icon: 'bi-mic' }
       ]
     },
     {
@@ -99,7 +101,8 @@ const AdminLayout = () => {
         { path: '/admin/content/home', label: 'Página Inicial', icon: 'bi-house-door' },
         { path: '/admin/content/about', label: 'Página Sobre', icon: 'bi-info-circle' },
         { path: '/admin/content/governance', label: 'Governança', icon: 'bi-diagram-2' },
-        { path: '/admin/content/transparency', label: 'Transparência', icon: 'bi-eye' }
+        { path: '/admin/content/transparency', label: 'Transparência', icon: 'bi-eye' },
+        { path: '/admin/content/microscopio', label: 'Coluna Microscópio', icon: 'bi-binoculars' }
       ]
     },
     {

@@ -550,3 +550,39 @@ export const fetchGallery = async () => {
 
 export const uploadGalleryPhoto = async (formData) => (await api.post('/gallery', formData)).data;
 export const deleteGalleryPhoto = async (id) => (await api.delete(`/gallery/${id}`)).data;
+
+// ============================================================
+// Press Kit API
+// ============================================================
+
+export const fetchPressKitItems = async () => {
+  try {
+    const res = await api.get('/press-kit');
+    return res.data;
+  } catch (error) {
+    if (error.response?.status >= 500) console.error('Error fetching press kit items:', error);
+    return [];
+  }
+};
+
+export const createPressKitItem = async (data) => (await api.post('/press-kit', data)).data;
+export const updatePressKitItem = async (id, data) => (await api.put(`/press-kit/${id}`, data)).data;
+export const deletePressKitItem = async (id) => (await api.delete(`/press-kit/${id}`)).data;
+
+// ============================================================
+// Podcast API
+// ============================================================
+
+export const fetchPodcastEpisodes = async () => {
+  try {
+    const res = await api.get('/podcast');
+    return res.data;
+  } catch (error) {
+    if (error.response?.status >= 500) console.error('Error fetching podcast episodes:', error);
+    return [];
+  }
+};
+
+export const createPodcastEpisode = async (data) => (await api.post('/podcast', data)).data;
+export const updatePodcastEpisode = async (id, data) => (await api.put(`/podcast/${id}`, data)).data;
+export const deletePodcastEpisode = async (id) => (await api.delete(`/podcast/${id}`)).data;

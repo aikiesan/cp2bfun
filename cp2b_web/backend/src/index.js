@@ -20,6 +20,8 @@ import microscopioRoutes from './routes/microscopio.js';
 import opportunitiesRoutes from './routes/opportunities.js';
 import eventsRoutes from './routes/events.js';
 import newsletterRoutes from './routes/newsletter.js';
+import pressKitRoutes from './routes/presskit.js';
+import podcastRoutes from './routes/podcast.js';
 
 dotenv.config();
 
@@ -54,6 +56,8 @@ app.use('/api/microscopio', microscopioRoutes);
 app.use('/api/opportunities', opportunitiesRoutes);
 app.use('/api/events', eventsRoutes);
 app.use('/api/newsletter', newsletterRoutes);
+app.use('/api/press-kit', pressKitRoutes);
+app.use('/api/podcast', podcastRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {

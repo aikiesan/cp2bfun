@@ -26,9 +26,12 @@ const Home = () => {
   useEffect(() => {
     const loadFeaturedContent = async () => {
       setLoadingFeatured(true);
-      const data = await fetchFeaturedContent();
-      setFeaturedContent(data);
-      setLoadingFeatured(false);
+      try {
+        const data = await fetchFeaturedContent();
+        setFeaturedContent(data);
+      } finally {
+        setLoadingFeatured(false);
+      }
     };
 
     loadFeaturedContent();
@@ -109,8 +112,8 @@ const Home = () => {
         badge: item.badge,
         badgeColor: item.badge_color || 'secondary',
         description: language === 'pt'
-          ? (item.summary_pt || item.excerpt_pt || '')
-          : (item.summary_en || item.excerpt_en || item.summary_pt || ''),
+          ? item.description_pt || ''
+          : (item.description_en || item.description_pt || ''),
         image: item.image,
         link: `/noticias/${item.slug}`,
       }))
