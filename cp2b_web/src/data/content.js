@@ -42,6 +42,7 @@ export const menuLabels = {
     forumPaulista: 'Forum Paulista',
     forumAbout: 'Sobre o Evento',
     forumRegister: 'Registro Meet-up',
+    forumSchedule: 'Cronograma do Evento',
     events: 'Eventos',
     gallery: 'Galeria'
   },
@@ -79,6 +80,7 @@ export const menuLabels = {
     forumPaulista: 'Forum Paulista',
     forumAbout: 'About the Event',
     forumRegister: 'Meet-up Registration',
+    forumSchedule: 'Event Schedule',
     events: 'Events',
     gallery: 'Gallery'
   }
@@ -1127,6 +1129,16 @@ export const pageSeo = {
     en: {
       title: 'I São Paulo Biogas and Bioproducts Forum',
       description: 'Meeting of the Biogas and Bioproducts Chain of São Paulo State — May 28, 2026, UNICAMP.',
+    },
+  },
+  cronograma: {
+    pt: {
+      title: 'Cronograma — I Fórum Paulista de Biogás e Bioprodutos',
+      description: 'Grade completa do I Fórum Paulista de Biogás e Bioprodutos — 28 de maio de 2026, UNICAMP. Palestrantes, painéis e programação detalhada.',
+    },
+    en: {
+      title: 'Schedule — I São Paulo Biogas and Bioproducts Forum',
+      description: 'Full schedule of the I São Paulo Biogas and Bioproducts Forum — May 28, 2026, UNICAMP. Speakers, panels and detailed program.',
     },
   },
   contact: {

@@ -68,6 +68,7 @@ import ForumPaulista from './pages/ForumPaulista';
 import Registro from './pages/Registro';
 import AgendaMeetups from './pages/AgendaMeetups';
 import ConfirmarMeetup from './pages/ConfirmarMeetup';
+import CronogramaEvento from './pages/CronogramaEvento';
 import Events from './pages/Events';
 import Gallery from './pages/Gallery';
 import AlbumView from './pages/AlbumView';
@@ -205,6 +206,7 @@ function App() {
                     <Route path="/forum-paulista" element={<ForumPaulista />} />
                     <Route path="/registro" element={<Registro />} />
                     <Route path="/agenda-meetups" element={<AgendaMeetups />} />
+                    <Route path="/cronograma-evento" element={<CronogramaEvento />} />
                     <Route path="/confirmar-meetup" element={<ConfirmarMeetup />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>

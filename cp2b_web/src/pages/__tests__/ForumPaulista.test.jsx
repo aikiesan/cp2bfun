@@ -9,11 +9,11 @@ describe('ForumPaulista', () => {
     expect(screen.getByRole('heading', { name: /Fórum Paulista/i })).toBeInTheDocument();
   });
 
-  it('"Registro Meet-up" button links to /registro', () => {
+  it('"Cronograma do Evento" button links to /cronograma-evento', () => {
     renderWithProviders(<ForumPaulista />);
-    const link = screen.getAllByText('Registro Meet-up')[0].closest('a');
+    const link = screen.getAllByText('Cronograma do Evento')[0].closest('a');
     expect(link).toBeTruthy();
-    expect(link.getAttribute('href')).toMatch(/^\/registro/);
+    expect(link.getAttribute('href')).toMatch(/^\/cronograma-evento/);
   });
 
   it('renders FAQ section', () => {
