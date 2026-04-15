@@ -6,7 +6,6 @@ import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 
-const inviteToken = import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta';
 
 const content = {
   pt: {
