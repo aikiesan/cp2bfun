@@ -426,7 +426,7 @@ const CronogramaEvento = () => {
         }}
       >
         <Container className="text-center text-white">
-          <h3 className="fw-bold mb-3">{t.ctaTitle}</h3>
+          <h3 className="fw-bold mb-3 text-white">{t.ctaTitle}</h3>
           <Button
             variant="warning"
             size="lg"
