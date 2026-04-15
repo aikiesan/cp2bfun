@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Container, Row, Col, Card, Badge, Button } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -179,52 +180,82 @@ const getInitials = (name) =>
     .map((w) => w[0].toUpperCase())
     .join('');
 
-const SpeakerCard = ({ speaker, lang, color, delay }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 12 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ delay: delay * 0.07, duration: 0.35 }}
-    style={{ minWidth: '148px', maxWidth: '176px', flexShrink: 0 }}
-  >
-    <Card className="border-0 shadow-sm h-100 hover-lift" style={{ borderRadius: 'var(--cp2b-radius-sm)' }}>
-      <Card.Body className="p-3 text-center d-flex flex-column align-items-center">
-        <div
-          style={{
-            width: '48px',
-            height: '48px',
-            borderRadius: '50%',
-            background: color.bg,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: '#fff',
-            fontWeight: 700,
-            fontSize: '1rem',
-            marginBottom: '0.5rem',
-            flexShrink: 0,
-          }}
-        >
-          {getInitials(speaker.name)}
-        </div>
-        {speaker.isModerator && (
-          <Badge bg="warning" text="dark" className="mb-1" style={{ fontSize: '0.62rem' }}>
-            ★ {labels[lang].moderatorBadge}
-          </Badge>
-        )}
-        <p className="fw-semibold mb-0" style={{ fontSize: '0.8rem', lineHeight: 1.3 }}>
-          {speaker.name}
-        </p>
-        <p className="text-muted mb-1" style={{ fontSize: '0.7rem' }}>
-          {speaker.role[lang]}
-        </p>
-        <p className="mb-0 fw-semibold" style={{ fontSize: '0.67rem', color: color.text }}>
-          {speaker.inst}
-        </p>
-      </Card.Body>
-    </Card>
-  </motion.div>
-);
+const SpeakerCard = ({ speaker, lang, color, delay }) => {
+  const [imgError, setImgError] = useState(false);
+  const initials = getInitials(speaker.name);
+  
+  const normalized = speaker.name
+    .toLowerCase()
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/_+/g, '-');
+    
+  const imageUrl = `/assets/speakers/${normalized}.jpg`;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 12 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: delay * 0.07, duration: 0.35 }}
+      style={{ minWidth: '148px', maxWidth: '176px', flexShrink: 0 }}
+    >
+      <Card className="border-0 shadow-sm h-100 hover-lift" style={{ borderRadius: 'var(--cp2b-radius-sm)' }}>
+        <Card.Body className="p-3 text-center d-flex flex-column align-items-center">
+          <div
+            style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '50%',
+              background: color.bg,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#fff',
+              fontWeight: 700,
+              fontSize: '1rem',
+              marginBottom: '0.5rem',
+              flexShrink: 0,
+              overflow: 'hidden',
+              position: 'relative'
+            }}
+          >
+            {imgError ? (
+              initials
+            ) : (
+              <img 
+                src={imageUrl} 
+                alt={speaker.name}
+                onError={() => setImgError(true)}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover'
+                }}
+              />
+            )}
+          </div>
+          {speaker.isModerator && (
+            <Badge bg="warning" text="dark" className="mb-1" style={{ fontSize: '0.62rem' }}>
+              ★ {labels[lang].moderatorBadge}
+            </Badge>
+          )}
+          <p className="fw-semibold mb-0" style={{ fontSize: '0.8rem', lineHeight: 1.3 }}>
+            {speaker.name}
+          </p>
+          <p className="text-muted mb-1" style={{ fontSize: '0.7rem' }}>
+            {speaker.role[lang]}
+          </p>
+          <p className="mb-0 fw-semibold" style={{ fontSize: '0.67rem', color: color.text }}>
+            {speaker.inst}
+          </p>
+        </Card.Body>
+      </Card>
+    </motion.div>
+  );
+};
 
 const SessionCard = ({ session, lang, color, index }) => {
   const s = session[lang] || session.pt;
