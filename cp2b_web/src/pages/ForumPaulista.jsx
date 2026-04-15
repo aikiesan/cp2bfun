@@ -15,8 +15,8 @@ const content = {
     heroSubtitle: 'Encontro da Cadeia de Biogás e Bioprodutos do Estado de São Paulo',
     heroLocation: 'Centro de Convencoes Unicamp Auditorio 3',
     heroDate: '28 de maio de 2026',
-    meetupBtn: 'Registro Meet-up',
-    registerBtn: 'Inscrição e Pagamento',
+    scheduleBtn: 'Cronograma do Evento',
+    registerBtn: 'Inscreva-se',
     saveDateBtn: 'Salvar Data na Agenda',
 
     statsParticipants: '90+',
@@ -127,8 +127,8 @@ const content = {
     heroSubtitle: 'São Paulo State Biogas and Bioproducts Chain Meeting',
     heroLocation: 'Unicamp Convention Center Auditorium 3',
     heroDate: 'May 28, 2026',
-    meetupBtn: 'Meet-up Registration',
-    registerBtn: 'Registration & Payment',
+    scheduleBtn: 'Event Schedule',
+    registerBtn: 'Register Now',
     saveDateBtn: 'Save Date in Agenda',
 
     statsParticipants: '90+',
@@ -295,18 +295,19 @@ const ForumPaulista = () => {
                 {/* CTAs */}
                 <div className="d-flex justify-content-center gap-3 flex-wrap">
                   <Link
-                    to={`/registro?convite=${inviteToken}`}
+                    to="/cronograma-evento"
                     className="btn btn-success btn-lg px-4"
                   >
-                    {t.meetupBtn}
+                    <i className="bi bi-calendar3 me-2" />
+                    {t.scheduleBtn}
                   </Link>
-                  <Button variant="outline-light" size="lg" href="https://proceedings.science/cfp/100701?lang=pt-br" target="_blank" rel="noopener noreferrer" className="px-4">
+                  <Button variant="warning" size="lg" href="https://proceedings.science/cfp/100701?lang=pt-br" target="_blank" rel="noopener noreferrer" className="px-4 fw-bold">
                     {t.registerBtn}
                   </Button>
                   {/* google calendar button (Tarefa M5) */}
-                  <Button 
-                    variant="light" 
-                    size="lg" 
+                  <Button
+                    variant="light"
+                    size="lg"
                     href={googleCalendarUrl}
                     target="_blank"
                     rel="noopener noreferrer"
@@ -629,10 +630,10 @@ const ForumPaulista = () => {
                   {t.regCta}
                 </Button>
                 <Link
-                  to={`/registro?convite=${inviteToken}`}
+                  to="/cronograma-evento"
                   className="btn btn-outline-success btn-lg px-4"
                 >
-                  {t.meetupBtn}
+                  {t.scheduleBtn}
                 </Link>
               </div>
             </Col>
