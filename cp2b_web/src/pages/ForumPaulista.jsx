@@ -94,6 +94,7 @@ const content = {
     regFees: [
       { cat: 'Todos os participantes', val: 'R$ 60,00' },
     ],
+    regNote: '✓ Taxa inclui participação no evento + almoço no local',
     regCta: 'Inscreva-se',
 
     faqTitle: 'Perguntas Frequentes',
@@ -108,7 +109,7 @@ const content = {
       },
       {
         q: 'O evento tem custo?',
-        a: 'Sim. A taxa de participação é R$ 60,00 para todos os participantes.',
+        a: 'Sim. A taxa de participação é R$ 60,00 para todos os participantes e inclui almoço no local do evento.',
       },
       {
         q: 'Onde será realizado?',
@@ -206,6 +207,7 @@ const content = {
     regFees: [
       { cat: 'All participants', val: 'R$ 60.00' },
     ],
+    regNote: '✓ Fee includes event participation + lunch at the venue',
     regCta: 'Register Now',
 
     faqTitle: 'Frequently Asked Questions',
@@ -220,7 +222,7 @@ const content = {
       },
       {
         q: 'Is there a registration fee?',
-        a: 'Yes. The participation fee is R$ 60.00 for all participants.',
+        a: 'Yes. The participation fee is R$ 60.00 for all participants and includes lunch at the venue.',
       },
       {
         q: 'Where will it take place?',
@@ -623,6 +625,10 @@ const ForumPaulista = () => {
                   ))}
                 </tbody>
               </table>
+
+              <p className="text-muted mb-4" style={{ fontSize: '0.95rem' }}>
+                <strong className="text-success">{t.regNote}</strong>
+              </p>
 
               <div className="d-flex justify-content-center gap-3 flex-wrap">
                 <Button variant="success" size="lg" href="https://proceedings.science/cfp/100701?lang=pt-br" target="_blank" rel="noopener noreferrer" className="px-5">
