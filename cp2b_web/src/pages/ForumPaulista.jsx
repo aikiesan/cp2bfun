@@ -94,7 +94,7 @@ const content = {
     regFees: [
       { cat: 'Todos os participantes', val: 'R$ 60,00' },
     ],
-    regNote: '✓ Taxa inclui participação no evento + almoço no local',
+    regNote: '✓ Taxa inclui participação no evento + brunch no local',
     regCta: 'Inscreva-se',
 
     faqTitle: 'Perguntas Frequentes',
@@ -109,7 +109,7 @@ const content = {
       },
       {
         q: 'O evento tem custo?',
-        a: 'Sim. A taxa de participação é R$ 60,00 para todos os participantes e inclui almoço no local do evento.',
+        a: 'Sim. A taxa de participação é R$ 60,00 para todos os participantes e inclui brunch no local do evento.',
       },
       {
         q: 'Onde será realizado?',
