@@ -237,6 +237,22 @@ const Header = () => {
                   {t.forumRegister}
                 </NavDropdown.Item>
               </NavDropdown>
+              <Nav.Item>
+                <a
+                  href="/pilar2b"
+                  className="btn btn-sm rounded-pill fw-semibold ms-2 px-3 btn-glow"
+                  style={{
+                    background: 'linear-gradient(135deg, var(--cp2b-petrol) 0%, var(--cp2b-green) 100%)',
+                    color: '#fff',
+                    border: 'none',
+                    letterSpacing: '0.5px',
+                    fontSize: '0.88rem',
+                    lineHeight: '1.5',
+                  }}
+                >
+                  {t.pilar2b}
+                </a>
+              </Nav.Item>
             </Nav>
           </Navbar.Collapse>
         </Container>

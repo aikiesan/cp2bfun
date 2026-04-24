@@ -44,7 +44,8 @@ export const menuLabels = {
     forumRegister: 'Registro Meet-up',
     forumSchedule: 'Cronograma do Evento',
     events: 'Eventos',
-    gallery: 'Galeria'
+    gallery: 'Galeria',
+    pilar2b: 'PILAR-2b'
   },
   en: {
     about: 'About',
@@ -82,7 +83,8 @@ export const menuLabels = {
     forumRegister: 'Meet-up Registration',
     forumSchedule: 'Event Schedule',
     events: 'Events',
-    gallery: 'Gallery'
+    gallery: 'Gallery',
+    pilar2b: 'PILAR-2b'
   }
 };
 
