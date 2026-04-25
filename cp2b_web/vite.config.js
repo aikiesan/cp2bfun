@@ -46,7 +46,7 @@ export default defineConfig({
       workbox: {
         globIgnores: ['**/CP2B-LOGO-COLOR-DEGRADE@8x.png'],
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api\//],
+        navigateFallbackDenylist: [/^\/api\//, /^\/pilar2b/],
         cleanupOutdatedCaches: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
