@@ -47,15 +47,24 @@ const ContentEditorBase = ({ pageKey, pageLabel, fields }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate required fields
-    const currentLang = activeTab;
+    // Validate required fields for both languages
     const requiredFields = fields.filter(f => f.required);
-    const missingFields = requiredFields.filter(
-      f => !formData[`content_${currentLang}`][f.key]?.trim()
-    );
+    const missingPT = requiredFields.filter(f => !formData.content_pt[f.key]?.trim());
+    const missingEN = requiredFields.filter(f => !formData.content_en[f.key]?.trim());
 
-    if (missingFields.length > 0) {
-      toast.error(`Campos obrigatórios: ${missingFields.map(f => f.label).join(', ')}`);
+    if (missingPT.length > 0 || missingEN.length > 0) {
+      let errorMsg = 'Por favor, preencha todos os campos obrigatórios.';
+      if (missingPT.length > 0) errorMsg += ` (Português: ${missingPT.map(f => f.label).join(', ')})`;
+      if (missingEN.length > 0) errorMsg += ` (English: ${missingEN.map(f => f.label).join(', ')})`;
+      
+      toast.error(errorMsg);
+      
+      // Switch to the tab with errors if current one is okay
+      if (activeTab === 'pt' && missingPT.length === 0 && missingEN.length > 0) {
+        setActiveTab('en');
+      } else if (activeTab === 'en' && missingEN.length === 0 && missingPT.length > 0) {
+        setActiveTab('pt');
+      }
       return;
     }
 
@@ -123,7 +132,7 @@ const ContentEditorBase = ({ pageKey, pageLabel, fields }) => {
         </Alert>
       )}
 
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={handleSubmit} noValidate>
         <Tabs activeKey={activeTab} onSelect={setActiveTab} className="mb-4">
           <Tab eventKey="pt" title="🇧🇷 Português">
             <div className="pt-4">
