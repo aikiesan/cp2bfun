@@ -89,7 +89,6 @@ const ContentEditorBase = ({ pageKey, pageLabel, fields }) => {
           rows={field.rows || 4}
           value={value}
           onChange={(e) => handleChange(lang, field.key, e.target.value)}
-          required={field.required}
         />
       );
     }
@@ -100,7 +99,6 @@ const ContentEditorBase = ({ pageKey, pageLabel, fields }) => {
         value={value}
         onChange={(e) => handleChange(lang, field.key, e.target.value)}
         placeholder={field.placeholder}
-        required={field.required}
       />
     );
   };
