@@ -193,8 +193,8 @@ const SpeakerCard = ({ speaker, lang, color, delay }) => {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ delay: delay * 0.07, duration: 0.35 }}
       style={{ minWidth: '148px', maxWidth: '176px', flexShrink: 0 }}
@@ -258,8 +258,8 @@ const SessionCard = ({ session, lang, color, index }) => {
   const s = session[lang] || session.pt;
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ delay: index * 0.06, duration: 0.4 }}
       className="mb-4"
@@ -297,7 +297,7 @@ const SessionCard = ({ session, lang, color, index }) => {
         {session.speakers.length > 0 && (
           <div
             className="d-flex gap-3 mt-3 pb-1"
-            style={{ overflowX: 'auto', flexWrap: 'wrap' }}
+            style={{ flexWrap: 'wrap' }}
           >
             {session.speakers.map((spk, i) => (
               <SpeakerCard key={i} speaker={spk} lang={lang} color={color} delay={i} />
@@ -314,8 +314,8 @@ const ScheduleBlock = ({ block, lang }) => {
   const color = BLOCK_COLORS[block.colorKey];
   return (
     <motion.div
-      initial={{ opacity: 0, y: 30 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
       transition={{ duration: 0.5 }}
       className="mb-2"
@@ -389,8 +389,8 @@ const CronogramaEvento = () => {
           <Row className="justify-content-center text-center">
             <Col lg={9}>
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
                 transition={{ duration: 0.4 }}
               >
                 <span className="mono-label text-success">{t.heroBadge}</span>
