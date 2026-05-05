@@ -36,8 +36,7 @@ const SCHEDULE = [
           { name: 'Geraldo Melo Filho', role: { pt: 'Secretário de Agricultura e Abastecimento', en: 'Secretary of Agriculture and Supply' }, inst: 'Governo de SP', isModerator: false },
           { name: 'Braz dos Santos Adegas Júnior', role: { pt: 'Secretário de Clima e Sustentabilidade', en: 'Secretary of Climate & Sustainability' }, inst: 'Prefeitura de Campinas', isModerator: false },
           { name: 'Bruna de Souza Moraes', role: { pt: 'Diretora do CP2b', en: 'CP2b Director' }, inst: 'CP2b / UNICAMP', isModerator: false },
-          { name: 'Andrea Achoa', role: { pt: 'Diretora de PD&I', en: 'RD&I Director' }, inst: 'Equinor', isModerator: false },
-          { name: 'Mário Tyago Murakami', role: { pt: 'Diretor de Biorrenováveis', en: 'Biorenewables Director' }, inst: 'CNPEM', isModerator: false },
+          { name: 'Marisa Maia de Barros', role: { pt: 'Representante', en: 'Representative' }, inst: 'Energia e Mineração', isModerator: false },
         ],
       },
       {
@@ -48,7 +47,7 @@ const SCHEDULE = [
           { name: 'Aline Scarpetta', role: { pt: 'Moderadora', en: 'Moderator' }, inst: 'CIBiogás', isModerator: true },
           { name: 'Lorena Rocha da Costa Assunção', role: { pt: 'Assessora da Diretoria', en: 'Director Advisor' }, inst: 'ANP', isModerator: false },
           { name: 'Renato Massaru Nakai', role: { pt: 'Gerente de Comercialização e P&D', en: 'Commercialization & R&D Manager' }, inst: 'ARSESP', isModerator: false },
-          { name: 'Representante FAPESP', role: { pt: 'Fundação de Amparo à Pesquisa', en: 'Research Support Foundation' }, inst: 'FAPESP', isModerator: false },
+          { name: 'Andrea Achoa', role: { pt: 'Diretora de PD&I', en: 'RD&I Director' }, inst: 'Equinor', isModerator: false },
         ],
       },
       {
