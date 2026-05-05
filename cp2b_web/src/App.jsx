@@ -43,6 +43,7 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import SocialSidebar from './components/SocialSidebar';
 import ErrorBoundary from './components/ErrorBoundary';
+import CookieConsent from './components/CookieConsent';
 
 // Pages
 import Home from './pages/Home';
@@ -125,6 +126,7 @@ function App() {
         <SeoHead jsonLd={organizationJsonLd} />
         <ScrollToTop />
         <SocialSidebar />
+        <CookieConsent />
         <Routes>
           {/* Admin Routes - No Header/Footer */}
           <Route path="/admin" element={<AdminLayout />}>
