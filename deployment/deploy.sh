@@ -122,7 +122,7 @@ cd "$REPO_DIR/cp2b_web"
 
 # Install/update dependencies
 print_info "Installing frontend dependencies..."
-npm install --production=false
+npm ci --omit=dev
 
 # Build production bundle
 print_info "Creating production build..."

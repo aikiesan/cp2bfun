@@ -1,6 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
+import { requireAuth } from './middleware/auth.js';
+import authRoutes from './routes/auth.js';
 import newsRoutes from './routes/news.js';
 import contentRoutes from './routes/content.js';
 import teamRoutes from './routes/team.js';
@@ -28,15 +32,62 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Middleware
+// Security headers
+app.use(helmet());
+
+// CORS — no open fallback to localhost in production
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: process.env.FRONTEND_URL || 'https://cp2b.unicamp.br',
   credentials: true
 }));
+
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 
+// Rate limiters
+const publicWriteLimit = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 10,
+  message: { error: 'Too many requests, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+const loginLimit = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 5,
+  message: { error: 'Too many login attempts, please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
+// Apply rate limits before routes
+app.use('/api/auth/login', loginLimit);
+app.post('/api/newsletter/subscribe', publicWriteLimit);
+app.post('/api/contact', publicWriteLimit);
+app.post('/api/participants', publicWriteLimit);
+app.post('/api/meetup-requests', publicWriteLimit);
+
+// Public write paths — everything else requires auth
+const PUBLIC_WRITE_PATHS = [
+  '/api/auth/login',
+  '/api/newsletter/subscribe',
+  '/api/newsletter/unsubscribe',
+  '/api/contact',
+  '/api/participants',
+  '/api/meetup-requests',
+  '/api/meetup-requests/confirm',
+];
+
+app.use((req, res, next) => {
+  if (req.method === 'GET') return next();
+  const isPublic = PUBLIC_WRITE_PATHS.some(p => req.path === p || req.path.startsWith(p + '/'));
+  if (isPublic) return next();
+  requireAuth(req, res, next);
+});
+
 // Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/news', newsRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/team', teamRoutes);

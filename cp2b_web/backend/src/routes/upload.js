@@ -119,8 +119,11 @@ router.post('/file', pressKitUpload.single('file'), (req, res) => {
 
 // Delete image
 router.delete('/image/:filename', (req, res) => {
-  const { filename } = req.params;
-  const filepath = path.join(uploadsDir, filename);
+  const safe = path.basename(req.params.filename);
+  if (!safe || safe.includes('/') || safe.includes('..')) {
+    return res.status(400).json({ error: 'Invalid filename' });
+  }
+  const filepath = path.join(uploadsDir, safe);
 
   if (!fs.existsSync(filepath)) {
     return res.status(404).json({ error: 'File not found' });

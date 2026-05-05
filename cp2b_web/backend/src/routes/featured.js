@@ -53,7 +53,7 @@ router.put('/', async (req, res) => {
 
     // Set new positions
     for (const [pos, data] of [['A', positionA], ['B', positionB], ['C', positionC]]) {
-      if (data && data.slug && TYPE_TO_TABLE[data.type]) {
+      if (data && data.slug && Object.prototype.hasOwnProperty.call(TYPE_TO_TABLE, data.type)) {
         const table = TYPE_TO_TABLE[data.type];
         await pool.query(
           `UPDATE ${table} SET featured_position = $1 WHERE slug = $2`,

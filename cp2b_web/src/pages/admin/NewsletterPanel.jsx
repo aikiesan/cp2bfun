@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { SafeHtml } from '../../utils/sanitize';
 import { Container, Card, Table, Button, Form, Badge, Alert, Tab, Tabs, Modal } from 'react-bootstrap';
 import api from '../../services/api';
 
@@ -163,10 +164,9 @@ const NewsletterPanel = () => {
                       <small className="text-info fw-bold"><i className="bi bi-eye me-1"></i>Pré-visualização</small>
                     </Card.Header>
                     <Card.Body>
-                      <div
-                        style={{ maxHeight: '300px', overflow: 'auto' }}
-                        dangerouslySetInnerHTML={{ __html: html }}
-                      />
+                      <div style={{ maxHeight: '300px', overflow: 'auto' }}>
+                        <SafeHtml html={html} />
+                      </div>
                     </Card.Body>
                   </Card>
                 )}

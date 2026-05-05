@@ -52,7 +52,6 @@ const CookieConsent = () => {
     if (consent === 'all' && email.trim()) {
       try {
         await api.post('/newsletter/subscribe', { email: email.trim() });
-        payload.email = email.trim();
         setSubscribed(true);
       } catch (_) {
         // newsletter signup is optional — don't block consent save

@@ -3,6 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
 import { LanguageProvider } from './context/LanguageContext';
+import { AuthProvider } from './context/AuthContext';
 import SeoHead from './components/SeoHead';
 
 const organizationJsonLd = {
@@ -44,6 +45,7 @@ import ScrollToTop from './components/ScrollToTop';
 import SocialSidebar from './components/SocialSidebar';
 import ErrorBoundary from './components/ErrorBoundary';
 import CookieConsent from './components/CookieConsent';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Pages
 import Home from './pages/Home';
@@ -118,9 +120,11 @@ import {
   TransparencyContentEditor,
   MicroscopioContentEditor
 } from './pages/admin/content';
+import Login from './pages/admin/Login';
 
 function App() {
   return (
+    <AuthProvider>
     <LanguageProvider>
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <SeoHead jsonLd={organizationJsonLd} />
@@ -128,8 +132,11 @@ function App() {
         <SocialSidebar />
         <CookieConsent />
         <Routes>
-          {/* Admin Routes - No Header/Footer */}
-          <Route path="/admin" element={<AdminLayout />}>
+          {/* Admin Login — no auth guard */}
+          <Route path="/admin/login" element={<Login />} />
+
+          {/* Admin Routes - Protected, No Header/Footer */}
+          <Route path="/admin" element={<ProtectedRoute><AdminLayout /></ProtectedRoute>}>
             <Route index element={<Dashboard />} />
             <Route path="news" element={<NewsList />} />
             <Route path="news/new" element={<NewsEditor />} />
@@ -221,6 +228,7 @@ function App() {
         </Routes>
       </Router>
     </LanguageProvider>
+    </AuthProvider>
   );
 }
 

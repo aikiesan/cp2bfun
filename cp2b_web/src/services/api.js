@@ -3,6 +3,11 @@ const API_URL = import.meta.env.VITE_API_URL || '/api';
 class ApiClient {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
+    this._authToken = null;
+  }
+
+  setAuthToken(token) {
+    this._authToken = token;
   }
 
   async request(endpoint, options = {}) {
@@ -10,6 +15,7 @@ class ApiClient {
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        ...(this._authToken ? { Authorization: `Bearer ${this._authToken}` } : {}),
         ...options.headers,
       },
       ...options,

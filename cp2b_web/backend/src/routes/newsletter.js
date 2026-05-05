@@ -59,6 +59,8 @@ router.get('/unsubscribe', async (req, res) => {
       return res.status(404).send('<p>Token não encontrado.</p>');
     }
 
+    const safeEmail = result.rows[0].email
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     res.send(`
       <!DOCTYPE html>
       <html lang="pt">
@@ -67,7 +69,7 @@ router.get('/unsubscribe', async (req, res) => {
       h2{color:#004d61}</style></head>
       <body>
         <h2>Descadastro realizado</h2>
-        <p>O e-mail <strong>${result.rows[0].email}</strong> foi removido da lista de newsletter do CP2b.</p>
+        <p>O e-mail <strong>${safeEmail}</strong> foi removido da lista de newsletter do CP2b.</p>
         <p><a href="/">Voltar ao site</a></p>
       </body></html>
     `);
