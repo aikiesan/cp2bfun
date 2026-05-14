@@ -153,14 +153,14 @@ const Home = () => {
                         <span className="text-success fw-bold text-uppercase small ls-2">{forum.badge}</span>
                         <span className="ms-2 text-muted fw-bold text-uppercase small ls-2">{forum.subtitle}</span>
                         <h2 className="display-5 fw-bold mb-4">{forum.title}</h2>
-                        <p className="lead text-muted mb-4">
-                            {forum.description}
-                        </p>
+                        {forum.description.split('\n\n').map((para, i) => (
+                          <p key={i} className="lead text-muted mb-3">{para}</p>
+                        ))}
                         <Button
                           variant="outline-primary"
-                          className="rounded-pill btn-glow"
+                          className="rounded-pill btn-glow mt-1"
                           as={Link}
-                          to="/sobre"
+                          to="/forum-paulista"
                         >
                           {forum.button}
                         </Button>

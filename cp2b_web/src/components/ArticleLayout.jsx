@@ -28,9 +28,16 @@ const ArticleLayout = ({
 
   const renderContent = () => {
     if (content) {
+      const isHtml = /<[a-z][\s\S]*>/i.test(content);
+      const html = isHtml
+        ? content
+        : content
+            .split(/\n\n+/)
+            .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+            .join('');
       return (
         <SafeHtml
-          html={content}
+          html={html}
           className="article-content article-fapesp-content"
         />
       );

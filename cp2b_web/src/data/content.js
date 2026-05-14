@@ -113,14 +113,14 @@ export const forumData = {
     badge: 'EM BREVE',
     subtitle: 'Fórum Paulista',
     title: 'Fórum de Biogás e Bioprodutos - Maio/2026',
-    description: 'Prepare-se para o maior encontro de biogás de São Paulo. Reuniremos especialistas, pesquisadores e parceiros estratégicos para discutir o futuro da bioenergia.',
+    description: 'O I Fórum Paulista de Biogás e Bioprodutos reúne pesquisadores, estudantes, profissionais e empresas para discutir os avanços, desafios e oportunidades da cadeia de biogás e bioprodutos no Estado de São Paulo.\n\nParticipe do Fórum e conecte-se aos debates e iniciativas que estão impulsionando o futuro do setor.',
     button: 'Saiba mais sobre a edição 2026'
   },
   en: {
     badge: 'COMING SOON',
     subtitle: 'São Paulo Forum',
     title: 'Biogas and Bioproducts Forum - May/2026',
-    description: 'Get ready for the largest biogas meeting in São Paulo. We will bring together specialists, researchers, and strategic partners to discuss the future of bioenergy.',
+    description: 'The I Fórum Paulista de Biogás e Bioprodutos brings together researchers, students, professionals and companies to discuss advances, challenges and opportunities in the biogas and bioproducts chain in São Paulo State.\n\nJoin the Forum and connect with the debates and initiatives driving the future of the sector.',
     button: 'Learn more about the 2026 edition'
   }
 };
