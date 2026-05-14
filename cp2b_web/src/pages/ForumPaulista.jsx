@@ -429,18 +429,16 @@ const ForumPaulista = () => {
             <span className="mono-label text-success">{t.sponsorsTag}</span>
             <h2 className="fw-bold mt-2">{t.sponsorsTitle}</h2>
           </div>
-
-          {/* Tier: Ouro */}
-          <div className="text-center mb-3">
-            <span style={{ color: '#B8860B', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-              {t.sponsorTiers[0].label}
-            </span>
-          </div>
-          <Row className="justify-content-center align-items-center mb-5 pb-2">
-            <Col xs={10} sm={7} md={5} className="text-center">
-              <img src={t.sponsorTiers[0].logos[0].logo} alt={t.sponsorTiers[0].logos[0].name}
-                style={{ width: '100%', maxHeight: '260px', objectFit: 'contain' }} />
-            </Col>
+          <Row className="justify-content-center align-items-center g-5">
+            {t.sponsors.map((s) => (
+              <Col xs={10} sm={8} md={5} key={s.name} className="text-center">
+                <img
+                  src={s.logo}
+                  alt={s.name}
+                  style={{ width: '100%', maxHeight: '220px', objectFit: 'contain' }}
+                />
+              </Col>
+            ))}
           </Row>
 
           {/* Divider */}
