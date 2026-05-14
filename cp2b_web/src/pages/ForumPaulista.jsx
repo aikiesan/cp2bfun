@@ -421,17 +421,17 @@ const ForumPaulista = () => {
       {/* ── Section 3.2: Sponsors ── */}
       <section className="py-5 bg-white">
         <Container>
-          <div className="text-center mb-4">
+          <div className="text-center mb-5">
             <span className="mono-label text-success">{t.sponsorsTag}</span>
             <h2 className="fw-bold mt-2">{t.sponsorsTitle}</h2>
           </div>
           <Row className="justify-content-center align-items-center g-5">
             {t.sponsors.map((s) => (
-              <Col xs={6} md={3} key={s.name} className="text-center">
+              <Col xs={10} sm={8} md={5} key={s.name} className="text-center">
                 <img
                   src={s.logo}
                   alt={s.name}
-                  style={{ maxHeight: '80px', maxWidth: '180px', objectFit: 'contain' }}
+                  style={{ width: '100%', maxHeight: '220px', objectFit: 'contain' }}
                 />
               </Col>
             ))}
