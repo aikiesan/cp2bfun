@@ -614,9 +614,8 @@ const ForumPaulista = () => {
                       <Button
                         variant="success"
                         className="w-100"
-                        href="https://docs.google.com/presentation/d/1NMprzfNv4N5z-cnIRXoxhEmfrCnLH1Wx3L8edkIwcp4/edit?usp=sharing"
-                        target="_blank"
-                        rel="noopener noreferrer"
+                        href="/assets/TEMPLATE_POSTER_90X120CM_FORUM_PAULISTA_BIOGAS_BIOPRODUTOS.pptx"
+                        download
                       >
                         <i className="bi bi-download me-2" />
                         {t.templatesDownloadBtn}
