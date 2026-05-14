@@ -36,7 +36,7 @@ const SCHEDULE = [
           { name: 'Geraldo Melo Filho', role: { pt: 'Secretário de Agricultura e Abastecimento', en: 'Secretary of Agriculture and Supply' }, inst: 'Governo de SP', isModerator: false },
           { name: 'Braz dos Santos Adegas Júnior', role: { pt: 'Secretário de Clima e Sustentabilidade', en: 'Secretary of Climate & Sustainability' }, inst: 'Prefeitura de Campinas', isModerator: false },
           { name: 'Bruna de Souza Moraes', role: { pt: 'Diretora do CP2b', en: 'CP2b Director' }, inst: 'CP2b / UNICAMP', isModerator: false },
-          { name: 'Marisa Maia de Barros', role: { pt: 'Representante', en: 'Representative' }, inst: 'Energia e Mineração', isModerator: false },
+          { name: 'Marisa Maia de Barros', role: { pt: 'Sub-secretaria', en: 'Under-Secretary' }, inst: 'Energia e Mineração', isModerator: false },
         ],
       },
       {
