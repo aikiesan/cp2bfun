@@ -28,14 +28,21 @@ const content = {
     aboutTag: 'SOBRE O EVENTO',
     aboutTitle: 'Um espaço de encontro e debate para a cadeia de biogás',
     aboutP1:
-      'O I Fórum Paulista de Biogás e Bioprodutos é uma iniciativa do CP2b — Centro Paulista de Estudos em Biogás e Bioprodutos, em parceria com o NIPE da Universidade Estadual de Campinas. O evento reúne pesquisadores, estudantes, profissionais e empresas para debater os avanços, desafios e oportunidades da cadeia de biogás e bioprodutos no Estado de São Paulo.',
+      'O I Fórum Paulista de Biogás e Bioprodutos é uma iniciativa do CP2b, Centro Paulista de Estudos em Biogás e Bioprodutos, em parceria com o NIPE da Universidade Estadual de Campinas. O evento reúne pesquisadores, estudantes, profissionais e empresas para debater os avanços, desafios e oportunidades da cadeia de biogás e bioprodutos no Estado de São Paulo.',
     aboutP2:
-      'A proposta é criar um ambiente propício à troca de experiências, ao fortalecimento de redes de colaboração e à articulação entre academia, setor produtivo e poder público — elementos essenciais para consolidar o ecossistema de biogás e bioprodutos em âmbito estadual e nacional.',
+      'A proposta é criar um ambiente propício à troca de experiências, ao fortalecimento de redes de colaboração e à articulação entre academia, setor produtivo e poder público, elementos essenciais para consolidar o ecossistema de biogás e bioprodutos em âmbito estadual e nacional.',
     aboutInfoDate: '28 de maio de 2026',
-    aboutInfoLocation: 'Centro de Convencoes Unicamp Auditorio 3',
-    aboutInfoOrg: 'NIPE – Universidade Estadual de Campinas',
+    aboutInfoLocation: 'Centro de Convenções',
+    aboutInfoOrg: 'Av. Érico Veríssimo, 500 – Cidade Universitária, Barão Geraldo, Campinas - SP, 13083-851',
     aboutInfoAudience: 'Pesquisadores, estudantes, profissionais, empresas',
     aboutInfoAudienceLabel: 'Público',
+
+    sponsorsTag: 'PATROCINADORES',
+    sponsorsTitle: 'Apoio e Patrocínio',
+    sponsors: [
+      { name: 'CSUS',    logo: '/assets/LOGO_CSUS.png' },
+      { name: 'Equinor', logo: '/assets/LOGO_EQUINOR.png' },
+    ],
 
     axesTag: 'EIXOS TEMÁTICOS',
     axesTitle: 'Eixos Temáticos do Evento',
@@ -141,14 +148,21 @@ const content = {
     aboutTag: 'ABOUT THE EVENT',
     aboutTitle: 'A meeting and discussion space for the biogas chain',
     aboutP1:
-      'The I Fórum Paulista de Biogás e Bioprodutos is an initiative of CP2b — São Paulo Center for Biogas and Bioproducts Studies, in partnership with NIPE at the State University of Campinas. The event brings together researchers, students, professionals and companies to discuss advances, challenges and opportunities in the biogas and bioproducts chain in São Paulo State.',
+      'The I Fórum Paulista de Biogás e Bioprodutos is an initiative of CP2b, São Paulo Center for Biogas and Bioproducts Studies, in partnership with NIPE at the State University of Campinas. The event brings together researchers, students, professionals and companies to discuss advances, challenges and opportunities in the biogas and bioproducts chain in São Paulo State.',
     aboutP2:
-      'The goal is to create an environment conducive to the exchange of experiences, strengthening collaboration networks and articulating academia, the productive sector and public authorities — essential elements to consolidate the biogas and bioproducts ecosystem at state and national levels.',
+      'The goal is to create an environment conducive to the exchange of experiences, strengthening collaboration networks and articulating academia, the productive sector and public authorities, essential elements to consolidate the biogas and bioproducts ecosystem at state and national levels.',
     aboutInfoDate: 'May 28, 2026',
-    aboutInfoLocation: 'Unicamp Convention Center Auditorium 3',
-    aboutInfoOrg: 'NIPE – State University of Campinas',
+    aboutInfoLocation: 'Convention Center',
+    aboutInfoOrg: 'Av. Érico Veríssimo, 500 – Cidade Universitária, Barão Geraldo, Campinas - SP, 13083-851',
     aboutInfoAudience: 'Researchers, students, professionals, companies',
     aboutInfoAudienceLabel: 'Audience',
+
+    sponsorsTag: 'SPONSORS',
+    sponsorsTitle: 'Support & Sponsorship',
+    sponsors: [
+      { name: 'CSUS',    logo: '/assets/LOGO_CSUS.png' },
+      { name: 'Equinor', logo: '/assets/LOGO_EQUINOR.png' },
+    ],
 
     axesTag: 'THEMATIC AXES',
     axesTitle: 'Event Thematic Axes',
@@ -400,6 +414,27 @@ const ForumPaulista = () => {
                 </video>
               </div>
             </Col>
+          </Row>
+        </Container>
+      </section>
+
+      {/* ── Section 3.2: Sponsors ── */}
+      <section className="py-5 bg-white">
+        <Container>
+          <div className="text-center mb-4">
+            <span className="mono-label text-success">{t.sponsorsTag}</span>
+            <h2 className="fw-bold mt-2">{t.sponsorsTitle}</h2>
+          </div>
+          <Row className="justify-content-center align-items-center g-5">
+            {t.sponsors.map((s) => (
+              <Col xs={6} md={3} key={s.name} className="text-center">
+                <img
+                  src={s.logo}
+                  alt={s.name}
+                  style={{ maxHeight: '80px', maxWidth: '180px', objectFit: 'contain' }}
+                />
+              </Col>
+            ))}
           </Row>
         </Container>
       </section>
