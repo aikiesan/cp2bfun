@@ -470,6 +470,38 @@ const ForumPaulista = () => {
                 style={{ width: '100%', maxHeight: '165px', objectFit: 'contain' }} />
             </Col>
           </Row>
+
+          {/* Divider */}
+          <hr className="my-4" style={{ borderColor: '#e0e0e0' }} />
+
+          {/* Tier: Prata */}
+          <div className="text-center mb-3">
+            <span style={{ color: '#888', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              {t.sponsorTiers[1].label}
+            </span>
+          </div>
+          <Row className="justify-content-center align-items-center mb-5 pb-2" style={{ minHeight: '100px' }}>
+            <Col className="text-center text-muted fst-italic" style={{ fontSize: '0.9rem' }}>
+              {t.sponsorComingSoon}
+            </Col>
+          </Row>
+
+          {/* Divider */}
+          <hr className="my-4" style={{ borderColor: '#e0e0e0' }} />
+
+          {/* Tier: Bronze */}
+          <div className="text-center mb-3">
+            <span style={{ color: '#8B4513', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
+              {t.sponsorTiers[2].label}
+            </span>
+          </div>
+          <Row className="justify-content-center align-items-center">
+            <Col xs={8} sm={5} md={3} className="text-center">
+              <img src={t.sponsorTiers[2].logos[0].logo} alt={t.sponsorTiers[2].logos[0].name}
+                style={{ width: '100%', maxHeight: '165px', objectFit: 'contain' }} />
+            </Col>
+          </Row>
+
         </Container>
       </section>
 
