@@ -21,7 +21,8 @@ const AdminLayout = () => {
       about: false,
       pages: false,
       forum: false,
-      engagement: false
+      engagement: false,
+      system: false
     };
   };
 
@@ -122,6 +123,14 @@ const AdminLayout = () => {
       icon: 'bi-chat-dots',
       items: [
         { path: '/admin/messages', label: 'Mensagens', icon: 'bi-envelope', badge: unreadCount }
+      ]
+    },
+    {
+      id: 'system',
+      label: 'SISTEMA',
+      icon: 'bi-gear',
+      items: [
+        { path: '/admin/page-status', label: 'Status das Páginas', icon: 'bi-toggles' }
       ]
     }
   ];

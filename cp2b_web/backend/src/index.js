@@ -22,6 +22,7 @@ import eventsRoutes from './routes/events.js';
 import newsletterRoutes from './routes/newsletter.js';
 import pressKitRoutes from './routes/presskit.js';
 import podcastRoutes from './routes/podcast.js';
+import pageSettingsRoutes from './routes/pageSettings.js';
 
 dotenv.config();
 
@@ -58,6 +59,7 @@ app.use('/api/events', eventsRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/press-kit', pressKitRoutes);
 app.use('/api/podcast', podcastRoutes);
+app.use('/api/page-settings', pageSettingsRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
