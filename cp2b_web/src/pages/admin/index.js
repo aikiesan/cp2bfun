@@ -26,3 +26,4 @@ export { default as GalleryUpload }       from './GalleryUpload';
 export { default as PressKitAdmin }       from './PressKitAdmin';
 export { default as PodcastList }         from './PodcastList';
 export { default as PodcastEditor }       from './PodcastEditor';
+export { default as PageStatusManager }   from './PageStatusManager';

@@ -1,8 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
 import { LanguageProvider } from './context/LanguageContext';
+import { PageStatusProvider, usePageStatus } from './context/PageStatusContext';
 import SeoHead from './components/SeoHead';
 
 const organizationJsonLd = {
@@ -65,6 +66,7 @@ import PressKit from './pages/PressKit';
 import Podcast from './pages/Podcast';
 import Others from './pages/Others';
 import NotFound from './pages/NotFound';
+import Manutencao from './pages/Manutencao';
 import ForumPaulista from './pages/ForumPaulista';
 import Registro from './pages/Registro';
 import AgendaMeetups from './pages/AgendaMeetups';
@@ -109,6 +111,7 @@ import {
   PressKitAdmin,
   PodcastList,
   PodcastEditor,
+  PageStatusManager,
 } from './pages/admin';
 import FeaturedContentManager from './pages/admin/FeaturedContentManager';
 import {
@@ -119,9 +122,16 @@ import {
   MicroscopioContentEditor
 } from './pages/admin/content';
 
+// Route guard: redirects to /manutencao when page is disabled
+const GuardedRoute = ({ pageKey, element }) => {
+  const { isPageEnabled } = usePageStatus();
+  return isPageEnabled(pageKey) ? element : <Navigate to="/manutencao" replace />;
+};
+
 function App() {
   return (
     <LanguageProvider>
+      <PageStatusProvider>
       <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <SeoHead jsonLd={organizationJsonLd} />
         <ScrollToTop />
@@ -170,6 +180,7 @@ function App() {
             <Route path="podcast"        element={<PodcastList />} />
             <Route path="podcast/new"    element={<PodcastEditor />} />
             <Route path="podcast/:id"    element={<PodcastEditor />} />
+            <Route path="page-status"    element={<PageStatusManager />} />
           </Route>
 
           {/* Public Routes - With Header/Footer */}
@@ -181,35 +192,36 @@ function App() {
                 <ErrorBoundary>
                 <main style={{ minHeight: '80vh' }}>
                   <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/sobre" element={<About />} />
-                    <Route path="/sobre/governanca" element={<Governance />} />
-                    <Route path="/sobre/transparencia" element={<Transparency />} />
-                    <Route path="/sobre/parceiros" element={<PartnersPage />} />
-                    <Route path="/eixos" element={<Research />} />
-                    <Route path="/equipe" element={<Team />} />
-                    <Route path="/noticias" element={<News />} />
-                    <Route path="/noticias/:slug" element={<NewsDetail />} />
+                    <Route path="/" element={<GuardedRoute pageKey="home" element={<Home />} />} />
+                    <Route path="/sobre" element={<GuardedRoute pageKey="sobre" element={<About />} />} />
+                    <Route path="/sobre/governanca" element={<GuardedRoute pageKey="governanca" element={<Governance />} />} />
+                    <Route path="/sobre/transparencia" element={<GuardedRoute pageKey="transparencia" element={<Transparency />} />} />
+                    <Route path="/sobre/parceiros" element={<GuardedRoute pageKey="parceiros" element={<PartnersPage />} />} />
+                    <Route path="/eixos" element={<GuardedRoute pageKey="eixos" element={<Research />} />} />
+                    <Route path="/equipe" element={<GuardedRoute pageKey="equipe" element={<Team />} />} />
+                    <Route path="/noticias" element={<GuardedRoute pageKey="noticias" element={<News />} />} />
+                    <Route path="/noticias/:slug" element={<GuardedRoute pageKey="noticias" element={<NewsDetail />} />} />
                     <Route path="/contato" element={<Contact />} />
-                    <Route path="/oportunidades" element={<Opportunities />} />
-                    <Route path="/oportunidades/:slug" element={<OportunidadesDetail />} />
-                    <Route path="/publicacoes" element={<Publications />} />
-                    <Route path="/microscopio" element={<Microscopio />} />
-                    <Route path="/microscopio/:slug" element={<MicroscopioDetail />} />
-                    <Route path="/eventos" element={<Events />} />
-                    <Route path="/galeria" element={<Gallery />} />
-                    <Route path="/gallery/:albumId" element={<AlbumView />} />
-                    <Route path="/entrevistas" element={<Projects />} />
-                    <Route path="/entrevistas/:slug" element={<ProjectDetail />} />
-                    <Route path="/na-midia" element={<Media />} />
-                    <Route path="/press-kit" element={<PressKit />} />
-                    <Route path="/podcast" element={<Podcast />} />
+                    <Route path="/oportunidades" element={<GuardedRoute pageKey="oportunidades" element={<Opportunities />} />} />
+                    <Route path="/oportunidades/:slug" element={<GuardedRoute pageKey="oportunidades" element={<OportunidadesDetail />} />} />
+                    <Route path="/publicacoes" element={<GuardedRoute pageKey="publicacoes" element={<Publications />} />} />
+                    <Route path="/microscopio" element={<GuardedRoute pageKey="microscopio" element={<Microscopio />} />} />
+                    <Route path="/microscopio/:slug" element={<GuardedRoute pageKey="microscopio" element={<MicroscopioDetail />} />} />
+                    <Route path="/eventos" element={<GuardedRoute pageKey="eventos" element={<Events />} />} />
+                    <Route path="/galeria" element={<GuardedRoute pageKey="galeria" element={<Gallery />} />} />
+                    <Route path="/gallery/:albumId" element={<GuardedRoute pageKey="galeria" element={<AlbumView />} />} />
+                    <Route path="/entrevistas" element={<GuardedRoute pageKey="entrevistas" element={<Projects />} />} />
+                    <Route path="/entrevistas/:slug" element={<GuardedRoute pageKey="entrevistas" element={<ProjectDetail />} />} />
+                    <Route path="/na-midia" element={<GuardedRoute pageKey="na-midia" element={<Media />} />} />
+                    <Route path="/press-kit" element={<GuardedRoute pageKey="press-kit" element={<PressKit />} />} />
+                    <Route path="/podcast" element={<GuardedRoute pageKey="podcast" element={<Podcast />} />} />
                     <Route path="/outros" element={<Others />} />
-                    <Route path="/forum-paulista" element={<ForumPaulista />} />
+                    <Route path="/forum-paulista" element={<GuardedRoute pageKey="forum-paulista" element={<ForumPaulista />} />} />
                     <Route path="/registro" element={<Registro />} />
                     <Route path="/agenda-meetups" element={<AgendaMeetups />} />
                     <Route path="/cronograma-evento" element={<CronogramaEvento />} />
                     <Route path="/confirmar-meetup" element={<ConfirmarMeetup />} />
+                    <Route path="/manutencao" element={<Manutencao />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                 </main>
@@ -220,6 +232,7 @@ function App() {
           />
         </Routes>
       </Router>
+      </PageStatusProvider>
     </LanguageProvider>
   );
 }

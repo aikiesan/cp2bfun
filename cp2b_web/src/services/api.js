@@ -267,6 +267,25 @@ export const createPublication = async (data) => {
   return response.data;
 };
 
+// Page settings (maintenance mode)
+export const fetchPageSettings = async () => {
+  try {
+    const response = await api.get('/page-settings');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching page settings:', error);
+    return [];
+  }
+};
+
+export const togglePageStatus = async (pageKey, isEnabled) => {
+  const response = await api.request(`/page-settings/${pageKey}`, {
+    method: 'PATCH',
+    body: { is_enabled: isEnabled },
+  });
+  return response.data;
+};
+
 export const updatePublication = async (id, data) => {
   const response = await api.put(`/publications/${id}`, data);
   return response.data;
