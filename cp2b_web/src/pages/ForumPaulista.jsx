@@ -39,11 +39,16 @@ const content = {
 
     sponsorsTag: 'PATROCINADORES',
     sponsorsTitle: 'Apoio e Patrocínio',
-    sponsorComingSoon: 'Em breve',
     sponsorTiers: [
-      { label: 'Patrocinador Ouro',   logos: [{ name: 'Equinor', logo: '/assets/LOGO_EQUINOR.png' }] },
-      { label: 'Patrocinador Prata',  logos: [] },
-      { label: 'Patrocinador Bronze', logos: [{ name: 'CSUS',    logo: '/assets/LOGO_CSUS.png'    }] },
+      { label: 'Patrocinador Ouro',   badgeColor: '#B8860B', logoHeight: '96px', logos: [{ name: 'Equinor',               logo: '/assets/LOGO_EQUINOR.png'              }] },
+      { label: 'Patrocinador Prata',  badgeColor: '#888888', logoHeight: '88px', logos: [{ name: 'Clean Environment Brazil', logo: '/assets/LOGO_CLEAN_ENVIRONMENT_BRAZIL.png' }] },
+      { label: 'Patrocinador Bronze', badgeColor: '#8B4513', logoHeight: '80px', logos: [{ name: 'CSUS',                  logo: '/assets/LOGO_CSUS.png'                 }, { name: 'Analítica', logo: '/assets/LOGO_ANALITICA.png' }] },
+    ],
+    apoioTag: 'APOIO',
+    apoioTitle: 'Apoio Institucional',
+    apoioLogos: [
+      { name: 'ABME',               logo: '/assets/LOGO_ABME.png'             },
+      { name: 'Mulheres do Biogás', logo: '/assets/LOGO_MULHERES_DO_BIOGAS.png' },
     ],
 
     axesTag: 'EIXOS TEMÁTICOS',
@@ -161,11 +166,16 @@ const content = {
 
     sponsorsTag: 'SPONSORS',
     sponsorsTitle: 'Support & Sponsorship',
-    sponsorComingSoon: 'Coming soon',
     sponsorTiers: [
-      { label: 'Gold Sponsor',   logos: [{ name: 'Equinor', logo: '/assets/LOGO_EQUINOR.png' }] },
-      { label: 'Silver Sponsor', logos: [] },
-      { label: 'Bronze Sponsor', logos: [{ name: 'CSUS',    logo: '/assets/LOGO_CSUS.png'    }] },
+      { label: 'Gold Sponsor',   badgeColor: '#B8860B', logoHeight: '96px', logos: [{ name: 'Equinor',               logo: '/assets/LOGO_EQUINOR.png'              }] },
+      { label: 'Silver Sponsor', badgeColor: '#888888', logoHeight: '88px', logos: [{ name: 'Clean Environment Brazil', logo: '/assets/LOGO_CLEAN_ENVIRONMENT_BRAZIL.png' }] },
+      { label: 'Bronze Sponsor', badgeColor: '#8B4513', logoHeight: '80px', logos: [{ name: 'CSUS',                  logo: '/assets/LOGO_CSUS.png'                 }, { name: 'Analítica', logo: '/assets/LOGO_ANALITICA.png' }] },
+    ],
+    apoioTag: 'SUPPORT',
+    apoioTitle: 'Institutional Support',
+    apoioLogos: [
+      { name: 'ABME',               logo: '/assets/LOGO_ABME.png'             },
+      { name: 'Mulheres do Biogás', logo: '/assets/LOGO_MULHERES_DO_BIOGAS.png' },
     ],
 
     axesTag: 'THEMATIC AXES',
@@ -429,46 +439,60 @@ const ForumPaulista = () => {
             <span className="mono-label text-success">{t.sponsorsTag}</span>
             <h2 className="fw-bold mt-2">{t.sponsorsTitle}</h2>
           </div>
-          {/* Tier: Ouro */}
-          <div className="text-center mb-3">
-            <span style={{ color: '#B8860B', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-              {t.sponsorTiers[0].label}
-            </span>
-          </div>
-          <Row className="justify-content-center align-items-center mb-5 pb-2">
-            <Col xs={10} sm={7} md={5} className="text-center">
-              <img src={t.sponsorTiers[0].logos[0].logo} alt={t.sponsorTiers[0].logos[0].name}
-                style={{ width: '100%', maxHeight: '260px', objectFit: 'contain' }} />
-            </Col>
+
+          {/* Linha horizontal única — todos os patrocinadores com badge de tier */}
+          <Row className="justify-content-center align-items-end g-4 g-md-5 mb-2">
+            {t.sponsorTiers.flatMap(tier =>
+              tier.logos.map(sponsor => (
+                <Col key={sponsor.name} xs={6} sm={4} md="auto" className="text-center px-3 px-md-4">
+                  <div className="mb-2">
+                    <span style={{
+                      color: tier.badgeColor,
+                      fontWeight: 700,
+                      fontSize: '0.7rem',
+                      letterSpacing: '0.12em',
+                      textTransform: 'uppercase',
+                    }}>
+                      {tier.label}
+                    </span>
+                  </div>
+                  <img
+                    src={sponsor.logo}
+                    alt={sponsor.name}
+                    style={{
+                      maxHeight: tier.logoHeight,
+                      maxWidth: '180px',
+                      width: '100%',
+                      objectFit: 'contain',
+                    }}
+                  />
+                </Col>
+              ))
+            )}
           </Row>
 
-          <hr className="my-4" style={{ borderColor: '#e0e0e0' }} />
+          <hr className="my-5" style={{ borderColor: '#e0e0e0' }} />
 
-          {/* Tier: Prata */}
-          <div className="text-center mb-3">
-            <span style={{ color: '#888', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-              {t.sponsorTiers[1].label}
-            </span>
+          {/* Seção APOIO */}
+          <div className="text-center mb-4">
+            <span className="mono-label text-success">{t.apoioTag}</span>
+            <h3 className="fw-semibold mt-2 fs-5">{t.apoioTitle}</h3>
           </div>
-          <Row className="justify-content-center align-items-center mb-5 pb-2" style={{ minHeight: '100px' }}>
-            <Col className="text-center text-muted fst-italic" style={{ fontSize: '0.9rem' }}>
-              {t.sponsorComingSoon}
-            </Col>
-          </Row>
-
-          <hr className="my-4" style={{ borderColor: '#e0e0e0' }} />
-
-          {/* Tier: Bronze */}
-          <div className="text-center mb-3">
-            <span style={{ color: '#8B4513', fontWeight: 700, fontSize: '0.8rem', letterSpacing: '0.12em', textTransform: 'uppercase' }}>
-              {t.sponsorTiers[2].label}
-            </span>
-          </div>
-          <Row className="justify-content-center align-items-center">
-            <Col xs={8} sm={5} md={3} className="text-center">
-              <img src={t.sponsorTiers[2].logos[0].logo} alt={t.sponsorTiers[2].logos[0].name}
-                style={{ width: '100%', maxHeight: '165px', objectFit: 'contain' }} />
-            </Col>
+          <Row className="justify-content-center align-items-center g-4 g-md-5">
+            {t.apoioLogos.map(org => (
+              <Col key={org.name} xs={6} sm={4} md="auto" className="text-center px-3 px-md-4">
+                <img
+                  src={org.logo}
+                  alt={org.name}
+                  style={{
+                    maxHeight: '70px',
+                    maxWidth: '160px',
+                    width: '100%',
+                    objectFit: 'contain',
+                  }}
+                />
+              </Col>
+            ))}
           </Row>
         </Container>
       </section>
