@@ -39,11 +39,6 @@ const content = {
 
     sponsorsTag: 'PATROCINADORES',
     sponsorsTitle: 'Apoio e Patrocínio',
-    sponsorTiers: [
-      { label: 'Patrocinador Ouro',   logos: [{ name: 'Equinor',               logo: '/assets/LOGO_EQUINOR.png'              }] },
-      { label: 'Patrocinador Prata',  logos: [{ name: 'Clean Environment Brazil', logo: '/assets/LOGO_CLEAN_ENVIRONMENT_BRAZIL.png' }] },
-      { label: 'Patrocinador Bronze', logos: [{ name: 'CSUS', logo: '/assets/LOGO_CSUS.png' }, { name: 'Analítica', logo: '/assets/LOGO_ANALITICA.png' }] },
-    ],
     apoioTag: 'APOIO',
     apoioLogos: [
       { name: 'ABME',               logo: '/assets/LOGO_ABME.png'             },
@@ -165,11 +160,6 @@ const content = {
 
     sponsorsTag: 'SPONSORS',
     sponsorsTitle: 'Support & Sponsorship',
-    sponsorTiers: [
-      { label: 'Gold Sponsor',   logos: [{ name: 'Equinor',               logo: '/assets/LOGO_EQUINOR.png'              }] },
-      { label: 'Silver Sponsor', logos: [{ name: 'Clean Environment Brazil', logo: '/assets/LOGO_CLEAN_ENVIRONMENT_BRAZIL.png' }] },
-      { label: 'Bronze Sponsor', logos: [{ name: 'CSUS', logo: '/assets/LOGO_CSUS.png' }, { name: 'Analítica', logo: '/assets/LOGO_ANALITICA.png' }] },
-    ],
     apoioTag: 'SUPPORT',
     apoioLogos: [
       { name: 'ABME',               logo: '/assets/LOGO_ABME.png'             },
@@ -438,52 +428,13 @@ const ForumPaulista = () => {
             <h2 className="fw-bold mt-2">{t.sponsorsTitle}</h2>
           </div>
 
-          {/* Todos os patrocinadores lado a lado, alinhados pela base */}
-          <Row className="justify-content-center align-items-end g-4 g-md-5 mb-5 pb-2">
-
-            {/* Ouro */}
-            <Col xs={10} sm={5} md={3} className="text-center">
-              <div className="mb-2">
-                <span style={{ color: '#B8860B', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.13em', textTransform: 'uppercase' }}>
-                  ★ {t.sponsorTiers[0].label}
-                </span>
-              </div>
-              <img
-                src={t.sponsorTiers[0].logos[0].logo}
-                alt={t.sponsorTiers[0].logos[0].name}
-                style={{ maxHeight: '150px', maxWidth: '280px', width: '100%', objectFit: 'contain' }}
-              />
-            </Col>
-
-            {/* Prata */}
-            <Col xs={10} sm={5} md={3} className="text-center">
-              <div className="mb-2">
-                <span style={{ color: '#888888', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.13em', textTransform: 'uppercase' }}>
-                  {t.sponsorTiers[1].label}
-                </span>
-              </div>
-              {t.sponsorTiers[1].logos.map(s => (
-                <img key={s.name} src={s.logo} alt={s.name}
-                  style={{ maxHeight: '100px', maxWidth: '200px', width: '100%', objectFit: 'contain' }} />
-              ))}
-            </Col>
-
-            {/* Bronze — 2 logos lado a lado dentro do mesmo col */}
-            <Col xs={12} sm={8} md={4} className="text-center">
-              <div className="mb-2">
-                <span style={{ color: '#8B4513', fontWeight: 700, fontSize: '0.72rem', letterSpacing: '0.13em', textTransform: 'uppercase' }}>
-                  {t.sponsorTiers[2].label}
-                </span>
-              </div>
-              <div className="d-flex justify-content-center align-items-end gap-4 flex-wrap">
-                {t.sponsorTiers[2].logos.map(s => (
-                  <img key={s.name} src={s.logo} alt={s.name}
-                    style={{ maxHeight: '75px', maxWidth: '120px', objectFit: 'contain' }} />
-                ))}
-              </div>
-            </Col>
-
-          </Row>
+          <div className="text-center mb-5">
+            <img
+              src="/assets/apoio-patrocinio.png"
+              alt="Patrocinadores Ouro, Prata e Bronze"
+              style={{ maxWidth: '100%', width: '720px', objectFit: 'contain' }}
+            />
+          </div>
 
           <hr className="my-4" style={{ borderColor: '#e0e0e0' }} />
 
