@@ -424,8 +424,8 @@ const ForumPaulista = () => {
       <section className="py-5 bg-white">
         <Container>
           <div className="text-center mb-5">
+            <h2 className="fw-bold">{t.sponsorsTitle}</h2>
             <span className="mono-label text-success">{t.sponsorsTag}</span>
-            <h2 className="fw-bold mt-2">{t.sponsorsTitle}</h2>
           </div>
 
           <div className="text-center mb-5">
