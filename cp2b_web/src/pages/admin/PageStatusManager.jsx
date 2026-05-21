@@ -6,6 +6,7 @@ import { useToast } from '../../components/admin';
 const PageStatusManager = () => {
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [confirmModal, setConfirmModal] = useState({ show: false, page: null, newStatus: null });
   const [saving, setSaving] = useState(false);
   const { showToast } = useToast();
@@ -13,9 +14,11 @@ const PageStatusManager = () => {
   const fetchPages = async () => {
     try {
       setLoading(true);
+      setError(false);
       const { data } = await api.get('/page-settings');
       setPages(data);
     } catch {
+      setError(true);
       showToast('Erro ao carregar status das páginas', 'danger');
     } finally {
       setLoading(false);
@@ -91,51 +94,59 @@ const PageStatusManager = () => {
       )}
 
       <div className="card border-0 shadow-sm">
-        <Table responsive hover className="mb-0">
-          <thead className="table-light">
-            <tr>
-              <th>Página</th>
-              <th>Rota</th>
-              <th>Status</th>
-              <th className="text-end">Ação</th>
-            </tr>
-          </thead>
-          <tbody>
-            {pages.map((page) => (
-              <tr key={page.page_key}>
-                <td className="fw-semibold align-middle">{page.label}</td>
-                <td className="align-middle">
-                  <code className="text-muted" style={{ fontSize: '0.85rem' }}>{page.route_path}</code>
-                </td>
-                <td className="align-middle">
-                  {page.is_enabled ? (
-                    <Badge bg="success">
-                      <i className="bi bi-check-circle me-1"></i>Ativa
-                    </Badge>
-                  ) : (
-                    <Badge bg="warning" text="dark">
-                      <i className="bi bi-tools me-1"></i>Manutenção
-                    </Badge>
-                  )}
-                </td>
-                <td className="text-end align-middle">
-                  <Button
-                    variant={page.is_enabled ? 'outline-warning' : 'outline-success'}
-                    size="sm"
-                    onClick={() => handleToggleRequest(page)}
-                    disabled={saving}
-                  >
-                    {page.is_enabled ? (
-                      <><i className="bi bi-tools me-1"></i>Colocar em Manutenção</>
-                    ) : (
-                      <><i className="bi bi-check-circle me-1"></i>Reativar</>
-                    )}
-                  </Button>
-                </td>
+        {error ? (
+          <Alert variant="danger" className="mb-0 rounded">
+            <i className="bi bi-x-circle me-2"></i>
+            <strong>Erro ao carregar dados.</strong> A tabela <code>page_settings</code> pode não existir no banco de dados.
+            Execute a migração no servidor e clique em <strong>Atualizar</strong>.
+          </Alert>
+        ) : (
+          <Table responsive hover className="mb-0">
+            <thead className="table-light">
+              <tr>
+                <th>Página</th>
+                <th>Rota</th>
+                <th>Status</th>
+                <th className="text-end">Ação</th>
               </tr>
-            ))}
-          </tbody>
-        </Table>
+            </thead>
+            <tbody>
+              {pages.map((page) => (
+                <tr key={page.page_key}>
+                  <td className="fw-semibold align-middle">{page.label}</td>
+                  <td className="align-middle">
+                    <code className="text-muted" style={{ fontSize: '0.85rem' }}>{page.route_path}</code>
+                  </td>
+                  <td className="align-middle">
+                    {page.is_enabled ? (
+                      <Badge bg="success">
+                        <i className="bi bi-check-circle me-1"></i>Ativa
+                      </Badge>
+                    ) : (
+                      <Badge bg="warning" text="dark">
+                        <i className="bi bi-tools me-1"></i>Manutenção
+                      </Badge>
+                    )}
+                  </td>
+                  <td className="text-end align-middle">
+                    <Button
+                      variant={page.is_enabled ? 'outline-warning' : 'outline-success'}
+                      size="sm"
+                      onClick={() => handleToggleRequest(page)}
+                      disabled={saving}
+                    >
+                      {page.is_enabled ? (
+                        <><i className="bi bi-tools me-1"></i>Colocar em Manutenção</>
+                      ) : (
+                        <><i className="bi bi-check-circle me-1"></i>Reativar</>
+                      )}
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
       </div>
 
       {/* Confirm Disable Modal */}
