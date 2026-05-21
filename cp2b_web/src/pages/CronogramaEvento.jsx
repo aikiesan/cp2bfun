@@ -33,7 +33,7 @@ const SCHEDULE = [
         en: { time: '9:30 – 10:00', title: 'Institutional Opening Session', description: 'Welcome, event contextualization, and formalization of strategic partnerships for the biogas and bioproducts sector development.' },
         speakers: [
           { name: 'Ana Maria Frattini Fileti', role: { pt: 'Pró-Reitora de Pesquisa', en: 'Vice-Rector for Research' }, inst: 'UNICAMP', isModerator: false },
-          { name: 'Geraldo Melo Filho', role: { pt: 'Secretário de Agricultura e Abastecimento', en: 'Secretary of Agriculture and Supply' }, inst: 'Governo de SP', isModerator: false },
+          { name: 'Ricardo Rosario', role: { pt: 'Assessor Especial de Gabinete da Secretaria de Agricultura', en: 'Special Cabinet Advisor, Secretary of Agriculture' }, inst: 'Governo de SP', isModerator: false },
           { name: 'Braz dos Santos Adegas Júnior', role: { pt: 'Secretário de Clima e Sustentabilidade', en: 'Secretary of Climate & Sustainability' }, inst: 'Prefeitura de Campinas', isModerator: false },
           { name: 'Bruna de Souza Moraes', role: { pt: 'Diretora do CP2b', en: 'CP2b Director' }, inst: 'CP2b / UNICAMP', isModerator: false },
           { name: 'Marisa Maia de Barros', role: { pt: 'Sub-secretaria', en: 'Under-Secretary' }, inst: 'Energia e Mineração', isModerator: false },
