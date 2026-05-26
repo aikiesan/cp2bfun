@@ -81,4 +81,28 @@ describe('News', () => {
       expect(newsLink).toBeTruthy();
     });
   });
+
+  it('serves each news image with the API-provided src', async () => {
+    fetchNews.mockResolvedValueOnce(mockNewsItems);
+    renderWithProviders(<News />);
+
+    await waitFor(() => {
+      expect(screen.getByAltText('Notícia de teste')).toBeInTheDocument();
+    });
+    // Featured (first) + remaining cards each render an <img src=item.image>.
+    expect(screen.getByAltText('Notícia de teste')).toHaveAttribute('src', '/assets/test.jpg');
+    expect(screen.getByAltText('Segunda notícia')).toHaveAttribute('src', '/assets/test2.jpg');
+  });
+
+  it('falls back to static news content when the API returns null', async () => {
+    fetchNews.mockResolvedValueOnce(null);
+    renderWithProviders(<News />);
+
+    // Known static item from src/data/content.js (pt is the default language).
+    await waitFor(() => {
+      expect(
+        screen.getByText('Conheça o Metaninho: o novo mascote do CP2b!')
+      ).toBeInTheDocument();
+    });
+  });
 });
