@@ -31,17 +31,22 @@ const FeaturedContent = ({ itemA, itemB, itemC }) => {
     const linkPath = linkPaths[item.content_type] || `/noticias/${item.slug}`;
 
     return (
-      <Link to={linkPath} className="text-decoration-none">
+      <Link to={linkPath} className="text-decoration-none d-block h-100">
         <motion.div
           className={`featured-headline featured-headline-${size}`}
-          style={{
-            backgroundImage: item.image ? `url(${item.image})` : undefined,
-            backgroundSize: 'cover',
-            backgroundPosition: item.image_position || '50% 50%',
-            backgroundColor: item.image ? undefined : '#2d3748'
-          }}
+          style={{ backgroundColor: item.image ? undefined : '#2d3748' }}
           transition={{ duration: 0.3 }}
         >
+          {item.image && (
+            <img
+              src={item.image}
+              alt=""
+              aria-hidden="true"
+              className="featured-image-bg"
+              style={{ objectPosition: item.image_position || 'center' }}
+              loading="eager"
+            />
+          )}
           {item.image && <div className="featured-headline-overlay" />}
           <div className="featured-headline-content">
             {item.badge && (

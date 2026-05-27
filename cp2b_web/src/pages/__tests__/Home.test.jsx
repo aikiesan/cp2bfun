@@ -134,7 +134,7 @@ describe('Home — featured content serving', () => {
 
     const headline = container.querySelector('.featured-headline-large');
     expect(headline).toBeTruthy();
-    expect(headline.style.backgroundImage).toContain('/assets/DSC00361-1920x748.jpg');
+    expect(headline.querySelector('img.featured-image-bg').getAttribute('src')).toContain('/assets/DSC00361-1920x748.jpg');
 
     const link = within(headline.closest('a')).getByText('Destaque A');
     expect(headline.closest('a')).toHaveAttribute('href', '/noticias/destaque-a');

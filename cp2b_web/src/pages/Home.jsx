@@ -230,7 +230,11 @@ const Home = () => {
                   >
                     <Card className="h-100 border-0 shadow-sm interactive-card">
                       <div className="card-image-wrapper position-relative" style={{ height: '240px', overflow: 'hidden', borderRadius: '24px 24px 0 0' }}>
-                        <img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover" />
+                        {item.image ? (
+                          <img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover" />
+                        ) : (
+                          <div className="w-100 h-100" style={{ background: 'linear-gradient(135deg, var(--cp2b-petrol) 0%, #2d3748 100%)' }} />
+                        )}
                         <div className="card-overlay"></div>
                       </div>
                       <Card.Body className="p-4">
