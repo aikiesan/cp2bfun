@@ -19,4 +19,16 @@ module.exports = {
     'react/prop-types': 'off',
     'no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
   },
+  overrides: [
+    {
+      // Node-run config files (Playwright, etc.)
+      files: ['*.config.js', 'playwright.config.js'],
+      env: { node: true },
+    },
+    {
+      // Playwright E2E specs run in Node with the Playwright test runner.
+      files: ['e2e/**'],
+      env: { browser: true, node: true },
+    },
+  ],
 };
