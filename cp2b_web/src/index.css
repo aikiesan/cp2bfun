@@ -897,7 +897,7 @@ body.high-contrast .navbar .dropdown-item:hover {
   position: relative;
   overflow: hidden;
   border-radius: 16px;
-  background: #000;
+  background: transparent;
 }
 
 /* Bottom small item (C) */
@@ -906,7 +906,7 @@ body.high-contrast .navbar .dropdown-item:hover {
   position: relative;
   overflow: hidden;
   border-radius: 16px;
-  background: #000;
+  background: transparent;
 }
 
 /* Mobile responsive: Stack vertically */
@@ -969,6 +969,15 @@ body.high-contrast .navbar .dropdown-item:hover {
 .featured-news-bottom {
   flex: 1;
   position: relative;
+}
+
+/* Ensure the <Link> anchor fills its flex wrapper on all browsers/devices */
+.featured-news-main > a,
+.featured-news-top > a,
+.featured-news-bottom > a {
+  display: block;
+  height: 100%;
+  width: 100%;
 }
 
 /* Individual headline card */
