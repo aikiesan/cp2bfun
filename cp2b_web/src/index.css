@@ -991,7 +991,7 @@ body.high-contrast .navbar .dropdown-item:hover {
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: white;
+  background: #2d3748;
   border-radius: 16px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   border: 1px solid #e9ecef;

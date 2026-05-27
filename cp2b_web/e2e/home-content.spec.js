@@ -22,11 +22,11 @@ test.describe('home serves images and featured content', () => {
     );
   });
 
-  test('renders the featured headline with its background image', async ({ page }) => {
+  test('renders the featured headline with its image', async ({ page }) => {
     const headline = page.locator('.featured-headline-large');
     await expect(headline).toBeVisible();
-    const bg = await headline.evaluate((el) => getComputedStyle(el).backgroundImage);
-    expect(bg).toContain('/assets/DSC00361-1920x748.jpg');
+    const img = headline.locator('img.featured-image-bg');
+    await expect(img).toHaveAttribute('src', '/assets/DSC00361-1920x748.jpg');
     await expect(page.getByRole('heading', { name: 'Destaque principal' })).toBeVisible();
   });
 
