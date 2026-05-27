@@ -126,9 +126,20 @@ const Home = () => {
       {/* Featured News Headlines Section */}
       <section className="position-relative overflow-hidden mb-5">
         {loadingFeatured ? (
-          <div className="d-flex justify-content-center align-items-center"
-               style={{ minHeight: '100vh', background: '#000' }}>
-            <Spinner animation="border" variant="light" />
+          <div className="featured-news-section featured-news-skeleton">
+            <div className="featured-news-container">
+              <div className="featured-news-main">
+                <div className="featured-headline featured-headline-large featured-headline-skeleton" />
+              </div>
+              <div className="featured-news-secondary">
+                <div className="featured-news-top">
+                  <div className="featured-headline featured-headline-small featured-headline-skeleton" />
+                </div>
+                <div className="featured-news-bottom">
+                  <div className="featured-headline featured-headline-small featured-headline-skeleton" />
+                </div>
+              </div>
+            </div>
           </div>
         ) : (
           <FeaturedContent
