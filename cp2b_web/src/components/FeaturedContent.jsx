@@ -35,13 +35,14 @@ const FeaturedContent = ({ itemA, itemB, itemC }) => {
         <motion.div
           className={`featured-headline featured-headline-${size}`}
           style={{
-            backgroundImage: `url(${item.image})`,
+            backgroundImage: item.image ? `url(${item.image})` : undefined,
             backgroundSize: 'cover',
-            backgroundPosition: item.image_position || '50% 50%'
+            backgroundPosition: item.image_position || '50% 50%',
+            backgroundColor: item.image ? undefined : '#2d3748'
           }}
           transition={{ duration: 0.3 }}
         >
-          <div className="featured-headline-overlay" />
+          {item.image && <div className="featured-headline-overlay" />}
           <div className="featured-headline-content">
             {item.badge && (
               <Badge bg={item.badge_color || 'primary'} className="mb-2">

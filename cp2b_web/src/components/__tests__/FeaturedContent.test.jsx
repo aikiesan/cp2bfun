@@ -25,6 +25,21 @@ describe('FeaturedContent', () => {
     expect(screen.getByText('Notícia')).toBeInTheDocument();
   });
 
+  it('renders the dark overlay only when the item has an image', () => {
+    const { container } = renderWithProviders(
+      <FeaturedContent itemA={item()} itemB={item({ slug: 'sem-img', image: undefined })} itemC={null} />
+    );
+    const headlines = container.querySelectorAll('.featured-headline');
+    const withImage = [...headlines].find((el) => el.style.backgroundImage.includes('DSC00361'));
+    const withoutImage = [...headlines].find((el) => el.style.backgroundColor);
+
+    // Image slot keeps the dark gradient overlay; imageless slot must not (avoids black bars).
+    expect(withImage.querySelector('.featured-headline-overlay')).toBeTruthy();
+    expect(withoutImage.querySelector('.featured-headline-overlay')).toBeNull();
+    expect(withoutImage.style.backgroundImage).toBe('');
+    expect(withoutImage.style.backgroundColor).toBe('rgb(45, 55, 72)');
+  });
+
   it('shows the empty state for a null slot', () => {
     renderWithProviders(<FeaturedContent itemA={null} itemB={null} itemC={null} />);
     expect(screen.getAllByText('Nenhum conteúdo em destaque').length).toBe(3);
