@@ -16,27 +16,29 @@ const item = (overrides = {}) => ({
 });
 
 describe('FeaturedContent', () => {
-  it('serves the headline image as a background and renders badge + title', () => {
+  it('renders the headline image as an <img> element and renders badge + title', () => {
     const { container } = renderWithProviders(<FeaturedContent itemA={item()} itemB={null} itemC={null} />);
 
     const headline = container.querySelector('.featured-headline-large');
-    expect(headline.style.backgroundImage).toContain('/assets/DSC00361-1920x748.jpg');
+    const img = headline.querySelector('img.featured-image-bg');
+    expect(img).toBeTruthy();
+    expect(img.getAttribute('src')).toBe('/assets/DSC00361-1920x748.jpg');
     expect(screen.getByText('Título destaque')).toBeInTheDocument();
     expect(screen.getByText('Notícia')).toBeInTheDocument();
   });
 
-  it('renders the dark overlay only when the item has an image', () => {
+  it('renders the image and dark overlay only when the item has an image', () => {
     const { container } = renderWithProviders(
       <FeaturedContent itemA={item()} itemB={item({ slug: 'sem-img', image: undefined })} itemC={null} />
     );
     const headlines = container.querySelectorAll('.featured-headline');
-    const withImage = [...headlines].find((el) => el.style.backgroundImage.includes('DSC00361'));
-    const withoutImage = [...headlines].find((el) => el.style.backgroundColor);
+    const withImage = [...headlines].find((el) => el.querySelector('img.featured-image-bg'));
+    const withoutImage = [...headlines].find((el) => !el.querySelector('img.featured-image-bg') && el.style.backgroundColor);
 
     // Image slot keeps the dark gradient overlay; imageless slot must not (avoids black bars).
     expect(withImage.querySelector('.featured-headline-overlay')).toBeTruthy();
     expect(withoutImage.querySelector('.featured-headline-overlay')).toBeNull();
-    expect(withoutImage.style.backgroundImage).toBe('');
+    expect(withoutImage.querySelector('img.featured-image-bg')).toBeNull();
     expect(withoutImage.style.backgroundColor).toBe('rgb(45, 55, 72)');
   });
 
