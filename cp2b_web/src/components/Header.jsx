@@ -24,6 +24,12 @@ const Header = () => {
     return localStorage.getItem('cp2b-high-contrast') === 'true';
   });
   const [isScrolled, setIsScrolled] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  // Close the mobile menu whenever the route changes.
+  useEffect(() => {
+    setExpanded(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     document.documentElement.style.fontSize = `${fontSize}%`;
@@ -149,6 +155,8 @@ const Header = () => {
       <Navbar
         expand="lg"
         sticky="top"
+        expanded={expanded}
+        onToggle={setExpanded}
         className={`bg-white shadow-sm ${isScrolled ? 'navbar-shrunk' : ''}`}
       >
         <Container className="py-3">

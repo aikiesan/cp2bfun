@@ -16,6 +16,12 @@
   --shadow-lg: 0 16px 48px rgba(0,0,0,0.12);
 }
 
+html {
+  /* Off-screen sections use framer-motion x-offset entrance animations; clip at
+     the root so those transient transforms never create a horizontal scrollbar. */
+  overflow-x: hidden;
+}
+
 body {
   font-family: var(--font-main);
   background-color: var(--cp2b-light-gray);
@@ -548,6 +554,9 @@ body.high-contrast .admin-sidebar small {
   }
 
   .navbar.navbar-shrunk {
+    /* Keep the navbar in flow on mobile so it never covers page content. */
+    position: sticky;
+    top: 0;
     padding-top: 1rem !important;
     padding-bottom: 1rem !important;
   }
