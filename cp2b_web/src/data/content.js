@@ -1193,4 +1193,24 @@ export const pageSeo = {
       description: 'CP2b press materials: logos, photos and files for download.',
     },
   },
+  gallery: {
+    pt: {
+      title: 'Galeria de Fotos',
+      description: 'Registros fotográficos dos eventos, fóruns e atividades do CP2b organizados por ano.',
+    },
+    en: {
+      title: 'Photo Gallery',
+      description: 'Photographic records of CP2b events, forums and activities organized by year.',
+    },
+  },
+  events: {
+    pt: {
+      title: 'Eventos',
+      description: 'Agenda de eventos do CP2b: fóruns, workshops, conferências e encontros sobre biogás e bioprodutos.',
+    },
+    en: {
+      title: 'Events',
+      description: 'CP2b events calendar: forums, workshops, conferences and meetings on biogas and bioproducts.',
+    },
+  },
 };

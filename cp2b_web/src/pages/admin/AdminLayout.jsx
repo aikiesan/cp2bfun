@@ -76,6 +76,7 @@ const AdminLayout = () => {
         { path: '/admin/videos', label: 'Vídeos', icon: 'bi-youtube', },
         { path: '/admin/projects', label: 'Entrevistas', icon: 'bi-mic', },
         { path: '/admin/gallery', label: 'Galeria', icon: 'bi-images', },
+        { path: '/admin/events', label: 'Eventos', icon: 'bi-calendar-event', isNew: true },
         { path: '/admin/featured', label: 'Destaques', icon: 'bi-star' },
         { path: '/admin/publications', label: 'Publicações', icon: 'bi-journal', isNew: true },
         { path: '/admin/microscopio', label: 'Microscópio', icon: 'bi-binoculars' },
@@ -130,7 +131,8 @@ const AdminLayout = () => {
       label: 'SISTEMA',
       icon: 'bi-gear',
       items: [
-        { path: '/admin/page-status', label: 'Status das Páginas', icon: 'bi-toggles' }
+        { path: '/admin/page-status', label: 'Status das Páginas', icon: 'bi-toggles' },
+        { path: '/admin/settings', label: 'Configurações do Site', icon: 'bi-sliders', isNew: true }
       ]
     }
   ];

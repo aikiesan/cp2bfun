@@ -6,6 +6,7 @@ import { fetchPageContent } from '../services/api';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+import PageHero from '../components/PageHero';
 
 const About = () => {
   const { language } = useLanguage();
@@ -82,17 +83,13 @@ const About = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <PageHero eyebrow={labels.tag} title={tTitle}>
+        <p className="page-hero-sub mb-1"><strong>{labels.process}:</strong> {details.number}</p>
+        <p className="page-hero-sub" style={{ fontSize: '0.95rem' }}>
+          <strong>{labels.start}:</strong> {details.startDate} | <strong>{labels.duration}:</strong> {details[language].duration}
+        </p>
+      </PageHero>
       <Container className="py-5">
-      <Row className="mb-5 align-items-center">
-        <Col lg={8}>
-          <span className="mono-label text-success">{labels.tag}</span>
-          <h1 className="display-4 fw-bold mb-4">{tTitle}</h1>
-          <p className="lead text-muted mb-2"><strong>{labels.process}:</strong> {details.number}</p>
-          <p className="text-muted small">
-              <strong>{labels.start}:</strong> {details.startDate} | <strong>{labels.duration}:</strong> {details[language].duration}
-          </p>
-        </Col>
-      </Row>
 
       <div className="mb-5 position-relative">
          <img

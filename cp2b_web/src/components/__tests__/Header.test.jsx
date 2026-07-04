@@ -32,7 +32,7 @@ describe('Header', () => {
     expect(screen.getByLabelText('Toggle high contrast')).toBeInTheDocument();
   });
 
-  it('toggles language when clicking flag buttons', async () => {
+  it('toggles language when clicking language buttons', async () => {
     const user = userEvent.setup();
     renderWithProviders(<Header />);
 
@@ -41,7 +41,7 @@ describe('Header', () => {
     expect(screen.getByText('About')).toBeInTheDocument();
 
     // Switch back to PT
-    await user.click(screen.getByTitle('Portuguese'));
+    await user.click(screen.getByTitle('Português'));
     expect(screen.getByText('Sobre')).toBeInTheDocument();
   });
 });

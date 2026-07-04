@@ -133,8 +133,20 @@ CREATE TABLE IF NOT EXISTS events (
   current_participants INT DEFAULT 0,
   status VARCHAR(20) DEFAULT 'upcoming' CHECK (status IN ('upcoming', 'ongoing', 'completed', 'cancelled')),
   featured BOOLEAN DEFAULT FALSE,
+  slug VARCHAR(255),
+  content_pt TEXT,
+  content_en TEXT,
+  schedule JSONB DEFAULT '[]'::jsonb,
+  gallery_album_ids JSONB DEFAULT '[]'::jsonb,
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
+);
+
+-- Site-wide settings (contact, social links, footer credits) editable in admin
+CREATE TABLE IF NOT EXISTS site_settings (
+  key VARCHAR(100) PRIMARY KEY,
+  value JSONB NOT NULL DEFAULT '{}'::jsonb,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 -- Projects (same structure as news + migration 010 columns)

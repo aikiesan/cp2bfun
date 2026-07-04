@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { forumData, timelineData } from '../data/content';
@@ -116,6 +116,11 @@ const Home = () => {
           : (item.description_en || item.description_pt || ''),
         image: item.image,
         link: `/noticias/${item.slug}`,
+        date: item.created_at
+          ? new Date(item.created_at).toLocaleDateString(language === 'pt' ? 'pt-BR' : 'en-US', {
+              day: '2-digit', month: 'short', year: 'numeric',
+            })
+          : null,
       }))
     : [];
 
@@ -161,9 +166,9 @@ const Home = () => {
                       viewport={{ once: true }}
                       transition={{ duration: 0.6 }}
                     >
-                        <span className="text-success fw-bold text-uppercase small ls-2">{forum.badge}</span>
+                        <span className="eyebrow">{forum.badge}</span>
                         <span className="ms-2 text-muted fw-bold text-uppercase small ls-2">{forum.subtitle}</span>
-                        <h2 className="display-5 fw-bold mb-4">{forum.title}</h2>
+                        <h2 className="display-5 fw-bold mb-4 mt-2">{forum.title}</h2>
                         {forum.description.split('\n\n').map((para, i) => (
                           <p key={i} className="lead text-muted mb-3">{para}</p>
                         ))}
@@ -207,11 +212,16 @@ const Home = () => {
       </section>
 
       {/* News — 3 most recent from API */}
-      <section className="py-5 bg-light-gray">
+      <section className="section bg-light-gray">
         <Container>
-          <div className="d-flex justify-content-between align-items-center mb-5">
-            <h2 className="mb-0 fw-bold">{labels.newsTitle}</h2>
-            <Link to="/noticias" className="btn btn-outline-dark rounded-pill btn-sm">{labels.newsAll}</Link>
+          <div className="d-flex justify-content-between align-items-end section-head flex-wrap gap-3">
+            <div>
+              <span className="eyebrow">{language === 'pt' ? 'Comunicação' : 'Communication'}</span>
+              <h2 className="mb-0 mt-2">{labels.newsTitle}</h2>
+            </div>
+            <Link to="/noticias" className="arrow-link">
+              {labels.newsAll} <span className="arrow">→</span>
+            </Link>
           </div>
 
           {loadingNews ? (
@@ -228,28 +238,34 @@ const Home = () => {
                     viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: index * 0.1 }}
                   >
-                    <Card className="h-100 border-0 shadow-sm interactive-card">
-                      <div className="card-image-wrapper position-relative" style={{ height: '240px', overflow: 'hidden', borderRadius: '24px 24px 0 0' }}>
+                    <article className="card-editorial">
+                      <Link to={item.link} className="card-media d-block" tabIndex={-1} aria-hidden="true">
                         {item.image ? (
-                          <img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover" />
+                          <img src={item.image} alt={item.title} loading="lazy" />
                         ) : (
                           <div className="w-100 h-100" style={{ background: 'linear-gradient(135deg, var(--cp2b-petrol) 0%, #2d3748 100%)' }} />
                         )}
-                        <div className="card-overlay"></div>
-                      </div>
-                      <Card.Body className="p-4">
-                        {item.badge && (
-                          <span className={`badge bg-${item.badgeColor} bg-opacity-10 text-${item.badgeColor} mb-3 rounded-pill`}>{item.badge}</span>
-                        )}
-                        <Card.Title className="fw-bold mb-3">{item.title}</Card.Title>
+                      </Link>
+                      <div className="p-4 d-flex flex-column flex-grow-1">
+                        <div className="d-flex align-items-center gap-3 mb-2">
+                          {item.date && <span className="card-meta">{item.date}</span>}
+                          {item.badge && (
+                            <span className={`badge bg-${item.badgeColor} bg-opacity-10 text-${item.badgeColor} rounded-pill`}>{item.badge}</span>
+                          )}
+                        </div>
+                        <h3 className="h5 fw-bold mb-3">
+                          <Link to={item.link} className="text-decoration-none" style={{ color: 'var(--cp2b-dark)' }}>
+                            {item.title}
+                          </Link>
+                        </h3>
                         {item.description && (
-                          <Card.Text className="text-muted small mb-4">
-                            {item.description}
-                          </Card.Text>
+                          <p className="text-muted small mb-4">{item.description}</p>
                         )}
-                        <Link to={item.link} className="btn btn-link text-decoration-none p-0 fw-bold text-dark">{labels.newsLink}</Link>
-                      </Card.Body>
-                    </Card>
+                        <Link to={item.link} className="arrow-link mt-auto small">
+                          {labels.newsLink.replace(' →', '')} <span className="arrow">→</span>
+                        </Link>
+                      </div>
+                    </article>
                   </motion.div>
                 </Col>
               ))}
@@ -260,10 +276,11 @@ const Home = () => {
 
       {/* Featured Videos Section */}
       {(featuredVideos.A || featuredVideos.B || featuredVideos.C) && (
-        <section className="py-5">
+        <section className="section">
           <Container>
-            <div className="text-center mb-5">
-              <h2 className="fw-bold">{labels.videosTitle}</h2>
+            <div className="text-center section-head">
+              <span className="eyebrow justify-content-center">{language === 'pt' ? 'Multimídia' : 'Multimedia'}</span>
+              <h2 className="fw-bold mt-2">{labels.videosTitle}</h2>
             </div>
           </Container>
           <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
@@ -271,10 +288,10 @@ const Home = () => {
       )}
 
       {/* Research Timeline Section */}
-      <section className="py-5" style={{ background: 'var(--cp2b-light-gray)' }}>
+      <section className="section" style={{ background: 'var(--cp2b-light-gray)' }}>
         <Container>
-          <div className="text-center mb-5">
-            <span className="badge mb-2 px-3 py-2" style={{ background: 'var(--cp2b-petrol)' }}>
+          <div className="text-center section-head">
+            <span className="eyebrow justify-content-center">
               {language === 'pt' ? 'Nossa Trajetória' : 'Our Journey'}
             </span>
             <h2 className="fw-bold mt-2">{language === 'pt' ? 'Projetos em Destaque' : 'Featured Projects'}</h2>
@@ -284,10 +301,13 @@ const Home = () => {
       </section>
 
       {/* Partners Image Section */}
-      <section className="py-5 partners-section">
+      <section className="section partners-section">
         <Container>
-          <div className="text-center mb-5 mt-5">
-            <h3 className="fw-bold">{labels.partnersTitle}</h3>
+          <div className="text-center section-head">
+            <span className="eyebrow justify-content-center">
+              {language === 'pt' ? 'Rede' : 'Network'}
+            </span>
+            <h2 className="fw-bold mt-2">{labels.partnersTitle}</h2>
           </div>
           <div className="text-center bg-white p-5 rounded-5 shadow-sm">
             <img 

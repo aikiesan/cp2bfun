@@ -6,6 +6,7 @@ import api from '../services/api';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+import PageHero from '../components/PageHero';
 
 const Publications = () => {
   const { language } = useLanguage();
@@ -75,8 +76,14 @@ const Publications = () => {
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <PageHero
+      eyebrow={language === 'pt' ? 'Produção Científica' : 'Scientific Output'}
+      title={language === 'pt' ? 'Publicações' : 'Publications'}
+      subtitle={language === 'pt'
+        ? 'Artigos, relatórios e estudos técnicos produzidos pela rede de pesquisa do CP2b.'
+        : 'Articles, reports and technical studies produced by the CP2b research network.'}
+    />
     <Container className="py-5">
-      <h1 className="mb-4">{language === 'pt' ? 'Publicações' : 'Publications'}</h1>
 
       {/* Filters */}
       <Card className="mb-4">

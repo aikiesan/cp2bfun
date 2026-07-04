@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
+import './styles/design-system.css';
 import { LanguageProvider } from './context/LanguageContext';
 import { PageStatusProvider, usePageStatus } from './context/PageStatusContext';
 import SeoHead from './components/SeoHead';
@@ -73,6 +74,7 @@ import AgendaMeetups from './pages/AgendaMeetups';
 import ConfirmarMeetup from './pages/ConfirmarMeetup';
 import CronogramaEvento from './pages/CronogramaEvento';
 import Events from './pages/Events';
+import EventDetail from './pages/EventDetail';
 import Gallery from './pages/Gallery';
 import AlbumView from './pages/AlbumView';
 
@@ -112,6 +114,9 @@ import {
   PodcastList,
   PodcastEditor,
   PageStatusManager,
+  EventsList,
+  EventsEditor,
+  SiteSettingsAdmin,
 } from './pages/admin';
 import FeaturedContentManager from './pages/admin/FeaturedContentManager';
 import {
@@ -181,6 +186,10 @@ function App() {
             <Route path="podcast/new"    element={<PodcastEditor />} />
             <Route path="podcast/:id"    element={<PodcastEditor />} />
             <Route path="page-status"    element={<PageStatusManager />} />
+            <Route path="events"         element={<EventsList />} />
+            <Route path="events/new"     element={<EventsEditor />} />
+            <Route path="events/:id"     element={<EventsEditor />} />
+            <Route path="settings"       element={<SiteSettingsAdmin />} />
           </Route>
 
           {/* Public Routes - With Header/Footer */}
@@ -190,7 +199,7 @@ function App() {
               <>
                 <Header />
                 <ErrorBoundary>
-                <main style={{ minHeight: '80vh' }}>
+                <main id="main-content" style={{ minHeight: '80vh' }}>
                   <Routes>
                     <Route path="/" element={<GuardedRoute pageKey="home" element={<Home />} />} />
                     <Route path="/sobre" element={<GuardedRoute pageKey="sobre" element={<About />} />} />
@@ -208,6 +217,7 @@ function App() {
                     <Route path="/microscopio" element={<GuardedRoute pageKey="microscopio" element={<Microscopio />} />} />
                     <Route path="/microscopio/:slug" element={<GuardedRoute pageKey="microscopio" element={<MicroscopioDetail />} />} />
                     <Route path="/eventos" element={<GuardedRoute pageKey="eventos" element={<Events />} />} />
+                    <Route path="/eventos/:slug" element={<GuardedRoute pageKey="eventos" element={<EventDetail />} />} />
                     <Route path="/galeria" element={<GuardedRoute pageKey="galeria" element={<Gallery />} />} />
                     <Route path="/gallery/:albumId" element={<GuardedRoute pageKey="galeria" element={<AlbumView />} />} />
                     <Route path="/entrevistas" element={<GuardedRoute pageKey="entrevistas" element={<Projects />} />} />

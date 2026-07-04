@@ -5,6 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+import PageHero from '../components/PageHero';
 
 const Media = () => {
   const { language } = useLanguage();
@@ -44,17 +45,8 @@ const Media = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
+        <PageHero eyebrow={labels.tag} title={labels.title} subtitle={labels.description} />
         <Container className="py-5">
-          <Row className="justify-content-center text-center mb-5">
-            <Col lg={7}>
-              <i className="bi bi-newspaper text-success" style={{ fontSize: '4rem', opacity: 0.8 }}></i>
-              <div className="mt-4">
-                <span className="mono-label text-success text-uppercase">{labels.tag}</span>
-                <h1 className="display-5 fw-bold mt-2 mb-3">{labels.title}</h1>
-                <p className="lead text-muted">{labels.description}</p>
-              </div>
-            </Col>
-          </Row>
 
           <Row className="justify-content-center g-4">
             <Col xs={12} sm={6} lg={4}>
