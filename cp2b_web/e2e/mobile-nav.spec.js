@@ -18,8 +18,8 @@ test.describe('mobile navigation', () => {
     await toggler.click();
     await expect(collapse).toHaveClass(/show/);
 
-    // Tap a top-level nav link.
-    await page.getByRole('link', { name: /Publica/i }).click();
+    // Tap a top-level nav link (scoped to the navbar: the footer also links to /publicacoes).
+    await collapse.getByRole('link', { name: /Publica/i }).click();
     await expect(page).toHaveURL(/\/publicacoes$/);
 
     // The menu must collapse on navigation (was the bug).
@@ -29,7 +29,8 @@ test.describe('mobile navigation', () => {
   test('a dropdown opens and its items navigate', async ({ page }) => {
     await page.locator('.navbar-toggler').click();
     await page.locator('#nav-dropdown-about').click();
-    await page.getByRole('link', { name: /Equipe|Team/i }).click();
+    // Scoped to the navbar collapse: the footer also links to /equipe.
+    await page.locator('#basic-navbar-nav').getByRole('link', { name: /Equipe|Team/i }).click();
     await expect(page).toHaveURL(/\/equipe$/);
     await expect(page.locator('#basic-navbar-nav')).not.toHaveClass(/show/);
   });
