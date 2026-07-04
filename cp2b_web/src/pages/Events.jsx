@@ -1,11 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Badge, Spinner, Button, Collapse } from 'react-bootstrap';
+import { Container, Row, Col, Badge, Spinner, Button, Collapse, Card } from 'react-bootstrap';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 import api from '../services/api';
 
 const Events = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.events?.[language] || pageSeo.events?.pt || {};
   const [upcomingEvents, setUpcomingEvents] = useState([]);
   const [pastEvents, setPastEvents] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -18,17 +23,15 @@ const Events = () => {
   const fetchEvents = async () => {
     setLoading(true);
     try {
-      // Fetch all events
       const response = await api.get('/events');
       const allEvents = response.data;
 
-      // Separate into upcoming and past
       const now = new Date();
-      const upcoming = allEvents.filter(event => {
+      const upcoming = allEvents.filter((event) => {
         const endDate = new Date(event.end_date);
         return endDate >= now && event.status !== 'cancelled';
       });
-      const past = allEvents.filter(event => {
+      const past = allEvents.filter((event) => {
         const endDate = new Date(event.end_date);
         return endDate < now || event.status === 'completed';
       });
@@ -42,70 +45,126 @@ const Events = () => {
     }
   };
 
+  const labels = {
+    pt: {
+      eyebrow: 'Agenda',
+      title: 'Eventos',
+      subtitle: 'Fóruns, workshops e encontros do CP2b sobre biogás, bioprodutos e transição energética.',
+      upcoming: 'Próximos Eventos',
+      past: 'Eventos Anteriores',
+      none: 'Nenhum evento próximo agendado no momento.',
+      register: 'Inscrever-se',
+      hide: 'Ocultar',
+      show: 'Mostrar',
+    },
+    en: {
+      eyebrow: 'Agenda',
+      title: 'Events',
+      subtitle: 'CP2b forums, workshops and meetings on biogas, bioproducts and the energy transition.',
+      upcoming: 'Upcoming Events',
+      past: 'Past Events',
+      none: 'No upcoming events scheduled at the moment.',
+      register: 'Register',
+      hide: 'Hide',
+      show: 'Show',
+    },
+  }[language];
+
   const typeLabels = {
-    workshop: language === 'pt' ? 'Workshop' : 'Workshop',
+    workshop: 'Workshop',
     forum: language === 'pt' ? 'Fórum' : 'Forum',
     conference: language === 'pt' ? 'Conferência' : 'Conference',
     meeting: language === 'pt' ? 'Reunião' : 'Meeting',
-    webinar: language === 'pt' ? 'Webinar' : 'Webinar',
-    course: language === 'pt' ? 'Curso' : 'Course'
+    webinar: 'Webinar',
+    course: language === 'pt' ? 'Curso' : 'Course',
   };
 
   const locationTypeLabels = {
     'in-person': language === 'pt' ? 'Presencial' : 'In Person',
-    'online': language === 'pt' ? 'Online' : 'Online',
-    'hybrid': language === 'pt' ? 'Híbrido' : 'Hybrid'
+    'online': 'Online',
+    'hybrid': language === 'pt' ? 'Híbrido' : 'Hybrid',
   };
 
-  const renderEventCard = (event) => {
+  // schema.org Event structured data for upcoming events
+  const eventsJsonLd = upcomingEvents.length > 0
+    ? {
+        '@context': 'https://schema.org',
+        '@graph': upcomingEvents.map((event) => ({
+          '@type': 'Event',
+          name: event.title_pt,
+          startDate: event.start_date,
+          endDate: event.end_date,
+          eventAttendanceMode: {
+            'in-person': 'https://schema.org/OfflineEventAttendanceMode',
+            'online': 'https://schema.org/OnlineEventAttendanceMode',
+            'hybrid': 'https://schema.org/MixedEventAttendanceMode',
+          }[event.location_type] || 'https://schema.org/OfflineEventAttendanceMode',
+          ...(event.location ? { location: { '@type': 'Place', name: event.location } } : {}),
+          ...(event.description_pt ? { description: event.description_pt } : {}),
+          ...(event.image_url ? { image: event.image_url } : {}),
+          organizer: {
+            '@type': 'Organization',
+            name: 'CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos',
+            url: 'https://cp2b.unicamp.br',
+          },
+        })),
+      }
+    : null;
+
+  const renderEventCard = (event, index) => {
     const title = language === 'pt' ? event.title_pt : (event.title_en || event.title_pt);
     const description = language === 'pt' ? event.description_pt : (event.description_en || event.description_pt);
     const startDate = new Date(event.start_date);
     const endDate = new Date(event.end_date);
+    const locale = language === 'pt' ? 'pt-BR' : 'en-US';
 
     return (
       <Col key={event.id} md={6} lg={4} className="mb-4">
-        <Card className="h-100 shadow-sm">
-          {event.image_url && (
-            <Card.Img variant="top" src={event.image_url} style={{ height: '200px', objectFit: 'cover' }} />
-          )}
-          <Card.Body className="d-flex flex-column">
-            <div className="mb-2">
+        <motion.article
+          className="event-card"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.4, delay: Math.min(index * 0.06, 0.3) }}
+        >
+          <div className="event-media">
+            {event.image_url && <img src={event.image_url} alt={title} loading="lazy" />}
+            <div className="event-date-badge">
+              <span className="day">{startDate.toLocaleDateString(locale, { day: '2-digit' })}</span>
+              <span className="month">{startDate.toLocaleDateString(locale, { month: 'short' })}</span>
+            </div>
+          </div>
+          <div className="event-body">
+            <div>
               <Badge bg="info" className="me-2">{typeLabels[event.event_type]}</Badge>
               <Badge bg="secondary">{locationTypeLabels[event.location_type]}</Badge>
             </div>
-            <Card.Title>{title}</Card.Title>
-            {description && <Card.Text>{description}</Card.Text>}
+            <h3 className="event-title">{title}</h3>
+            {description && <p className="text-muted small mb-2">{description}</p>}
 
-            <div className="mt-auto">
-              <div className="text-muted small mb-2">
-                <i className="bi bi-calendar me-2"></i>
-                {startDate.toLocaleDateString(language === 'pt' ? 'pt-BR' : 'en-US', {
-                  day: '2-digit',
-                  month: 'long',
-                  year: 'numeric'
-                })}
-                {startDate.toDateString() !== endDate.toDateString() && (
-                  <> - {endDate.toLocaleDateString(language === 'pt' ? 'pt-BR' : 'en-US', {
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric'
-                  })}</>
-                )}
-              </div>
+            <div className="mt-auto d-flex flex-column gap-1">
+              <span className="event-info">
+                <i className="bi bi-calendar"></i>
+                <span>
+                  {startDate.toLocaleDateString(locale, { day: '2-digit', month: 'long', year: 'numeric' })}
+                  {startDate.toDateString() !== endDate.toDateString() && (
+                    <> — {endDate.toLocaleDateString(locale, { day: '2-digit', month: 'long', year: 'numeric' })}</>
+                  )}
+                </span>
+              </span>
 
               {event.location && (
-                <div className="text-muted small mb-2">
-                  <i className="bi bi-geo-alt me-2"></i>
-                  {event.location}
-                </div>
+                <span className="event-info">
+                  <i className="bi bi-geo-alt"></i>
+                  <span>{event.location}</span>
+                </span>
               )}
 
               {event.organizer && (
-                <div className="text-muted small mb-2">
-                  <i className="bi bi-person me-2"></i>
-                  {event.organizer}
-                </div>
+                <span className="event-info">
+                  <i className="bi bi-person"></i>
+                  <span>{event.organizer}</span>
+                </span>
               )}
 
               {event.registration_url && (
@@ -115,74 +174,73 @@ const Events = () => {
                   href={event.registration_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="mt-2 w-100"
+                  className="mt-3 w-100"
                 >
-                  {language === 'pt' ? 'Inscrever-se' : 'Register'}
+                  {labels.register}
                 </Button>
               )}
             </div>
-          </Card.Body>
-        </Card>
+          </div>
+        </motion.article>
       </Col>
     );
   };
 
-  if (loading) {
-    return (
-      <Container className="py-5 text-center">
-        <Spinner animation="border" />
-      </Container>
-    );
-  }
-
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-    <Container className="py-5">
-      <h1 className="mb-4">{language === 'pt' ? 'Eventos' : 'Events'}</h1>
+    <>
+      <SeoHead
+        title={seo.title}
+        description={seo.description}
+        path={pathname}
+        language={language}
+        jsonLd={eventsJsonLd}
+      />
 
-      {/* Upcoming Events */}
-      <section className="mb-5">
-        <h2 className="mb-3">{language === 'pt' ? 'Próximos Eventos' : 'Upcoming Events'}</h2>
-        {upcomingEvents.length > 0 ? (
-          <Row>
-            {upcomingEvents.map(renderEventCard)}
-          </Row>
-        ) : (
-          <Card className="bg-light">
-            <Card.Body className="text-center text-muted py-5">
-              {language === 'pt'
-                ? 'Nenhum evento próximo agendado no momento.'
-                : 'No upcoming events scheduled at the moment.'}
-            </Card.Body>
-          </Card>
-        )}
-      </section>
+      <div className="page-hero">
+        <Container>
+          <span className="eyebrow">{labels.eyebrow}</span>
+          <h1>{labels.title}</h1>
+          <p className="page-hero-sub">{labels.subtitle}</p>
+        </Container>
+      </div>
 
-      {/* Past Events */}
-      {pastEvents.length > 0 && (
-        <section>
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h2>{language === 'pt' ? 'Eventos Anteriores' : 'Past Events'}</h2>
-            <Button
-              variant="outline-secondary"
-              size="sm"
-              onClick={() => setShowPast(!showPast)}
-            >
-              {showPast
-                ? (language === 'pt' ? 'Ocultar' : 'Hide')
-                : (language === 'pt' ? 'Mostrar' : 'Show')
-              } ({pastEvents.length})
-            </Button>
+      <Container className="py-5">
+        {loading ? (
+          <div className="text-center py-5">
+            <Spinner animation="border" />
           </div>
-          <Collapse in={showPast}>
-            <Row>
-              {pastEvents.map(renderEventCard)}
-            </Row>
-          </Collapse>
-        </section>
-      )}
-    </Container>
-    </motion.div>
+        ) : (
+          <>
+            {/* Upcoming Events */}
+            <section className="mb-5">
+              <h2 className="h3 fw-bold mb-4">{labels.upcoming}</h2>
+              {upcomingEvents.length > 0 ? (
+                <Row>{upcomingEvents.map(renderEventCard)}</Row>
+              ) : (
+                <Card className="bg-light border-0">
+                  <Card.Body className="text-center text-muted py-5">{labels.none}</Card.Body>
+                </Card>
+              )}
+            </section>
+
+            {/* Past Events */}
+            {pastEvents.length > 0 && (
+              <section>
+                <div className="d-flex justify-content-between align-items-center mb-4">
+                  <h2 className="h3 fw-bold mb-0">{labels.past}</h2>
+                  <Button variant="outline-secondary" size="sm" onClick={() => setShowPast(!showPast)}>
+                    {showPast ? labels.hide : labels.show} ({pastEvents.length})
+                  </Button>
+                </div>
+                <Collapse in={showPast}>
+                  <Row>{pastEvents.map(renderEventCard)}</Row>
+                </Collapse>
+              </section>
+            )}
+          </>
+        )}
+      </Container>
+    </>
   );
 };
 

@@ -1,13 +1,38 @@
-import { useState, useEffect } from 'react';
-import { Container, Row, Col, Card, Spinner } from 'react-bootstrap';
+import { useState, useEffect, useMemo } from 'react';
+import { Container, Spinner } from 'react-bootstrap';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import { fetchGallery } from '../services/api';
-import { useNavigate } from 'react-router-dom';
-
+import { useLanguage } from '../context/LanguageContext';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
 
 const Gallery = () => {
   const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const { language } = useLanguage();
+  const seo = pageSeo.gallery?.[language] || pageSeo.gallery?.pt || {};
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const labels = {
+    pt: {
+      eyebrow: 'Memória',
+      title: 'Galeria de Fotos',
+      subtitle: 'Os registros dos eventos, fóruns e atividades do CP2b, organizados por ano.',
+      empty: 'Ainda não há álbuns publicados na galeria.',
+      photos: 'fotos',
+      photo: 'foto',
+    },
+    en: {
+      eyebrow: 'Memory',
+      title: 'Photo Gallery',
+      subtitle: 'Records of CP2b events, forums and activities, organized by year.',
+      empty: 'No albums have been published yet.',
+      photos: 'photos',
+      photo: 'photo',
+    },
+  }[language];
 
   useEffect(() => {
     const loadPhotos = async () => {
@@ -18,60 +43,94 @@ const Gallery = () => {
     loadPhotos();
   }, []);
 
-  if (loading) {
-    return (
-      <Container className="py-5 text-center">
-        <Spinner animation="border" variant="primary" />
-      </Container>
-    );
-  }
+  // Albums (covers) grouped by year, newest first; photo count per album.
+  const albumsByYear = useMemo(() => {
+    const counts = photos.reduce((acc, p) => {
+      if (!p.is_cover && p.album_id) acc[p.album_id] = (acc[p.album_id] || 0) + 1;
+      return acc;
+    }, {});
+
+    const covers = photos
+      .filter((p) => p.is_cover)
+      .map((album) => ({ ...album, photoCount: counts[album.album_id] || 0 }))
+      .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
+
+    const groups = new Map();
+    covers.forEach((album) => {
+      const year = album.date
+        ? new Date(album.date).getUTCFullYear()
+        : (language === 'pt' ? 'Sem data' : 'Undated');
+      if (!groups.has(year)) groups.set(year, []);
+      groups.get(year).push(album);
+    });
+    return [...groups.entries()];
+  }, [photos, language]);
 
   return (
-    <Container className="py-5">
-      <div className="text-center mb-5">
-        <h1 className="fw-bold text-primary">Galeria de Fotos</h1>
-        <p className="text-muted">Confira os registros dos nossos eventos e projetos.</p>
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+
+      <div className="page-hero">
+        <Container>
+          <span className="eyebrow">{labels.eyebrow}</span>
+          <h1>{labels.title}</h1>
+          <p className="page-hero-sub">{labels.subtitle}</p>
+        </Container>
       </div>
-      {photos.length === 0 ? (
-        <div className="text-center text-muted py-5">
-          <i className="bi bi-camera-fill" style={{ fontSize: '3rem' }}></i>
-          <p className="mt-3">Ainda não há álbuns publicados na galeria.</p>
-        </div>
-      ) : (
-        <Row xs={1} md={2} lg={3} className="g-4">
-          {photos
-            .filter((photo) => photo.is_cover)
-            .map((album) => (
-            <Col key={album.id}>
-              <Card
-                className="h-100 shadow-sm border-0"
-                style={{ cursor: 'pointer', transition: 'transform 0.2s' }}
-                onClick={() => navigate(`/gallery/${album.album_id}`)}
-                onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.03)'}
-                onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-              >
-                <Card.Img
-                  variant="top"
-                  src={album.url}
-                  alt={album.title}
-                  style={{ objectFit: 'cover', height: '250px' }}
-                />
-                <Card.Body>
-                  <Card.Title className="h6 fw-bold">{album.title}</Card.Title>
-                  <Card.Text className="text-muted small mb-0 d-flex justify-content-between align-items-center">
-                    <span>
-                      <i className="bi bi-calendar-event me-2"></i>
-                      {new Date(album.date).toLocaleDateString('pt-BR', { timeZone: 'UTC' })}
+
+      <Container className="py-5">
+        {loading ? (
+          <div className="text-center py-5">
+            <Spinner animation="border" variant="primary" />
+          </div>
+        ) : albumsByYear.length === 0 ? (
+          <div className="text-center text-muted py-5">
+            <i className="bi bi-camera-fill" style={{ fontSize: '3rem' }}></i>
+            <p className="mt-3">{labels.empty}</p>
+          </div>
+        ) : (
+          albumsByYear.map(([year, albums]) => (
+            <section key={year} aria-label={String(year)}>
+              <h2 className="gallery-year-label">{year}</h2>
+              <div className="album-grid">
+                {albums.map((album, index) => (
+                  <motion.button
+                    type="button"
+                    key={album.id}
+                    className="album-card"
+                    onClick={() => navigate(`/gallery/${album.album_id}`)}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4, delay: Math.min(index * 0.06, 0.3) }}
+                    aria-label={album.title}
+                  >
+                    <img src={album.url} alt={album.title} loading="lazy" />
+                    <span className="album-overlay">
+                      <span className="album-title">{album.title}</span>
+                      <span className="album-meta">
+                        {album.date && (
+                          <span>
+                            <i className="bi bi-calendar-event me-1"></i>
+                            {new Date(album.date).toLocaleDateString(language === 'pt' ? 'pt-BR' : 'en-US', { timeZone: 'UTC' })}
+                          </span>
+                        )}
+                        {album.photoCount > 0 && (
+                          <span>
+                            <i className="bi bi-images me-1"></i>
+                            {album.photoCount} {album.photoCount === 1 ? labels.photo : labels.photos}
+                          </span>
+                        )}
+                      </span>
                     </span>
-                    <i className="bi bi-folder2-open text-primary fs-5"></i>
-                  </Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          ))}
-        </Row>
-      )}
-    </Container>
+                  </motion.button>
+                ))}
+              </div>
+            </section>
+          ))
+        )}
+      </Container>
+    </>
   );
 };
 

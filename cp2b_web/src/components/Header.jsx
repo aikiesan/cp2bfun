@@ -58,6 +58,9 @@ const Header = () => {
 
   return (
     <header>
+      <a href="#main-content" className="skip-link">
+        {language === 'pt' ? 'Ir para o conteúdo' : 'Skip to content'}
+      </a>
       {/* Top Header - Recod.ai Style */}
       <div
         id="top-header"
@@ -83,23 +86,23 @@ const Header = () => {
             </div>
 
             {/* Languages */}
-            <div className="col col-lg-2">
-              <div className="languages d-flex justify-content-end gap-2">
-                <button
-                  onClick={() => toggleLang('en')}
-                  className={`btn btn-sm p-0 ${language === 'en' ? 'opacity-100' : 'opacity-50'}`}
-                  title="English"
-                  style={{ border: 'none', background: 'none' }}
-                >
-                  <img loading="lazy" src="https://flagcdn.com/24x18/us.png" width="24" height="18" alt="en" />
-                </button>
+            <div className="col col-lg-2 d-flex justify-content-end">
+              <div className="lang-switch" role="group" aria-label="Language">
                 <button
                   onClick={() => toggleLang('pt')}
-                  className={`btn btn-sm p-0 ${language === 'pt' ? 'opacity-100' : 'opacity-50'}`}
-                  title="Portuguese"
-                  style={{ border: 'none', background: 'none' }}
+                  className={language === 'pt' ? 'active' : ''}
+                  title="Português"
+                  aria-pressed={language === 'pt'}
                 >
-                  <img loading="lazy" src="https://flagcdn.com/24x18/br.png" width="24" height="18" alt="pt" />
+                  PT
+                </button>
+                <button
+                  onClick={() => toggleLang('en')}
+                  className={language === 'en' ? 'active' : ''}
+                  title="English"
+                  aria-pressed={language === 'en'}
+                >
+                  EN
                 </button>
               </div>
             </div>

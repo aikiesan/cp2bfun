@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './index.css';
+import './styles/design-system.css';
 import { LanguageProvider } from './context/LanguageContext';
 import { PageStatusProvider, usePageStatus } from './context/PageStatusContext';
 import SeoHead from './components/SeoHead';
@@ -190,7 +191,7 @@ function App() {
               <>
                 <Header />
                 <ErrorBoundary>
-                <main style={{ minHeight: '80vh' }}>
+                <main id="main-content" style={{ minHeight: '80vh' }}>
                   <Routes>
                     <Route path="/" element={<GuardedRoute pageKey="home" element={<Home />} />} />
                     <Route path="/sobre" element={<GuardedRoute pageKey="sobre" element={<About />} />} />
