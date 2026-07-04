@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col, Badge, Spinner, Button, Collapse, Card } from 'react-bootstrap';
 import { motion } from 'framer-motion';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
@@ -54,6 +54,7 @@ const Events = () => {
       past: 'Eventos Anteriores',
       none: 'Nenhum evento próximo agendado no momento.',
       register: 'Inscrever-se',
+      details: 'Ver detalhes',
       hide: 'Ocultar',
       show: 'Mostrar',
     },
@@ -65,6 +66,7 @@ const Events = () => {
       past: 'Past Events',
       none: 'No upcoming events scheduled at the moment.',
       register: 'Register',
+      details: 'View details',
       hide: 'Hide',
       show: 'Show',
     },
@@ -101,7 +103,7 @@ const Events = () => {
           }[event.location_type] || 'https://schema.org/OfflineEventAttendanceMode',
           ...(event.location ? { location: { '@type': 'Place', name: event.location } } : {}),
           ...(event.description_pt ? { description: event.description_pt } : {}),
-          ...(event.image_url ? { image: event.image_url } : {}),
+          ...(event.image ? { image: event.image } : {}),
           organizer: {
             '@type': 'Organization',
             name: 'CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos',
@@ -128,7 +130,7 @@ const Events = () => {
           transition={{ duration: 0.4, delay: Math.min(index * 0.06, 0.3) }}
         >
           <div className="event-media">
-            {event.image_url && <img src={event.image_url} alt={title} loading="lazy" />}
+            {event.image && <img src={event.image} alt={title} loading="lazy" />}
             <div className="event-date-badge">
               <span className="day">{startDate.toLocaleDateString(locale, { day: '2-digit' })}</span>
               <span className="month">{startDate.toLocaleDateString(locale, { month: 'short' })}</span>
@@ -139,7 +141,13 @@ const Events = () => {
               <Badge bg="info" className="me-2">{typeLabels[event.event_type]}</Badge>
               <Badge bg="secondary">{locationTypeLabels[event.location_type]}</Badge>
             </div>
-            <h3 className="event-title">{title}</h3>
+            <h3 className="event-title">
+              {event.slug ? (
+                <Link to={`/eventos/${event.slug}`} className="text-decoration-none" style={{ color: 'inherit' }}>
+                  {title}
+                </Link>
+              ) : title}
+            </h3>
             {description && <p className="text-muted small mb-2">{description}</p>}
 
             <div className="mt-auto d-flex flex-column gap-1">
@@ -167,7 +175,17 @@ const Events = () => {
                 </span>
               )}
 
-              {event.registration_url && (
+              {event.slug ? (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  as={Link}
+                  to={`/eventos/${event.slug}`}
+                  className="mt-3 w-100"
+                >
+                  {labels.details}
+                </Button>
+              ) : event.registration_url && (
                 <Button
                   variant="primary"
                   size="sm"

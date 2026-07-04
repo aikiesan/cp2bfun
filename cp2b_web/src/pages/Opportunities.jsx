@@ -7,6 +7,7 @@ import { fetchOpportunities } from '../services/api';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+import PageHero from '../components/PageHero';
 
 const Opportunities = () => {
   const { language } = useLanguage();
@@ -49,14 +50,8 @@ const Opportunities = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
+      <PageHero eyebrow={labels.tag} title={labels.title} subtitle={labels.description} />
       <Container className="py-5">
-        <Row className="mb-5">
-          <Col>
-            <span className="mono-label text-success text-uppercase">{labels.tag}</span>
-            <h1 className="display-5 fw-bold mt-2 mb-2">{labels.title}</h1>
-            <p className="lead text-muted">{labels.description}</p>
-          </Col>
-        </Row>
 
         {loading ? (
           <div className="text-center py-5">

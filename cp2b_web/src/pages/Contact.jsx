@@ -6,6 +6,7 @@ import api from '../services/api';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+import PageHero from '../components/PageHero';
 
 const Contact = () => {
   const { language } = useLanguage();
@@ -91,13 +92,8 @@ const Contact = () => {
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <PageHero eyebrow={labels.tag} title={labels.title} />
     <Container className="py-5">
-      <Row className="justify-content-center">
-        <Col lg={8} className="text-center mb-5">
-           <span className="mono-label text-success">{labels.tag}</span>
-           <h1 className="display-4 fw-bold">{labels.title}</h1>
-        </Col>
-      </Row>
 
       <Row className="justify-content-center g-5">
         <Col lg={5}>

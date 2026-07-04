@@ -1,12 +1,13 @@
 import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FaSpotify, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp } from 'react-icons/fa';
-import { socialLinks } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
+import useSiteSettings from '../hooks/useSiteSettings';
 import NewsletterSignup from './NewsletterSignup';
 
 const Footer = () => {
   const { language } = useLanguage();
+  const { contact, social, footer: footerSettings } = useSiteSettings();
 
   const labels = {
     pt: {
@@ -66,11 +67,11 @@ const Footer = () => {
   }[language];
 
   const socials = [
-    { href: socialLinks.linkedin, icon: <FaLinkedinIn />, label: 'LinkedIn' },
-    { href: socialLinks.instagram, icon: <FaInstagram />, label: 'Instagram' },
-    { href: socialLinks.youtube, icon: <FaYoutube />, label: 'YouTube' },
-    { href: socialLinks.spotify, icon: <FaSpotify />, label: 'Spotify' },
-    { href: socialLinks.whatsapp, icon: <FaWhatsapp />, label: 'WhatsApp' },
+    { href: social.linkedin, icon: <FaLinkedinIn />, label: 'LinkedIn' },
+    { href: social.instagram, icon: <FaInstagram />, label: 'Instagram' },
+    { href: social.youtube, icon: <FaYoutube />, label: 'YouTube' },
+    { href: social.spotify, icon: <FaSpotify />, label: 'Spotify' },
+    { href: social.whatsapp, icon: <FaWhatsapp />, label: 'WhatsApp' },
   ].filter((s) => s.href && s.href !== '#');
 
   return (
@@ -128,11 +129,11 @@ const Footer = () => {
           <Col lg={4} md={6}>
             <h6>{labels.contact}</h6>
             <address className="small mb-4" style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.7)', fontStyle: 'normal', lineHeight: 1.8 }}>
-              NIPE — {labels.university}<br />
-              Rua Cora Coralina, 330<br />
-              Campinas - SP, Brasil, CEP 13083-896<br />
-              <a href="tel:+551935211244" style={{ color: 'rgba(255,255,255,0.85)' }}>+55 (19) 3521-1244</a><br />
-              <a href="mailto:nipe@nipe.unicamp.br" style={{ color: 'rgba(255,255,255,0.85)' }}>nipe@nipe.unicamp.br</a>
+              {contact.institution}<br />
+              {contact.address_line1}<br />
+              {contact.address_line2}<br />
+              <a href={`tel:${contact.phone.replace(/[^+\d]/g, '')}`} style={{ color: 'rgba(255,255,255,0.85)' }}>{contact.phone}</a><br />
+              <a href={`mailto:${contact.email}`} style={{ color: 'rgba(255,255,255,0.85)' }}>{contact.email}</a>
             </address>
 
             <h6>{labels.connect}</h6>
@@ -150,8 +151,7 @@ const Footer = () => {
           <Col md={8}>
             <small style={{ fontFamily: 'var(--font-mono)', lineHeight: 1.7 }}>
               &copy; 1969 - {new Date().getFullYear()} {labels.university} · CP2b<br />
-              <strong>Expediente:</strong> Jornalista responsável Sofia Silva MTb 0077363/SP ·
-              Estagiário Antônio Bufalo · Estagiária Bárbara Castilho
+              <strong>Expediente:</strong> {footerSettings.credits}
             </small>
           </Col>
           <Col md={4} className="text-md-end mt-3 mt-md-0">

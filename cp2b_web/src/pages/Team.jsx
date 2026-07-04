@@ -7,6 +7,7 @@ import { fetchTeam } from '../services/api';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+import PageHero from '../components/PageHero';
 
 const categoryLabels = {
   coordinators: { pt: 'Pesquisadores Responsaveis', en: 'Lead Researchers' },
@@ -70,18 +71,14 @@ const Team = () => {
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <PageHero
+      eyebrow={t.team}
+      title={language === 'pt' ? 'Quem Faz o CP2b' : 'Our Team'}
+      subtitle={language === 'pt'
+        ? 'Uma rede multidisciplinar de pesquisadores e especialistas dedicados ao desenvolvimento de soluções em biogás e bioprodutos.'
+        : 'A multidisciplinary network of researchers and experts dedicated to the development of biogas and bioproduct solutions.'}
+    />
     <Container className="py-5">
-      <Row className="mb-5">
-        <Col lg={8}>
-          <span className="mono-label text-success">{t.team}</span>
-          <h1 className="display-5 fw-bold mb-4">{language === 'pt' ? 'Quem Faz o CP2b' : 'Our Team'}</h1>
-          <p className="lead text-muted">
-            {language === 'pt'
-              ? 'Uma rede multidisciplinar de pesquisadores e especialistas dedicados ao desenvolvimento de solucoes em biogas e bioprodutos.'
-              : 'A multidisciplinary network of researchers and experts dedicated to the development of biogas and bioproduct solutions.'}
-          </p>
-        </Col>
-      </Row>
 
       {teamData && teamData.map((group) => (
         <section key={group.category} className="mb-5">

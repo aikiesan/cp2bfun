@@ -605,3 +605,44 @@ export const fetchPodcastEpisodes = async () => {
 export const createPodcastEpisode = async (data) => (await api.post('/podcast', data)).data;
 export const updatePodcastEpisode = async (id, data) => (await api.put(`/podcast/${id}`, data)).data;
 export const deletePodcastEpisode = async (id) => (await api.delete(`/podcast/${id}`)).data;
+
+// ---- Events calendar ----
+export const fetchEvents = async () => {
+  try {
+    const response = await api.get('/events');
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) console.error('Error fetching events:', error);
+    return [];
+  }
+};
+
+export const fetchEventBySlug = async (slug) => {
+  try {
+    const response = await api.get(`/events/${slug}`);
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) console.error('Error fetching event:', error);
+    return null;
+  }
+};
+
+// ---- Site settings (contact, social, footer) ----
+let siteSettingsCache = null;
+
+export const fetchSiteSettings = async () => {
+  if (siteSettingsCache) return siteSettingsCache;
+  try {
+    const response = await api.get('/settings');
+    siteSettingsCache = response.data || {};
+    return siteSettingsCache;
+  } catch {
+    return {};
+  }
+};
+
+export const saveSiteSettings = async (settings) => {
+  const response = await api.put('/settings', settings);
+  siteSettingsCache = response.data;
+  return response.data;
+};

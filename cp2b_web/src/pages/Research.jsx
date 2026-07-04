@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Accordion, Row, Col } from 'react-bootstrap';
+import { Container, Accordion } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { researchAxes, sdgMap, menuLabels } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
@@ -7,6 +7,7 @@ import { fetchAxes } from '../services/api';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+import PageHero from '../components/PageHero';
 
 const transformApiAxes = (apiAxes, lang) =>
   apiAxes.map((row) => {
@@ -62,16 +63,8 @@ const Research = () => {
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <PageHero eyebrow={t.axes} title={labels.tag} subtitle={labels.subtitle} />
     <Container className="py-5">
-      <Row className="mb-5">
-        <Col lg={8}>
-          <span className="mono-label text-success text-uppercase">{t.axes}</span>
-          <h1 className="display-5 fw-bold mb-4">{labels.tag}</h1>
-          <p className="lead text-muted">
-            {labels.subtitle}
-          </p>
-        </Col>
-      </Row>
 
       <div className="border-top border-dark pt-5">
         <h3 className="fw-bold mb-4">{labels.details}</h3>

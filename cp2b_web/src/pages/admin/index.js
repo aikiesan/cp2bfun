@@ -27,3 +27,6 @@ export { default as PressKitAdmin }       from './PressKitAdmin';
 export { default as PodcastList }         from './PodcastList';
 export { default as PodcastEditor }       from './PodcastEditor';
 export { default as PageStatusManager }   from './PageStatusManager';
+export { default as EventsList }          from './EventsList';
+export { default as EventsEditor }        from './EventsEditor';
+export { default as SiteSettingsAdmin }   from './SiteSettingsAdmin';

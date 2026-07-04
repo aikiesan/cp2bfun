@@ -7,6 +7,7 @@ import { fetchNews } from '../services/api';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+import PageHero from '../components/PageHero';
 
 const News = () => {
   const { language } = useLanguage();
@@ -74,8 +75,8 @@ const News = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <PageHero eyebrow={language === 'pt' ? 'Comunicação' : 'Communication'} title={labels.title} />
       <Container className="py-5">
-      <h1 className="fw-bold mb-5 border-bottom pb-3" style={{ color: '#004a80' }}>{labels.title}</h1>
 
       {/* Featured News - FAPESP Style */}
       <section className="mb-5">

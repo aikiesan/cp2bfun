@@ -151,6 +151,7 @@ async function main() {
     { endpoint: '/microscopio', prefix: '/microscopio', priority: '0.6' },
     { endpoint: '/opportunities', prefix: '/oportunidades', priority: '0.6' },
     { endpoint: '/projects', prefix: '/entrevistas', priority: '0.6' },
+    { endpoint: '/events', prefix: '/eventos', priority: '0.7' },
   ];
 
   for (const { endpoint, prefix, priority } of dynamicSources) {
