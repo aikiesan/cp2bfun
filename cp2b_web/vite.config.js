@@ -106,8 +106,9 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['src/test/setup.js'],
     css: true,
-    // Playwright specs live in e2e/ and must not be run by Vitest.
-    exclude: [...configDefaults.exclude, 'e2e/**'],
+    // Playwright specs live in e2e/; backend tests use node:test (run them
+    // with `npm test` inside backend/). Neither can run under Vitest/jsdom.
+    exclude: [...configDefaults.exclude, 'e2e/**', 'backend/**'],
     coverage: {
       provider: 'v8',
     },
