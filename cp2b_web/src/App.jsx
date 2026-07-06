@@ -117,6 +117,7 @@ import {
   EventsList,
   EventsEditor,
   SiteSettingsAdmin,
+  AjudaAdmin,
 } from './pages/admin';
 import FeaturedContentManager from './pages/admin/FeaturedContentManager';
 import {
@@ -190,6 +191,7 @@ function App() {
             <Route path="events/new"     element={<EventsEditor />} />
             <Route path="events/:id"     element={<EventsEditor />} />
             <Route path="settings"       element={<SiteSettingsAdmin />} />
+            <Route path="ajuda"          element={<AjudaAdmin />} />
           </Route>
 
           {/* Public Routes - With Header/Footer */}

@@ -919,3 +919,45 @@ For an experienced administrator:
 ---
 
 **🎉 Congratulations!** Your CP2B website should now be running in production!
+
+---
+
+## Admin Authentication (ADMIN_PASSWORD)
+
+The admin panel (`/admin`) and every write endpoint of the API are protected
+by a single admin password. **Set it on every production deployment** — when
+it is missing the backend logs a warning and leaves the admin API open.
+
+1. Add the variable to the backend environment (`.env` file next to
+   `backend/`, or the systemd unit / docker-compose environment):
+
+   ```bash
+   ADMIN_PASSWORD='<escolha-uma-frase-secreta-longa>'   # example placeholder
+   ```
+
+2. Restart the backend. From then on:
+   - `/admin` shows a login screen; a successful login is remembered for
+     7 days per browser.
+   - All create/update/delete API calls require the login token.
+   - Visitor-facing forms (contact, newsletter, forum registration, meetup
+     requests) keep working without login.
+   - Personal-data listings (newsletter subscribers, contact messages,
+     participants) also require the login.
+
+3. To change the password, update the variable and restart the backend —
+   every browser is logged out automatically.
+
+## Post-Deploy Smoke Test
+
+After every deploy, verify the live site end-to-end (read-only, safe to run
+any time):
+
+```bash
+cd cp2b_web
+SMOKE_URL=https://cp2b.unicamp.br npm run smoke
+```
+
+It checks that the SPA boots, `/api/health` answers through the Apache proxy,
+prerendered SEO pages and the sitemap are served, key public pages return 200,
+and the admin panel is properly gated. A non-zero exit code means the deploy
+needs attention.

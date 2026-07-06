@@ -182,7 +182,7 @@ const EventsEditor = () => {
             <Card className="mb-4">
               <Card.Header className="bg-white"><h5 className="mb-0">Informações Básicas</h5></Card.Header>
               <Card.Body>
-                <Form.Group className="mb-3">
+                <Form.Group className="mb-3" controlId="event-title-pt">
                   <Form.Label>Título (PT) *</Form.Label>
                   <Form.Control name="title_pt" value={formData.title_pt} onChange={handleChange} required />
                 </Form.Group>

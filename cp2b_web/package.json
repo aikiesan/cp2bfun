@@ -17,7 +17,8 @@
     "test:coverage": "vitest run --coverage",
     "test:docker": "docker-compose run --rm test",
     "test:docker:coverage": "docker-compose run --rm test-coverage",
-    "test:docker:watch": "docker-compose run --rm test-watch"
+    "test:docker:watch": "docker-compose run --rm test-watch",
+    "smoke": "playwright test --project=prod-smoke"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^16.6.0",
