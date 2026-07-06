@@ -21,6 +21,8 @@ const Dashboard = () => {
     meetupRequestsCount: 0,
     newsletterSubscribersCount: 0,
     opportunitiesCount: 0,
+    eventsCount: 0,
+    upcomingEventsCount: 0,
   });
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState(false);
@@ -57,6 +59,7 @@ const Dashboard = () => {
           api.get('/newsletter/subscribers').catch(() => ({ data: [] })),
           api.get('/opportunities').catch(() => ({ data: [] })),
         ]);
+        const eventsRes = await api.get('/events').catch(() => ({ data: [] }));
 
         const currentYear = new Date().getFullYear();
         const publicationsThisYear = publicationsRes.data.filter(p => p.year === currentYear).length;
@@ -78,6 +81,10 @@ const Dashboard = () => {
           meetupRequestsCount: meetupRequestsRes.data.length,
           newsletterSubscribersCount: newsletterRes.data.filter(s => s.active).length,
           opportunitiesCount: opportunitiesRes.data.length,
+          eventsCount: eventsRes.data.length,
+          upcomingEventsCount: eventsRes.data.filter(
+            (e) => new Date(e.end_date || e.start_date) >= new Date() && e.status !== 'cancelled'
+          ).length,
         });
         setApiError(false);
       } catch (error) {
@@ -136,6 +143,15 @@ const Dashboard = () => {
       icon: 'bi-person-badge',
       link: '/admin/team',
       color: '#2E7D32'
+    },
+    {
+      title: 'Eventos',
+      count: stats.eventsCount,
+      icon: 'bi-calendar-event',
+      link: '/admin/events',
+      color: '#00838F',
+      subtitle: stats.upcomingEventsCount > 0 ? `${stats.upcomingEventsCount} próximo${stats.upcomingEventsCount > 1 ? 's' : ''}` : null,
+      isNew: true,
     },
     {
       title: 'Parceiros',
@@ -287,6 +303,17 @@ const Dashboard = () => {
                   </Link>
                 </Col>
                 <Col md={4} sm={6}>
+                  <Link to="/admin/events/new" className="btn btn-outline-primary w-100">
+                    <i className="bi bi-calendar-plus me-2"></i>Novo Evento
+                    <Badge bg="success" className="ms-2">NEW</Badge>
+                  </Link>
+                </Col>
+                <Col md={4} sm={6}>
+                  <Link to="/admin/gallery/upload" className="btn btn-outline-primary w-100">
+                    <i className="bi bi-camera me-2"></i>Enviar Fotos
+                  </Link>
+                </Col>
+                <Col md={4} sm={6}>
                   <Link to="/admin/featured" className="btn btn-outline-primary w-100">
                     <i className="bi bi-star me-2"></i>Gerenciar Destaques
                   </Link>
@@ -361,7 +388,15 @@ const Dashboard = () => {
                 </p>
               </div>
               <hr />
-              <div className="d-grid">
+              <div className="d-grid gap-2">
+                <Link to="/admin/ajuda" className="btn btn-success btn-sm">
+                  <i className="bi bi-question-circle me-2"></i>
+                  Guia de Uso do Painel
+                </Link>
+                <Link to="/admin/settings" className="btn btn-outline-secondary btn-sm">
+                  <i className="bi bi-sliders me-2"></i>
+                  Configurações do Site
+                </Link>
                 <Link to="/" className="btn btn-outline-secondary btn-sm">
                   <i className="bi bi-arrow-left me-2"></i>
                   Voltar ao Site

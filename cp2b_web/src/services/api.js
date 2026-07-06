@@ -1,5 +1,19 @@
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
+// ---- Admin authentication (token stored per browser) ----
+const ADMIN_TOKEN_KEY = 'cp2b_admin_token';
+
+export const adminAuth = {
+  getToken: () => localStorage.getItem(ADMIN_TOKEN_KEY),
+  setToken: (token) => localStorage.setItem(ADMIN_TOKEN_KEY, token),
+  clearToken: () => localStorage.removeItem(ADMIN_TOKEN_KEY),
+};
+
+const getAuthHeader = () => {
+  const token = adminAuth.getToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
 class ApiClient {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
@@ -10,6 +24,7 @@ class ApiClient {
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        ...getAuthHeader(),
         ...options.headers,
       },
       ...options,
@@ -24,6 +39,10 @@ class ApiClient {
     const response = await fetch(url, config);
 
     if (!response.ok) {
+      if (response.status === 401 && !endpoint.startsWith('/auth/')) {
+        // Token missing/expired: let the admin shell show the login screen.
+        window.dispatchEvent(new Event('cp2b-admin-unauthorized'));
+      }
       const error = await response.json().catch(() => ({ error: 'Request failed' }));
       const err = new Error(error.error || 'Request failed');
       err.response = { status: response.status, data: error };
@@ -644,5 +663,22 @@ export const fetchSiteSettings = async () => {
 export const saveSiteSettings = async (settings) => {
   const response = await api.put('/settings', settings);
   siteSettingsCache = response.data;
+  return response.data;
+};
+
+
+export const fetchAuthStatus = async () => {
+  try {
+    const response = await api.get('/auth/status');
+    return response.data; // { required: boolean }
+  } catch {
+    // API unreachable: don't lock the UI; requests will fail visibly anyway.
+    return { required: false };
+  }
+};
+
+export const adminLogin = async (password) => {
+  const response = await api.post('/auth/login', { password });
+  adminAuth.setToken(response.data.token);
   return response.data;
 };

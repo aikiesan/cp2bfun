@@ -24,6 +24,8 @@ import pressKitRoutes from './routes/presskit.js';
 import podcastRoutes from './routes/podcast.js';
 import pageSettingsRoutes from './routes/pageSettings.js';
 import settingsRoutes from './routes/settings.js';
+import authRoutes from './routes/auth.js';
+import { adminGate, authEnabled } from './middleware/auth.js';
 
 dotenv.config();
 
@@ -37,6 +39,13 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
+
+// Authentication: login/status are public; everything after passes the gate.
+app.use('/api/auth', authRoutes);
+app.use('/api', adminGate);
+if (!authEnabled()) {
+  console.warn('⚠️  ADMIN_PASSWORD is not set — the admin API is unprotected. Set it in production.');
+}
 
 // Routes
 app.use('/api/news', newsRoutes);

@@ -9,3 +9,4 @@ export { default as FormSkeleton } from './FormSkeleton';
 export { ToastProvider, useToast } from './ToastManager';
 export { default as RichTextEditor } from './RichTextEditor';
 export { default as ImagePositionPicker } from './ImagePositionPicker';
+export { default as AdminPageHeader } from './AdminPageHeader';
