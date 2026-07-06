@@ -33,11 +33,11 @@ const mockReqRes = ({ method = 'GET', path = '/news', token = null } = {}) => {
 
 test('authEnabled reflects ADMIN_PASSWORD', () => {
   withPassword(undefined, () => assert.equal(authEnabled(), false));
-  withPassword('s3cret', () => assert.equal(authEnabled(), true));
+  withPassword('test-password-123', () => assert.equal(authEnabled(), true));
 });
 
 test('createToken/verifyToken round-trip', () => {
-  withPassword('s3cret', () => {
+  withPassword('test-password-123', () => {
     const { token, expires_at } = createToken();
     assert.ok(expires_at > Date.now());
     assert.equal(verifyToken(token), true);
@@ -45,7 +45,7 @@ test('createToken/verifyToken round-trip', () => {
 });
 
 test('verifyToken rejects expired tokens', () => {
-  withPassword('s3cret', () => {
+  withPassword('test-password-123', () => {
     const past = Date.now() - 8 * 24 * 60 * 60 * 1000;
     const { token } = createToken(past);
     assert.equal(verifyToken(token), false);
@@ -53,7 +53,7 @@ test('verifyToken rejects expired tokens', () => {
 });
 
 test('verifyToken rejects tampered payloads and garbage', () => {
-  withPassword('s3cret', () => {
+  withPassword('test-password-123', () => {
     const { token } = createToken();
     const [payload, sig] = token.split('.');
     const farFuture = String(Number(payload) + 1000000);
@@ -65,15 +65,15 @@ test('verifyToken rejects tampered payloads and garbage', () => {
 });
 
 test('tokens become invalid when the password changes', () => {
-  const { token } = withPassword('old-password', () => createToken());
-  withPassword('new-password', () => {
+  const { token } = withPassword('test-old-password', () => createToken());
+  withPassword('test-new-password', () => {
     assert.equal(verifyToken(token), false);
   });
 });
 
 test('verifyPassword compares safely', () => {
-  withPassword('s3cret', () => {
-    assert.equal(verifyPassword('s3cret'), true);
+  withPassword('test-password-123', () => {
+    assert.equal(verifyPassword('test-password-123'), true);
     assert.equal(verifyPassword('wrong'), false);
     assert.equal(verifyPassword(''), false);
     assert.equal(verifyPassword(undefined), false);
@@ -89,7 +89,7 @@ test('adminGate allows everything when auth is disabled', () => {
 });
 
 test('adminGate allows public reads without a token', () => {
-  withPassword('s3cret', () => {
+  withPassword('test-password-123', () => {
     const { req, res, next, wasAllowed } = mockReqRes({ method: 'GET', path: '/news' });
     adminGate(req, res, next);
     assert.equal(wasAllowed(), true);
@@ -97,7 +97,7 @@ test('adminGate allows public reads without a token', () => {
 });
 
 test('adminGate blocks writes without a token', () => {
-  withPassword('s3cret', () => {
+  withPassword('test-password-123', () => {
     const { req, res, next, wasAllowed } = mockReqRes({ method: 'POST', path: '/news' });
     adminGate(req, res, next);
     assert.equal(wasAllowed(), false);
@@ -106,7 +106,7 @@ test('adminGate blocks writes without a token', () => {
 });
 
 test('adminGate allows writes with a valid token', () => {
-  withPassword('s3cret', () => {
+  withPassword('test-password-123', () => {
     const { token } = createToken();
     const { req, res, next, wasAllowed } = mockReqRes({ method: 'POST', path: '/news', token });
     adminGate(req, res, next);
@@ -115,7 +115,7 @@ test('adminGate allows writes with a valid token', () => {
 });
 
 test('adminGate whitelists visitor-facing form posts', () => {
-  withPassword('s3cret', () => {
+  withPassword('test-password-123', () => {
     for (const path of ['/contact', '/newsletter/subscribe', '/participants', '/meetup-requests', '/upload/image']) {
       const { req, res, next, wasAllowed } = mockReqRes({ method: 'POST', path });
       adminGate(req, res, next);
@@ -128,7 +128,7 @@ test('adminGate whitelists visitor-facing form posts', () => {
 });
 
 test('adminGate protects personal-data reads', () => {
-  withPassword('s3cret', () => {
+  withPassword('test-password-123', () => {
     for (const path of ['/newsletter/subscribers', '/contact', '/participants', '/meetup-requests/all']) {
       const { req, res, next, wasAllowed } = mockReqRes({ method: 'GET', path });
       adminGate(req, res, next);

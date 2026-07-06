@@ -10,11 +10,11 @@ const mockAuth = async (page, { required }) => {
   );
   await page.route('**/api/auth/login', (route) => {
     const body = route.request().postDataJSON();
-    if (body?.password === 'senha-correta') {
+    if (body?.password === 'senha-de-teste') {
       return route.fulfill({
         status: 200,
         contentType: 'application/json',
-        body: JSON.stringify({ token: `${Date.now() + 60000}.deadbeef`, expires_at: Date.now() + 60000 }),
+        body: JSON.stringify({ token: `${Date.now() + 60000}.test-token-signature`, expires_at: Date.now() + 60000 }),
       });
     }
     return route.fulfill({
@@ -41,12 +41,12 @@ test.describe('admin panel', () => {
     await expect(page.getByRole('heading', { name: 'Painel Administrativo' })).toBeVisible();
 
     // Wrong password → API error surfaces
-    await page.getByLabel('Senha').fill('senha-errada');
+    await page.getByLabel('Senha').fill('senha-de-teste-errada');
     await page.getByRole('button', { name: /Entrar/ }).click();
     await expect(page.getByText('Incorrect password')).toBeVisible();
 
     // Correct password → dashboard
-    await page.getByLabel('Senha').fill('senha-correta');
+    await page.getByLabel('Senha').fill('senha-de-teste');
     await page.getByRole('button', { name: /Entrar/ }).click();
     await expect(page.getByRole('heading', { name: 'Dashboard' })).toBeVisible();
   });

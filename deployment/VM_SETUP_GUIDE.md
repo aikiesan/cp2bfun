@@ -932,7 +932,7 @@ it is missing the backend logs a warning and leaves the admin API open.
    `backend/`, or the systemd unit / docker-compose environment):
 
    ```bash
-   ADMIN_PASSWORD='choose-a-long-passphrase'
+   ADMIN_PASSWORD='<escolha-uma-frase-secreta-longa>'   # example placeholder
    ```
 
 2. Restart the backend. From then on:

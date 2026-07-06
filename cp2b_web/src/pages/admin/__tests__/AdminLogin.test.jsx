@@ -22,11 +22,11 @@ describe('AdminLogin', () => {
     const user = userEvent.setup();
 
     renderWithProviders(<AdminLogin onSuccess={onSuccess} />);
-    await user.type(screen.getByLabelText('Senha'), 'minha-senha');
+    await user.type(screen.getByLabelText('Senha'), 'senha-de-teste');
     await user.click(screen.getByRole('button', { name: /entrar/i }));
 
     await waitFor(() => expect(onSuccess).toHaveBeenCalled());
-    expect(mocks.adminLogin).toHaveBeenCalledWith('minha-senha');
+    expect(mocks.adminLogin).toHaveBeenCalledWith('senha-de-teste');
   });
 
   it('shows the API error message on failure', async () => {
@@ -37,7 +37,7 @@ describe('AdminLogin', () => {
     const user = userEvent.setup();
 
     renderWithProviders(<AdminLogin onSuccess={onSuccess} />);
-    await user.type(screen.getByLabelText('Senha'), 'errada');
+    await user.type(screen.getByLabelText('Senha'), 'senha-de-teste-errada');
     await user.click(screen.getByRole('button', { name: /entrar/i }));
 
     expect(await screen.findByText('Incorrect password')).toBeInTheDocument();
