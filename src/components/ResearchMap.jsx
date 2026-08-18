@@ -18,7 +18,9 @@ const ResearchMap = () => {
       headquarters: 'Sede',
       research: 'Pesquisa',
       companies: 'Empresas',
-      public: 'Governo'
+      // DEFESO ELEITORAL 2026: Rótulo neutralizado durante o período restritivo.
+      // Reverter para 'Governo' após 25/10/2026
+      public: 'Instituições Parceiras'
     },
     en: {
       tag: 'PARTNER NETWORK',
@@ -28,7 +30,9 @@ const ResearchMap = () => {
       headquarters: 'Headquarters',
       research: 'Research',
       companies: 'Companies',
-      public: 'Government'
+      // DEFESO ELEITORAL 2026: Neutralized label during restriction period.
+      // Revert to 'Government' after 25/10/2026
+      public: 'Partner Institutions'
     }
   }[language];
 
@@ -81,14 +85,16 @@ const ResearchMap = () => {
       description: language === 'pt' ? 'Cooperativa dos Plantadores de Cana' : 'Sugarcane Planters Cooperative',
       x: 48, y: 62
     },
-    {
-      id: 7,
-      name: 'SAASP',
-      city: 'São Paulo, SP',
-      category: 'public',
-      description: language === 'pt' ? 'Secretaria de Agricultura e Abastecimento' : 'Agriculture and Supply Secretary',
-      x: 66, y: 71
-    },
+    // DEFESO ELEITORAL 2026 (04/07 a 25/10/2026): Pin da SAASP ocultado temporariamente.
+    // Descomentar para restaurar pós-eleições (a partir de 26/10/2026):
+    // {
+    //   id: 7,
+    //   name: 'SAASP',
+    //   city: 'São Paulo, SP',
+    //   category: 'public',
+    //   description: language === 'pt' ? 'Secretaria de Agricultura e Abastecimento' : 'Agriculture and Supply Secretary',
+    //   x: 66, y: 71
+    // },
     {
       id: 8,
       name: 'IAC',

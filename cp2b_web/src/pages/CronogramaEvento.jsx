@@ -34,9 +34,14 @@ const SCHEDULE = [
         speakers: [
           { name: 'Rosângela', role: { pt: 'Anfitriã / Boas-vindas', en: 'Host / Welcome' }, inst: 'NIPE', isModerator: false },
           { name: 'Ana Maria Frattini Fileti', role: { pt: 'Pró-Reitora de Pesquisa', en: 'Vice-Rector for Research' }, inst: 'UNICAMP', isModerator: false },
-          { name: 'Ricardo Rosário', role: { pt: 'Assessor Especial de Gabinete da Secretaria de Agricultura', en: 'Special Cabinet Advisor, Secretary of Agriculture' }, inst: 'Governo de SP', isModerator: false },
-          { name: 'Braz dos Santos Adegas Júnior', role: { pt: 'Secretário de Clima e Sustentabilidade', en: 'Secretary of Climate & Sustainability' }, inst: 'Prefeitura de Campinas', isModerator: false },
-          { name: 'Marisa Maia de Barros', role: { pt: 'Subsecretária de Energia e Mineração', en: 'Under-Secretary for Energy & Mining' }, inst: 'SEMIL-SP', isModerator: false },
+          // DEFESO ELEITORAL 2026 (04/07 a 25/10/2026): Cargos/instituições governamentais neutralizados temporariamente.
+          // Para restaurar pós-eleições (a partir de 26/10/2026):
+          // { name: 'Ricardo Rosário', role: { pt: 'Assessor Especial de Gabinete da Secretaria de Agricultura', en: 'Special Cabinet Advisor, Secretary of Agriculture' }, inst: 'Governo de SP', isModerator: false },
+          // { name: 'Braz dos Santos Adegas Júnior', role: { pt: 'Secretário de Clima e Sustentabilidade', en: 'Secretary of Climate & Sustainability' }, inst: 'Prefeitura de Campinas', isModerator: false },
+          // { name: 'Marisa Maia de Barros', role: { pt: 'Subsecretária de Energia e Mineração', en: 'Under-Secretary for Energy & Mining' }, inst: 'SEMIL-SP', isModerator: false },
+          { name: 'Ricardo Rosário', role: { pt: 'Representante Convidado', en: 'Guest Representative' }, inst: 'Setor Agroenergético', isModerator: false },
+          { name: 'Braz dos Santos Adegas Júnior', role: { pt: 'Especialista Convidado', en: 'Guest Specialist' }, inst: 'Sustentabilidade', isModerator: false },
+          { name: 'Marisa Maia de Barros', role: { pt: 'Especialista em Energia e Mineração', en: 'Energy & Mining Specialist' }, inst: 'Setor Energético', isModerator: false },
           { name: 'Bruna de Souza Moraes', role: { pt: 'Diretora do CP2b', en: 'CP2b Director' }, inst: 'CP2b / UNICAMP', isModerator: false },
         ],
       },
@@ -131,7 +136,9 @@ const SCHEDULE = [
         speakers: [
           { name: 'Leidiane Ferronato Mariani', role: { pt: 'Moderadora', en: 'Moderator' }, inst: 'Amplum Biogás', isModerator: true },
           { name: 'Renata Beckert Isfer', role: { pt: 'Procuradora', en: 'Attorney' }, inst: 'AGU', isModerator: false },
-          { name: 'Lais Palazzo Almada', role: { pt: 'Diretora de P&G e Biocombustíveis', en: 'Oil, Gas & Biofuels Director' }, inst: 'SEMIL-SP', isModerator: false },
+          // DEFESO ELEITORAL 2026 (04/07 a 25/10/2026): Para restaurar pós-eleições:
+          // { name: 'Lais Palazzo Almada', role: { pt: 'Diretora de P&G e Biocombustíveis', en: 'Oil, Gas & Biofuels Director' }, inst: 'SEMIL-SP', isModerator: false },
+          { name: 'Lais Palazzo Almada', role: { pt: 'Especialista em Biocombustíveis', en: 'Biofuels Specialist' }, inst: 'Setor de P&G', isModerator: false },
           { name: 'Maria Clara Marcon Pontelli', role: { pt: 'Analista Técnica', en: 'Technical Analyst' }, inst: 'ABIOGÁS', isModerator: false },
           { name: 'Paula Isabel da Costa Barbosa', role: { pt: 'Pesquisadora', en: 'Researcher' }, inst: 'EPE', isModerator: false },
         ],
