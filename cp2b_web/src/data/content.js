@@ -173,10 +173,13 @@ The conception of CP2b and its own mission foresee the strong integration of bas
 
 export const partners = {
   host: { name: 'Núcleo Interdisciplinar de Planejamento Energético (NIPE/UNICAMP)', location: 'Campinas, SP' },
-  public: [
-    { name: 'Secretaria Estadual de Agricultura e Abastecimento de São Paulo (SAASP)', location: 'São Paulo, SP' },
-    { name: 'Secretaria Municipal do Verde, Meio Ambiente e Desenvolvimento Sustentável de Campinas (SMVMADS/PMC)', location: 'Campinas, SP' }
-  ],
+  // DEFESO ELEITORAL 2026 (04/07 a 25/10/2026): Ocultado temporariamente da vitrine institucional.
+  // Reativar após 25/10/2026 descomentando os parceiros abaixo:
+  // public: [
+  //   { name: 'Secretaria Estadual de Agricultura e Abastecimento de São Paulo (SAASP)', location: 'São Paulo, SP' },
+  //   { name: 'Secretaria Municipal do Verde, Meio Ambiente e Desenvolvimento Sustentável de Campinas (SMVMADS/PMC)', location: 'Campinas, SP' }
+  // ],
+  public: [],
   research: [
     { name: 'Universidade Federal de Alfenas (UNIFAL)', location: 'Alfenas, MG' },
     { name: 'Instituto Agronômico de Campinas (IAC/SAASP)', location: 'Campinas, SP' },
