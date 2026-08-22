@@ -71,10 +71,7 @@ import Others from './pages/Others';
 import NotFound from './pages/NotFound';
 import Manutencao from './pages/Manutencao';
 import ForumPaulista from './pages/ForumPaulista';
-import Registro from './pages/Registro';
-import AgendaMeetups from './pages/AgendaMeetups';
 import ConfirmarMeetup from './pages/ConfirmarMeetup';
-import CronogramaEvento from './pages/CronogramaEvento';
 import Events from './pages/Events';
 import EventDetail from './pages/EventDetail';
 import Gallery from './pages/Gallery';
@@ -243,9 +240,9 @@ function App() {
                     <Route path="/podcast" element={<GuardedRoute pageKey="podcast" element={<Podcast />} />} />
                     <Route path="/outros" element={<Others />} />
                     <Route path="/forum-paulista" element={<GuardedRoute pageKey="forum-paulista" element={<ForumPaulista />} />} />
-                    <Route path="/registro" element={<Registro />} />
-                    <Route path="/agenda-meetups" element={<AgendaMeetups />} />
-                    <Route path="/cronograma-evento" element={<CronogramaEvento />} />
+                    {/* Fórum de 2026 encerrado: /registro, /agenda-meetups e
+                        /cronograma-evento foram removidos. /confirmar-meetup
+                        permanece porque e-mails já enviados apontam para ele. */}
                     <Route path="/confirmar-meetup" element={<ConfirmarMeetup />} />
                     <Route path="/manutencao" element={<Manutencao />} />
                     <Route path="*" element={<NotFound />} />

@@ -240,17 +240,9 @@ const Header = () => {
 
               <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
               <Nav.Link as={Link} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
-              <NavDropdown title={t.forumPaulista} id="nav-dropdown-forum" className="fw-semibold">
-                <NavDropdown.Item as={Link} to="/forum-paulista">
-                  {t.forumAbout}
-                </NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to="/cronograma-evento">
-                  {t.forumSchedule}
-                </NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to={`/registro?convite=${import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta'}`}>
-                  {t.forumRegister}
-                </NavDropdown.Item>
-              </NavDropdown>
+              {/* O Fórum de 2026 já aconteceu: cronograma e registro saíram,
+                  sobrou só a retrospectiva — dropdown de um item vira link. */}
+              <Nav.Link as={Link} to="/forum-paulista" className="fw-semibold px-2">{t.forumPaulista}</Nav.Link>
               <Nav.Item>
                 <a
                   href="/pilar2b"

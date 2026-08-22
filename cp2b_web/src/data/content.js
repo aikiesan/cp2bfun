@@ -40,10 +40,9 @@ export const menuLabels = {
     accessibility: 'Acessibilidade',
     search: 'Buscar',
     axes: 'Eixos',
+    solutions: 'Soluções',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'Sobre o Evento',
-    forumRegister: 'Registro Meet-up',
-    forumSchedule: 'Cronograma do Evento',
     events: 'Eventos',
     gallery: 'Galeria',
     pilar2b: 'PILAR-2b'
@@ -80,10 +79,9 @@ export const menuLabels = {
     accessibility: 'Accessibility',
     search: 'Search',
     axes: 'Axes',
+    solutions: 'Solutions',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'About the Event',
-    forumRegister: 'Meet-up Registration',
-    forumSchedule: 'Event Schedule',
     events: 'Events',
     gallery: 'Gallery',
     pilar2b: 'PILAR-2b'
@@ -1190,21 +1188,21 @@ export const pageSeo = {
   forum: {
     pt: {
       title: 'I Fórum Paulista de Biogás e Bioprodutos',
-      description: 'Encontro da Cadeia de Biogás e Bioprodutos do Estado de São Paulo — 28 de maio de 2026, UNICAMP.',
+      description: 'Retrospectiva do I Fórum Paulista de Biogás e Bioprodutos, realizado em 28 de maio de 2026 na UNICAMP: programação, resultados e registro fotográfico.',
     },
     en: {
       title: 'I São Paulo Biogas and Bioproducts Forum',
-      description: 'Meeting of the Biogas and Bioproducts Chain of São Paulo State — May 28, 2026, UNICAMP.',
+      description: 'Retrospective of the I São Paulo Biogas and Bioproducts Forum, held on May 28, 2026 at UNICAMP: programme, outcomes and photo coverage.',
     },
   },
-  cronograma: {
+  solucoes: {
     pt: {
-      title: 'Cronograma — I Fórum Paulista de Biogás e Bioprodutos',
-      description: 'Grade completa do I Fórum Paulista de Biogás e Bioprodutos — 28 de maio de 2026, UNICAMP. Palestrantes, painéis e programação detalhada.',
+      title: 'Soluções para o seu negócio',
+      description: 'Serviços técnicos, P&D cooperativo, licenciamento de tecnologia e capacitação em biogás e bioprodutos. Infraestrutura laboratorial do CP2b da bancada à planta piloto (TRL 2 a 6).',
     },
     en: {
-      title: 'Schedule — I São Paulo Biogas and Bioproducts Forum',
-      description: 'Full schedule of the I São Paulo Biogas and Bioproducts Forum — May 28, 2026, UNICAMP. Speakers, panels and detailed program.',
+      title: 'Solutions for your business',
+      description: 'Technical services, cooperative R&D, technology licensing and training in biogas and bioproducts. CP2b laboratory infrastructure from bench to pilot plant (TRL 2 to 6).',
     },
   },
   contact: {

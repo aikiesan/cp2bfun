@@ -348,11 +348,6 @@ const Dashboard = () => {
                     <Badge bg="success" className="ms-2">NEW</Badge>
                   </Link>
                 </Col>
-                <Col md={4} sm={6}>
-                  <a href="/registro" target="_blank" rel="noopener noreferrer" className="btn btn-outline-secondary w-100">
-                    <i className="bi bi-box-arrow-up-right me-2"></i>Página de Inscrição
-                  </a>
-                </Col>
               </Row>
             </Card.Body>
           </Card>
