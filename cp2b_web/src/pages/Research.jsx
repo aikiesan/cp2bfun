@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Accordion, Row, Col, Card } from 'react-bootstrap';
+import { Container, Row, Col, Card } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { researchAxes, menuLabels } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
@@ -56,6 +56,9 @@ const Research = () => {
       axis: 'EIXO',
       sdgs: 'ODS Relacionados:',
       activities: 'Atividades Desenvolvidas',
+      mindmapHint: 'Clique em um eixo para abrir suas atividades e, em seguida, em uma atividade para ver os itens.',
+      allAxes: 'Todos os eixos',
+      noDetails: 'Detalhamento em preparação para este eixo.',
       infraTitle: 'Infraestrutura Laboratorial',
       infraSubtitle: 'Laboratórios e plantas piloto que sustentam os eixos, do TRL de bancada ao pré-industrial.',
       trl: 'TRL',
@@ -68,6 +71,9 @@ const Research = () => {
       axis: 'AXIS',
       sdgs: 'Related SDGs:',
       activities: 'Activities',
+      mindmapHint: 'Click an axis to open its activities, then an activity to see the items.',
+      allAxes: 'All axes',
+      noDetails: 'Detailed breakdown in preparation for this axis.',
       infraTitle: 'Laboratory Infrastructure',
       infraSubtitle: 'Laboratories and pilot plants underpinning the axes, from bench-scale to pre-industrial TRL.',
       trl: 'TRL',
@@ -83,18 +89,14 @@ const Research = () => {
     <Container className="py-5">
 
       <div className="border-top border-dark pt-5">
-        <h3 className="fw-bold mb-4">{labels.details}</h3>
-        <Accordion flush alwaysOpen>
-          {axes.map((axis) => (
-            <AxisMindMap
-              key={axis.id}
-              axis={axis}
-              details={axis.details || axisDetails[axis.id]}
-              language={language}
-              labels={labels}
-            />
-          ))}
-        </Accordion>
+        <h3 className="fw-bold mb-1">{labels.details}</h3>
+        <p className="text-muted mb-4">{labels.mindmapHint}</p>
+        <AxisMindMap
+          axes={axes}
+          detailsById={axisDetails}
+          language={language}
+          labels={labels}
+        />
       </div>
 
       {laboratories.length > 0 && (
