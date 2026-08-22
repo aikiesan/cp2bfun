@@ -1,4 +1,4 @@
--- CP2B CMS Database Schema
+-- CP2b CMS Database Schema
 
 -- News articles
 CREATE TABLE IF NOT EXISTS news (

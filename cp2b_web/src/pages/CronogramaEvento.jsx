@@ -6,11 +6,13 @@ import { useLanguage } from '../context/LanguageContext';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 
+// Colors reference the Pilar-2b brand tokens (styles/tokens.css) via
+// CSS custom properties — no duplicated hex literals here.
 const BLOCK_COLORS = {
-  green:  { bg: '#2E7D32', bgLight: 'rgba(46,125,50,0.08)',  text: '#2E7D32' },
-  amber:  { bg: '#F59E0B', bgLight: 'rgba(245,158,11,0.08)', text: '#B45309' },
-  petrol: { bg: '#004d61', bgLight: 'rgba(0,77,97,0.08)',    text: '#004d61' },
-  dark:   { bg: '#2c3e50', bgLight: 'rgba(44,62,80,0.08)',   text: '#2c3e50' },
+  green:  { bg: 'var(--cp2b-verde)',        bgLight: 'color-mix(in srgb, var(--cp2b-verde) 8%, transparent)',        text: 'var(--cp2b-verde-escuro)' },
+  amber:  { bg: 'var(--cp2b-ambar)',        bgLight: 'color-mix(in srgb, var(--cp2b-ambar) 8%, transparent)',        text: 'var(--cp2b-ambar)' },
+  petrol: { bg: 'var(--cp2b-azul-petroleo)',bgLight: 'color-mix(in srgb, var(--cp2b-azul-petroleo) 8%, transparent)',text: 'var(--cp2b-azul-petroleo)' },
+  dark:   { bg: 'var(--gray-900)',          bgLight: 'color-mix(in srgb, var(--gray-900) 8%, transparent)',          text: 'var(--gray-900)' },
 };
 
 const SCHEDULE = [
@@ -391,7 +393,7 @@ const CronogramaEvento = () => {
           minHeight: '380px',
           display: 'flex',
           alignItems: 'center',
-          background: 'linear-gradient(135deg, #0a1a1a 0%, #004d61 60%, #2E7D32 100%)',
+          background: 'linear-gradient(135deg, var(--gray-900) 0%, var(--cp2b-azul-petroleo) 60%, var(--cp2b-verde-escuro) 100%)',
           overflow: 'hidden',
         }}
       >
@@ -467,7 +469,7 @@ const CronogramaEvento = () => {
       <section
         className="py-5"
         style={{
-          background: 'linear-gradient(135deg, #004d61 0%, #2E7D32 100%)',
+          background: 'linear-gradient(135deg, var(--cp2b-azul-petroleo) 0%, var(--cp2b-verde-escuro) 100%)',
         }}
       >
         <Container className="text-center text-white">

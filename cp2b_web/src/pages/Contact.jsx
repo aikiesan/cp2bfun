@@ -23,7 +23,7 @@ const Contact = () => {
       address: 'Endereco',
       direct: 'Contatos Diretos',
       general: 'Geral',
-      financial: 'Financeiro',
+      coordination: 'Coordenação',
       phone: 'Telefone',
       sendMsg: 'Envie uma mensagem',
       formName: 'NOME',
@@ -42,7 +42,7 @@ const Contact = () => {
       address: 'Address',
       direct: 'Direct Contacts',
       general: 'General',
-      financial: 'Administrative',
+      coordination: 'Coordination',
       phone: 'Phone',
       sendMsg: 'Send a message',
       formName: 'NAME',
@@ -109,8 +109,8 @@ const Contact = () => {
 
           <div className="mb-5">
             <h4 className="fw-bold mb-3">{labels.direct}</h4>
-            <p className="text-muted mb-1"><strong>{labels.general}:</strong> nipe@nipe.unicamp.br</p>
-            <p className="text-muted mb-1"><strong>{labels.financial}:</strong> administrativo@cp2b.unicamp.br</p>
+            <p className="text-muted mb-1"><strong>{labels.general}:</strong> administrativo@cp2b.unicamp.br</p>
+            <p className="text-muted mb-1"><strong>{labels.coordination}:</strong> diretoria@cp2b.unicamp.br</p>
             <p className="text-muted"><strong>{labels.phone}:</strong> +55 (19) 3521-1244</p>
           </div>
 

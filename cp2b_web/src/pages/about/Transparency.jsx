@@ -100,9 +100,28 @@ const Transparency = () => {
               <p className="text-muted mb-3">{content.sections.reports.description}</p>
             )}
             {content.sections.reports.items.length > 0 ? (
-              <div>
-                {/* Render report cards */}
-              </div>
+              <Row className="g-3">
+                {content.sections.reports.items.map((report) => (
+                  <Col md={6} key={report.id}>
+                    <Card className="border-0 shadow-sm h-100">
+                      <Card.Body className="p-4">
+                        <h5 className="fw-bold mb-1">{report.title}</h5>
+                        {report.period && (
+                          <p className="mono-label text-muted mb-2">{report.period}</p>
+                        )}
+                        {report.description && (
+                          <p className="text-muted small mb-3">{report.description}</p>
+                        )}
+                        {report.link && (
+                          <Button variant="outline-success" href={report.link} target="_blank" size="sm">
+                            {language === 'pt' ? 'Ver processo FAPESP' : 'View FAPESP process'}
+                          </Button>
+                        )}
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
             ) : (
               <p className="text-muted">
                 {language === 'pt'

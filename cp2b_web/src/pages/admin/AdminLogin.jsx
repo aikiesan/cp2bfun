@@ -28,13 +28,13 @@ const AdminLogin = ({ onSuccess }) => {
   return (
     <div
       className="d-flex align-items-center justify-content-center min-vh-100 px-3"
-      style={{ background: 'linear-gradient(130deg, #00323f 0%, #004d61 55%, #0b5a48 100%)' }}
+      style={{ background: 'linear-gradient(130deg, var(--cp2b-petrol-900) 0%, var(--cp2b-azul-petroleo) 55%, var(--cp2b-verde-escuro) 100%)' }}
     >
       <Card className="shadow-lg border-0 w-100" style={{ maxWidth: '400px' }}>
         <Card.Body className="p-4 p-md-5">
           <div className="text-center mb-4">
             <img
-              src="/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png"
+              src="/assets/logos/cp2b-logo-gradient.svg"
               alt="CP2b"
               style={{ height: '56px' }}
               className="mb-3"

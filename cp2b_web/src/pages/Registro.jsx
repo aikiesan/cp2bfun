@@ -10,7 +10,7 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 const labels = {
   pt: {
     tag: 'FORUM PAULISTA',
-    heroTitle: 'CP2B Meet-up: Conecte-se com a Rede',
+    heroTitle: 'CP2b Meet-up: Conecte-se com a Rede',
     heroSubtitle: 'Um evento de conexões de 15 minutos entre pesquisadores, empresas, autoridades e estudantes',
     profileTypes: [
       { value: 'pesquisador', label: 'Pesquisador', icon: 'bi-mortarboard' },
@@ -48,7 +48,7 @@ const labels = {
   },
   en: {
     tag: 'FORUM PAULISTA',
-    heroTitle: 'CP2B Meet-up: Connect with the Network',
+    heroTitle: 'CP2b Meet-up: Connect with the Network',
     heroSubtitle: 'A 15-minute connection event between researchers, companies, authorities and students',
     profileTypes: [
       { value: 'pesquisador', label: 'Researcher', icon: 'bi-mortarboard' },

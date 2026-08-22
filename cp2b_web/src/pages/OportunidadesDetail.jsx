@@ -106,7 +106,7 @@ const OportunidadesDetail = () => {
     image: article.image ? (article.image.startsWith('http') ? article.image : `${DOMAIN}${article.image}`) : undefined,
     datePublished: article.date,
     author: { '@type': 'Organization', name: 'CP2b' },
-    publisher: { '@type': 'Organization', name: 'CP2b', logo: { '@type': 'ImageObject', url: 'https://cp2b.unicamp.br/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png' } },
+    publisher: { '@type': 'Organization', name: 'CP2b', logo: { '@type': 'ImageObject', url: 'https://cp2b.unicamp.br/assets/logos/cp2b-logo-og.png' } },
   } : null;
 
   return (

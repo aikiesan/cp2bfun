@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Container, Accordion } from 'react-bootstrap';
+import { Container, Accordion, Row, Col, Card } from 'react-bootstrap';
 import { motion } from 'framer-motion';
-import { researchAxes, sdgMap, menuLabels } from '../data/content';
+import { researchAxes, menuLabels } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchAxes } from '../services/api';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
+import AxisMindMap from '../components/AxisMindMap';
+import { axisDetails } from '../data/generated/axisDetails';
+import { laboratories } from '../data/generated/laboratories';
 
 const transformApiAxes = (apiAxes, lang) =>
   apiAxes.map((row) => {
@@ -24,6 +27,9 @@ const transformApiAxes = (apiAxes, lang) =>
       coordinators,
       content: lang === 'pt' ? row.content_pt : (row.content_en || row.content_pt),
       sdgs: row.sdgs || [],
+      // O backend ainda não expõe `details` (migration 025) — quando expuser,
+      // preferir row.details aqui e cair para o axisDetails estático abaixo.
+      details: row.details || null,
     };
   });
 
@@ -48,14 +54,24 @@ const Research = () => {
       subtitle: 'A atuação do CP2b está organizada em oito eixos temáticos integrados, cobrindo desde o inventário de resíduos até políticas públicas.',
       details: 'Conheça os Eixos',
       axis: 'EIXO',
-      sdgs: 'ODS Relacionados:'
+      sdgs: 'ODS Relacionados:',
+      activities: 'Atividades Desenvolvidas',
+      infraTitle: 'Infraestrutura Laboratorial',
+      infraSubtitle: 'Laboratórios e plantas piloto que sustentam os eixos, do TRL de bancada ao pré-industrial.',
+      trl: 'TRL',
+      axesLabel: 'Eixos',
     },
     en: {
       tag: 'Research Structure',
       subtitle: 'CP2b\'s activities are organized into eight integrated thematic axes, covering from waste inventory to public policies.',
       details: 'Discover the Axes',
       axis: 'AXIS',
-      sdgs: 'Related SDGs:'
+      sdgs: 'Related SDGs:',
+      activities: 'Activities',
+      infraTitle: 'Laboratory Infrastructure',
+      infraSubtitle: 'Laboratories and pilot plants underpinning the axes, from bench-scale to pre-industrial TRL.',
+      trl: 'TRL',
+      axesLabel: 'Axes',
     }
   }[language];
 
@@ -70,65 +86,46 @@ const Research = () => {
         <h3 className="fw-bold mb-4">{labels.details}</h3>
         <Accordion flush alwaysOpen>
           {axes.map((axis) => (
-            <Accordion.Item eventKey={axis.id} key={axis.id} className="border-bottom border-dark bg-transparent">
-              <Accordion.Header>
-                <div className="py-2">
-                    <span className="d-block mono-label text-muted mb-1">{labels.axis} {axis.id}</span>
-                    <span className="fw-bold fs-5">{axis.title.split('–')[1] || axis.title}</span>
-                </div>
-              </Accordion.Header>
-              <Accordion.Body className="pb-4 pt-0">
-                {axis.coordinators && axis.coordinators.length > 0 && (
-                  <div className="d-flex flex-wrap gap-3 mb-4">
-                    {axis.coordinators.map((person) => (
-                      <div key={person.name} className="d-flex align-items-center gap-2">
-                        {person.photo ? (
-                          <img
-                            src={person.photo}
-                            alt={person.name}
-                            style={{ width: 96, height: 96, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
-                          />
-                        ) : (
-                          <div style={{
-                            width: 96, height: 96, borderRadius: '50%', backgroundColor: '#e0e0e0',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '0.85rem', fontWeight: 700, color: '#555', flexShrink: 0
-                          }}>
-                            {person.name.split(' ').filter(w => w.length > 2).slice(0, 2).map(w => w[0]).join('')}
-                          </div>
-                        )}
-                        <div>
-                          <div className="fw-semibold" style={{ fontSize: '0.82rem', lineHeight: 1.2 }}>{person.name}</div>
-                          <div className="text-success" style={{ fontSize: '0.72rem', fontWeight: 600 }}>{person.role}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <p className="text-muted mb-4" style={{ whiteSpace: 'pre-line' }}>{axis.content}</p>
-                
-                {/* SDG Images */}
-                {axis.sdgs && axis.sdgs.length > 0 && (
-                  <div>
-                    <span className="mono-label text-muted d-block mb-2">{labels.sdgs}</span>
-                    <div className="d-flex flex-wrap gap-2">
-                      {axis.sdgs.map((sdgId) => (
-                        <img 
-                          key={sdgId} 
-                          src={sdgMap[sdgId]} 
-                          alt={`ODS ${sdgId}`} 
-                          title={`Sustainable Development Goal ${sdgId}`}
-                          style={{ width: '60px', height: '60px', borderRadius: '8px' }} 
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </Accordion.Body>
-            </Accordion.Item>
+            <AxisMindMap
+              key={axis.id}
+              axis={axis}
+              details={axis.details || axisDetails[axis.id]}
+              language={language}
+              labels={labels}
+            />
           ))}
         </Accordion>
       </div>
+
+      {laboratories.length > 0 && (
+        <div className="border-top border-dark pt-5 mt-5">
+          <h3 className="fw-bold mb-1">{labels.infraTitle}</h3>
+          <p className="text-muted mb-4">{labels.infraSubtitle}</p>
+          <Row className="g-4">
+            {laboratories.map((lab) => (
+              <Col md={4} key={lab.name}>
+                <Card className="border-0 shadow-sm h-100">
+                  <Card.Body className="p-4 d-flex flex-column">
+                    <span className="mono-label text-success mb-1">{lab.acronym}</span>
+                    <h5 className="fw-bold mb-2">{lab.name}</h5>
+                    <p className="text-muted small mb-2">{[lab.institution, lab.lead].filter(Boolean).join(' · ')}</p>
+                    {lab.axes && lab.axes.length > 0 && (
+                      <p className="text-muted small mb-3">
+                        {labels.axesLabel}: {lab.axes.join(', ')}
+                      </p>
+                    )}
+                    {lab.trlSuggested && (
+                      <span className="badge bg-light text-dark border align-self-start mt-auto">
+                        {labels.trl}: {lab.trlSuggested}
+                      </span>
+                    )}
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
+        </div>
+      )}
     </Container>
     </motion.div>
     </>

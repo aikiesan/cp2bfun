@@ -84,5 +84,5 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`CP2B Backend running on port ${PORT}`);
+  console.log(`CP2b Backend running on port ${PORT}`);
 });

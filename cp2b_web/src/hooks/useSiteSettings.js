@@ -10,7 +10,7 @@ const DEFAULTS = {
     address_line1: 'Rua Cora Coralina, 330',
     address_line2: 'Campinas - SP, Brasil, CEP 13083-896',
     phone: '+55 (19) 3521-1244',
-    email: 'nipe@nipe.unicamp.br',
+    email: 'administrativo@cp2b.unicamp.br',
   },
   social: { ...staticSocialLinks },
   footer: {

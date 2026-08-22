@@ -576,10 +576,11 @@ export const confirmMeetupAdmin = (id) => api.put(`/meetup-requests/${id}/confir
 export const fetchGallery = async () => {
   try {
     const response = await api.get('/gallery');
-    const backendHost = import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.startsWith('http')
-      ? import.meta.env.VITE_API_URL.replace(/\/api$/, '')
-      : 'http://localhost:3001';
-    return response.data.map(photo => ({ ...photo, url: `${backendHost}${photo.url}` }));
+    // photo.url is already a same-origin-relative path (e.g. "/uploads/gallery/xyz.jpg").
+    // The dev proxy and the production Apache/Nginx config both forward /uploads to the
+    // backend, so it must NOT be prefixed with a hardcoded host — doing so breaks the
+    // gallery for every visitor whose browser isn't the developer's own machine.
+    return response.data;
   } catch (error) {
     if (error.response?.status && error.response.status >= 500) console.error('Error fetching gallery:', error);
     return [];
@@ -588,6 +589,14 @@ export const fetchGallery = async () => {
 
 export const uploadGalleryPhoto = async (formData) => (await api.post('/gallery', formData)).data;
 export const deleteGalleryPhoto = async (id) => (await api.delete(`/gallery/${id}`)).data;
+export const deleteGalleryAlbum = async (albumId) => (await api.delete(`/gallery/album/${albumId}`)).data;
+export const fetchGalleryStorage = async () => {
+  try {
+    return (await api.get('/gallery/storage')).data;
+  } catch {
+    return null;
+  }
+};
 
 // ============================================================
 // Press Kit API

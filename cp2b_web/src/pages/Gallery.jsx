@@ -50,8 +50,23 @@ const Gallery = () => {
       return acc;
     }, {});
 
-    const covers = photos
-      .filter((p) => p.is_cover)
+    const explicitCovers = photos.filter((p) => p.is_cover && p.album_id);
+    const albumIdsWithCover = new Set(explicitCovers.map((p) => p.album_id));
+
+    // Resilience: an album that lost its cover row (e.g. the cover photo was
+    // deleted individually) would otherwise vanish from the public gallery
+    // entirely, orphaning its remaining photos. Fall back to the oldest
+    // remaining photo in that album as a stand-in cover instead of hiding it.
+    const fallbackCovers = [];
+    const seenFallbackAlbums = new Set();
+    photos.forEach((p) => {
+      if (p.is_cover || !p.album_id || albumIdsWithCover.has(p.album_id)) return;
+      if (seenFallbackAlbums.has(p.album_id)) return;
+      seenFallbackAlbums.add(p.album_id);
+      fallbackCovers.push(p);
+    });
+
+    const covers = [...explicitCovers, ...fallbackCovers]
       .map((album) => ({ ...album, photoCount: counts[album.album_id] || 0 }))
       .sort((a, b) => new Date(b.date || 0) - new Date(a.date || 0));
 
@@ -98,7 +113,7 @@ const Gallery = () => {
                     type="button"
                     key={album.id}
                     className="album-card"
-                    onClick={() => navigate(`/gallery/${album.album_id}`)}
+                    onClick={() => navigate(`/galeria/${album.album_id}`)}
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}

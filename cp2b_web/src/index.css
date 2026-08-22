@@ -1,20 +1,6 @@
-:root {
-  --cp2b-black: #1a1a1a;
-  --cp2b-dark: #2c3e50;
-  --cp2b-white: #ffffff;
-  --cp2b-light-gray: #f8f9fa; /* One UI background */
-  --cp2b-border: #e9ecef;
-  --cp2b-green: #2E7D32; 
-  --cp2b-lime: #AEEA00; 
-  --cp2b-petrol: #004d61; /* DeepESG vibe - from the logo file name */
-  --cp2b-radius: 24px; /* One UI Roundness */
-  --cp2b-radius-sm: 12px;
-  --font-main: 'Inter', sans-serif;
-  --font-mono: 'Space Mono', monospace;
-  --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
-  --shadow-md: 0 8px 24px rgba(0,0,0,0.08);
-  --shadow-lg: 0 16px 48px rgba(0,0,0,0.12);
-}
+/* Design tokens (colors, type, spacing, radius, shadow) live in
+   styles/tokens.css — ported from the Pilar-2b Design System and
+   imported before this file. See tokens.css for the full palette. */
 
 html {
   /* Off-screen sections use framer-motion x-offset entrance animations; clip at
@@ -56,9 +42,10 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--cp2b-white);
 }
 
+/* Pilar-2b hover convention: solid buttons darken one step — no opacity fade. */
 .btn-primary:hover {
   box-shadow: var(--shadow-md);
-  opacity: 0.95;
+  filter: brightness(0.92);
 }
 
 .btn-outline-primary {
@@ -75,16 +62,18 @@ h1, h2, h3, h4, h5, h6 {
 
 .card {
   border-radius: var(--cp2b-radius) !important;
-  border: none;
+  border: 1px solid var(--border-default);
   background: var(--cp2b-white);
   box-shadow: var(--shadow-sm);
   overflow: hidden;
   transition: all 0.3s ease;
 }
 
+/* Signature Pilar-2b card interaction: lime border + shadow lift on hover. */
 .card:hover {
   box-shadow: var(--shadow-md);
   transform: translateY(-4px);
+  border-color: var(--cp2b-lime);
 }
 
 /* Navbar Modernization */
@@ -110,7 +99,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .nav-link:hover, .nav-link.active {
   color: var(--cp2b-petrol) !important;
-  background: rgba(46, 125, 50, 0.08);
+  background: color-mix(in srgb, var(--cp2b-green) 8%, transparent);
   text-decoration: none;
 }
 
@@ -164,85 +153,50 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .accordion-button:not(.collapsed) {
-  background-color: rgba(46, 125, 50, 0.05) !important;
+  background-color: color-mix(in srgb, var(--cp2b-petrol) 5%, transparent) !important;
   color: var(--cp2b-petrol) !important;
 }
 
 /* Utility */
 
 .text-gradient {
-
   background: linear-gradient(135deg, var(--cp2b-petrol) 0%, var(--cp2b-green) 100%);
-
   -webkit-background-clip: text;
   background-clip: text;
-
   -webkit-text-fill-color: transparent;
-
 }
-
-
 
 /* Mobile Optimization Overrides */
 
 @media (max-width: 767.98px) {
-
   /* Typography Scaling */
-
   h1.display-3 {
-
     font-size: 2.5rem !important; /* Smaller hero title */
-
   }
-
-  
 
   h1.display-4, h1.display-5 {
-
     font-size: 2rem !important;
-
   }
-
-  
 
   .lead {
-
     font-size: 1rem !important;
-
   }
-
-
 
   /* Layout & Spacing */
-
   .py-5 {
-
     padding-top: 3rem !important;
-
     padding-bottom: 3rem !important;
-
   }
-
-  
 
   .container {
-
     padding-left: 1.5rem;
-
     padding-right: 1.5rem;
-
   }
 
-
-
   /* Carousel/Hero Mobile */
-
   .carousel-item > div {
-
     height: 80vh !important; /* Reduce height on mobile */
-
     min-height: 500px !important;
-
   }
 
   /* Reset hero margin on mobile */
@@ -250,50 +204,27 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 0 !important;
   }
 
-  
-
   /* Stack buttons in hero if needed */
-
   .carousel-caption .d-flex {
-
     flex-direction: column;
-
     width: 100%;
-
   }
-
-  
 
   .carousel-caption .btn {
-
     width: 100%;
-
     margin-bottom: 0.5rem;
-
   }
-
-
 
   /* Header adjustments */
-
   .navbar-brand img {
-
     height: 40px !important; /* Smaller logo */
-
   }
-
-
 
   /* Card Lift disable on touch to prevent sticky hover state */
-
   .hover-lift:hover {
-
     transform: none;
-
     box-shadow: var(--shadow-sm);
-
   }
-
 }
 
 /* Admin Layout — flex shell */
@@ -340,12 +271,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .admin-sidebar .nav-link:hover {
   color: var(--cp2b-petrol) !important;
-  background: rgba(0, 77, 97, 0.08) !important;
+  background: color-mix(in srgb, var(--cp2b-petrol) 8%, transparent) !important;
 }
 
 .admin-sidebar .nav-link.active {
   color: var(--cp2b-petrol) !important;
-  background: rgba(0, 77, 97, 0.12) !important;
+  background: color-mix(in srgb, var(--cp2b-petrol) 12%, transparent) !important;
   font-weight: 600;
 }
 
@@ -460,7 +391,7 @@ body.high-contrast .admin-sidebar .nav-link {
 body.high-contrast .admin-sidebar .nav-link:hover,
 body.high-contrast .admin-sidebar .nav-link.active {
   color: var(--cp2b-petrol) !important;
-  background: rgba(0, 77, 97, 0.12) !important;
+  background: color-mix(in srgb, var(--cp2b-petrol) 12%, transparent) !important;
 }
 
 body.high-contrast .admin-sidebar h5 {
@@ -663,7 +594,7 @@ body.high-contrast .social-sidebar-item {
 .hover-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(46, 125, 50, 0.1), rgba(0, 77, 97, 0.2));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--cp2b-green) 10%, transparent), color-mix(in srgb, var(--cp2b-petrol) 20%, transparent));
   opacity: 0;
   transition: opacity 0.4s ease;
   pointer-events: none;
@@ -679,8 +610,8 @@ body.high-contrast .social-sidebar-item {
 }
 
 .btn-glow:hover {
-  box-shadow: 0 0 20px rgba(46, 125, 50, 0.4),
-              0 0 40px rgba(46, 125, 50, 0.2);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--cp2b-green) 40%, transparent),
+              0 0 40px color-mix(in srgb, var(--cp2b-green) 20%, transparent);
   transform: translateY(-2px);
 }
 
@@ -762,7 +693,7 @@ body.high-contrast .btn-glow:hover {
 .navbar .nav-link.dropdown-toggle:hover,
 .navbar .nav-link.dropdown-toggle.show {
   color: var(--cp2b-petrol);
-  background: rgba(46, 125, 50, 0.08);
+  background: color-mix(in srgb, var(--cp2b-green) 8%, transparent);
 }
 
 /* Dropdown Menu */
@@ -784,20 +715,20 @@ body.high-contrast .btn-glow:hover {
 
 .navbar .dropdown-item:hover,
 .navbar .dropdown-item:focus {
-  background: rgba(46, 125, 50, 0.08);
+  background: color-mix(in srgb, var(--cp2b-green) 8%, transparent);
   color: var(--cp2b-green);
   padding-left: 2rem;
 }
 
 .navbar .dropdown-item.active,
 .navbar .dropdown-item:active {
-  background: rgba(46, 125, 50, 0.1);
+  background: color-mix(in srgb, var(--cp2b-green) 10%, transparent);
   color: var(--cp2b-petrol);
 }
 
 .navbar .nav-item.active > .nav-link.dropdown-toggle {
   color: var(--cp2b-petrol) !important;
-  background: rgba(46, 125, 50, 0.08);
+  background: color-mix(in srgb, var(--cp2b-green) 8%, transparent);
 }
 
 .navbar .dropdown-divider {
@@ -1764,66 +1695,60 @@ body.high-contrast .navbar .dropdown-item:hover {
 
 .newsletter-input::placeholder { color: rgba(255,255,255,0.5); }
 
-/* ---- Timeline ---- */
-.cp2b-timeline {
-  position: relative;
-  padding: 1rem 0;
-}
-
-.cp2b-timeline::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 0;
-  bottom: 0;
-  width: 2px;
-  background: linear-gradient(to bottom, var(--cp2b-petrol), var(--cp2b-lime));
-  transform: translateX(-50%);
-}
-
-.cp2b-timeline-entry {
-  margin-bottom: 3rem;
-}
-
-.cp2b-timeline-dot {
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
-  border: 3px solid white;
-  box-shadow: 0 0 0 3px var(--cp2b-petrol);
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1;
+/* ---- Timeline (responsive grid — no scrolling required) ---- */
+.cp2b-timeline-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
 }
 
 .cp2b-timeline-card {
   background: white;
-  border-radius: var(--cp2b-radius);
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  padding: 1.5rem;
-  transition: box-shadow 0.2s ease;
+  border-radius: var(--cp2b-radius-sm);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-sm);
+  padding: 1.35rem;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
 }
 
 .cp2b-timeline-card:hover {
-  box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+  box-shadow: var(--shadow-md);
+  border-color: var(--cp2b-lime);
 }
 
-@media (max-width: 768px) {
-  .cp2b-timeline::before {
-    left: 20px;
+@media (prefers-reduced-motion: no-preference) {
+  .cp2b-timeline-card:hover {
+    transform: translateY(-3px);
   }
+}
 
-  .cp2b-timeline-dot {
-    left: 20px;
+.cp2b-timeline-card__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.cp2b-timeline-card__icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.05rem;
+  flex-shrink: 0;
+}
+
+@media (max-width: 992px) {
+  .cp2b-timeline-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
+}
 
-  .cp2b-timeline-entry .row {
-    padding-left: 3rem;
-  }
-
-  .cp2b-timeline-card {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
+@media (max-width: 576px) {
+  .cp2b-timeline-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -216,7 +216,7 @@ const EventDetail = () => {
                 <h2 className="h4 fw-bold mb-4">{labels.gallery}</h2>
                 <div className="album-grid">
                   {albums.map((album) => (
-                    <Link key={album.id} to={`/gallery/${album.album_id}`} className="album-card">
+                    <Link key={album.id} to={`/galeria/${album.album_id}`} className="album-card">
                       <img src={album.url} alt={album.title} loading="lazy" />
                       <span className="album-overlay">
                         <span className="album-title">{album.title}</span>

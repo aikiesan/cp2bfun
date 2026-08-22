@@ -15,6 +15,10 @@ export default defineConfig({
         target: 'http://backend:3001',
         changeOrigin: true,
       },
+      '/uploads': {
+        target: 'http://backend:3001',
+        changeOrigin: true,
+      },
     },
   },
   plugins: [
@@ -25,19 +29,19 @@ export default defineConfig({
         name: 'CP2b - Centro Paulista de Estudos em Biogas e Bioprodutos',
         short_name: 'CP2b',
         description: 'Centro Paulista de Estudos em Biogas e Bioprodutos - UNICAMP',
-        theme_color: '#335C67',
+        theme_color: '#1E3E4C',
         background_color: '#f8f9fa',
         display: 'standalone',
         start_url: '/',
         icons: [
           {
-            src: '/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png',
+            src: '/assets/logos/cp2b-avatar-512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png',
+            src: '/assets/logos/cp2b-avatar-512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'maskable',
@@ -45,24 +49,13 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globIgnores: ['**/CP2B-LOGO-COLOR-DEGRADE@8x.png'],
+        globIgnores: ['**/assets/logos/cp2b-logo-og.png'],
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api\//, /^\/pilar2b/],
         cleanupOutdatedCaches: true,
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,otf}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         runtimeCaching: [
-          {
-            urlPattern: /^https:\/\/fonts\.(googleapis|gstatic)\.com\/.*/i,
-            handler: 'CacheFirst',
-            options: {
-              cacheName: 'google-fonts',
-              expiration: {
-                maxEntries: 20,
-                maxAgeSeconds: 60 * 60 * 24 * 365,
-              },
-            },
-          },
           {
             urlPattern: /^https:\/\/flagcdn\.com\/.*/i,
             handler: 'CacheFirst',

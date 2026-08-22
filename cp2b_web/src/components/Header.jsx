@@ -187,6 +187,9 @@ const Header = () => {
                 <NavDropdown.Item as={NavLink} to="/sobre/governanca">
                   {t.aboutSubmenu.governance}
                 </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/sobre/indicadores">
+                  {t.aboutSubmenu.indicators}
+                </NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to="/sobre/transparencia">
                   {t.aboutSubmenu.transparency}
                 </NavDropdown.Item>

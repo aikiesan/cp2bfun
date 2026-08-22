@@ -5,6 +5,8 @@ import { uploadGalleryPhoto } from '../../services/api';
 import imageCompression from 'browser-image-compression';
 import { useToast } from '../../components/admin';
 
+const MAX_ALBUM_PHOTOS = 60;
+
 const GalleryUpload = () => {
   const navigate = useNavigate();
   const { success, error } = useToast();
@@ -21,6 +23,11 @@ const GalleryUpload = () => {
 
   const handleFileChange = (e) => {
     const selected = Array.from(e.target.files);
+    if (selected.length > MAX_ALBUM_PHOTOS) {
+      error(`Selecione no máximo ${MAX_ALBUM_PHOTOS} fotos internas por álbum. Divida o envio em mais de um álbum.`);
+      e.target.value = '';
+      return;
+    }
     setFiles(selected);
     previews.forEach(url => URL.revokeObjectURL(url));
     setPreviews(selected.map(f => URL.createObjectURL(f)));
@@ -59,6 +66,11 @@ const GalleryUpload = () => {
 
     if (!coverFile || files.length === 0 || !title || !date) {
       error('Preencha todos os campos e selecione a capa e as imagens internas.');
+      return;
+    }
+
+    if (files.length > MAX_ALBUM_PHOTOS) {
+      error(`Selecione no máximo ${MAX_ALBUM_PHOTOS} fotos internas por álbum. Divida o envio em mais de um álbum.`);
       return;
     }
 
@@ -174,8 +186,8 @@ const GalleryUpload = () => {
 
             {previews.length > 0 && (
               <div className="mb-4 p-3 border rounded bg-light">
-                <p className="text-muted small mb-2">
-                  {previews.length} arquivo(s) selecionado(s)
+                <p className={`text-muted small mb-2 ${previews.length > MAX_ALBUM_PHOTOS ? 'text-danger fw-semibold' : ''}`}>
+                  {previews.length}/{MAX_ALBUM_PHOTOS} arquivo(s) selecionado(s)
                 </p>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
                   {previews.map((src, i) => (
