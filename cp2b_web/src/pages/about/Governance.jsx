@@ -8,6 +8,7 @@ import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../../data/content';
 import SeoHead from '../../components/SeoHead';
+import PageHero from '../../components/PageHero';
 
 const Governance = () => {
   const { language } = useLanguage();
@@ -62,21 +63,14 @@ const Governance = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <PageHero eyebrow="CP2b" title={content.title} subtitle={content.description} />
       <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Container className="py-5">
-        <Row className="mb-5">
-          <Col lg={8}>
-            <span className="mono-label text-success">CP2b</span>
-            <h1 className="display-4 fw-bold mb-4">{content.title}</h1>
-            <p className="lead text-muted">{content.description}</p>
-          </Col>
-        </Row>
-
-        {/* Organizational Structure */}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Container className="py-5">
+          {/* Organizational Structure */}
         <Row className="mb-5">
           <Col md={12}>
             <h3 className="fw-bold mb-4">{content.sections.structure.title}</h3>
