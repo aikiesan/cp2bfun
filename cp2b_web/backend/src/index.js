@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import helmet from 'helmet';
+import rateLimit from 'express-rate-limit';
 import newsRoutes from './routes/news.js';
 import contentRoutes from './routes/content.js';
 import teamRoutes from './routes/team.js';
@@ -25,7 +27,7 @@ import podcastRoutes from './routes/podcast.js';
 import pageSettingsRoutes from './routes/pageSettings.js';
 import settingsRoutes from './routes/settings.js';
 import authRoutes from './routes/auth.js';
-import { adminGate, authEnabled } from './middleware/auth.js';
+import { adminGate, authEnabled, PUBLIC_WRITES } from './middleware/auth.js';
 
 dotenv.config();
 
@@ -33,12 +35,36 @@ const app = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
+app.use(helmet({
+  // Uploaded gallery/press-kit images are public and served from a
+  // different origin in local dev (Vite :5173 -> API :3001); the default
+  // same-origin CORP would silently break <img> loads there.
+  crossOriginResourcePolicy: { policy: 'cross-origin' },
+}));
 app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   credentials: true
 }));
 app.use(express.json());
 app.use('/uploads', express.static('uploads'));
+
+// Rate-limit the handful of routes an unauthenticated visitor can write to
+// (contact form, newsletter signup, event registration, meetup requests) —
+// everything else is already behind adminGate. Reuses the same allowlist so
+// a new public route only needs to be added in one place.
+const publicWriteLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  limit: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Muitas requisições. Tente novamente em alguns minutos.' },
+});
+
+app.use('/api', (req, res, next) => {
+  const isPublicWrite = PUBLIC_WRITES.some((w) => w.method === req.method && w.pattern.test(req.path));
+  if (isPublicWrite) return publicWriteLimiter(req, res, next);
+  next();
+});
 
 // Authentication: login/status are public; everything after passes the gate.
 app.use('/api/auth', authRoutes);

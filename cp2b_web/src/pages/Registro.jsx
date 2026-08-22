@@ -4,7 +4,7 @@ import { Container, Row, Col, Form, Button, Alert, Spinner, Badge, Card } from '
 import { useLanguage } from '../context/LanguageContext';
 import { registerParticipant } from '../services/api';
 
-const INVITE_TOKEN = import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta';
+const INVITE_TOKEN = import.meta.env.VITE_INVITE_TOKEN || '';
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';
 
 const labels = {

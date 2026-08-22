@@ -25,7 +25,7 @@ const StatusBadge = ({ status }) => {
   return <Badge bg={s.bg} text={s.text}>{s.label}</Badge>;
 };
 
-const inviteToken = import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta';
+const inviteToken = import.meta.env.VITE_INVITE_TOKEN || '';
 
 const ForumDashboard = () => {
   const [participants, setParticipants] = useState([]);
