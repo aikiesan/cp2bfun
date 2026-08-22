@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Button, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { forumData, timelineData } from '../data/content';
+import { timelineData } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
-import api, { fetchFeaturedContent, fetchPageContent, fetchFeaturedVideos } from '../services/api';
+import api, { fetchFeaturedContent, fetchFeaturedVideos } from '../services/api';
 import FeaturedContent from '../components/FeaturedContent';
 import FeaturedVideos from '../components/FeaturedVideos';
 import Timeline from '../components/Timeline';
@@ -16,7 +16,6 @@ const Home = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
   const seo = pageSeo.home[language] || pageSeo.home.pt;
-  const [forum, setForum] = useState(forumData[language]);
   const [featuredContent, setFeaturedContent] = useState({ A: null, B: null, C: null });
   const [featuredVideos, setFeaturedVideos] = useState({ A: null, B: null, C: null });
   const [loadingFeatured, setLoadingFeatured] = useState(true);
@@ -62,28 +61,6 @@ const Home = () => {
     };
     loadNews();
   }, []);
-
-  useEffect(() => {
-    const loadForumContent = async () => {
-      const data = await fetchPageContent('home');
-      if (data) {
-        const langContent = language === 'pt' ? data.content_pt : data.content_en;
-        const staticFallback = forumData[language];
-        // Map database fields to the expected forum object structure
-        if (langContent && Object.keys(langContent).length > 0) {
-          setForum({
-            badge: langContent.forum_badge || staticFallback.badge,
-            subtitle: langContent.forum_subtitle || staticFallback.subtitle,
-            title: langContent.forum_title || staticFallback.title,
-            description: langContent.forum_description || staticFallback.description,
-            button: langContent.forum_button_text || staticFallback.button,
-          });
-        }
-      }
-    };
-
-    loadForumContent();
-  }, [language]);
 
   const labels = {
     pt: {
@@ -155,59 +132,36 @@ const Home = () => {
         )}
       </section>
 
-      {/* Video Highlight Section - FORUM 2026 with Interactive Hover */}
+      {/* Institutional Video Section */}
       <section className="py-5">
         <Container>
-            <Row className="align-items-center g-5">
-                <Col lg={6}>
-                    <motion.div
-                      initial={{ x: -50, opacity: 0 }}
-                      whileInView={{ x: 0, opacity: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.6 }}
-                    >
-                        <span className="eyebrow">{forum.badge}</span>
-                        <span className="ms-2 text-muted fw-bold text-uppercase small ls-2">{forum.subtitle}</span>
-                        <h2 className="display-5 fw-bold mb-4 mt-2">{forum.title}</h2>
-                        {forum.description.split('\n\n').map((para, i) => (
-                          <p key={i} className="lead text-muted mb-3">{para}</p>
-                        ))}
-                        <Button
-                          variant="outline-primary"
-                          className="rounded-pill btn-glow mt-1"
-                          as={Link}
-                          to="/forum-paulista"
-                        >
-                          {forum.button}
-                        </Button>
-                    </motion.div>
-                </Col>
-                <Col lg={6}>
-                     <motion.div
-                        initial={{ x: 50, opacity: 0 }}
-                        whileInView={{ x: 0, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.6 }}
-                        className="hover-zoom position-relative rounded-4 overflow-hidden shadow-lg"
-                     >
-                        <video
-                            width="100%"
-                            height="auto"
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            controls
-                            poster="/assets/Forum-CP2B-junho-2025-Destaque-500x230.jpg"
-                            style={{ display: 'block' }}
-                        >
-                            <source src="/assets/Em-breve-960-x-540-px-2.mp4" type="video/mp4" />
-                            {labels.videoFallback}
-                        </video>
-                        <div className="hover-overlay"></div>
-                     </motion.div>
-                </Col>
-            </Row>
+          <div className="text-center section-head">
+            <span className="eyebrow justify-content-center">{language === 'pt' ? 'Conheça o CP2b' : 'Meet CP2b'}</span>
+            <h2 className="fw-bold mt-2">{language === 'pt' ? 'Vídeo Institucional' : 'Institutional Video'}</h2>
+          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="position-relative rounded-4 overflow-hidden shadow-lg mx-auto"
+            style={{ maxWidth: '1100px' }}
+          >
+            <video
+              width="100%"
+              height="auto"
+              autoPlay
+              loop
+              muted
+              playsInline
+              controls
+              poster="/assets/cp2b-institucional-poster.jpg"
+              style={{ display: 'block' }}
+            >
+              <source src="/assets/cp2b-institucional.mp4" type="video/mp4" />
+              {labels.videoFallback}
+            </video>
+          </motion.div>
         </Container>
       </section>
 
@@ -294,7 +248,7 @@ const Home = () => {
             <span className="eyebrow justify-content-center">
               {language === 'pt' ? 'Nossa Trajetória' : 'Our Journey'}
             </span>
-            <h2 className="fw-bold mt-2">{language === 'pt' ? 'Projetos em Destaque' : 'Featured Projects'}</h2>
+            <h2 className="fw-bold mt-2">{language === 'pt' ? 'Marcos e Projetos em Destaque' : 'Milestones and Featured Projects'}</h2>
           </div>
           <Timeline items={timelineData[language]} />
         </Container>

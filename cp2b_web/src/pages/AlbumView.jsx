@@ -48,8 +48,11 @@ const AlbumView = () => {
     const loadPhotos = async () => {
       const data = await fetchGallery();
       const photosInThisAlbum = data.filter((photo) => photo.album_id === albumId);
-      const cover = photosInThisAlbum.find((photo) => photo.is_cover);
-      const internals = photosInThisAlbum.filter((photo) => !photo.is_cover);
+      // Fall back to the oldest photo as a stand-in header if the cover row
+      // was ever deleted individually — keeps the album viewable instead of
+      // showing "not found" (see matching fallback in Gallery.jsx).
+      const cover = photosInThisAlbum.find((photo) => photo.is_cover) || photosInThisAlbum[0];
+      const internals = photosInThisAlbum.filter((photo) => photo.id !== cover?.id);
       setAlbumInfo(cover);
       setAlbumPhotos(internals);
       setLoading(false);

@@ -18,14 +18,14 @@ const Opportunities = () => {
 
   const labels = {
     pt: {
-      tag: 'CP2B',
+      tag: 'CP2b',
       title: 'Oportunidades',
       description: 'Vagas de pós-graduação, bolsas e chamadas abertas do CP2b.',
       empty: 'Nenhuma oportunidade disponível no momento.',
       readMore: 'Saiba mais',
     },
     en: {
-      tag: 'CP2B',
+      tag: 'CP2b',
       title: 'Opportunities',
       description: 'Graduate positions, scholarships and open calls from CP2b.',
       empty: 'No opportunities available at the moment.',

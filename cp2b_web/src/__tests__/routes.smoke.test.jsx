@@ -38,6 +38,9 @@ import Media from '../pages/Media';
 import Others from '../pages/Others';
 import ForumPaulista from '../pages/ForumPaulista';
 import NotFound from '../pages/NotFound';
+import Governance from '../pages/about/Governance';
+import Indicators from '../pages/about/Indicators';
+import Transparency from '../pages/about/Transparency';
 
 describe('Public pages smoke tests', () => {
   beforeEach(() => {
@@ -59,6 +62,9 @@ describe('Public pages smoke tests', () => {
     ['Others (/outros)', Others],
     ['ForumPaulista (/forum-paulista)', ForumPaulista],
     ['NotFound (404)', NotFound],
+    ['Governance (/sobre/governanca)', Governance],
+    ['Indicators (/sobre/indicadores)', Indicators],
+    ['Transparency (/sobre/transparencia)', Transparency],
   ];
 
   pages.forEach(([label, PageComponent]) => {

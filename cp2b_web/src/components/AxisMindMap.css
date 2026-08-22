@@ -1,0 +1,83 @@
+/* Leitura em camadas dos eixos: Eixo -> Atividades -> Itens.
+   Construído sobre Accordions aninhados; estas regras só cuidam do
+   tratamento visual "mapa mental" (conectores, indentação, cor por eixo). */
+
+.axis-mindmap {
+  border-left: 3px solid var(--axis-color, var(--brand-primary));
+  padding-left: 1rem;
+}
+
+.axis-mindmap__branch {
+  border: none !important;
+  border-bottom: 1px dashed var(--border-default) !important;
+}
+
+.axis-mindmap__branch:last-child {
+  border-bottom: none !important;
+}
+
+.axis-mindmap__branch .accordion-button {
+  background: transparent;
+  padding: 0.65rem 0;
+  font-size: 0.92rem;
+  box-shadow: none !important;
+}
+
+.axis-mindmap__branch .accordion-button:not(.collapsed) {
+  background: transparent;
+  color: inherit;
+}
+
+.axis-mindmap__count {
+  margin-left: auto;
+  margin-right: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: var(--gray-100);
+  border-radius: var(--radius-full, 999px);
+  padding: 0.1rem 0.55rem;
+}
+
+.axis-mindmap__leaves {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-left: 1.75rem;
+  border-left: 2px solid var(--border-divider);
+  margin-left: 0.15rem;
+}
+
+.axis-mindmap__leaf {
+  position: relative;
+  padding: 0.6rem 0.85rem;
+  background: var(--bg-surface-muted);
+  border-radius: var(--cp2b-radius-sm, 0.5rem);
+}
+
+.axis-mindmap__chip {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: var(--gray-100);
+  border-radius: var(--radius-full, 999px);
+  padding: 0.1rem 0.55rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .axis-mindmap * {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .axis-mindmap {
+    padding-left: 0.65rem;
+  }
+
+  .axis-mindmap__leaves {
+    padding-left: 1rem;
+  }
+}

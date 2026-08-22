@@ -31,6 +31,7 @@ const ROUTES = {
   '/': ['home', '1.0', 'weekly'],
   '/sobre': ['about', '0.9', 'monthly'],
   '/sobre/governanca': ['governance', '0.6', 'monthly'],
+  '/sobre/indicadores': ['indicators', '0.6', 'monthly'],
   '/sobre/transparencia': ['transparency', '0.6', 'monthly'],
   '/sobre/parceiros': ['partners', '0.6', 'monthly'],
   '/eixos': ['research', '0.9', 'monthly'],

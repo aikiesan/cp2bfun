@@ -86,7 +86,7 @@ const Footer = () => {
         <Row className="gy-4 pb-5">
           <Col lg={4} md={6}>
             <img
-              src="/assets/CP2B-LOGO-NEGATIVO-BR@8x.png"
+              src="/assets/logos/cp2b-logo-negative-white.svg"
               alt="CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos"
               style={{ maxHeight: '64px', borderRadius: 0 }}
               className="mb-3"

@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 
 const DOMAIN = 'https://cp2b.unicamp.br';
-const DEFAULT_IMAGE = `${DOMAIN}/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png`;
+const DEFAULT_IMAGE = `${DOMAIN}/assets/logos/cp2b-logo-og.png`;
 const SITE_NAME = 'CP2b';
 
 const SeoHead = ({

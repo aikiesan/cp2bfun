@@ -1,32 +1,11 @@
 /* ============================================================
-   CP2B DESIGN SYSTEM — editorial layer
+   CP2b DESIGN SYSTEM — editorial layer
    Loaded after index.css; refines typography, sections, cards,
-   gallery, events, header and footer with the CP2B palette.
+   gallery, events, header and footer with the CP2b palette.
    ============================================================ */
 
-:root {
-  /* Palette ramp */
-  --cp2b-petrol-900: #00323f;
-  --cp2b-petrol-700: #004d61;
-  --cp2b-petrol-500: #0e6a80;
-  --cp2b-petrol-100: #e2eef1;
-  --cp2b-green-700: #1b5e20;
-  --cp2b-green-500: #2E7D32;
-  --cp2b-green-100: #e6f2e7;
-  --cp2b-lime-500: #AEEA00;
-  --cp2b-ink: #14211f;
-  --cp2b-ink-soft: #4d5a58;
-  --cp2b-paper: #fbfcfb;
-
-  /* Type */
-  --font-display: 'Space Grotesk', 'Inter', sans-serif;
-  --fs-display-1: clamp(2.4rem, 1.4rem + 4vw, 4.2rem);
-  --fs-display-2: clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
-  --fs-title: clamp(1.45rem, 1.1rem + 1.2vw, 2rem);
-
-  /* Rhythm */
-  --section-y: clamp(3.5rem, 2.5rem + 4vw, 6.5rem);
-}
+/* Design tokens (palette ramp, --font-display, fluid type scale,
+   --section-y) live in styles/tokens.css, imported before this file. */
 
 /* ---------- Typography ---------- */
 h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display-6 {
@@ -88,8 +67,8 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   position: relative;
   overflow: hidden;
   background:
-    radial-gradient(80rem 30rem at 110% -20%, rgba(174, 234, 0, 0.14), transparent 55%),
-    linear-gradient(130deg, var(--cp2b-petrol-900) 0%, var(--cp2b-petrol-700) 55%, #0b5a48 100%);
+    radial-gradient(80rem 30rem at 110% -20%, color-mix(in srgb, var(--cp2b-lime) 14%, transparent), transparent 55%),
+    linear-gradient(130deg, var(--cp2b-petrol-900) 0%, var(--cp2b-petrol-700) 55%, var(--cp2b-verde-escuro) 100%);
   color: #fff;
   padding: clamp(3.5rem, 2.5rem + 4vw, 6rem) 0;
 }
@@ -137,21 +116,59 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   transform: translateX(4px);
 }
 
+/* ---------- Panels (inline callouts) ----------
+   Pilar-2b's "Panel" component: colored left border + tinted background.
+   Overrides Bootstrap's default Alert so every <Alert variant="..."> in
+   the app (Contact, Registro, AgendaMeetups, ConfirmarMeetup, etc.) picks
+   this up automatically. */
+.alert {
+  border: none;
+  border-left: 4px solid transparent;
+  border-radius: var(--cp2b-radius-sm);
+}
+
+.alert-success {
+  background: color-mix(in srgb, var(--color-success) 10%, white);
+  border-left-color: var(--color-success);
+  color: color-mix(in srgb, var(--color-success) 70%, black);
+}
+
+.alert-warning {
+  background: color-mix(in srgb, var(--cp2b-ambar) 10%, white);
+  border-left-color: var(--cp2b-ambar);
+  color: color-mix(in srgb, var(--cp2b-ambar) 70%, black);
+}
+
+.alert-danger {
+  background: color-mix(in srgb, var(--color-error) 10%, white);
+  border-left-color: var(--color-error);
+  color: color-mix(in srgb, var(--color-error) 70%, black);
+}
+
+.alert-info {
+  background: color-mix(in srgb, var(--color-info) 10%, white);
+  border-left-color: var(--color-info);
+  color: color-mix(in srgb, var(--color-info) 70%, black);
+}
+
 /* ---------- Editorial cards ---------- */
 .card-editorial {
   background: #fff;
   border-radius: var(--cp2b-radius);
+  border: 1px solid var(--border-default);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
   height: 100%;
   display: flex;
   flex-direction: column;
 }
 
+/* Signature Pilar-2b card interaction: lime border + shadow lift on hover. */
 .card-editorial:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
+  border-color: var(--cp2b-lime);
 }
 
 .card-editorial .card-media {
@@ -310,14 +327,17 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   height: 100%;
   background: #fff;
   border-radius: var(--cp2b-radius);
+  border: 1px solid var(--border-default);
   overflow: hidden;
   box-shadow: var(--shadow-sm);
-  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
 }
 
+/* Signature Pilar-2b card interaction: lime border + shadow lift on hover. */
 .event-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
+  border-color: var(--cp2b-lime);
 }
 
 .event-card .event-media {
@@ -457,7 +477,7 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
 /* ---------- Footer ---------- */
 .site-footer {
   background:
-    radial-gradient(60rem 24rem at -10% 120%, rgba(46, 125, 50, 0.25), transparent 60%),
+    radial-gradient(60rem 24rem at -10% 120%, color-mix(in srgb, var(--cp2b-green) 25%, transparent), transparent 60%),
     var(--cp2b-petrol-900);
   color: rgba(255, 255, 255, 0.85);
 }

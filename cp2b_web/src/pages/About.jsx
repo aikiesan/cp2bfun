@@ -92,14 +92,16 @@ const About = () => {
       <Container className="py-5">
 
       <div className="mb-5 position-relative">
-         <img
-           src="/assets/DSC00617-1024x683.jpg"
-           alt="Research"
+         <video
            className="w-100 object-fit-cover"
-           style={{ height: '500px', filter: 'grayscale(100%)' }}
-           onMouseOver={e => e.currentTarget.style.filter='none'}
-           onMouseOut={e => e.currentTarget.style.filter='grayscale(100%)'}
-         />
+           style={{ height: '500px', display: 'block' }}
+           poster="/assets/cp2b-institucional-poster.jpg"
+           controls
+           playsInline
+           preload="none"
+         >
+           <source src="/assets/cp2b-institucional.mp4" type="video/mp4" />
+         </video>
          <div className="position-absolute bottom-0 start-0 bg-white p-3 border-top border-end border-dark" style={{ maxWidth: '300px' }}>
             <span className="mono-label mb-0">{labels.lab}</span>
          </div>

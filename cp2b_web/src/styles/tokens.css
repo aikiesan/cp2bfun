@@ -1,0 +1,158 @@
+/* ============================================================
+   CP2b DESIGN TOKENS — single source of truth
+   Ported from the official Pilar-2b Design System
+   (A:\Pilar-2b\PILAR-2b Design System\tokens\*.css), light mode only
+   — dark mode intentionally not adopted for this site.
+
+   Existing --cp2b-* / --font-* / --shadow-* / --fs-* names used
+   throughout index.css and design-system.css are kept as aliases
+   pointing at the new Pilar-2b values, so the rest of the
+   stylesheet cascade keeps working without a full rewrite.
+   ============================================================ */
+
+:root {
+  /* ---------- Raw brand palette (MANUAL_IDENTIDADE_CP2B) ---------- */
+  --cp2b-azul-petroleo: #1E3E4C;
+  --cp2b-verde-escuro: #00573A;
+  --cp2b-verde: #5CA032;
+  --cp2b-lima: #B6E03B;
+  --cp2b-ambar: #D37402;
+  --cp2b-preto: #000000;
+  --cp2b-branco: #FFFFFF;
+
+  /* Biomass sector colors (from the PILAR-2b platform) */
+  --biomass-agricola: #4CAF50;
+  --biomass-pecuaria: #FF9800;
+  --biomass-urbano: #2196F3;
+
+  /* Semantic status */
+  --color-success: #34A853;
+  --color-warning: #FBBC04;
+  --color-error: #EA4335;
+  --color-info: #2563EB;
+
+  /* Neutral scale */
+  --gray-50: #F8F9FA;
+  --gray-100: #F1F3F4;
+  --gray-200: #E8EAED;
+  --gray-300: #DADCE0;
+  --gray-400: #BDC1C6;
+  --gray-500: #9AA0A6;
+  --gray-600: #5F6368;
+  --gray-700: #3C4043;
+  --gray-800: #28292A;
+  --gray-900: #202124;
+
+  /* Semantic aliases (light mode only) */
+  --bg-page: var(--gray-50);
+  --bg-surface: var(--cp2b-branco);
+  --bg-surface-raised: var(--cp2b-branco);
+  --bg-surface-muted: var(--gray-50);
+  --text-primary: var(--gray-900);
+  --text-secondary: #616161;
+  --text-disabled: #9E9E9E;
+  --text-on-brand: var(--cp2b-branco);
+  --border-default: #E2E8F0;
+  --border-divider: #EEEEEE;
+  --focus-ring: 0 0 0 3px rgba(182, 224, 59, .4);
+  --brand-primary: var(--cp2b-verde-escuro);
+  --brand-primary-hover: #1B5E20;
+  --brand-secondary: var(--cp2b-verde);
+  --brand-accent: var(--cp2b-lima);
+  --brand-highlight: var(--cp2b-ambar);
+  --brand-dark: var(--cp2b-azul-petroleo);
+
+  /* ---------- Typography ---------- */
+  --font-sans: 'Neulis Sans', 'Verdana', system-ui, sans-serif;
+  --font-display: 'Neulis Neue', 'Neulis Sans', 'Verdana', system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --text-xs: .75rem;
+  --text-sm: .875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+  --text-6xl: 3.75rem;
+  --leading-tight: 1.15;
+  --leading-snug: 1.35;
+  --leading-normal: 1.55;
+  --tracking-tight: -.01em;
+  --tracking-wide: .06em;
+  --weight-thin: 100;
+  --weight-light: 300;
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-semibold: 600;
+  --weight-bold: 700;
+  --weight-extrabold: 800;
+  --weight-black: 900;
+
+  /* ---------- Spacing / radius / shadow / motion ---------- */
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+  --radius-sm: .375rem;
+  --radius-md: .5rem;
+  --radius-lg: .75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.25rem;
+  --radius-full: 9999px;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / .05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / .1), 0 2px 4px -2px rgb(0 0 0 / .1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / .1), 0 4px 6px -4px rgb(0 0 0 / .1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / .1), 0 8px 10px -6px rgb(0 0 0 / .1);
+  --duration-fast: 150ms;
+  --duration-base: 200ms;
+  --duration-slow: 300ms;
+  --ease-standard: cubic-bezier(.4, 0, .2, 1);
+
+  /* ================================================================
+     Legacy aliases — keep the rest of the cascade (index.css,
+     design-system.css, and inline JS styles) working unmodified.
+     ================================================================ */
+  --cp2b-black: var(--gray-900);
+  --cp2b-dark: var(--cp2b-azul-petroleo);
+  --cp2b-white: var(--cp2b-branco);
+  --cp2b-light-gray: var(--gray-50);
+  --cp2b-border: var(--border-default);
+  --cp2b-green: var(--cp2b-verde);
+  --cp2b-lime: var(--cp2b-lima);
+  --cp2b-petrol: var(--cp2b-azul-petroleo);
+  --cp2b-radius: var(--radius-2xl);
+  --cp2b-radius-sm: var(--radius-lg);
+  --font-main: var(--font-sans);
+
+  /* design-system.css palette ramp — generated from the brand base via
+     color-mix() rather than hand-picked hex, so there is one source
+     value per hue (SOLID: one place to change a brand color). */
+  --cp2b-petrol-900: var(--cp2b-azul-petroleo);
+  --cp2b-petrol-700: color-mix(in srgb, var(--cp2b-azul-petroleo) 85%, white);
+  --cp2b-petrol-500: color-mix(in srgb, var(--cp2b-azul-petroleo) 60%, white);
+  --cp2b-petrol-100: color-mix(in srgb, var(--cp2b-azul-petroleo) 12%, white);
+  --cp2b-green-700: var(--cp2b-verde-escuro);
+  --cp2b-green-500: var(--cp2b-verde);
+  --cp2b-green-100: color-mix(in srgb, var(--cp2b-verde) 12%, white);
+  --cp2b-lime-500: var(--cp2b-lima);
+  --cp2b-ink: var(--gray-900);
+  --cp2b-ink-soft: var(--text-secondary);
+  --cp2b-paper: var(--gray-50);
+
+  /* Site-specific fluid type scale — not part of Pilar-2b's static
+     scale, kept as-is for responsive hero/section headings. */
+  --fs-display-1: clamp(2.4rem, 1.4rem + 4vw, 4.2rem);
+  --fs-display-2: clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
+  --fs-title: clamp(1.45rem, 1.1rem + 1.2vw, 2rem);
+  --section-y: clamp(3.5rem, 2.5rem + 4vw, 6.5rem);
+}

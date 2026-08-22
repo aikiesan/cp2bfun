@@ -51,8 +51,8 @@ ON CONFLICT (slug) DO NOTHING;
 -- Page content
 INSERT INTO page_content (page_key, content_pt, content_en) VALUES
 ('home',
- '{"forum_badge": "EM BREVE", "forum_subtitle": "Fórum Paulista", "forum_title": "Fórum de Biogás e Bioprodutos - Maio/2026", "forum_description": "Prepare-se para o maior encontro de biogás de São Paulo. Reuniremos especialistas, pesquisadores e parceiros estratégicos para discutir o futuro da bioenergia.", "forum_button_text": "Saiba mais sobre a edição 2026"}'::jsonb,
- '{"forum_badge": "COMING SOON", "forum_subtitle": "São Paulo Forum", "forum_title": "Biogas and Bioproducts Forum - May/2026", "forum_description": "Get ready for the largest biogas meeting in São Paulo. We will bring together specialists, researchers, and strategic partners to discuss the future of bioenergy.", "forum_button_text": "Learn more about the 2026 edition"}'::jsonb)
+ '{"forum_badge": "REALIZADO", "forum_subtitle": "Fórum Paulista", "forum_title": "Fórum de Biogás e Bioprodutos - Maio/2026", "forum_description": "O maior encontro de biogás de São Paulo reuniu especialistas, pesquisadores e parceiros estratégicos para discutir o futuro da bioenergia.", "forum_button_text": "Saiba mais sobre o Fórum"}'::jsonb,
+ '{"forum_badge": "HELD", "forum_subtitle": "São Paulo Forum", "forum_title": "Biogas and Bioproducts Forum - May/2026", "forum_description": "The largest biogas meeting in São Paulo brought together specialists, researchers, and strategic partners to discuss the future of bioenergy.", "forum_button_text": "Learn more about the Forum"}'::jsonb)
 ON CONFLICT (page_key) DO NOTHING;
 
 INSERT INTO page_content (page_key, content_pt, content_en) VALUES
@@ -163,7 +163,6 @@ INSERT INTO team_members (name, role_pt, role_en, institution, category, sort_or
 ('Marcelo Zaiat', 'Pesquisador Associado', 'Associate Researcher', 'EESC/USP', 'associates', 29),
 ('Maria Paula Cardeal Volpi', 'Pesquisador Associado', 'Associate Researcher', 'ESALQ/USP', 'associates', 30),
 ('Mariana Conceição da Costa', 'Pesquisador Associado', 'Associate Researcher', 'FEQ/UNICAMP', 'associates', 31),
-('Marlon Fernandes de Souza', 'Pesquisador Associado', 'Associate Researcher', 'ESALQ/USP', 'associates', 32),
 ('Mauro Donizeti Berni', 'Pesquisador Associado', 'Associate Researcher', 'NIPE/UNICAMP', 'associates', 33),
 ('Natalia Molina Cetrulo', 'Pesquisador Associado', 'Associate Researcher', 'EACH/USP', 'associates', 34),
 ('Patricia Jacqueline Thyssen', 'Pesquisador Associado', 'Associate Researcher', 'IB/UNICAMP', 'associates', 35),

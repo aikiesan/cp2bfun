@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { governanceContent } from '../../data/content';
+import { governanceContent, governanceChart } from '../../data/content';
+import OrgChart from '../../components/OrgChart';
 import { useLanguage } from '../../context/LanguageContext';
 import { fetchPageContent } from '../../services/api';
 import { motion } from 'framer-motion';
@@ -19,9 +20,11 @@ const Governance = () => {
     sections: {
       structure: staticContent.sections.structure,
       committee: staticContent.sections.committee,
+      committees: staticContent.sections.committees,
       guidelines: staticContent.sections.guidelines
     }
   });
+  const chart = governanceChart[language] || governanceChart.pt;
 
   useEffect(() => {
     const loadContent = async () => {
@@ -41,6 +44,7 @@ const Governance = () => {
                 title: langContent.section2_title || staticContent.sections.committee.title,
                 content: langContent.section2_content || staticContent.sections.committee.content
               },
+              committees: staticContent.sections.committees,
               guidelines: {
                 title: langContent.section3_title || staticContent.sections.guidelines.title,
                 content: langContent.section3_content || staticContent.sections.guidelines.content
@@ -91,6 +95,26 @@ const Governance = () => {
             </p>
           </Col>
         </Row>
+
+        {/* Organizational Chart */}
+        <Row className="mb-5">
+          <Col md={12}>
+            <h3 className="fw-bold mb-4">{language === 'pt' ? 'Organograma' : 'Organizational Chart'}</h3>
+            <OrgChart chart={chart} />
+          </Col>
+        </Row>
+
+        {/* Governance Bodies (Committees) */}
+        {content.sections.committees && (
+          <Row className="mb-5">
+            <Col md={12}>
+              <h3 className="fw-bold mb-4">{content.sections.committees.title}</h3>
+              <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
+                {content.sections.committees.content}
+              </p>
+            </Col>
+          </Row>
+        )}
 
         {/* Guidelines */}
         <Row>

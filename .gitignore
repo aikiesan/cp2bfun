@@ -45,5 +45,14 @@ deployment/backups/
 # Production uploads
 /var/www/cp2b/backend/uploads/
 
+# Python (extract-strategic-data.py is run locally, ad hoc)
+__pycache__/
+*.pyc
+
 # Temporary files
 *.old.*
+
+# Source material from Luciana's data drop (spreadsheets, reports, photos,
+# ~1.4GB of building renders/videos) — archived locally, never committed.
+# See PREDIO_CP2B_ARCHIVE.md for the inventory and what to do with it.
+/New_Data_To_Update_Website/

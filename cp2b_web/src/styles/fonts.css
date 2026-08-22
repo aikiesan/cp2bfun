@@ -1,0 +1,19 @@
+/* ============================================================
+   PILAR-2b BRAND FONTS — self-hosted (Neulis Sans / Neulis Neue)
+   Ported from A:\Pilar-2b\PILAR-2b Design System\tokens\fonts.css
+   Paths adjusted to this app's /public/assets/fonts/ location.
+   ============================================================ */
+
+@font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Thin.otf') format('opentype'); font-weight: 100; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Light.otf') format('opentype'); font-weight: 300; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Regular.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Regular_Italic.otf') format('opentype'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Medium.otf') format('opentype'); font-weight: 500; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Semi_Bold.otf') format('opentype'); font-weight: 600; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Bold.otf') format('opentype'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Extra_Bold.otf') format('opentype'); font-weight: 800; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Black.otf') format('opentype'); font-weight: 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neulis Neue'; src: url('/assets/fonts/Neulis_Neue_Regular.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neulis Neue'; src: url('/assets/fonts/Neulis_Neue_Bold.otf') format('opentype'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neulis Neue'; src: url('/assets/fonts/Neulis_Neue_Black.otf') format('opentype'); font-weight: 900; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Neulis Neue'; src: url('/assets/fonts/Neulis_Neue_Black_Italic.otf') format('opentype'); font-weight: 900; font-style: italic; font-display: swap; }

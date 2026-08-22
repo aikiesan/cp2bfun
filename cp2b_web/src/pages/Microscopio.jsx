@@ -10,8 +10,8 @@ import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 
 const STATIC_DESCRIPTIONS = {
-  pt: 'Um espaço para artigos de opinião e reflexões dos pesquisadores do CP2B.',
-  en: 'A space for opinion articles and reflections from CP2B researchers.',
+  pt: 'Um espaço para artigos de opinião e reflexões dos pesquisadores do CP2b.',
+  en: 'A space for opinion articles and reflections from CP2b researchers.',
 };
 
 const Microscopio = () => {

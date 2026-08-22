@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Container, Button, Table, Image, Badge, Spinner } from 'react-bootstrap';
+import { Container, Button, Table, Image, Badge, Spinner, ProgressBar } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { fetchGallery, deleteGalleryPhoto } from '../../services/api';
+import { fetchGallery, deleteGalleryPhoto, deleteGalleryAlbum, fetchGalleryStorage } from '../../services/api';
 import { ConfirmDialog, useToast } from '../../components/admin';
+
+const formatMB = (bytes) => (bytes / (1024 * 1024)).toFixed(0);
 
 const GalleryList = () => {
   const navigate = useNavigate();
@@ -11,7 +13,11 @@ const GalleryList = () => {
   const [photos, setPhotos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-  const [photoToDelete, setPhotoToDelete] = useState(null);
+  // target = { kind: 'photo', photo } | { kind: 'album', albumId, title }
+  const [target, setTarget] = useState(null);
+  const [storage, setStorage] = useState(null);
+
+  const reloadStorage = () => fetchGalleryStorage().then(setStorage);
 
   useEffect(() => {
     const loadPhotos = async () => {
@@ -20,24 +26,37 @@ const GalleryList = () => {
       setLoading(false);
     };
     loadPhotos();
+    reloadStorage();
   }, []);
 
-  const requestDelete = (photo) => {
-    setPhotoToDelete(photo);
+  const requestDeletePhoto = (photo) => {
+    setTarget({ kind: 'photo', photo });
+    setIsConfirmOpen(true);
+  };
+
+  const requestDeleteAlbum = (albumId, title) => {
+    setTarget({ kind: 'album', albumId, title });
     setIsConfirmOpen(true);
   };
 
   const executeDelete = async () => {
     try {
-      await deleteGalleryPhoto(photoToDelete.id);
-      setPhotos((prev) => prev.filter((photo) => photo.id !== photoToDelete.id));
-      success('Foto excluída com sucesso!');
+      if (target.kind === 'album') {
+        await deleteGalleryAlbum(target.albumId);
+        setPhotos((prev) => prev.filter((photo) => photo.album_id !== target.albumId));
+        success('Álbum excluído com sucesso!');
+      } else {
+        await deleteGalleryPhoto(target.photo.id);
+        setPhotos((prev) => prev.filter((photo) => photo.id !== target.photo.id));
+        success('Foto excluída com sucesso!');
+      }
+      reloadStorage();
     } catch (err) {
-      console.error('Error deleting gallery photo:', err);
-      error('Ocorreu um erro ao excluir a foto. Tente novamente.');
+      console.error('Error deleting gallery item:', err);
+      error('Ocorreu um erro ao excluir. Tente novamente.');
     } finally {
       setIsConfirmOpen(false);
-      setPhotoToDelete(null);
+      setTarget(null);
     }
   };
 
@@ -50,6 +69,21 @@ const GalleryList = () => {
           Nova Foto
         </Button>
       </div>
+
+      {storage && (
+        <div className="bg-white rounded shadow-sm p-3 mb-4">
+          <div className="d-flex justify-content-between align-items-center mb-2">
+            <span className="fw-semibold small">Armazenamento da Galeria</span>
+            <span className="small text-muted">
+              {formatMB(storage.usedBytes)} MB / {formatMB(storage.limitBytes)} MB ({storage.usedPercent}%)
+            </span>
+          </div>
+          <ProgressBar
+            now={storage.usedPercent}
+            variant={storage.usedPercent > 90 ? 'danger' : storage.usedPercent > 70 ? 'warning' : 'success'}
+          />
+        </div>
+      )}
 
       <div className="bg-white rounded shadow-sm overflow-hidden">
         <Table responsive hover className="mb-0 align-middle">
@@ -101,12 +135,22 @@ const GalleryList = () => {
                     </Badge>
                   </td>
                   <td className="text-end px-4">
+                    {photo.is_cover && photo.album_id && (
+                      <Button
+                        variant="outline-danger"
+                        size="sm"
+                        className="me-2"
+                        onClick={() => requestDeleteAlbum(photo.album_id, photo.title)}
+                      >
+                        <i className="bi bi-trash3-fill"></i> Apagar Álbum
+                      </Button>
+                    )}
                     <Button
-                      variant="outline-danger"
+                      variant="outline-secondary"
                       size="sm"
-                      onClick={() => requestDelete(photo)}
+                      onClick={() => requestDeletePhoto(photo)}
                     >
-                      <i className="bi bi-trash"></i> Apagar
+                      <i className="bi bi-trash"></i> Apagar Foto
                     </Button>
                   </td>
                 </tr>
@@ -120,11 +164,19 @@ const GalleryList = () => {
         show={isConfirmOpen}
         onCancel={() => setIsConfirmOpen(false)}
         onConfirm={executeDelete}
-        title={photoToDelete?.is_cover ? '⚠️ ALERTA: Apagar Capa do Álbum' : 'Apagar Foto'}
+        title={
+          target?.kind === 'album'
+            ? '⚠️ ALERTA: Apagar Álbum Inteiro'
+            : target?.photo?.is_cover
+              ? '⚠️ ALERTA: Apagar Capa do Álbum'
+              : 'Apagar Foto'
+        }
         message={
-          photoToDelete?.is_cover
-            ? `Tem certeza que deseja apagar a capa do álbum "${photoToDelete?.title}"? ALERTA: Sem a capa, o álbum inteiro deixará de aparecer no site público, e as fotos internas ficarão "órfãs".`
-            : 'Tem certeza que deseja apagar esta foto da galeria? Esta ação não pode ser desfeita.'
+          target?.kind === 'album'
+            ? `Tem certeza que deseja apagar o álbum "${target?.title}" e TODAS as suas fotos? Esta ação não pode ser desfeita.`
+            : target?.photo?.is_cover
+              ? `Tem certeza que deseja apagar a capa do álbum "${target?.photo?.title}"? A galeria pública usará a foto mais antiga como capa substituta, mas o ideal é apagar o álbum inteiro em vez desta foto isolada.`
+              : 'Tem certeza que deseja apagar esta foto da galeria? Esta ação não pode ser desfeita.'
         }
       />
     </Container>

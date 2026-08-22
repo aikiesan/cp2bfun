@@ -13,6 +13,7 @@ export const menuLabels = {
     aboutSubmenu: {
       overview: 'Visão Geral',
       governance: 'Governança',
+      indicators: 'Indicadores',
       transparency: 'Transparência',
       partners: 'Parceiros',
       opportunities: 'Oportunidades',
@@ -52,6 +53,7 @@ export const menuLabels = {
     aboutSubmenu: {
       overview: 'Overview',
       governance: 'Governance',
+      indicators: 'Indicators',
       transparency: 'Transparency',
       partners: 'Partners',
       opportunities: 'Opportunities',
@@ -110,18 +112,18 @@ export const projectDetails = {
 
 export const forumData = {
   pt: {
-    badge: 'EM BREVE',
+    badge: 'REALIZADO',
     subtitle: 'Fórum Paulista',
     title: 'Fórum de Biogás e Bioprodutos - Maio/2026',
-    description: 'O I Fórum Paulista de Biogás e Bioprodutos reúne pesquisadores, estudantes, profissionais e empresas para discutir os avanços, desafios e oportunidades da cadeia de biogás e bioprodutos no Estado de São Paulo.\n\nParticipe do Fórum e conecte-se aos debates e iniciativas que estão impulsionando o futuro do setor.',
-    button: 'Saiba mais sobre a edição 2026'
+    description: 'O I Fórum Paulista de Biogás e Bioprodutos reuniu pesquisadores, estudantes, profissionais e empresas para discutir os avanços, desafios e oportunidades da cadeia de biogás e bioprodutos no Estado de São Paulo.\n\nConheça o CP2b e acompanhe os debates e iniciativas que estão impulsionando o futuro do setor.',
+    button: 'Saiba mais sobre o Fórum'
   },
   en: {
-    badge: 'COMING SOON',
+    badge: 'HELD',
     subtitle: 'São Paulo Forum',
     title: 'Biogas and Bioproducts Forum - May/2026',
-    description: 'The I Fórum Paulista de Biogás e Bioprodutos brings together researchers, students, professionals and companies to discuss advances, challenges and opportunities in the biogas and bioproducts chain in São Paulo State.\n\nJoin the Forum and connect with the debates and initiatives driving the future of the sector.',
-    button: 'Learn more about the 2026 edition'
+    description: 'The I Fórum Paulista de Biogás e Bioprodutos brought together researchers, students, professionals and companies to discuss advances, challenges and opportunities in the biogas and bioproducts chain in São Paulo State.\n\nMeet CP2b and follow the debates and initiatives driving the future of the sector.',
+    button: 'Learn more about the Forum'
   }
 };
 
@@ -227,7 +229,7 @@ export const newsItems = {
     {
       id: 10,
       date: '18 DEZ 2025',
-      image: '/assets/CP2B-AVATAR-BR@8x.png',
+      image: '/assets/logos/cp2b-avatar-gradient.svg',
       badge: 'Institucional',
       badgeColor: 'success',
       title: 'Conheça o Metaninho: o novo mascote do CP2b!',
@@ -269,7 +271,7 @@ export const newsItems = {
     {
       id: 10,
       date: '18 DEC 2025',
-      image: '/assets/CP2B-AVATAR-BR@8x.png',
+      image: '/assets/logos/cp2b-avatar-gradient.svg',
       badge: 'Institutional',
       badgeColor: 'success',
       title: 'Meet Metaninho: the new CP2b mascot!',
@@ -466,7 +468,7 @@ export const timelineData = {
     },
     {
       year: '2024',
-      title: 'Criação do CP2B — Centro Paulista de Estudos em Biogás e Bioprodutos',
+      title: 'Criação do CP2b — Centro Paulista de Estudos em Biogás e Bioprodutos',
       description: 'Fundação do centro de pesquisa apoiado pela FAPESP (Processo 2024/01112-1) com sede no NIPE/UNICAMP, iniciando a missão de transformar resíduos em recursos renováveis.',
       status: 'completed',
       icon: 'bi-award'
@@ -510,7 +512,7 @@ export const timelineData = {
     },
     {
       year: '2024',
-      title: 'CP2B Founded — São Paulo Center for Biogas and Bioproducts Studies',
+      title: 'CP2b Founded — São Paulo Center for Biogas and Bioproducts Studies',
       description: 'Research center founded with FAPESP support (Process 2024/01112-1) hosted at NIPE/UNICAMP, beginning its mission to transform waste into renewable resources.',
       status: 'completed',
       icon: 'bi-award'
@@ -820,7 +822,6 @@ export const teamMembers = [
       { name: 'Marcelo Zaiat', role: 'Pesquisador Associado', institution: 'EESC/USP' },
       { name: 'Maria Paula Cardeal Volpi', role: 'Pesquisador Associado', institution: 'ESALQ/USP' },
       { name: 'Mariana Conceição da Costa', role: 'Pesquisador Associado', institution: 'FEQ/UNICAMP' },
-      { name: 'Marlon Fernandes de Souza', role: 'Pesquisador Associado', institution: 'ESALQ/USP' },
       { name: 'Mauro Donizeti Berni', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
       { name: 'Natalia Molina Cetrulo', role: 'Pesquisador Associado', institution: 'EACH/USP' },
       { name: 'Patricia Jacqueline Thyssen', role: 'Pesquisador Associado', institution: 'IB/UNICAMP' },
@@ -886,6 +887,16 @@ A estrutura conta com pesquisadores de diferentes instituições acadêmicas e p
 
 O Comitê Gestor é responsável pelas decisões estratégicas, acompanhamento dos projetos, gestão de recursos e articulação com parceiros e sociedade.`
       },
+      committees: {
+        title: 'Instâncias de Governança',
+        content: `O CP2b conta com três comitês que apoiam a diretoria em decisões estratégicas, éticas e de execução:
+
+- Comitê Científico: acompanha o mérito e a qualidade da produção científica do centro.
+- Comitê Ético e de Gestão de Dados: zela pela conduta em pesquisa e pela governança dos dados gerados.
+- Comitê Executivo: acompanha a execução do planejamento e das decisões operacionais.
+
+O centro é vinculado ao NIPE/UNICAMP e financiado pela FAPESP.`
+      },
       guidelines: {
         title: 'Diretrizes e Regulamentos',
         content: `O CP2b opera segundo princípios de transparência, colaboração e compromisso com o desenvolvimento sustentável.
@@ -924,6 +935,16 @@ The structure includes researchers from different academic institutions and stra
 
 The Management Committee is responsible for strategic decisions, project monitoring, resource management and coordination with partners and society.`
       },
+      committees: {
+        title: 'Governance Bodies',
+        content: `CP2b has three committees supporting the board on strategic, ethical and operational decisions:
+
+- Scientific Committee: oversees the merit and quality of the center's scientific output.
+- Ethics and Data Governance Committee: oversees research conduct and the governance of data generated.
+- Executive Committee: monitors the execution of planning and operational decisions.
+
+The center is linked to NIPE/UNICAMP and funded by FAPESP.`
+      },
       guidelines: {
         title: 'Guidelines and Regulations',
         content: `CP2b operates according to principles of transparency, collaboration and commitment to sustainable development.
@@ -941,6 +962,30 @@ CP2b's Internal Regulations were approved in 2025 during the I Annual Workshop, 
   }
 };
 
+// Organograma institucional do CP2b.
+// Fonte: "Planejamento e gestão integrada do CP2b.pptx", slide "Estrutura de
+// Governança e Organograma" (imagem sem camada de texto, transcrita manualmente).
+export const governanceChart = {
+  pt: {
+    committees: ['Comitê Científico', 'Comitê Ético e de Gestão de Dados', 'Comitê Executivo'],
+    sponsors: ['UNICAMP - NIPE', 'FAPESP'],
+    direction: ['Coordenadora Diretora', 'Vice-Diretora'],
+    management: ['Gestora Executiva', 'Gestora de Transferência de Tecnologia', 'Gestor Administrativo/Financeiro', 'Gestor de Difusão Científica'],
+    axes: 'Coordenadores de Eixo',
+    assembly: 'Assembleia Geral - Todos os Pesquisadores',
+    partners: 'Instituições Parceiras e Associadas',
+  },
+  en: {
+    committees: ['Scientific Committee', 'Ethics and Data Governance Committee', 'Executive Committee'],
+    sponsors: ['UNICAMP - NIPE', 'FAPESP'],
+    direction: ['Director', 'Vice-Director'],
+    management: ['Executive Manager', 'Technology Transfer Manager', 'Administrative/Financial Manager', 'Scientific Outreach Manager'],
+    axes: 'Axis Coordinators',
+    assembly: 'General Assembly - All Researchers',
+    partners: 'Partner and Associated Institutions',
+  },
+};
+
 export const transparencyContent = {
   pt: {
     title: 'Transparência',
@@ -953,7 +998,15 @@ export const transparencyContent = {
       },
       reports: {
         title: 'Relatórios Anuais',
-        items: []
+        items: [
+          {
+            id: 'ano-1',
+            title: 'Relatório Científico Ano 1',
+            period: 'Fevereiro/2025 – Fevereiro/2026',
+            description: 'Primeiro relatório científico do CP2b à FAPESP, cobrindo os convênios firmados (MME, LCPE, UnB) e a produção científica do primeiro ano do processo 2024/01112-1.',
+            link: 'https://bv.fapesp.br/pt/auxilios/118756/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
+          }
+        ]
       },
       financials: {
         title: 'Informações Financeiras',
@@ -982,7 +1035,15 @@ Para mais informações sobre o financiamento e recursos, consulte o processo co
       },
       reports: {
         title: 'Annual Reports',
-        items: []
+        items: [
+          {
+            id: 'ano-1',
+            title: 'Year 1 Scientific Report',
+            period: 'February/2025 – February/2026',
+            description: "CP2b's first scientific report to FAPESP, covering the agreements signed (MME, LCPE, UnB) and the scientific output of the first year of process 2024/01112-1.",
+            link: 'https://bv.fapesp.br/pt/auxilios/118756/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
+          }
+        ]
       },
       financials: {
         title: 'Financial Information',
@@ -1161,6 +1222,16 @@ export const pageSeo = {
     en: {
       title: 'Governance',
       description: 'Governance structure and committees of CP2b, affiliated with NIPE-UNICAMP.',
+    },
+  },
+  indicators: {
+    pt: {
+      title: 'Indicadores Estratégicos',
+      description: 'Sistema de indicadores e pesos do CP2b: 7 dimensões e dezenas de indicadores usados para monitorar impacto científico, tecnológico, ambiental, social e de governança.',
+    },
+    en: {
+      title: 'Strategic Indicators',
+      description: "CP2b's indicator and weighting system: 7 dimensions and dozens of indicators used to monitor scientific, technological, environmental, social and governance impact.",
     },
   },
   transparency: {

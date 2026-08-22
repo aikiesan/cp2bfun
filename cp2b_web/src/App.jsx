@@ -1,6 +1,8 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import './styles/fonts.css';
+import './styles/tokens.css';
 import './index.css';
 import './styles/design-system.css';
 import { LanguageProvider } from './context/LanguageContext';
@@ -13,9 +15,9 @@ const organizationJsonLd = {
   name: 'CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos',
   alternateName: 'CP2b',
   url: 'https://cp2b.unicamp.br',
-  logo: 'https://cp2b.unicamp.br/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png',
+  logo: 'https://cp2b.unicamp.br/assets/logos/cp2b-logo-og.png',
   description: 'Centro de pesquisa vinculado ao NIPE-UNICAMP dedicado ao estudo de biogás, bioprodutos e políticas públicas para energia renovável no Estado de São Paulo.',
-  email: 'nipe@nipe.unicamp.br',
+  email: 'administrativo@cp2b.unicamp.br',
   telephone: '+55-19-3521-1244',
   address: {
     '@type': 'PostalAddress',
@@ -80,6 +82,7 @@ import AlbumView from './pages/AlbumView';
 
 // About sub-pages
 import Governance from './pages/about/Governance';
+import Indicators from './pages/about/Indicators';
 import Transparency from './pages/about/Transparency';
 import PartnersPage from './pages/about/PartnersPage';
 
@@ -132,6 +135,14 @@ import {
 const GuardedRoute = ({ pageKey, element }) => {
   const { isPageEnabled } = usePageStatus();
   return isPageEnabled(pageKey) ? element : <Navigate to="/manutencao" replace />;
+};
+
+// Legacy album URL redirect: /gallery/:albumId -> /galeria/:albumId
+// (the public gallery list lives at /galeria; this unifies the previously
+// mismatched detail-page prefix so both use the same Portuguese route).
+const LegacyAlbumRedirect = () => {
+  const { albumId } = useParams();
+  return <Navigate to={`/galeria/${albumId}`} replace />;
 };
 
 function App() {
@@ -206,6 +217,7 @@ function App() {
                     <Route path="/" element={<GuardedRoute pageKey="home" element={<Home />} />} />
                     <Route path="/sobre" element={<GuardedRoute pageKey="sobre" element={<About />} />} />
                     <Route path="/sobre/governanca" element={<GuardedRoute pageKey="governanca" element={<Governance />} />} />
+                    <Route path="/sobre/indicadores" element={<GuardedRoute pageKey="indicadores" element={<Indicators />} />} />
                     <Route path="/sobre/transparencia" element={<GuardedRoute pageKey="transparencia" element={<Transparency />} />} />
                     <Route path="/sobre/parceiros" element={<GuardedRoute pageKey="parceiros" element={<PartnersPage />} />} />
                     <Route path="/eixos" element={<GuardedRoute pageKey="eixos" element={<Research />} />} />
@@ -221,7 +233,9 @@ function App() {
                     <Route path="/eventos" element={<GuardedRoute pageKey="eventos" element={<Events />} />} />
                     <Route path="/eventos/:slug" element={<GuardedRoute pageKey="eventos" element={<EventDetail />} />} />
                     <Route path="/galeria" element={<GuardedRoute pageKey="galeria" element={<Gallery />} />} />
-                    <Route path="/gallery/:albumId" element={<GuardedRoute pageKey="galeria" element={<AlbumView />} />} />
+                    <Route path="/galeria/:albumId" element={<GuardedRoute pageKey="galeria" element={<AlbumView />} />} />
+                    {/* Legacy album URL — redirect old /gallery/:albumId links to the unified /galeria/:albumId */}
+                    <Route path="/gallery/:albumId" element={<LegacyAlbumRedirect />} />
                     <Route path="/entrevistas" element={<GuardedRoute pageKey="entrevistas" element={<Projects />} />} />
                     <Route path="/entrevistas/:slug" element={<GuardedRoute pageKey="entrevistas" element={<ProjectDetail />} />} />
                     <Route path="/na-midia" element={<GuardedRoute pageKey="na-midia" element={<Media />} />} />
