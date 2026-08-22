@@ -247,7 +247,7 @@ const Header = () => {
                 <NavDropdown.Item as={NavLink} to="/cronograma-evento">
                   {t.forumSchedule}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to={`/registro?convite=${import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta'}`}>
+                <NavDropdown.Item as={NavLink} to={`/registro?convite=${import.meta.env.VITE_INVITE_TOKEN || ''}`}>
                   {t.forumRegister}
                 </NavDropdown.Item>
               </NavDropdown>

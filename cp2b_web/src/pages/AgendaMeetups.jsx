@@ -8,7 +8,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { fetchMeetupSlots, createMeetupRequest, getMyMeetups } from '../services/api';
 import api from '../services/api';
 
-const INVITE_TOKEN = import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta';
+const INVITE_TOKEN = import.meta.env.VITE_INVITE_TOKEN || '';
 const TABLES = Array.from({ length: 10 }, (_, i) => i + 1);
 
 const labels = {

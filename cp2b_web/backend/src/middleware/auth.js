@@ -50,7 +50,9 @@ export function verifyPassword(candidate) {
 }
 
 // Visitor-facing endpoints that must accept writes without a login.
-const PUBLIC_WRITES = [
+// Exported so the rate limiter (index.js) can throttle exactly this same
+// set — the only /api routes writable by an unauthenticated visitor.
+export const PUBLIC_WRITES = [
   { method: 'POST', pattern: /^\/contact\/?$/ },
   { method: 'POST', pattern: /^\/newsletter\/subscribe\/?$/ },
   { method: 'POST', pattern: /^\/participants\/?$/ },
