@@ -35,6 +35,7 @@ const ROUTES = {
   '/sobre/transparencia': ['transparency', '0.6', 'monthly'],
   '/sobre/parceiros': ['partners', '0.6', 'monthly'],
   '/eixos': ['research', '0.9', 'monthly'],
+  '/solucoes': ['solucoes', '0.9', 'monthly'],
   '/equipe': ['team', '0.8', 'monthly'],
   '/noticias': ['news', '0.9', 'daily'],
   '/oportunidades': ['opportunities', '0.8', 'weekly'],
@@ -47,7 +48,6 @@ const ROUTES = {
   '/press-kit': ['pressKit', '0.5', 'monthly'],
   '/podcast': ['podcast', '0.7', 'weekly'],
   '/forum-paulista': ['forum', '0.8', 'weekly'],
-  '/cronograma-evento': ['cronograma', '0.6', 'weekly'],
   '/contato': ['contact', '0.7', 'yearly'],
 };
 

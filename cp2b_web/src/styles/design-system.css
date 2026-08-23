@@ -42,6 +42,15 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   color: var(--cp2b-lime-500);
 }
 
+.mono-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--text-secondary);
+}
+
 .section-head {
   margin-bottom: clamp(2rem, 1.5rem + 2vw, 3.5rem);
 }

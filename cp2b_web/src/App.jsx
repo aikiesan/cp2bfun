@@ -53,6 +53,7 @@ import CookieConsent from './components/CookieConsent';
 import Home from './pages/Home';
 import About from './pages/About';
 import Research from './pages/Research';
+import Solucoes from './pages/Solucoes';
 import Team from './pages/Team';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
@@ -71,10 +72,7 @@ import Others from './pages/Others';
 import NotFound from './pages/NotFound';
 import Manutencao from './pages/Manutencao';
 import ForumPaulista from './pages/ForumPaulista';
-import Registro from './pages/Registro';
-import AgendaMeetups from './pages/AgendaMeetups';
 import ConfirmarMeetup from './pages/ConfirmarMeetup';
-import CronogramaEvento from './pages/CronogramaEvento';
 import Events from './pages/Events';
 import EventDetail from './pages/EventDetail';
 import Gallery from './pages/Gallery';
@@ -221,6 +219,7 @@ function App() {
                     <Route path="/sobre/transparencia" element={<GuardedRoute pageKey="transparencia" element={<Transparency />} />} />
                     <Route path="/sobre/parceiros" element={<GuardedRoute pageKey="parceiros" element={<PartnersPage />} />} />
                     <Route path="/eixos" element={<GuardedRoute pageKey="eixos" element={<Research />} />} />
+                    <Route path="/solucoes" element={<GuardedRoute pageKey="solucoes" element={<Solucoes />} />} />
                     <Route path="/equipe" element={<GuardedRoute pageKey="equipe" element={<Team />} />} />
                     <Route path="/noticias" element={<GuardedRoute pageKey="noticias" element={<News />} />} />
                     <Route path="/noticias/:slug" element={<GuardedRoute pageKey="noticias" element={<NewsDetail />} />} />
@@ -243,9 +242,9 @@ function App() {
                     <Route path="/podcast" element={<GuardedRoute pageKey="podcast" element={<Podcast />} />} />
                     <Route path="/outros" element={<Others />} />
                     <Route path="/forum-paulista" element={<GuardedRoute pageKey="forum-paulista" element={<ForumPaulista />} />} />
-                    <Route path="/registro" element={<Registro />} />
-                    <Route path="/agenda-meetups" element={<AgendaMeetups />} />
-                    <Route path="/cronograma-evento" element={<CronogramaEvento />} />
+                    {/* Fórum de 2026 encerrado: /registro, /agenda-meetups e
+                        /cronograma-evento foram removidos. /confirmar-meetup
+                        permanece porque e-mails já enviados apontam para ele. */}
                     <Route path="/confirmar-meetup" element={<ConfirmarMeetup />} />
                     <Route path="/manutencao" element={<Manutencao />} />
                     <Route path="*" element={<NotFound />} />

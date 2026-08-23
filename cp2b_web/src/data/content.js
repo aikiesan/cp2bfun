@@ -40,10 +40,9 @@ export const menuLabels = {
     accessibility: 'Acessibilidade',
     search: 'Buscar',
     axes: 'Eixos',
+    solutions: 'Soluções',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'Sobre o Evento',
-    forumRegister: 'Registro Meet-up',
-    forumSchedule: 'Cronograma do Evento',
     events: 'Eventos',
     gallery: 'Galeria',
     pilar2b: 'PILAR-2b'
@@ -80,10 +79,9 @@ export const menuLabels = {
     accessibility: 'Accessibility',
     search: 'Search',
     axes: 'Axes',
+    solutions: 'Solutions',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'About the Event',
-    forumRegister: 'Meet-up Registration',
-    forumSchedule: 'Event Schedule',
     events: 'Events',
     gallery: 'Gallery',
     pilar2b: 'PILAR-2b'
@@ -552,10 +550,8 @@ export const researchAxes = {
       coordinators: [
         { name: 'Profº Drº Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/FOTO_RUBENS_LAMPARELLI_EIXO_1.jpg' }
       ],
-      content: `O Eixo 1 busca ir além dos levantamentos tradicionais de potencial de biomassa. A proposta é trabalhar com dados mais detalhados e precisos, que permitam enxergar de perto quem produz resíduos, onde estão localizados e como se relacionam com as infraestruturas ao redor.
-      Usando técnicas de georreferenciamento, o Eixo 1 pretende mapear as cadeias agroindustriais e identificar oportunidades de aproveitamento desses resíduos, seja dentro da própria cadeia produtiva ou conectando diferentes setores.
-      A ideia é criar uma plataforma digital acessível que funcione como ponte entre quem gera resíduos e quem pode transformá-los em novos produtos.
-      Este eixo se alinha aos Objetivos de Desenvolvimento Sustentável: 7, 11, 13 e 15.`,
+      content: `O Eixo 1 mapeia cadeias agroindustriais e resíduos com georreferenciamento de alta precisão para identificar oportunidades de aproveitamento e integrar geradores em uma plataforma digital acessível.
+      ODS: 7, 11, 13 e 15.`,
       sdgs: [7, 11, 13, 15]
     },
     {
@@ -656,10 +652,8 @@ export const researchAxes = {
       coordinators: [
         { name: 'Prof. Dr. Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/FOTO_RUBENS_LAMPARELLI_EIXO_1.jpg' }
       ],
-      content: `Axis 1 seeks to go beyond traditional biomass potential surveys. The proposal is to work with more detailed and precise data, allowing for a closer look at who produces waste, where they are located, and how they relate to the surrounding infrastructure.
-      Using georeferencing techniques, Axis 1 aims to map agro-industrial chains and identify opportunities for waste recovery, whether within the same production chain or by connecting different sectors.
-      The idea is to create an accessible digital platform that functions as a bridge between those who generate waste and those who can transform it into new products.
-      This axis aligns with Sustainable Development Goals: 7, 11, 13, and 15.`,
+      content: `Axis 1 maps agro-industrial chains and waste streams using high-precision georeferencing to identify recovery opportunities and connect generators through an accessible digital platform.
+      SDGs: 7, 11, 13, and 15.`,
       sdgs: [7, 11, 13, 15]
     },
     {
@@ -754,6 +748,22 @@ export const researchAxes = {
   ]
 };
 
+export const teamCategoryLabels = {
+  coordinators: { pt: 'Pesquisadores Responsáveis', en: 'Lead Researchers' },
+  principals: { pt: 'Pesquisadores Principais', en: 'Principal Investigators' },
+  associates: { pt: 'Pesquisadores Associados', en: 'Associate Researchers' },
+  support: { pt: 'Apoio Técnico e Administrativo', en: 'Technical and Administrative Support' },
+  students: { pt: 'Estudantes', en: 'Students' },
+};
+
+export const teamCategories = [
+  { value: 'coordinators', pt: 'Pesquisadores Responsáveis', en: 'Lead Researchers' },
+  { value: 'principals', pt: 'Pesquisadores Principais', en: 'Principal Investigators' },
+  { value: 'associates', pt: 'Pesquisadores Associados', en: 'Associate Researchers' },
+  { value: 'support', pt: 'Apoio Técnico e Administrativo', en: 'Technical and Administrative Support' },
+  { value: 'students', pt: 'Estudantes', en: 'Students' },
+];
+
 export const teamMembers = [
   {
     category: 'coordinators',
@@ -795,6 +805,7 @@ export const teamMembers = [
     en: 'Associate Researchers',
     members: [
       { name: 'Aline Veronese da Silva', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
+      { name: 'Ana Beatriz Soares Aguiar', role: 'Pesquisador Associado', institution: 'UNICAMP' },
       { name: 'Barbara Janet Teruel Mederos', role: 'Pesquisador Associado', institution: 'FEAGRI/UNICAMP' },
       { name: 'Caio Henrique Rufino', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
       { name: 'Carla Kazue Nakao Cavaliero', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
@@ -832,6 +843,7 @@ export const teamMembers = [
       { name: 'Paulo Cesar Souza Manduca', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
       { name: 'Paulo Sergio Graziano Magalhães', role: 'Pesquisador Associado', institution: 'UPP' },
       { name: 'Priscila Rosseto Camiloti', role: 'Pesquisador Associado', institution: 'IEE/USP' },
+      { name: 'Rachel Biancalana Costa', role: 'Pesquisador Associado', institution: 'POLI/USP' },
       { name: 'Sarita Cândida Rabelo', role: 'Pesquisador Associado', institution: 'FCA/UNESP' },
       { name: 'Sergio Valdir Bajay', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
       { name: 'Solange Teles da Silva', role: 'Pesquisador Associado', institution: 'CPG/UPM' },
@@ -1190,21 +1202,21 @@ export const pageSeo = {
   forum: {
     pt: {
       title: 'I Fórum Paulista de Biogás e Bioprodutos',
-      description: 'Encontro da Cadeia de Biogás e Bioprodutos do Estado de São Paulo — 28 de maio de 2026, UNICAMP.',
+      description: 'Retrospectiva do I Fórum Paulista de Biogás e Bioprodutos, realizado em 28 de maio de 2026 na UNICAMP: programação, resultados e registro fotográfico.',
     },
     en: {
       title: 'I São Paulo Biogas and Bioproducts Forum',
-      description: 'Meeting of the Biogas and Bioproducts Chain of São Paulo State — May 28, 2026, UNICAMP.',
+      description: 'Retrospective of the I São Paulo Biogas and Bioproducts Forum, held on May 28, 2026 at UNICAMP: programme, outcomes and photo coverage.',
     },
   },
-  cronograma: {
+  solucoes: {
     pt: {
-      title: 'Cronograma — I Fórum Paulista de Biogás e Bioprodutos',
-      description: 'Grade completa do I Fórum Paulista de Biogás e Bioprodutos — 28 de maio de 2026, UNICAMP. Palestrantes, painéis e programação detalhada.',
+      title: 'Soluções para o seu negócio',
+      description: 'Serviços técnicos, P&D cooperativo, licenciamento de tecnologia e capacitação em biogás e bioprodutos. Infraestrutura laboratorial do CP2b da bancada à planta piloto (TRL 2 a 6).',
     },
     en: {
-      title: 'Schedule — I São Paulo Biogas and Bioproducts Forum',
-      description: 'Full schedule of the I São Paulo Biogas and Bioproducts Forum — May 28, 2026, UNICAMP. Speakers, panels and detailed program.',
+      title: 'Solutions for your business',
+      description: 'Technical services, cooperative R&D, technology licensing and training in biogas and bioproducts. CP2b laboratory infrastructure from bench to pilot plant (TRL 2 to 6).',
     },
   },
   contact: {
@@ -1288,3 +1300,6 @@ export const pageSeo = {
     },
   },
 };
+
+export { staticPublications as publications } from './generated/publications.js';
+

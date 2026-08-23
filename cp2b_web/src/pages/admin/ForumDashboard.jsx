@@ -25,8 +25,6 @@ const StatusBadge = ({ status }) => {
   return <Badge bg={s.bg} text={s.text}>{s.label}</Badge>;
 };
 
-const inviteToken = import.meta.env.VITE_INVITE_TOKEN || '';
-
 const ForumDashboard = () => {
   const [participants, setParticipants] = useState([]);
   const [slots, setSlots] = useState([]);
@@ -34,7 +32,6 @@ const ForumDashboard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [selectedCell, setSelectedCell] = useState(null); // { slot, tableNumber, request }
-  const [copiedKey, setCopiedKey] = useState(null);
 
   useEffect(() => {
     Promise.all([
@@ -88,13 +85,6 @@ const ForumDashboard = () => {
     const request = bookingMap[key];
     if (!request) return;
     setSelectedCell({ slot, tableNumber, request });
-  };
-
-  const handleCopy = (key, url) => {
-    navigator.clipboard.writeText(url).then(() => {
-      setCopiedKey(key);
-      setTimeout(() => setCopiedKey(null), 2000);
-    });
   };
 
   if (loading) {
@@ -162,42 +152,6 @@ const ForumDashboard = () => {
       </Row>
 
       {/* Shareable Links */}
-      <Card className="mb-4">
-        <Card.Header className="bg-white border-bottom">
-          <h5 className="mb-0">
-            <i className="bi bi-link-45deg me-2"></i>
-            Links de Acesso
-          </h5>
-          <small className="text-muted">Compartilhe estes links com os participantes</small>
-        </Card.Header>
-        <Card.Body>
-          {[
-            { key: 'registro', label: 'Inscrição de Participante', url: `${window.location.origin}/registro?convite=${inviteToken}` },
-            { key: 'agenda',   label: 'Agendamento de Meet-up',   url: `${window.location.origin}/agenda-meetups?convite=${inviteToken}` },
-          ].map(({ key, label, url }) => (
-            <div key={key} className="mb-3">
-              <div className="fw-semibold mb-1" style={{ fontSize: '0.85rem' }}>{label}</div>
-              <div className="d-flex align-items-center gap-2">
-                <code
-                  className="flex-grow-1 bg-light rounded px-2 py-1 text-break"
-                  style={{ fontSize: '0.8rem', display: 'block', wordBreak: 'break-all' }}
-                >
-                  {url}
-                </code>
-                <Button
-                  size="sm"
-                  variant={copiedKey === key ? 'success' : 'outline-secondary'}
-                  onClick={() => handleCopy(key, url)}
-                  style={{ whiteSpace: 'nowrap', minWidth: '80px' }}
-                >
-                  {copiedKey === key ? 'Copiado!' : 'Copiar'}
-                </Button>
-              </div>
-            </div>
-          ))}
-        </Card.Body>
-      </Card>
-
       {/* Table Occupancy Grid */}
       <Card className="mb-4">
         <Card.Header className="bg-white border-bottom">
