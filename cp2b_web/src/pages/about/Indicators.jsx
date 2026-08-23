@@ -26,6 +26,10 @@ const labels = {
     weight: 'Peso',
     total: 'Total',
     indicatorsLabel: 'indicadores',
+    points: 'pts',
+    weightNote:
+      'Os números abaixo são pesos de priorização, não resultados apurados: distribuem 100 pontos entre as dimensões e seus indicadores para indicar a importância relativa de cada um no acompanhamento do centro.',
+    pointsTitle: (n, name) => `${name}: peso ${n} de 100 pontos do sistema de acompanhamento`,
   },
   en: {
     eyebrow: 'About CP2b',
@@ -39,6 +43,10 @@ const labels = {
     weight: 'Weight',
     total: 'Total',
     indicatorsLabel: 'indicators',
+    points: 'pts',
+    weightNote:
+      'The numbers below are prioritization weights, not measured results: they distribute 100 points across the dimensions and their indicators to show the relative importance of each within the monitoring framework.',
+    pointsTitle: (n, name) => `${name}: weight ${n} of the framework's 100 points`,
   },
 };
 
@@ -76,7 +84,6 @@ const Indicators = () => {
             </Col>
             <Col lg={5}>
               <Card className="h-100 p-4 border-0 shadow-sm" style={{ borderRadius: 'var(--radius-lg, 16px)' }}>
-                <span className="mono-label text-muted mb-2">{t.total}: 100%</span>
                 <h3 className="fw-bold mb-3">{t.principles}</h3>
                 <div className="d-flex flex-wrap gap-2">
                   {kpiPrinciples[language].map((p) => (
@@ -104,10 +111,13 @@ const Indicators = () => {
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-baseline mb-3 gap-2">
               <div>
                 <h3 className="fw-bold mb-1 fs-4">{t.dimensions}</h3>
-                <p className="text-muted small mb-0">{t.dimensionsLead}</p>
+                <p className="text-muted small mb-1">{t.dimensionsLead}</p>
+                <p className="text-muted small mb-0" style={{ maxWidth: '46rem' }}>
+                  {t.weightNote}
+                </p>
               </div>
               <span className="mono-label fw-bold" style={{ color: 'var(--brand-primary)' }}>
-                {t.total}: {kpiFrameworkTotalWeight}% ({kpiIndicatorCount} {t.indicatorsLabel})
+                {t.total}: {kpiFrameworkTotalWeight} {t.points} ({kpiIndicatorCount} {t.indicatorsLabel})
               </span>
             </div>
 
@@ -138,7 +148,7 @@ const Indicators = () => {
                       backgroundColor: dim.color,
                       transition: 'width 0.3s ease',
                     }}
-                    title={`${dimLabel.title}: ${dim.weight}%`}
+                    title={t.pointsTitle(dim.weight, dimLabel.title)}
                   />
                 );
               })}
@@ -168,7 +178,7 @@ const Indicators = () => {
                       {dimLabel.title}
                     </span>
                     <span className="mono-label fw-bold ms-auto" style={{ color: dim.color }}>
-                      {dim.weight}%
+                      {dim.weight} {t.points}
                     </span>
                   </div>
                 );
@@ -213,7 +223,7 @@ const Indicators = () => {
                                 fontFamily: 'var(--font-mono, monospace)',
                               }}
                             >
-                              {t.weight} {dim.weight}%
+                              {t.weight} {dim.weight} {t.points}
                             </span>
                           </div>
                         </div>
@@ -262,11 +272,16 @@ const Indicators = () => {
                                       {indLabel.name}
                                     </span>
                                   </div>
+                                  {/* Points, not "%": a bare "2%" next to
+                                      "Geração de ativos de conhecimento" reads as
+                                      "only 2% of our work generates knowledge".
+                                      These are weights in a 100-point framework. */}
                                   <span
                                     className="mono-label fw-bold flex-shrink-0"
                                     style={{ color: dim.color, fontSize: '0.82rem' }}
+                                    title={t.pointsTitle(ind.weight, indLabel.name)}
                                   >
-                                    {ind.weight}%
+                                    {ind.weight} {t.points}
                                   </span>
                                 </div>
                                 <div className="text-muted small ps-1" style={{ fontSize: '0.78rem', lineHeight: 1.35 }}>
