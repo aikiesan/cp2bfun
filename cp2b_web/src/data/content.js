@@ -1303,3 +1303,64 @@ export const pageSeo = {
 
 export { staticPublications as publications } from './generated/publications.js';
 
+
+// Copy for the institutional layer of the Home page (hero, números, eixos e
+// chamada para o catálogo de soluções). Os números em si NÃO ficam aqui —
+// são derivados em Home.jsx a partir de teamMembers, researchAxes,
+// laboratories e technicalServices, para não desatualizarem.
+export const homeContent = {
+  pt: {
+    stats: {
+      eyebrow: 'O Centro em Números',
+      title: 'Uma rede transdisciplinar em operação',
+      subtitle: 'Valores apurados diretamente da base institucional do CP2b.',
+      axes: 'Eixos temáticos',
+      researchers: 'Pesquisadores',
+      institutions: 'Instituições',
+      laboratories: 'Laboratórios centrais',
+      services: 'Serviços técnicos',
+    },
+    axes: {
+      eyebrow: 'Estrutura Científica',
+      title: 'Oito eixos temáticos integrados',
+      cta: 'Explorar todos os eixos',
+    },
+    solutions: {
+      eyebrow: 'Para Empresas e Poder Público',
+      title: 'Quais problemas conseguimos ajudar a resolver?',
+      subtitle: 'Infraestrutura analítica multiusuária, serviços especializados e modelos flexíveis de cooperação tecnológica.',
+      servicesLabel: 'serviços técnicos especializados',
+      labsLabel: 'laboratórios centrais',
+      trlValue: 'TRL 2–6',
+      trlLabel: 'da bancada ao piloto',
+      cta: 'Ver o catálogo de soluções',
+    },
+  },
+  en: {
+    stats: {
+      eyebrow: 'The Centre in Numbers',
+      title: 'A transdisciplinary network at work',
+      subtitle: 'Figures drawn directly from the CP2b institutional dataset.',
+      axes: 'Thematic axes',
+      researchers: 'Researchers',
+      institutions: 'Institutions',
+      laboratories: 'Core laboratories',
+      services: 'Technical services',
+    },
+    axes: {
+      eyebrow: 'Scientific Structure',
+      title: 'Eight integrated thematic axes',
+      cta: 'Explore all axes',
+    },
+    solutions: {
+      eyebrow: 'For Industry and Government',
+      title: 'What problems can we help you solve?',
+      subtitle: 'Multi-user analytical infrastructure, specialized services and flexible technological cooperation models.',
+      servicesLabel: 'specialized technical services',
+      labsLabel: 'core laboratories',
+      trlValue: 'TRL 2–6',
+      trlLabel: 'bench to pilot',
+      cta: 'See the solutions catalog',
+    },
+  },
+};

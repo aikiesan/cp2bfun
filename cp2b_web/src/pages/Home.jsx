@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { timelineData } from '../data/content';
+import { timelineData, homeContent, researchAxes, teamMembers } from '../data/content';
+import { laboratories } from '../data/generated/laboratories';
+import { technicalServices } from '../data/generated/services';
 import { useLanguage } from '../context/LanguageContext';
 import api, { fetchFeaturedContent, fetchFeaturedVideos } from '../services/api';
 import FeaturedContent from '../components/FeaturedContent';
@@ -12,15 +14,51 @@ import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 
+// Reveal shared by every institutional block. The global
+// prefers-reduced-motion rule in design-system.css neutralises the
+// transition for users who ask for less movement.
+const reveal = {
+  initial: { opacity: 0, y: 24 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 },
+};
+
+// "Eixo 3 – Engenharia de Processos" -> "Engenharia de Processos".
+// The number is already shown in its own badge, so repeating the prefix
+// in the card title only costs horizontal space.
+const stripAxisPrefix = (title) => title.split('–').slice(1).join('–').trim() || title;
+
 const Home = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
   const seo = pageSeo.home[language] || pageSeo.home.pt;
+  const t = homeContent[language] || homeContent.pt;
+  const axes = researchAxes[language] || researchAxes.pt;
   const [featuredContent, setFeaturedContent] = useState({ A: null, B: null, C: null });
   const [featuredVideos, setFeaturedVideos] = useState({ A: null, B: null, C: null });
   const [loadingFeatured, setLoadingFeatured] = useState(true);
   const [latestNews, setLatestNews] = useState([]);
   const [loadingNews, setLoadingNews] = useState(true);
+
+  // Every figure in the stats band is derived from the datasets that already
+  // drive /equipe, /eixos and /solucoes — never hardcoded, so the numbers
+  // cannot drift away from the pages they summarise.
+  const stats = useMemo(() => {
+    const people = teamMembers.flatMap((category) => category.members);
+    const institutions = new Set(
+      people
+        .map((member) => (member.institution || '').trim())
+        .filter((institution) => institution && institution !== '-')
+    );
+
+    return [
+      { key: 'axes', value: researchAxes.pt.length, label: t.stats.axes },
+      { key: 'researchers', value: people.length, label: t.stats.researchers },
+      { key: 'institutions', value: institutions.size, label: t.stats.institutions },
+      { key: 'laboratories', value: laboratories.length, label: t.stats.laboratories },
+      { key: 'services', value: technicalServices.length, label: t.stats.services },
+    ];
+  }, [t]);
 
   useEffect(() => {
     const loadFeaturedContent = async () => {
@@ -105,7 +143,8 @@ const Home = () => {
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-      {/* Featured News Headlines Section */}
+
+      {/* Featured News Headlines Section — the page opens on the newsroom */}
       <section className="position-relative overflow-hidden mb-5">
         {loadingFeatured ? (
           <div className="featured-news-section featured-news-skeleton">
@@ -241,6 +280,88 @@ const Home = () => {
         </section>
       )}
 
+      {/* The Centre in numbers — all figures computed from the datasets */}
+      <section className="section">
+        <Container>
+          <div className="section-head text-center">
+            <span className="eyebrow justify-content-center">{t.stats.eyebrow}</span>
+            <h2>{t.stats.title}</h2>
+            <p className="section-sub mx-auto">{t.stats.subtitle}</p>
+          </div>
+          <motion.div className="home-stats-grid" {...reveal} transition={{ duration: 0.5 }}>
+            {stats.map((stat) => (
+              <div className="home-stat" key={stat.key}>
+                <span className="home-stat-value">{stat.value}</span>
+                <span className="home-stat-label">{stat.label}</span>
+              </div>
+            ))}
+          </motion.div>
+        </Container>
+      </section>
+
+      {/* Structure and capabilities in a single band: the axis index on the
+          left, the doorway into /solucoes as a dark panel on the right.
+          These were two full-width sections; the laboratory cards moved out
+          entirely, since their competency text belongs on /solucoes. */}
+      <section className="section bg-light-gray">
+        <Container>
+          <Row className="g-5 align-items-start">
+            <Col lg={7}>
+              <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+                <div>
+                  <span className="eyebrow">{t.axes.eyebrow}</span>
+                  <h2 className="home-band-title">{t.axes.title}</h2>
+                </div>
+                <Link to="/eixos" className="arrow-link">
+                  {t.axes.cta} <span className="arrow">→</span>
+                </Link>
+              </div>
+              <div className="home-axis-grid">
+                {axes.map((axis, index) => (
+                  <motion.div
+                    key={axis.id}
+                    {...reveal}
+                    transition={{ duration: 0.45, delay: Math.min(index, 4) * 0.05 }}
+                  >
+                    <Link to="/eixos" className="home-axis-card">
+                      <span className="home-axis-num">{axis.id}</span>
+                      <h3 className="home-axis-title">{stripAxisPrefix(axis.title)}</h3>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </Col>
+
+            <Col lg={5}>
+              <motion.div className="home-solutions-panel" {...reveal} transition={{ duration: 0.5 }}>
+                <span className="eyebrow eyebrow--light">{t.solutions.eyebrow}</span>
+                <h2 className="home-solutions-panel-title">{t.solutions.title}</h2>
+                <p className="home-solutions-panel-lead">{t.solutions.subtitle}</p>
+
+                <dl className="home-solutions-metrics">
+                  <div className="home-solutions-metric">
+                    <dt className="home-solutions-metric-value">{technicalServices.length}</dt>
+                    <dd className="home-solutions-metric-label">{t.solutions.servicesLabel}</dd>
+                  </div>
+                  <div className="home-solutions-metric">
+                    <dt className="home-solutions-metric-value">{laboratories.length}</dt>
+                    <dd className="home-solutions-metric-label">{t.solutions.labsLabel}</dd>
+                  </div>
+                  <div className="home-solutions-metric">
+                    <dt className="home-solutions-metric-value">{t.solutions.trlValue}</dt>
+                    <dd className="home-solutions-metric-label">{t.solutions.trlLabel}</dd>
+                  </div>
+                </dl>
+
+                <Link to="/solucoes" className="btn-hero btn-hero--primary">
+                  {t.solutions.cta} <i className="bi bi-arrow-right" aria-hidden="true"></i>
+                </Link>
+              </motion.div>
+            </Col>
+          </Row>
+        </Container>
+      </section>
+
       {/* Research Timeline Section */}
       <section className="section" style={{ background: 'var(--cp2b-light-gray)' }}>
         <Container>
@@ -264,11 +385,11 @@ const Home = () => {
             <h2 className="fw-bold mt-2">{labels.partnersTitle}</h2>
           </div>
           <div className="text-center bg-white p-5 rounded-5 shadow-sm">
-            <img 
-                src="/assets/parceiros.png" 
-                alt="Partners" 
-                className="img-fluid" 
-                style={{ maxWidth: '100%', mixBlendMode: 'multiply', borderRadius: 0 }} 
+            <img
+                src="/assets/parceiros.png"
+                alt="Partners"
+                className="img-fluid"
+                style={{ maxWidth: '100%', mixBlendMode: 'multiply', borderRadius: 0 }}
             />
           </div>
         </Container>
