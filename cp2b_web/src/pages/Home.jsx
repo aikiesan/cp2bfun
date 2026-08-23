@@ -142,8 +142,12 @@ const Home = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
-      <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5 }}>
-
+      <motion.div
+        className="home-page"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
       {/* Featured News Headlines Section — the page opens on the newsroom */}
       <section className="position-relative overflow-hidden mb-5">
         {loadingFeatured ? (
@@ -280,7 +284,10 @@ const Home = () => {
         </section>
       )}
 
-      {/* The Centre in numbers — all figures computed from the datasets */}
+      {/* The Centre in numbers — all figures computed from the datasets.
+          The molecule field sits behind this band only: it is the one calm,
+          plain-white section on the page, so the drift reads as identity
+          rather than competing with the newsroom imagery above it. */}
       <section className="section">
         <Container>
           <div className="section-head text-center">
@@ -363,7 +370,7 @@ const Home = () => {
       </section>
 
       {/* Research Timeline Section */}
-      <section className="section" style={{ background: 'var(--cp2b-light-gray)' }}>
+      <section className="section home-band-tinted">
         <Container>
           <div className="text-center section-head">
             <span className="eyebrow justify-content-center">

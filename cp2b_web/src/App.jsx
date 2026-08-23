@@ -45,6 +45,7 @@ const organizationJsonLd = {
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import MoleculeField from './components/MoleculeField';
 import SocialSidebar from './components/SocialSidebar';
 import ErrorBoundary from './components/ErrorBoundary';
 import CookieConsent from './components/CookieConsent';
@@ -209,6 +210,10 @@ function App() {
             element={
               <>
                 <Header />
+                {/* Ambient CH4 field: mounted once so it persists across
+                    route changes, at full density on Home and lower
+                    elsewhere. See MoleculeField for the reasoning. */}
+                <MoleculeField />
                 <ErrorBoundary>
                 <main id="main-content" style={{ minHeight: '80vh' }}>
                   <Routes>
