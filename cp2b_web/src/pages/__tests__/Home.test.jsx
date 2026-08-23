@@ -214,23 +214,28 @@ describe('Home — institutional layer', () => {
     expect(researchAxes.pt[0].title).toContain(firstTitle);
   });
 
-  it('teases the solutions catalog with the three core laboratories', async () => {
+  it('pairs the axis grid with the solutions panel inside a single band', async () => {
     const { container } = renderWithProviders(<Home />);
     await screen.findByText(homeContent.pt.stats.title);
+
+    // One section holds both halves — they used to be two full-width bands.
+    const band = container.querySelector('.home-axis-grid').closest('section');
+    expect(band.querySelector('.home-solutions-panel')).not.toBeNull();
 
     expect(
       screen.getByRole('heading', { name: homeContent.pt.solutions.title })
     ).toBeInTheDocument();
 
-    const labCards = container.querySelectorAll('.home-lab-card');
-    expect(labCards).toHaveLength(laboratories.length);
-
-    // Scoped to the cards: an acronym like "CP2b Lab" also occurs in the
-    // surrounding institutional copy, so a page-wide query is ambiguous.
-    const renderedAcronyms = [...container.querySelectorAll('.home-lab-acronym')].map(
+    // The panel summarises the catalog with counts, not laboratory cards.
+    const metrics = [...container.querySelectorAll('.home-solutions-metric-value')].map(
       (el) => el.textContent
     );
-    expect(renderedAcronyms).toEqual(laboratories.map((lab) => lab.acronym));
+    expect(metrics).toEqual([
+      String(technicalServices.length),
+      String(laboratories.length),
+      homeContent.pt.solutions.trlValue,
+    ]);
+    expect(container.querySelector('.home-lab-card')).toBeNull();
 
     expect(
       screen.getByRole('link', { name: new RegExp(homeContent.pt.solutions.cta, 'i') })

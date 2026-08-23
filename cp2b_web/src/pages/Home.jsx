@@ -299,87 +299,66 @@ const Home = () => {
         </Container>
       </section>
 
-      {/* Eight thematic axes — a compact index, not a summary of /eixos.
-          Titles only: the ODS chips belonged to the axis pages, and eight
-          cards' worth of them turned this into a wall. */}
+      {/* Structure and capabilities in a single band: the axis index on the
+          left, the doorway into /solucoes as a dark panel on the right.
+          These were two full-width sections; the laboratory cards moved out
+          entirely, since their competency text belongs on /solucoes. */}
       <section className="section bg-light-gray">
         <Container>
-          <div className="d-flex justify-content-between align-items-center section-head flex-wrap gap-3">
-            <div>
-              <span className="eyebrow">{t.axes.eyebrow}</span>
-              <h2>{t.axes.title}</h2>
-            </div>
-            <Link to="/eixos" className="arrow-link">
-              {t.axes.cta} <span className="arrow">→</span>
-            </Link>
-          </div>
-          <div className="home-axis-grid">
-            {axes.map((axis, index) => (
-              <motion.div
-                key={axis.id}
-                {...reveal}
-                transition={{ duration: 0.45, delay: Math.min(index, 4) * 0.05 }}
-              >
-                <Link to="/eixos" className="home-axis-card">
-                  <span className="home-axis-num">{axis.id}</span>
-                  <h3 className="home-axis-title">{stripAxisPrefix(axis.title)}</h3>
+          <Row className="g-5 align-items-start">
+            <Col lg={7}>
+              <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+                <div>
+                  <span className="eyebrow">{t.axes.eyebrow}</span>
+                  <h2 className="home-band-title">{t.axes.title}</h2>
+                </div>
+                <Link to="/eixos" className="arrow-link">
+                  {t.axes.cta} <span className="arrow">→</span>
+                </Link>
+              </div>
+              <div className="home-axis-grid">
+                {axes.map((axis, index) => (
+                  <motion.div
+                    key={axis.id}
+                    {...reveal}
+                    transition={{ duration: 0.45, delay: Math.min(index, 4) * 0.05 }}
+                  >
+                    <Link to="/eixos" className="home-axis-card">
+                      <span className="home-axis-num">{axis.id}</span>
+                      <h3 className="home-axis-title">{stripAxisPrefix(axis.title)}</h3>
+                    </Link>
+                  </motion.div>
+                ))}
+              </div>
+            </Col>
+
+            <Col lg={5}>
+              <motion.div className="home-solutions-panel" {...reveal} transition={{ duration: 0.5 }}>
+                <span className="eyebrow eyebrow--light">{t.solutions.eyebrow}</span>
+                <h2 className="home-solutions-panel-title">{t.solutions.title}</h2>
+                <p className="home-solutions-panel-lead">{t.solutions.subtitle}</p>
+
+                <dl className="home-solutions-metrics">
+                  <div className="home-solutions-metric">
+                    <dt className="home-solutions-metric-value">{technicalServices.length}</dt>
+                    <dd className="home-solutions-metric-label">{t.solutions.servicesLabel}</dd>
+                  </div>
+                  <div className="home-solutions-metric">
+                    <dt className="home-solutions-metric-value">{laboratories.length}</dt>
+                    <dd className="home-solutions-metric-label">{t.solutions.labsLabel}</dd>
+                  </div>
+                  <div className="home-solutions-metric">
+                    <dt className="home-solutions-metric-value">{t.solutions.trlValue}</dt>
+                    <dd className="home-solutions-metric-label">{t.solutions.trlLabel}</dd>
+                  </div>
+                </dl>
+
+                <Link to="/solucoes" className="btn-hero btn-hero--primary">
+                  {t.solutions.cta} <i className="bi bi-arrow-right" aria-hidden="true"></i>
                 </Link>
               </motion.div>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* Solutions teaser — the doorway into /solucoes for industry and government */}
-      <section className="section home-solutions">
-        <Container>
-          <div className="section-head">
-            <span className="eyebrow">{t.solutions.eyebrow}</span>
-            <h2>{t.solutions.title}</h2>
-            <p className="section-sub">{t.solutions.subtitle}</p>
-          </div>
-
-          <div className="home-solutions-metrics">
-            <div className="home-solutions-metric">
-              <span className="home-solutions-metric-value">{technicalServices.length}</span>
-              <span className="home-solutions-metric-label">{t.solutions.servicesLabel}</span>
-            </div>
-            <div className="home-solutions-metric">
-              <span className="home-solutions-metric-value">{laboratories.length}</span>
-              <span className="home-solutions-metric-label">{t.solutions.labsLabel}</span>
-            </div>
-            <div className="home-solutions-metric">
-              <span className="home-solutions-metric-value">{t.solutions.trlValue}</span>
-              <span className="home-solutions-metric-label">{t.solutions.trlLabel}</span>
-            </div>
-          </div>
-
-          <Row className="g-4">
-            {laboratories.map((lab, index) => (
-              <Col md={4} key={lab.acronym}>
-                <motion.div
-                  className="home-lab-card"
-                  {...reveal}
-                  transition={{ duration: 0.45, delay: index * 0.08 }}
-                >
-                  <span className="home-lab-acronym">{lab.acronym}</span>
-                  <h3 className="home-lab-name">{lab.name}</h3>
-                  <p className="home-lab-competency">{lab.competency}</p>
-                  {lab.lead && (
-                    <span className="home-lab-lead">
-                      {t.solutions.leadLabel}: {lab.lead}
-                    </span>
-                  )}
-                </motion.div>
-              </Col>
-            ))}
+            </Col>
           </Row>
-
-          <div className="mt-5">
-            <Link to="/solucoes" className="btn-hero btn-hero--primary">
-              {t.solutions.cta} <i className="bi bi-arrow-right" aria-hidden="true"></i>
-            </Link>
-          </div>
         </Container>
       </section>
 
