@@ -2,6 +2,9 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen, waitFor, within } from '@testing-library/react';
 import { renderWithProviders } from '../../test/utils';
 import Home from '../Home';
+import { homeContent, researchAxes, teamMembers } from '../../data/content';
+import { laboratories } from '../../data/generated/laboratories';
+import { technicalServices } from '../../data/generated/services';
 
 vi.mock('../../services/api', () => ({
   default: {
@@ -70,6 +73,9 @@ const featured = {
 
 beforeEach(() => {
   vi.clearAllMocks();
+  // LanguageContext seeds itself from localStorage, so a test that switches
+  // to English would otherwise leak into every test that follows.
+  localStorage.removeItem('cp2b_lang');
   fetchFeaturedVideos.mockResolvedValue({ A: null, B: null, C: null });
   fetchPageContent.mockResolvedValue(null);
 });
@@ -139,5 +145,107 @@ describe('Home — featured content serving', () => {
     const link = within(headline.closest('a')).getByText('Destaque A');
     expect(headline.closest('a')).toHaveAttribute('href', '/noticias/destaque-a');
     expect(link).toBeInTheDocument();
+  });
+});
+
+describe('Home — institutional layer', () => {
+  beforeEach(() => {
+    api.get.mockResolvedValue({ data: [] });
+    fetchFeaturedContent.mockResolvedValue({ A: null, B: null, C: null });
+  });
+
+  it('opens on the featured-news block, with the institutional layer below it', async () => {
+    const { container } = renderWithProviders(<Home />);
+    await screen.findByText(homeContent.pt.stats.title);
+
+    // Order matters: the newsroom leads, the institutional bands follow.
+    const sections = [...container.querySelectorAll('section')];
+    const featuredIndex = sections.findIndex((s) => s.querySelector('.featured-news-container'));
+    const statsIndex = sections.findIndex((s) => s.querySelector('.home-stats-grid'));
+    const axesIndex = sections.findIndex((s) => s.querySelector('.home-axis-grid'));
+
+    expect(featuredIndex).toBe(0);
+    expect(statsIndex).toBeGreaterThan(featuredIndex);
+    expect(axesIndex).toBeGreaterThan(statsIndex);
+
+    // No full-bleed institutional banner: the page has no <h1> of its own.
+    expect(container.querySelector('.home-hero')).toBeNull();
+    expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
+  });
+
+  it('derives every stat from the datasets rather than hardcoding them', async () => {
+    const { container } = renderWithProviders(<Home />);
+    await screen.findByText(homeContent.pt.stats.title);
+
+    const people = teamMembers.flatMap((category) => category.members);
+    const institutions = new Set(
+      people
+        .map((member) => (member.institution || '').trim())
+        .filter((institution) => institution && institution !== '-')
+    );
+
+    const values = [...container.querySelectorAll('.home-stat-value')].map((el) => el.textContent);
+    expect(values).toEqual([
+      String(researchAxes.pt.length),
+      String(people.length),
+      String(institutions.size),
+      String(laboratories.length),
+      String(technicalServices.length),
+    ]);
+
+    // Guard the intent: a placeholder institution must never be counted.
+    expect(institutions.has('-')).toBe(false);
+  });
+
+  it('renders one card per research axis, each linking to /eixos', async () => {
+    const { container } = renderWithProviders(<Home />);
+    await screen.findByText(homeContent.pt.stats.title);
+
+    const cards = container.querySelectorAll('.home-axis-card');
+    expect(cards).toHaveLength(researchAxes.pt.length);
+    cards.forEach((card) => expect(card).toHaveAttribute('href', '/eixos'));
+
+    // Compact by design: titles only, no ODS chips.
+    expect(container.querySelector('.home-sdg-chip')).toBeNull();
+
+    // The "Eixo N – " prefix is dropped because the number has its own badge.
+    const firstTitle = container.querySelector('.home-axis-title').textContent;
+    expect(firstTitle).not.toMatch(/^Eixo\s*\d/);
+    expect(researchAxes.pt[0].title).toContain(firstTitle);
+  });
+
+  it('teases the solutions catalog with the three core laboratories', async () => {
+    const { container } = renderWithProviders(<Home />);
+    await screen.findByText(homeContent.pt.stats.title);
+
+    expect(
+      screen.getByRole('heading', { name: homeContent.pt.solutions.title })
+    ).toBeInTheDocument();
+
+    const labCards = container.querySelectorAll('.home-lab-card');
+    expect(labCards).toHaveLength(laboratories.length);
+
+    // Scoped to the cards: an acronym like "CP2b Lab" also occurs in the
+    // surrounding institutional copy, so a page-wide query is ambiguous.
+    const renderedAcronyms = [...container.querySelectorAll('.home-lab-acronym')].map(
+      (el) => el.textContent
+    );
+    expect(renderedAcronyms).toEqual(laboratories.map((lab) => lab.acronym));
+
+    expect(
+      screen.getByRole('link', { name: new RegExp(homeContent.pt.solutions.cta, 'i') })
+    ).toHaveAttribute('href', '/solucoes');
+  });
+
+  it('renders the institutional layer in English when the stored language is en', async () => {
+    localStorage.setItem('cp2b_lang', 'en');
+
+    renderWithProviders(<Home />);
+
+    expect(await screen.findByText(homeContent.en.stats.title)).toBeInTheDocument();
+    expect(screen.getByText(homeContent.en.axes.title)).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: new RegExp(homeContent.en.solutions.cta, 'i') })
+    ).toHaveAttribute('href', '/solucoes');
   });
 });
