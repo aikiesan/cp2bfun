@@ -24,6 +24,7 @@ exatamente a mesma saída (chaves ordenadas, sem timestamps).
 import json
 import re
 import sys
+import unicodedata
 from pathlib import Path
 
 try:
@@ -41,6 +42,33 @@ def norm(v):
         v = v.strip()
         return v or None
     return v
+
+
+# Titulos que a planilha as vezes carrega e o site quase sempre carrega, e
+# que nao fazem parte do nome da pessoa.
+_TITLES = re.compile(r'^(prof[ao]?\.?\s*|dr[ao]?\.?\s*|me\.?\s*|msc\.?\s*|phd\.?\s*)+', re.I)
+_STOPWORDS = {'da', 'de', 'do', 'dos', 'das', 'e'}
+
+
+def name_key(name):
+    """Chave estavel para a mesma pessoa escrita de formas diferentes.
+
+    Ignora acento, caixa, pontuacao, titulo academico e nomes do meio: a
+    planilha traz 'Dante Pezzin' onde o site traz 'Dante Chiavareto Pezzin',
+    e 'Mauro Donizetti Berni' onde o site traz 'Mauro Donizeti Berni'.
+    Compara pelo primeiro e pelo ultimo nome, que e o que sobrevive as duas
+    grafias.
+    """
+    if not name:
+        return ''
+    text = unicodedata.normalize('NFKD', str(name))
+    text = ''.join(c for c in text if not unicodedata.combining(c))
+    text = _TITLES.sub('', text.strip())
+    text = re.sub(r'[^A-Za-z ]', ' ', text)
+    parts = [w for w in text.lower().split() if w and w not in _STOPWORDS]
+    if not parts:
+        return ''
+    return f'{parts[0]}|{parts[-1]}'
 
 
 def parse_axis_list(raw):
@@ -192,6 +220,121 @@ def extract_laboratorios(ws):
             if axis_id in VALID_AXES:
                 by_axis.setdefault(axis_id, []).append(lab)
     return labs, by_axis
+
+
+def extract_coord_people(ws):
+    """Aba 'Coord Eixos' -> [ {person, axes, institution, roles} ], por pessoa.
+
+    Existe em paralelo a extract_competencias porque aquela descarta o eixo
+    '0' (nao e um eixo tematico, logo nao entra em axisDetails) -- e o '0' e
+    justamente o que marca a direcao do centro. Aqui ele e preservado.
+    """
+    out = []
+    for block in blocks_of(rows_of(ws)):
+        filled = forward_fill_block(block, cols=[1, 2, 3])  # Eixo, Instituicao, Cargo
+        person = norm(filled[0][0])
+        if not person:
+            continue
+        axes, roles, institution = [], [], None
+        for row in filled:
+            # Nao usa parse_axis_list: ela filtra por VALID_AXES, que exclui
+            # o '0'. Aqui o '0' e exatamente o que queremos preservar.
+            # `row[1] or ''` seria uma armadilha: o eixo 0 chega como o
+            # inteiro 0, que e falsy, e viraria string vazia.
+            raw_axis = '' if row[1] is None else str(row[1])
+            for axis_id in re.findall(r'\d+', raw_axis):
+                if axis_id in VALID_AXES or axis_id == '0':
+                    if axis_id not in axes:
+                        axes.append(axis_id)
+            institution = institution or norm(row[2])
+            role = norm(row[3])
+            if role and role not in roles:
+                roles.append(role)
+        out.append({
+            'person': person,
+            'axes': axes,
+            'institution': institution,
+            'roles': roles,
+        })
+    return out
+
+
+def build_team_by_axis(coord_people, equipe):
+    """Uma entrada por pessoa, com todos os eixos em que ela aparece.
+
+    Junta as duas abas que trazem gente: 'Coord Eixos' (coordenadores, com
+    cargo) e 'Pesquisadores' (estudantes, pos-docs e professores, com nivel
+    academico). A planilha repete a mesma pessoa em varias linhas e, no caso
+    dos coordenadores, em varios eixos -- por isso a chave e o nome
+    normalizado e os eixos viram uma lista ordenada.
+
+    O eixo '0' nao e um eixo tematico: marca a direcao do centro. Bruna e
+    Renata aparecem como '0, 6, 7' -- dirigem o CP2b inteiro e ainda atuam
+    nos eixos 6 e 7. Guardamos isso como `direction: True` alem dos eixos
+    tematicos, para /equipe poder abrir com a direcao e mesmo assim
+    mostra-las nos seus eixos.
+
+    Cargos: a planilha lista varios por pessoa ("Coordenadora Associada do
+    NIPE" numa linha, "Diretora do CP2b" na seguinte). Preferimos sempre o
+    que fala do CP2b, que e o que importa nesta pagina.
+    """
+    people = {}
+
+    def upsert(name, axis_ids, institution, role, level):
+        if not name:
+            return
+        key = name_key(name)
+        entry = people.setdefault(key, {
+            'name': name,
+            'axes': set(),
+            'direction': False,
+            'roles': [],
+            'institution': None,
+            'level': None,
+        })
+        # Mantem o nome mais completo visto para a mesma pessoa: a planilha
+        # tem "Dante Pezzin" numa aba e "Dante Chiavareto Pezzin" noutra.
+        if len(name) > len(entry['name']):
+            entry['name'] = name
+        for axis_id in axis_ids:
+            if axis_id == '0':
+                entry['direction'] = True
+            elif axis_id in VALID_AXES:
+                entry['axes'].add(axis_id)
+        if role and role not in entry['roles']:
+            entry['roles'].append(role)
+        entry['institution'] = entry['institution'] or institution or None
+        entry['level'] = entry['level'] or level or None
+
+    for it in coord_people:
+        # Os cargos vem em lista; passamos um por vez para preservar todos.
+        for role in (it['roles'] or [None]):
+            upsert(it['person'], it['axes'], it.get('institution'), role, None)
+
+    for axis_id, items in equipe.items():
+        for it in items:
+            upsert(it['person'], [axis_id], it.get('institution'), None, it.get('level'))
+
+    def best_role(roles):
+        if not roles:
+            return None
+        for r in roles:
+            if 'cp2b' in r.lower():
+                return r
+        return roles[0]
+
+    out = []
+    for entry in people.values():
+        out.append({
+            'name': entry['name'],
+            'axes': sorted(entry['axes'], key=int),
+            'direction': entry['direction'],
+            'institution': entry['institution'],
+            'role': best_role(entry['roles']),
+            'level': entry['level'],
+        })
+    out.sort(key=lambda e: name_key(e['name']))
+    return out
 
 
 def build_axis_details(competencias, projetos, equipe, labs_by_axis):
@@ -392,6 +535,8 @@ def main():
     servicos = extract_servicos(wb['Laboratórios'])
 
     axis_details = build_axis_details(competencias, projetos, equipe, labs_by_axis)
+    coord_people = extract_coord_people(wb['Coord Eixos'])
+    team_by_axis = build_team_by_axis(coord_people, equipe)
 
     out_dir = Path(__file__).resolve().parent.parent / 'src' / 'data' / 'generated'
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -419,7 +564,19 @@ export const technicalServices = {to_js(servicos)};
 """
     (out_dir / 'services.js').write_text(services_js, encoding='utf-8')
 
+    team_js = f"""// GERADO — não editar à mão.
+// Gerado por scripts/extract-strategic-data.py a partir das abas
+// 'Coord Eixos' e 'Pesquisadores' da planilha estratégica do CP2b.
+//
+// Uma entrada por pessoa, com todos os eixos em que ela aparece. É a
+// fonte do vínculo pessoa→eixo usado em /equipe; os nomes e instituições
+// vêm da planilha da Luciana, não digitados à mão.
+export const teamByAxis = {to_js(team_by_axis)};
+"""
+    (out_dir / 'teamByAxis.js').write_text(team_js, encoding='utf-8')
+
     print(f"axisDetails.js: {sum(len(v) for v in axis_details.values())} activity groups across {len(axis_details)} axes")
+    print(f"teamByAxis.js: {len(team_by_axis)} people, {sum(1 for p in team_by_axis if p['axes'])} with at least one axis")
     print(f"laboratories.js: {len(labs)} laboratories")
     print(f"services.js: {len(servicos)} technical services")
 
