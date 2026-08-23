@@ -2,7 +2,8 @@ import { useState, useEffect, useMemo } from 'react';
 import { Container, Row, Col, Card, Form, InputGroup } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import { teamMembers as staticTeamMembers, menuLabels, pageSeo, teamCategoryLabels, teamCategories } from '../data/content';
+import { teamMembers as staticTeamMembers, menuLabels, pageSeo } from '../data/content';
+import { groupTeamByAxis } from '../utils/teamGroups';
 import { teamPhotos } from '../data/teamPhotos';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchTeam } from '../services/api';
@@ -10,7 +11,20 @@ import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import Avatar from '../components/Avatar';
 
-const categoryOrder = ['coordinators', 'principals', 'associates', 'support', 'students'];
+// The API still stores people under the old ranks; the page no longer
+// renders them as ranks, so this is only used to walk the response.
+const apiCategories = ['coordinators', 'principals', 'associates', 'support', 'students'];
+
+// Flatten the static fallback, which is shaped as {category, members[]}.
+const flattenStatic = (groups, language) =>
+  groups.flatMap((group) =>
+    (group.members || []).map((m) => ({
+      name: m.name,
+      role: m[language] || m.role,
+      institution: m.institution,
+      axes: m.axes,
+    }))
+  );
 
 const Team = () => {
   const { language } = useLanguage();
@@ -18,7 +32,7 @@ const Team = () => {
   const seo = pageSeo.team[language] || pageSeo.team.pt;
   const t = menuLabels[language];
 
-  const [teamData, setTeamData] = useState(staticTeamMembers);
+  const [apiMembers, setApiMembers] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -27,42 +41,43 @@ const Team = () => {
       try {
         const apiData = await fetchTeam();
         if (apiData && typeof apiData === 'object' && Object.keys(apiData).length > 0) {
-          const transformed = categoryOrder
-            .filter((cat) => Array.isArray(apiData[cat]) && apiData[cat].length > 0)
-            .map((cat) => ({
-              category: cat,
-              pt: teamCategoryLabels[cat]?.pt || cat,
-              en: teamCategoryLabels[cat]?.en || cat,
-              members: apiData[cat].map((m) => ({
+          // Flatten out of the stored rank buckets: the page regroups by
+          // axis, so the ranks are just how the rows happen to be indexed.
+          const flat = apiCategories
+            .filter((cat) => Array.isArray(apiData[cat]))
+            .flatMap((cat) =>
+              apiData[cat].map((m) => ({
                 name: m.name,
                 role: language === 'pt' ? (m.role_pt || m.role) : (m.role_en || m.role_pt || m.role),
                 institution: m.institution,
                 photo: m.photo || m.photo_url || teamPhotos[m.name] || null,
-              })),
-            }));
-          if (transformed.length > 0) {
-            setTeamData(transformed);
+                axes: m.axes,
+                is_director: m.is_director,
+              }))
+            );
+          if (flat.length > 0) {
+            setApiMembers(flat);
           }
         }
       } catch {
-        // Fallback already in place with staticTeamMembers
+        // Fallback already in place with the static list
       }
     };
 
     loadTeam();
   }, [language]);
 
-  // Compute flattened member list with normalized photos
+  // Group horizontally by Eixo, not by rank — see utils/teamGroups.
   const allGroups = useMemo(() => {
-    return teamData.map((group) => ({
+    const members = apiMembers || flattenStatic(staticTeamMembers, language);
+    return groupTeamByAxis(members, language).map((group) => ({
       ...group,
-      title: group[language] || teamCategoryLabels[group.category]?.[language] || group.pt,
-      members: (group.members || []).map((m) => ({
+      members: group.members.map((m) => ({
         ...m,
         photo: m.photo || teamPhotos[m.name] || null,
       })),
     }));
-  }, [teamData, language]);
+  }, [apiMembers, language]);
 
   // Counts per category
   const categoryCounts = useMemo(() => {
@@ -184,14 +199,14 @@ const Team = () => {
                 </span>
               </button>
 
-              {teamCategories.map((cat) => {
-                const count = categoryCounts[cat.value] || 0;
-                const isSelected = selectedCategory === cat.value;
-                const label = cat[language] || cat.pt;
+              {allGroups.map((cat) => {
+                const count = categoryCounts[cat.category] || 0;
+                const isSelected = selectedCategory === cat.category;
+                const label = cat.shortTitle;
 
                 return (
                   <button
-                    key={cat.value}
+                    key={cat.category}
                     type="button"
                     className={`btn btn-sm rounded-pill px-3 py-2 fw-semibold d-inline-flex align-items-center gap-2 ${
                       isSelected
@@ -202,7 +217,7 @@ const Team = () => {
                       transition: 'all 0.2s ease',
                       borderColor: isSelected ? 'transparent' : 'var(--gray-300)',
                     }}
-                    onClick={() => setSelectedCategory(cat.value)}
+                    onClick={() => setSelectedCategory(cat.category)}
                   >
                     <span>{label}</span>
                     <span
