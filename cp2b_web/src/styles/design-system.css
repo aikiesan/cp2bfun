@@ -789,3 +789,38 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   line-height: var(--leading-snug);
   color: color-mix(in srgb, var(--cp2b-white) 80%, transparent);
 }
+
+/* ---------- Ambient molecule field ----------
+   A single fixed layer behind the whole landing page, not a per-band
+   decoration: the molecules drift across the viewport while the page
+   scrolls past them. Decoration only — never takes a pointer event, and
+   faint enough that the content stays the subject. */
+.molecule-field {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  display: block;
+  pointer-events: none;
+  opacity: 0.55;
+  z-index: 0;
+}
+
+/* The page owns the stacking context; every band sits above the field. */
+.home-page {
+  position: relative;
+  z-index: 0;
+}
+
+.home-page > section {
+  position: relative;
+  z-index: 1;
+}
+
+/* The tinted bands would otherwise hide the field completely, so they are
+   let down to a translucent tint. The white bands need nothing — they have
+   no background of their own, so the field shows straight through. */
+.home-page > section.bg-light-gray,
+.home-page > section.home-band-tinted {
+  background-color: color-mix(in srgb, var(--cp2b-light-gray) 82%, transparent) !important;
+}
