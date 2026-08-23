@@ -218,6 +218,167 @@ def to_js(value, indent=0):
     return json.dumps(value, ensure_ascii=False, indent=2)
 
 
+def extract_servicos(ws):
+    """Aba 'Laboratórios' -> lista de 15 serviços técnicos estruturados com TRL e traduções."""
+    # Mapeamento de traduções e metadados por serviço
+    service_translations = {
+        'Identificação e Caracterização Molecular de Microrganismos': {
+            'en_title': 'Molecular Identification and Characterization of Microorganisms',
+            'en_desc': 'Sequencing, PCR, and tracking of bacteria, fungi, or microbial consortia of industrial interest.',
+            'trl': 'TRL 2 a 4',
+            'trlMin': 2,
+            'trlMax': 4,
+        },
+        'Quantificação de Compostos de Alto Valor por HPLC': {
+            'en_title': 'Quantification of High-Value Compounds by HPLC',
+            'en_desc': 'Detailed quantitative and qualitative analysis of sugars, organic acids, proteins, vitamins, and secondary metabolites in bioprocesses.',
+            'trl': 'TRL 2 a 4',
+            'trlMin': 2,
+            'trlMax': 4,
+        },
+        'Desenvolvimento e Triagem de Bioprocessos (Screening)': {
+            'en_title': 'Bioprocess Development and Screening',
+            'en_desc': 'Bench-scale parameter screening (pH, temperature, carbon sources) to determine optimal fermentation conditions.',
+            'trl': 'TRL 2 a 4',
+            'trlMin': 2,
+            'trlMax': 4,
+        },
+        'Análises Físico-Químicas de Controle de Qualidade': {
+            'en_title': 'Physicochemical Quality Control Analyses',
+            'en_desc': 'Determination of purity, stability, and composition of raw materials and bioproducts.',
+            'trl': 'TRL 2 a 4',
+            'trlMin': 2,
+            'trlMax': 4,
+        },
+        'Elucidação de Vias Metabólicas': {
+            'en_title': 'Elucidation of Metabolic Pathways',
+            'en_desc': 'Detailed mapping of microbial substrate assimilation to guide genetic and process optimization.',
+            'trl': 'TRL 2 a 4',
+            'trlMin': 2,
+            'trlMax': 4,
+        },
+        'Caracterização Profunda de Biomassa': {
+            'en_title': 'In-Depth Biomass Characterization',
+            'en_desc': 'Chemical composition profiling (lignin, cellulose, hemicellulose, ash) of agricultural, forestry, or industrial residues.',
+            'trl': 'TRL 3 a 4',
+            'trlMin': 3,
+            'trlMax': 4,
+        },
+        'Provas de Conceito em Biorreatores de Bancada': {
+            'en_title': 'Proof-of-Concept in Bench-Scale Bioreactors',
+            'en_desc': 'Controlled 1 to 10 L reactor trials for fermentation, anaerobic digestion, or enzymatic processes evaluating kinetics and yield.',
+            'trl': 'TRL 3 a 4',
+            'trlMin': 3,
+            'trlMax': 4,
+        },
+        'Triagem e Seleção de Microrganismos': {
+            'en_title': 'Microorganism Screening and Selection',
+            'en_desc': 'Isolation and cultivation of microbial strains with high productive or degradative performance.',
+            'trl': 'TRL 3 a 4',
+            'trlMin': 3,
+            'trlMax': 4,
+        },
+        'Análise Quantitativa de Bioprodutos (Cromatografia)': {
+            'en_title': 'Quantitative Bioproduct Analysis via Chromatography',
+            'en_desc': 'HPLC/GC analysis coupled to reactor sampling for real-time monitoring of product yields and substrate uptake.',
+            'trl': 'TRL 3 a 4',
+            'trlMin': 3,
+            'trlMax': 4,
+        },
+        'Otimização de Parâmetros de Processo': {
+            'en_title': 'Process Parameter Optimization',
+            'en_desc': 'Fine-tuning of variables (temperature, pH, agitation, aeration) to maximize bioprocess efficiency.',
+            'trl': 'TRL 3 a 4',
+            'trlMin': 3,
+            'trlMax': 4,
+        },
+        'Ensaios de Potencial Bioquímico de Metano (BMP)': {
+            'en_title': 'Biochemical Methane Potential (BMP) Assays',
+            'en_desc': 'Precise quantification of biogas and biomethane potential from dedicated feedstocks and residues.',
+            'trl': 'TRL 4 a 6',
+            'trlMin': 4,
+            'trlMax': 6,
+        },
+        'Testes de Escalonamento (Scale-up)': {
+            'en_title': 'Scale-Up Testing',
+            'en_desc': 'Pilot-plant scale validation of bench findings focusing on hydrodynamics and mass transfer.',
+            'trl': 'TRL 4 a 6',
+            'trlMin': 4,
+            'trlMax': 6,
+        },
+        'Perfil de Bioprodutos e Pureza (Cromatografia - HPLC/GC)': {
+            'en_title': 'Bioproduct Profiling and Purity Analysis',
+            'en_desc': 'Comprehensive identification of biogas composition (CH4, CO2, H2S) and volatile organic byproducts.',
+            'trl': 'TRL 4 a 6',
+            'trlMin': 4,
+            'trlMax': 6,
+        },
+        'Otimização e Estabilização de Processos': {
+            'en_title': 'Process Optimization and Stabilization',
+            'en_desc': 'Biological health diagnostic and stabilization for industrial plants facing acidification or reduced output.',
+            'trl': 'TRL 4 a 6',
+            'trlMin': 4,
+            'trlMax': 6,
+        },
+        'P&D de Novos Catalisadores/Inóculos': {
+            'en_title': 'R&D of Novel Catalysts and Inocula',
+            'en_desc': 'Development and trial of microbial consortia and bio-additives to enhance degradation kinetics.',
+            'trl': 'TRL 4 a 6',
+            'trlMin': 4,
+            'trlMax': 6,
+        },
+    }
+
+    services = []
+    service_id = 1
+    for row in rows_of(ws):
+        acronym, name, institution, lead = norm(row[0]), norm(row[1]), norm(row[2]), norm(row[3])
+        if not name:
+            continue
+        raw_services = norm(row[8])
+        if not raw_services:
+            continue
+
+        text = raw_services.replace('\r\n', '\n').replace('\r', '\n')
+        if 'Serviços Ofertados:' in text:
+            text = text.split('Serviços Ofertados:')[1].strip()
+        elif 'Servi\u00e7os Ofertados:' in text:
+            text = text.split('Servi\u00e7os Ofertados:')[1].strip()
+
+        # Normaliza quebras de linha em items concatenados
+        text = re.sub(r'\.([A-ZÁÉÍÓÚÂÊÔÃÕÇ][^:\n]+?:)', r'.\n\1', text)
+        lines = [p.strip() for p in text.split('\n') if p.strip()]
+
+        for line in lines:
+            if ':' not in line:
+                continue
+            parts = line.split(':', 1)
+            title_pt = parts[0].strip().lstrip('0123456789. -')
+            desc_pt = parts[1].strip()
+
+            meta = service_translations.get(title_pt, {})
+            services.append({
+                'id': service_id,
+                'labAcronym': acronym,
+                'labName': name,
+                'institution': institution,
+                'trl': meta.get('trl', 'TRL 2 a 6'),
+                'trlMin': meta.get('trlMin', 2),
+                'trlMax': meta.get('trlMax', 6),
+                'pt': {
+                    'title': title_pt,
+                    'description': desc_pt,
+                },
+                'en': {
+                    'title': meta.get('en_title', title_pt),
+                    'description': meta.get('en_desc', desc_pt),
+                }
+            })
+            service_id += 1
+
+    return services
+
+
 def main():
     if len(sys.argv) != 2:
         sys.exit(__doc__)
@@ -228,6 +389,7 @@ def main():
     projetos = extract_projetos(wb['Projetos Coord Eixos'])
     equipe = extract_equipe(wb['Pesquisadores'])
     labs, labs_by_axis = extract_laboratorios(wb['Laboratórios'])
+    servicos = extract_servicos(wb['Laboratórios'])
 
     axis_details = build_axis_details(competencias, projetos, equipe, labs_by_axis)
 
@@ -250,9 +412,18 @@ export const laboratories = {to_js(labs)};
 """
     (out_dir / 'laboratories.js').write_text(labs_js, encoding='utf-8')
 
+    services_js = f"""// GERADO — não editar à mão.
+// Gerado por scripts/extract-strategic-data.py a partir da aba
+// 'Laboratórios' da planilha estratégica do CP2b.
+export const technicalServices = {to_js(servicos)};
+"""
+    (out_dir / 'services.js').write_text(services_js, encoding='utf-8')
+
     print(f"axisDetails.js: {sum(len(v) for v in axis_details.values())} activity groups across {len(axis_details)} axes")
     print(f"laboratories.js: {len(labs)} laboratories")
+    print(f"services.js: {len(servicos)} technical services")
 
 
 if __name__ == '__main__':
     main()
+

@@ -238,8 +238,9 @@ const Header = () => {
                 </NavDropdown.Item>
               </NavDropdown>
 
-              <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
               <Nav.Link as={Link} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
+              <Nav.Link as={Link} to="/solucoes" className="fw-semibold px-2">{t.solutions}</Nav.Link>
+              <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
               {/* O Fórum de 2026 já aconteceu: cronograma e registro saíram,
                   sobrou só a retrospectiva — dropdown de um item vira link. */}
               <Nav.Link as={Link} to="/forum-paulista" className="fw-semibold px-2">{t.forumPaulista}</Nav.Link>

@@ -53,6 +53,7 @@ import CookieConsent from './components/CookieConsent';
 import Home from './pages/Home';
 import About from './pages/About';
 import Research from './pages/Research';
+import Solucoes from './pages/Solucoes';
 import Team from './pages/Team';
 import News from './pages/News';
 import NewsDetail from './pages/NewsDetail';
@@ -218,6 +219,7 @@ function App() {
                     <Route path="/sobre/transparencia" element={<GuardedRoute pageKey="transparencia" element={<Transparency />} />} />
                     <Route path="/sobre/parceiros" element={<GuardedRoute pageKey="parceiros" element={<PartnersPage />} />} />
                     <Route path="/eixos" element={<GuardedRoute pageKey="eixos" element={<Research />} />} />
+                    <Route path="/solucoes" element={<GuardedRoute pageKey="solucoes" element={<Solucoes />} />} />
                     <Route path="/equipe" element={<GuardedRoute pageKey="equipe" element={<Team />} />} />
                     <Route path="/noticias" element={<GuardedRoute pageKey="noticias" element={<News />} />} />
                     <Route path="/noticias/:slug" element={<GuardedRoute pageKey="noticias" element={<NewsDetail />} />} />

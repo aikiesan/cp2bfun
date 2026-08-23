@@ -28,6 +28,7 @@ vi.mock('../services/api', () => ({
 import Home from '../pages/Home';
 import About from '../pages/About';
 import Research from '../pages/Research';
+import Solucoes from '../pages/Solucoes';
 import Team from '../pages/Team';
 import News from '../pages/News';
 import Contact from '../pages/Contact';
@@ -52,6 +53,7 @@ describe('Public pages smoke tests', () => {
     ['Home (/)', Home],
     ['About (/sobre)', About],
     ['Research (/eixos)', Research],
+    ['Solucoes (/solucoes)', Solucoes],
     ['Team (/equipe)', Team],
     ['News (/noticias)', News],
     ['Contact (/contato)', Contact],
