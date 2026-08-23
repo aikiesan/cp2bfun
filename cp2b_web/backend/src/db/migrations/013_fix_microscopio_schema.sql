@@ -33,8 +33,19 @@ ALTER TABLE microscopio ADD COLUMN IF NOT EXISTS tags TEXT;
 ALTER TABLE microscopio ADD COLUMN IF NOT EXISTS updated_at TIMESTAMPTZ DEFAULT NOW();
 
 -- Fix tags column type: change from TEXT[] to TEXT to match frontend string format
--- (frontend sends comma-separated string; TEXT[] causes type mismatch on INSERT)
-ALTER TABLE microscopio ALTER COLUMN tags TYPE TEXT USING array_to_string(tags, ',');
+-- (frontend sends comma-separated string; TEXT[] causes type mismatch on INSERT).
+-- Guarded on the current type: when `tags` is already TEXT the USING clause
+-- fails with 42883 (array_to_string has no text overload), which used to abort
+-- the whole migration run.
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_name = 'microscopio' AND column_name = 'tags' AND data_type = 'ARRAY'
+  ) THEN
+    ALTER TABLE microscopio ALTER COLUMN tags TYPE TEXT USING array_to_string(tags, ',');
+  END IF;
+END $$;
 
 -- Ensure indexes exist
 CREATE INDEX IF NOT EXISTS idx_microscopio_slug ON microscopio(slug);
