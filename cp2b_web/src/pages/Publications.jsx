@@ -4,9 +4,24 @@ import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import api from '../services/api';
 import { useLocation } from 'react-router-dom';
-import { pageSeo } from '../data/content';
+import { publications as staticPublications, pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
+
+const filterStaticPubs = (pubs, f) => {
+  return (pubs || []).filter(pub => {
+    if (f.year !== 'all' && String(pub.year) !== String(f.year)) return false;
+    if (f.type !== 'all' && pub.publication_type !== f.type) return false;
+    if (f.search) {
+      const q = f.search.toLowerCase();
+      const matchTitle = (pub.title_pt && pub.title_pt.toLowerCase().includes(q)) || (pub.title_en && pub.title_en.toLowerCase().includes(q));
+      const matchAuthors = pub.authors && pub.authors.toLowerCase().includes(q);
+      const matchJournal = pub.journal && pub.journal.toLowerCase().includes(q);
+      if (!matchTitle && !matchAuthors && !matchJournal) return false;
+    }
+    return true;
+  });
+};
 
 const Publications = () => {
   const { language } = useLanguage();
@@ -21,6 +36,15 @@ const Publications = () => {
     axis: 'all',
     search: ''
   });
+
+  const groupPublicationsByYear = (pubsList) => {
+    return pubsList.reduce((acc, pub) => {
+      const year = pub.year || 'Unknown';
+      if (!acc[year]) acc[year] = [];
+      acc[year].push(pub);
+      return acc;
+    }, {});
+  };
 
   useEffect(() => {
     fetchPublications();
@@ -37,18 +61,14 @@ const Publications = () => {
       if (filters.search) params.append('search', filters.search);
 
       const response = await api.get(`/publications?${params}`);
-      setPublications(response.data);
-
-      // Group by year
-      const grouped = response.data.reduce((acc, pub) => {
-        const year = pub.year || 'Unknown';
-        if (!acc[year]) acc[year] = [];
-        acc[year].push(pub);
-        return acc;
-      }, {});
-      setGroupedByYear(grouped);
-    } catch (err) {
-      console.error('Error fetching publications:', err);
+      const data = response?.data !== undefined ? response.data : filterStaticPubs(staticPublications, filters);
+      setPublications(data);
+      setGroupedByYear(groupPublicationsByYear(data));
+    } catch {
+      // Fallback to static publications when API is unreachable
+      const fallback = filterStaticPubs(staticPublications, filters);
+      setPublications(fallback);
+      setGroupedByYear(groupPublicationsByYear(fallback));
     } finally {
       setLoading(false);
     }

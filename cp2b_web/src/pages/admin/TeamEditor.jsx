@@ -2,14 +2,8 @@ import { useState, useEffect } from 'react';
 import { Container, Table, Button, Modal, Form, Spinner, Tabs, Tab } from 'react-bootstrap';
 import api from '../../services/api';
 import { ConfirmDialog, useToast } from '../../components/admin';
+import { teamCategories as categories } from '../../data/content';
 
-const categories = [
-  { value: 'coordinators', pt: 'Pesquisadores Responsaveis', en: 'Lead Researchers' },
-  { value: 'principals', pt: 'Pesquisadores Principais', en: 'Principal Investigators' },
-  { value: 'associates', pt: 'Pesquisadores Associados', en: 'Associate Researchers' },
-  { value: 'support', pt: 'Apoio Tecnico e Administrativo', en: 'Technical and Administrative Support' },
-  { value: 'students', pt: 'Estudantes', en: 'Students' },
-];
 
 const TeamEditor = () => {
   const toast = useToast();
