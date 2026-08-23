@@ -791,10 +791,11 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
 }
 
 /* ---------- Ambient molecule field ----------
-   A single fixed layer behind the whole landing page, not a per-band
-   decoration: the molecules drift across the viewport while the page
+   A single fixed layer mounted once in the app layout (App.jsx), behind
+   every page: the molecules drift across the viewport while the page
    scrolls past them. Decoration only — never takes a pointer event, and
-   faint enough that the content stays the subject. */
+   faint enough that the content stays the subject. Density is full on
+   Home and a quarter of that everywhere else (see MoleculeField.jsx). */
 .molecule-field {
   position: fixed;
   inset: 0;
@@ -806,20 +807,31 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   z-index: 0;
 }
 
-/* The page owns the stacking context; every band sits above the field. */
-.home-page {
+/* Header, routed content and footer all need to sit above the fixed
+   canvas — they are its stacking-context siblings in App.jsx, not its
+   descendants, so this has to be applied to each of them rather than to
+   one shared wrapper. */
+.navbar {
   position: relative;
-  z-index: 0;
+  /* Higher than main/footer below: equal z-index would stack purely by DOM
+     order, and main comes after the navbar in App.jsx — so at z-index:1
+     for both, main's cards painted over the nav's own dropdown menus. */
+  z-index: 2;
 }
 
-.home-page > section {
+main#main-content,
+.site-footer {
   position: relative;
   z-index: 1;
 }
 
-/* The tinted bands would otherwise hide the field completely, so they are
-   let down to a translucent tint. The white bands need nothing — they have
-   no background of their own, so the field shows straight through. */
+/* On Home, the tinted bands would otherwise hide the field completely, so
+   they are let down to a translucent tint. The white bands need nothing —
+   they have no background of their own, so the field shows straight
+   through. Every other page keeps its normal opaque backgrounds: at a
+   quarter of Home's density the field is meant to read as texture only
+   where a page happens to have some open white space, not to fight for
+   visibility through content. */
 .home-page > section.bg-light-gray,
 .home-page > section.home-band-tinted {
   background-color: color-mix(in srgb, var(--cp2b-light-gray) 82%, transparent) !important;

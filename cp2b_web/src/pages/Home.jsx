@@ -10,7 +10,6 @@ import api, { fetchFeaturedContent, fetchFeaturedVideos } from '../services/api'
 import FeaturedContent from '../components/FeaturedContent';
 import FeaturedVideos from '../components/FeaturedVideos';
 import Timeline from '../components/Timeline';
-import MoleculeField from '../components/MoleculeField';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
@@ -149,9 +148,6 @@ const Home = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        {/* Ambient CH4 drifting behind the whole page — see MoleculeField. */}
-        <MoleculeField />
-
       {/* Featured News Headlines Section — the page opens on the newsroom */}
       <section className="position-relative overflow-hidden mb-5">
         {loadingFeatured ? (
