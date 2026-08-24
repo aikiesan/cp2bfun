@@ -78,16 +78,25 @@ const About = () => {
     const loadContent = async () => {
       setLoading(true);
       const apiData = await fetchPageContent('about');
+      const staticData = staticAboutContent[language] || staticAboutContent.pt;
 
       if (apiData) {
         const langContent = language === 'pt' ? apiData.content_pt : apiData.content_en;
-        if (langContent) {
-          setContent(langContent);
+        if (langContent && typeof langContent === 'object') {
+          setContent({
+            ...staticData,
+            ...langContent,
+            objetivos: (typeof langContent.objetivos === 'string' && langContent.objetivos.trim()) ? langContent.objetivos : staticData.objetivos,
+            resultados: (typeof langContent.resultados === 'string' && langContent.resultados.trim()) ? langContent.resultados : staticData.resultados,
+            resumo: (typeof langContent.resumo === 'string' && langContent.resumo.trim()) ? langContent.resumo : staticData.resumo,
+            missao: (typeof langContent.missao === 'string' && langContent.missao.trim()) ? langContent.missao : staticData.missao,
+            visao: (typeof langContent.visao === 'string' && langContent.visao.trim()) ? langContent.visao : staticData.visao,
+          });
         } else {
-          setContent(staticAboutContent[language]);
+          setContent(staticData);
         }
       } else {
-        setContent(staticAboutContent[language]);
+        setContent(staticData);
       }
       setLoading(false);
     };
@@ -371,7 +380,10 @@ const About = () => {
               poster="/assets/cp2b-institucional-poster.jpg"
               controls
               playsInline
-              preload="none"
+              autoPlay
+              muted
+              loop
+              preload="auto"
             >
               <source src="/assets/cp2b-institucional.mp4" type="video/mp4" />
             </video>
@@ -528,31 +540,33 @@ const About = () => {
           </div>
 
           <Row className="g-4">
-            <Col md={6}>
-              <div className="p-3 rounded-3 bg-light h-100 border">
-                <h5
-                  className="fw-bold mb-3 d-flex align-items-center"
-                  style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)', fontSize: '1rem' }}
-                >
-                  <i className="bi bi-bank me-2 text-success" />
-                  {labels.public}
-                </h5>
-                <ul className="list-unstyled mb-0">
-                  {partners.public.map((p, idx) => (
-                    <li key={idx} className="mb-2 text-secondary small d-flex align-items-start">
-                      <i
-                        className="bi bi-check-circle-fill text-success me-2 mt-1 flex-shrink-0"
-                        style={{ fontSize: '0.8rem' }}
-                      />
-                      <span>
-                        <strong>{p.name}</strong> <span className="text-muted">({p.location})</span>
-                      </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </Col>
-            <Col md={6}>
+            {partners.public && partners.public.length > 0 && (
+              <Col md={6}>
+                <div className="p-3 rounded-3 bg-light h-100 border">
+                  <h5
+                    className="fw-bold mb-3 d-flex align-items-center"
+                    style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)', fontSize: '1rem' }}
+                  >
+                    <i className="bi bi-bank me-2 text-success" />
+                    {labels.public}
+                  </h5>
+                  <ul className="list-unstyled mb-0">
+                    {partners.public.map((p, idx) => (
+                      <li key={idx} className="mb-2 text-secondary small d-flex align-items-start">
+                        <i
+                          className="bi bi-check-circle-fill text-success me-2 mt-1 flex-shrink-0"
+                          style={{ fontSize: '0.8rem' }}
+                        />
+                        <span>
+                          <strong>{p.name}</strong> <span className="text-muted">({p.location})</span>
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Col>
+            )}
+            <Col md={partners.public && partners.public.length > 0 ? 6 : 12}>
               <div className="p-3 rounded-3 bg-light h-100 border">
                 <h5
                   className="fw-bold mb-3 d-flex align-items-center"
@@ -561,19 +575,21 @@ const About = () => {
                   <i className="bi bi-building me-2 text-primary" />
                   {labels.companies}
                 </h5>
-                <ul className="list-unstyled mb-0">
+                <Row className="g-2">
                   {partners.companies.map((p, idx) => (
-                    <li key={idx} className="mb-2 text-secondary small d-flex align-items-start">
-                      <i
-                        className="bi bi-check-circle-fill text-success me-2 mt-1 flex-shrink-0"
-                        style={{ fontSize: '0.8rem' }}
-                      />
-                      <span>
-                        <strong>{p.name}</strong> <span className="text-muted">({p.location})</span>
-                      </span>
-                    </li>
+                    <Col sm={6} lg={partners.public && partners.public.length > 0 ? 6 : 3} key={idx}>
+                      <div className="text-secondary small d-flex align-items-start py-1">
+                        <i
+                          className="bi bi-check-circle-fill text-success me-2 mt-1 flex-shrink-0"
+                          style={{ fontSize: '0.8rem' }}
+                        />
+                        <span>
+                          <strong>{p.name}</strong> <span className="text-muted">({p.location})</span>
+                        </span>
+                      </div>
+                    </Col>
                   ))}
-                </ul>
+                </Row>
               </div>
             </Col>
             <Col md={12}>
@@ -587,7 +603,7 @@ const About = () => {
                 </h5>
                 <Row className="g-2">
                   {partners.research.map((p, idx) => (
-                    <Col sm={6} lg={4} key={idx}>
+                    <Col sm={6} lg={3} key={idx}>
                       <div className="text-secondary small d-flex align-items-start py-1">
                         <i
                           className="bi bi-check-circle-fill text-success me-2 mt-1 flex-shrink-0"
