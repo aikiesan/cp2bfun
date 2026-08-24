@@ -77,9 +77,28 @@ const Header = () => {
 
             {/* Accessibility */}
             <div className="col col-lg-3 accessibility d-flex align-items-center justify-content-end gap-3 text-muted">
-              <button onClick={increaseFontSize} className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted" title="Aumentar tamanho da letra" aria-label="Increase font size">A+</button>
-              <button onClick={decreaseFontSize} className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted" title="Diminuir tamanho da letra" aria-label="Decrease font size">A-</button>
-              <button onClick={toggleContrast} className="btn btn-sm p-0 border-0 bg-transparent" title="Contraste" aria-label="Toggle high contrast">
+              <button
+                onClick={increaseFontSize}
+                className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted header-touch-target"
+                title="Aumentar tamanho da letra"
+                aria-label="Increase font size"
+              >
+                A+
+              </button>
+              <button
+                onClick={decreaseFontSize}
+                className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted header-touch-target"
+                title="Diminuir tamanho da letra"
+                aria-label="Decrease font size"
+              >
+                A-
+              </button>
+              <button
+                onClick={toggleContrast}
+                className="btn btn-sm p-0 border-0 bg-transparent header-touch-target"
+                title="Contraste"
+                aria-label="Toggle high contrast"
+              >
                 <span style={{ width: '16px', height: '16px', borderRadius: '50%', border: '1px solid #333', background: 'linear-gradient(to right, #333 50%, #fff 50%)', display: 'inline-block' }}></span>
               </button>
               <span className="d-none d-md-block">{t.accessibility}</span>
@@ -90,7 +109,7 @@ const Header = () => {
               <div className="lang-switch" role="group" aria-label="Language">
                 <button
                   onClick={() => toggleLang('pt')}
-                  className={language === 'pt' ? 'active' : ''}
+                  className={`${language === 'pt' ? 'active ' : ''}header-touch-target`}
                   title="Português"
                   aria-pressed={language === 'pt'}
                 >
@@ -98,7 +117,7 @@ const Header = () => {
                 </button>
                 <button
                   onClick={() => toggleLang('en')}
-                  className={language === 'en' ? 'active' : ''}
+                  className={`${language === 'en' ? 'active ' : ''}header-touch-target`}
                   title="English"
                   aria-pressed={language === 'en'}
                 >
@@ -172,7 +191,7 @@ const Header = () => {
             />
           </Navbar.Brand>
 
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Toggle aria-controls="basic-navbar-nav" label="Alternar navegação" aria-label="Alternar navegação" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto align-items-center gap-1">
               {/* About Dropdown */}

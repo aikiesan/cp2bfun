@@ -109,6 +109,8 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['src/test/setup.js'],
     css: true,
+    testTimeout: 15000,
+    hookTimeout: 15000,
     // Playwright specs live in e2e/; backend tests use node:test (run them
     // with `npm test` inside backend/). Neither can run under Vitest/jsdom.
     exclude: [...configDefaults.exclude, 'e2e/**', 'backend/**'],

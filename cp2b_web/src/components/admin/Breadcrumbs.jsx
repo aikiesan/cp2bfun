@@ -47,7 +47,7 @@ const Breadcrumbs = () => {
   }
 
   return (
-    <Breadcrumb className="mb-3">
+    <Breadcrumb className="mb-3 flex-wrap">
       <Breadcrumb.Item linkAs={Link} linkProps={{ to: '/admin' }}>
         <i className="bi bi-house-door me-1"></i>
         Dashboard

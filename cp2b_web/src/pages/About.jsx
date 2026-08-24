@@ -132,20 +132,23 @@ const About = () => {
         </p>
       </PageHero>
 
-      <Container className="py-5">
-        {/* 2. Sub-Navigation Bar */}
-        <div className="d-flex justify-content-center mb-5">
+      <Container className="py-4 py-md-5">
+        {/* 2. Sub-Navigation Bar - Horizontal Scroll Rail on Mobile */}
+        <div className="d-flex justify-content-center mb-4 mb-md-5">
           <Nav
             variant="pills"
-            className="bg-light p-1 rounded-pill flex-wrap justify-content-center shadow-sm"
-            style={{ border: '1px solid var(--border-default, #E2E8F0)', gap: '0.25rem' }}
+            className="bg-light p-1 rounded-pill flex-wrap justify-content-start justify-content-md-center shadow-sm about-subnav-rail"
+            style={{
+              border: '1px solid var(--border-default, #E2E8F0)',
+              gap: '0.25rem',
+            }}
           >
             <Nav.Item>
               <Nav.Link
                 as={Link}
                 to="/sobre"
                 active={pathname === '/sobre'}
-                className="rounded-pill px-3 py-2 fw-semibold small"
+                className="rounded-pill px-3 py-2 fw-semibold small text-nowrap flex-shrink-0"
               >
                 <i className="bi bi-info-circle me-1" />
                 {labels.subnav.overview}
@@ -156,7 +159,7 @@ const About = () => {
                 as={Link}
                 to="/sobre/governanca"
                 active={pathname === '/sobre/governanca'}
-                className="rounded-pill px-3 py-2 fw-semibold small"
+                className="rounded-pill px-3 py-2 fw-semibold small text-nowrap flex-shrink-0"
               >
                 <i className="bi bi-diagram-3 me-1" />
                 {labels.subnav.governance}
@@ -167,7 +170,7 @@ const About = () => {
                 as={Link}
                 to="/sobre/indicadores"
                 active={pathname === '/sobre/indicadores'}
-                className="rounded-pill px-3 py-2 fw-semibold small"
+                className="rounded-pill px-3 py-2 fw-semibold small text-nowrap flex-shrink-0"
               >
                 <i className="bi bi-speedometer2 me-1" />
                 {labels.subnav.indicators}
@@ -178,7 +181,7 @@ const About = () => {
                 as={Link}
                 to="/sobre/transparencia"
                 active={pathname === '/sobre/transparencia'}
-                className="rounded-pill px-3 py-2 fw-semibold small"
+                className="rounded-pill px-3 py-2 fw-semibold small text-nowrap flex-shrink-0"
               >
                 <i className="bi bi-file-earmark-text me-1" />
                 {labels.subnav.transparency}
@@ -189,7 +192,7 @@ const About = () => {
                 as={Link}
                 to="/sobre/parceiros"
                 active={pathname === '/sobre/parceiros'}
-                className="rounded-pill px-3 py-2 fw-semibold small"
+                className="rounded-pill px-3 py-2 fw-semibold small text-nowrap flex-shrink-0"
               >
                 <i className="bi bi-building me-1" />
                 {labels.subnav.partners}
@@ -200,7 +203,7 @@ const About = () => {
 
         {/* 3. Missão, Visão e Valores Section */}
         {mvv && (
-          <section className="mb-5 pb-3">
+          <section className="mb-4 mb-md-5 pb-3">
             <div className="text-center max-w-3xl mx-auto mb-4">
               <span className="mono-label text-success d-block mb-1">
                 {mvv.sectionTag || 'DIRETRIZES ESTRATÉGICAS'}
@@ -214,11 +217,11 @@ const About = () => {
             </div>
 
             {/* Mission & Vision: 2 Large Cards */}
-            <Row className="g-4 mb-4">
+            <Row className="g-3 g-md-4 mb-4">
               {/* Mission Card */}
               <Col lg={6}>
                 <div
-                  className="h-100 p-4 p-md-5 rounded-4 shadow-sm border position-relative d-flex flex-column"
+                  className="h-100 p-3 p-md-4 p-lg-5 rounded-4 shadow-sm border position-relative d-flex flex-column"
                   style={{
                     backgroundColor: 'var(--bg-surface, #ffffff)',
                     borderTop: '5px solid var(--cp2b-verde-escuro, #00573A)',
@@ -251,7 +254,7 @@ const About = () => {
                       <i className="bi bi-compass" />
                     </div>
                   </div>
-                  <h3 className="fw-bold mb-3" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
+                  <h3 className="fw-bold mb-2 mb-md-3" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
                     {mvv.mission?.title || 'Nossa Missão'}
                   </h3>
                   <p
@@ -266,7 +269,7 @@ const About = () => {
               {/* Vision Card */}
               <Col lg={6}>
                 <div
-                  className="h-100 p-4 p-md-5 rounded-4 shadow-sm border position-relative d-flex flex-column"
+                  className="h-100 p-3 p-md-4 p-lg-5 rounded-4 shadow-sm border position-relative d-flex flex-column"
                   style={{
                     backgroundColor: 'var(--bg-surface, #ffffff)',
                     borderTop: '5px solid var(--cp2b-lima, #B6E03B)',
@@ -299,7 +302,7 @@ const About = () => {
                       <i className="bi bi-eye" />
                     </div>
                   </div>
-                  <h3 className="fw-bold mb-3" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
+                  <h3 className="fw-bold mb-2 mb-md-3" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
                     {mvv.vision?.title || 'Nossa Visão'}
                   </h3>
                   <p
@@ -324,7 +327,7 @@ const About = () => {
                   )}
                 </div>
 
-                <Row className="row-cols-1 row-cols-md-2 row-cols-lg-5 g-3">
+                <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-2 g-md-3">
                   {mvv.values.map((val, idx) => (
                     <Col key={idx}>
                       <div
@@ -371,7 +374,7 @@ const About = () => {
 
         {/* 4. Institutional Video (Responsive 16:9 container) */}
         <div
-          className="mb-5 mx-auto position-relative rounded-4 overflow-hidden shadow-lg"
+          className="mb-4 mb-md-5 mx-auto position-relative rounded-4 overflow-hidden shadow-lg"
           style={{ maxWidth: '1100px', border: '1px solid var(--border-default, #E2E8F0)' }}
         >
           <div className="ratio ratio-16x9">
@@ -389,7 +392,7 @@ const About = () => {
             </video>
           </div>
           <div
-            className="position-absolute bottom-0 start-0 bg-white p-3 border-top border-end shadow-sm"
+            className="position-absolute bottom-0 start-0 bg-white p-2 p-sm-3 border-top border-end shadow-sm"
             style={{
               maxWidth: '300px',
               borderTopRightRadius: 'var(--radius-lg, 16px)',
@@ -405,7 +408,7 @@ const About = () => {
 
         {/* 5. Resumo Executivo */}
         <div
-          className="mb-5 p-4 p-md-5 rounded-4 bg-light border"
+          className="mb-4 mb-md-5 p-3 p-md-4 p-lg-5 rounded-4 bg-light border"
           style={{ borderColor: 'var(--border-default, #E2E8F0)' }}
         >
           <div className="d-flex align-items-center mb-3">
@@ -433,10 +436,10 @@ const About = () => {
         </div>
 
         {/* 6. Objetivos & Resultados: Structured Editorial Cards */}
-        <Row className="g-4 mb-5">
+        <Row className="g-3 g-md-4 mb-4 mb-md-5">
           <Col md={6}>
             <div
-              className="h-100 p-4 p-md-5 rounded-4 shadow-sm border card-editorial"
+              className="h-100 p-3 p-md-4 p-lg-5 rounded-4 shadow-sm border card-editorial"
               style={{
                 backgroundColor: 'var(--bg-surface, #ffffff)',
                 borderLeft: '5px solid var(--cp2b-verde-escuro, #00573A)',
@@ -468,7 +471,7 @@ const About = () => {
           </Col>
           <Col md={6}>
             <div
-              className="h-100 p-4 p-md-5 rounded-4 shadow-sm border card-editorial"
+              className="h-100 p-3 p-md-4 p-lg-5 rounded-4 shadow-sm border card-editorial"
               style={{
                 backgroundColor: 'var(--bg-surface, #ffffff)',
                 borderLeft: '5px solid var(--cp2b-ambar, #D37402)',
@@ -502,7 +505,7 @@ const About = () => {
 
         {/* 7. Partners Summary Section */}
         <section
-          className="mb-5 p-4 p-md-5 rounded-4 bg-white border shadow-sm"
+          className="mb-4 mb-md-5 p-3 p-md-4 p-lg-5 rounded-4 bg-white border shadow-sm"
           style={{ borderColor: 'var(--border-default, #E2E8F0)' }}
         >
           <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-3 border-bottom gap-3">

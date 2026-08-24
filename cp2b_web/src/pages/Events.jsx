@@ -222,16 +222,16 @@ const Events = () => {
         </Container>
       </div>
 
-      <Container className="py-5">
+      <Container className="py-4 py-md-5">
         {loading ? (
-          <div className="text-center py-5">
+          <div className="text-center py-4 py-md-5">
             <Spinner animation="border" />
           </div>
         ) : (
           <>
             {/* Upcoming Events */}
-            <section className="mb-5">
-              <h2 className="h3 fw-bold mb-4">{labels.upcoming}</h2>
+            <section className="mb-4 mb-md-5">
+              <h2 className="h3 fw-bold mb-3 mb-md-4">{labels.upcoming}</h2>
               {upcomingEvents.length > 0 ? (
                 <Row>{upcomingEvents.map(renderEventCard)}</Row>
               ) : (

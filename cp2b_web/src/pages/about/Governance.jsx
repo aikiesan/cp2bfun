@@ -69,11 +69,11 @@ const Governance = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <Container className="py-5">
+        <Container className="py-4 py-md-5">
           {/* Organizational Structure */}
-        <Row className="mb-5">
+        <Row className="mb-4 mb-md-5">
           <Col md={12}>
-            <h3 className="fw-bold mb-4">{content.sections.structure.title}</h3>
+            <h3 className="fw-bold mb-3 mb-md-4">{content.sections.structure.title}</h3>
             <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
               {content.sections.structure.content}
             </p>
@@ -81,9 +81,9 @@ const Governance = () => {
         </Row>
 
         {/* Management Committee */}
-        <Row className="mb-5 bg-light p-4 rounded-3">
+        <Row className="mb-4 mb-md-5 bg-light p-3 p-md-4 rounded-3">
           <Col md={12}>
-            <h3 className="fw-bold mb-4">{content.sections.committee.title}</h3>
+            <h3 className="fw-bold mb-3 mb-md-4">{content.sections.committee.title}</h3>
             <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
               {content.sections.committee.content}
             </p>
@@ -91,18 +91,18 @@ const Governance = () => {
         </Row>
 
         {/* Organizational Chart */}
-        <Row className="mb-5">
+        <Row className="mb-4 mb-md-5">
           <Col md={12}>
-            <h3 className="fw-bold mb-4">{language === 'pt' ? 'Organograma' : 'Organizational Chart'}</h3>
+            <h3 className="fw-bold mb-3 mb-md-4">{language === 'pt' ? 'Organograma' : 'Organizational Chart'}</h3>
             <OrgChart chart={chart} />
           </Col>
         </Row>
 
         {/* Governance Bodies (Committees) */}
         {content.sections.committees && (
-          <Row className="mb-5">
+          <Row className="mb-4 mb-md-5">
             <Col md={12}>
-              <h3 className="fw-bold mb-4">{content.sections.committees.title}</h3>
+              <h3 className="fw-bold mb-3 mb-md-4">{content.sections.committees.title}</h3>
               <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
                 {content.sections.committees.content}
               </p>
@@ -113,7 +113,7 @@ const Governance = () => {
         {/* Guidelines */}
         <Row>
           <Col md={12}>
-            <h3 className="fw-bold mb-4">{content.sections.guidelines.title}</h3>
+            <h3 className="fw-bold mb-3 mb-md-4">{content.sections.guidelines.title}</h3>
             <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
               {content.sections.guidelines.content}
             </p>

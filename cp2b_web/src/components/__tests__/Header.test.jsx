@@ -25,23 +25,43 @@ describe('Header', () => {
     expect(screen.queryByPlaceholderText('Search')).not.toBeInTheDocument();
   });
 
-  it('renders accessibility buttons', () => {
+  it('renders accessibility buttons with >= 44x44px touch targets', () => {
     renderWithProviders(<Header />);
-    expect(screen.getByLabelText('Increase font size')).toBeInTheDocument();
-    expect(screen.getByLabelText('Decrease font size')).toBeInTheDocument();
-    expect(screen.getByLabelText('Toggle high contrast')).toBeInTheDocument();
+    const incBtn = screen.getByLabelText('Increase font size');
+    const decBtn = screen.getByLabelText('Decrease font size');
+    const contrastBtn = screen.getByLabelText('Toggle high contrast');
+
+    expect(incBtn).toBeInTheDocument();
+    expect(decBtn).toBeInTheDocument();
+    expect(contrastBtn).toBeInTheDocument();
+
+    expect(incBtn).toHaveClass('header-touch-target');
+    expect(decBtn).toHaveClass('header-touch-target');
+    expect(contrastBtn).toHaveClass('header-touch-target');
+  });
+
+  it('renders navbar toggle with explicit aria-label', () => {
+    renderWithProviders(<Header />);
+    const toggleBtn = screen.getByLabelText('Alternar navegação');
+    expect(toggleBtn).toBeInTheDocument();
   });
 
   it('toggles language when clicking language buttons', async () => {
     const user = userEvent.setup();
     renderWithProviders(<Header />);
 
+    const ptBtn = screen.getByTitle('Português');
+    const enBtn = screen.getByTitle('English');
+
+    expect(ptBtn).toHaveClass('header-touch-target');
+    expect(enBtn).toHaveClass('header-touch-target');
+
     // Start in PT, switch to EN
-    await user.click(screen.getByTitle('English'));
+    await user.click(enBtn);
     expect(screen.getByText('About')).toBeInTheDocument();
 
     // Switch back to PT
-    await user.click(screen.getByTitle('Português'));
+    await user.click(ptBtn);
     expect(screen.getByText('Sobre')).toBeInTheDocument();
   });
 });

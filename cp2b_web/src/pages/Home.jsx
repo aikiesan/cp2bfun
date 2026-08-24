@@ -210,20 +210,20 @@ const Home = () => {
                           <div className="w-100 h-100" style={{ background: 'linear-gradient(135deg, var(--cp2b-petrol) 0%, #2d3748 100%)' }} />
                         )}
                       </Link>
-                      <div className="p-4 d-flex flex-column flex-grow-1">
+                      <div className="p-3 p-md-4 d-flex flex-column flex-grow-1">
                         <div className="d-flex align-items-center gap-3 mb-2">
                           {item.date && <span className="card-meta">{item.date}</span>}
                           {item.badge && (
                             <span className={`badge bg-${item.badgeColor} bg-opacity-10 text-${item.badgeColor} rounded-pill`}>{item.badge}</span>
                           )}
                         </div>
-                        <h3 className="h5 fw-bold mb-3">
+                        <h3 className="h5 fw-bold mb-2 mb-md-3">
                           <Link to={item.link} className="text-decoration-none" style={{ color: 'var(--cp2b-dark)' }}>
                             {item.title}
                           </Link>
                         </h3>
                         {item.description && (
-                          <p className="text-muted small mb-4">{item.description}</p>
+                          <p className="text-muted small mb-3 mb-md-4">{item.description}</p>
                         )}
                         <Link to={item.link} className="arrow-link mt-auto small">
                           {labels.newsLink.replace(' →', '')} <span className="arrow">→</span>
@@ -358,7 +358,7 @@ const Home = () => {
             </span>
             <h2 className="fw-bold mt-2">{labels.partnersTitle}</h2>
           </div>
-          <div className="text-center bg-white p-5 rounded-5 shadow-sm">
+          <div className="text-center bg-white p-3 p-md-5 rounded-5 shadow-sm">
             <img
                 src="/assets/parceiros.png"
                 alt="Partners"

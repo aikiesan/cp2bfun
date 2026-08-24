@@ -66,14 +66,14 @@ const PressKit = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <Container className="py-5">
+        <Container className="py-4 py-md-5">
           <Row className="justify-content-center text-center">
             <Col lg={7}>
-              <i className="bi bi-file-earmark-zip text-success" style={{ fontSize: '4rem', opacity: 0.8 }}></i>
-              <div className="mt-4">
+              <i className="bi bi-file-earmark-zip text-success mobile-empty-icon" style={{ fontSize: '4rem', opacity: 0.8 }}></i>
+              <div className="mt-3 mt-md-4">
                 <span className="mono-label text-success text-uppercase">{labels.tag}</span>
-                <h1 className="display-5 fw-bold mt-2 mb-3">{labels.title}</h1>
-                <p className="lead text-muted mb-5">{labels.description}</p>
+                <h1 className="display-5 mobile-display-6 fw-bold mt-2 mb-2 mb-md-3">{labels.title}</h1>
+                <p className="lead text-muted mb-4 mb-md-5">{labels.description}</p>
 
                 {loading ? (
                   <Spinner animation="border" variant="success" />
