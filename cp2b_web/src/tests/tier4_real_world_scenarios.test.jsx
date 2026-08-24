@@ -35,7 +35,7 @@ describe('Tier 4 — Real-World Application Scenarios', () => {
     // Step 1: Render Home page
     const { unmount } = renderWithProviders(<Home />);
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /Vídeo Institucional/i })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { name: /Notícias|News/i })).toBeInTheDocument();
     });
     unmount();
 

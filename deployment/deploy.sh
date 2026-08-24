@@ -136,30 +136,36 @@ print_success "Frontend deployed successfully"
 
 # Step 4: Deploy backend
 print_info "Deploying backend..."
-cd "$REPO_DIR/cp2b_web/backend"
+mkdir -p "$BACKEND_DIR"
 
-# Install/update dependencies
-print_info "Installing backend dependencies..."
-npm install --production
+# Ensure .env exists in backend directory
+if [ ! -f "$BACKEND_DIR/.env" ] && [ -f "$REPO_DIR/cp2b_web/backend/.env" ]; then
+    print_info "Copying .env to backend directory..."
+    cp "$REPO_DIR/cp2b_web/backend/.env" "$BACKEND_DIR/.env"
+fi
 
-# Copy backend files (excluding node_modules from source)
+# Copy backend files (excluding node_modules and uploads)
 print_info "Updating backend files..."
 rsync -av --exclude='node_modules' --exclude='uploads' --exclude='.env' \
     "$REPO_DIR/cp2b_web/backend/" "$BACKEND_DIR/"
 
+# Install/update dependencies in destination directory
+print_info "Installing backend dependencies in $BACKEND_DIR..."
+cd "$BACKEND_DIR"
+npm install --omit=dev
+
 # Ensure uploads directory exists with correct permissions
 mkdir -p "$BACKEND_DIR/uploads"
-sudo chown -R www-data:www-data "$BACKEND_DIR/uploads"
+sudo chown -R www-data:www-data "$BACKEND_DIR"
 sudo chmod 755 "$BACKEND_DIR/uploads"
 
 print_success "Backend files updated"
 
 # Step 5: Run database migrations (if any)
-if [ -d "$BACKEND_DIR/src/db/migrations" ]; then
-    print_info "Checking for database migrations..."
-    # Add migration logic here if needed
-    # Example: node scripts/migrate.js
-    print_info "No new migrations to run"
+if [ -f "$BACKEND_DIR/src/db/init.js" ]; then
+    print_info "Checking and applying database migrations..."
+    node src/db/init.js
+    print_success "Database migrations completed"
 fi
 
 # Step 6: Restart backend service

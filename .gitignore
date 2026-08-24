@@ -53,7 +53,24 @@ __pycache__/
 # Temporary files
 *.old.*
 
-# Source material from Luciana's data drop (spreadsheets, reports, photos,
-# ~1.4GB of building renders/videos) — archived locally, never committed.
+# Source material and local data drops — archived locally, never committed to git.
 # See PREDIO_CP2B_ARCHIVE.md for the inventory and what to do with it.
 /New_Data_To_Update_Website/
+/raw_materials/
+/local_source_files/
+/assets_archive/
+
+# Prevent accidental drops of loose presentations, reports and raw binaries in root
+/*.pdf
+/*.pptx
+/*.ppt
+/*.docx
+/*.xlsx
+/*.skp
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+

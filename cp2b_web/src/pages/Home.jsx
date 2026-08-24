@@ -175,39 +175,6 @@ const Home = () => {
         )}
       </section>
 
-      {/* Institutional Video Section */}
-      <section className="py-5">
-        <Container>
-          <div className="text-center section-head">
-            <span className="eyebrow justify-content-center">{language === 'pt' ? 'Conheça o CP2b' : 'Meet CP2b'}</span>
-            <h2 className="fw-bold mt-2">{language === 'pt' ? 'Vídeo Institucional' : 'Institutional Video'}</h2>
-          </div>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="position-relative rounded-4 overflow-hidden shadow-lg mx-auto"
-            style={{ maxWidth: '1100px' }}
-          >
-            <video
-              width="100%"
-              height="auto"
-              autoPlay
-              loop
-              muted
-              playsInline
-              controls
-              poster="/assets/cp2b-institucional-poster.jpg"
-              style={{ display: 'block' }}
-            >
-              <source src="/assets/cp2b-institucional.mp4" type="video/mp4" />
-              {labels.videoFallback}
-            </video>
-          </motion.div>
-        </Container>
-      </section>
-
       {/* News — 3 most recent from API */}
       <section className="section bg-light-gray">
         <Container>
