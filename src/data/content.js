@@ -540,7 +540,6 @@ export const teamMembers = [
       { name: 'Marcelo Zaiat', role: 'Pesquisador Associado', institution: 'EESC/USP' },
       { name: 'Maria Paula Cardeal Volpi', role: 'Pesquisador Associado', institution: 'ESALQ/USP' },
       { name: 'Mariana Conceição da Costa', role: 'Pesquisador Associado', institution: 'FEQ/UNICAMP' },
-      { name: 'Marlon Fernandes de Souza', role: 'Pesquisador Associado', institution: 'ESALQ/USP' },
       { name: 'Mauro Donizeti Berni', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
       { name: 'Natalia Molina Cetrulo', role: 'Pesquisador Associado', institution: 'EACH/USP' },
       { name: 'Patricia Jacqueline Thyssen', role: 'Pesquisador Associado', institution: 'IB/UNICAMP' },
