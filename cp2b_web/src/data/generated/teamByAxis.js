@@ -491,7 +491,7 @@ export const teamByAxis = [
   {
     "name": "Sonia Regina da Cal Seixas",
     "axes": [
-      "4"
+      "6"
     ],
     "direction": false,
     "institution": "NIPE/UNICAMP",
