@@ -1,302 +1,163 @@
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { useState } from 'react';
+import { Container } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { pageSeo } from '../../data/content';
-import {
-  kpiDimensions,
-  kpiVision2035,
-  kpiPrinciples,
-  kpiFrameworkTotalWeight,
-  kpiIndicatorCount,
-} from '../../data/generated/kpiFramework';
+import { kpiDimensions, kpiVision2035, kpiPrinciples, kpiIndicatorCount } from '../../data/generated/kpiFramework';
 import SeoHead from '../../components/SeoHead';
 import PageHero from '../../components/PageHero';
+import './Indicators.css';
 
 const labels = {
   pt: {
     eyebrow: 'Sobre o CP2b',
-    tag: 'Governança e Monitoramento',
-    subtitle: (count) =>
-      `O CP2b acompanha seu desempenho por meio de um sistema de 7 dimensões e ${count} indicadores, com pesos que orientam a priorização estratégica do centro.`,
-    dimensions: 'Dimensões e Pesos Estratégicos',
-    dimensionsLead: 'Distribuição proporcional do peso de cada dimensão no sistema de acompanhamento do CP2b.',
-    vision: 'Visão de Longo Prazo (2035)',
-    principles: 'Princípios Norteadores',
-    weight: 'Peso',
-    total: 'Total',
-    indicatorsLabel: 'indicadores',
-    points: 'pts',
-    weightNote:
-      'Os números abaixo são pesos de priorização, não resultados apurados: distribuem 100 pontos entre as dimensões e seus indicadores para indicar a importância relativa de cada um no acompanhamento do centro.',
-    pointsTitle: (n, name) => `${name}: peso ${n} de 100 pontos do sistema de acompanhamento`,
+    subtitle: 'Uma visão simples e transparente de como acompanhamos ciência, inovação e impacto.',
+    overviewEyebrow: 'Nosso modelo de acompanhamento',
+    overviewTitle: 'Da pesquisa ao impacto real',
+    overviewLead: 'Os indicadores ajudam o CP2b a transformar objetivos institucionais em evidências claras. Eles não são uma nota ou um ranking: mostram o que observamos para aprender, decidir e evoluir.',
+    dimensionsStat: 'dimensões conectadas', indicatorsStat: 'indicadores observados', horizonStat: 'horizonte estratégico',
+    journey: [
+      { title: 'Acompanhamos', text: 'Reunimos evidências sobre pesquisa, tecnologia, pessoas e território.', icon: 'bi-eye' },
+      { title: 'Compreendemos', text: 'Analisamos avanços, desafios e conexões entre as sete dimensões.', icon: 'bi-diagram-3' },
+      { title: 'Evoluímos', text: 'Usamos o aprendizado para orientar decisões e ampliar o impacto do centro.', icon: 'bi-arrow-up-right' },
+    ],
+    visionEyebrow: 'Onde queremos chegar', visionTitle: 'Visão CP2b 2035', principles: 'Princípios que orientam esse caminho',
+    explorerEyebrow: 'Explore o sistema', explorerTitle: 'O que acompanhamos',
+    explorerLead: 'Selecione uma dimensão para conhecer os sinais que ajudam o CP2b a entender sua evolução.',
+    dimension: 'Dimensão', indicatorsLabel: 'indicadores', observes: 'O que observamos', selectedHint: 'Dimensão selecionada',
   },
   en: {
     eyebrow: 'About CP2b',
-    tag: 'Governance and Monitoring',
-    subtitle: (count) =>
-      `CP2b tracks its performance through a system of 7 dimensions and ${count} indicators, with weights that guide the center's strategic prioritization.`,
-    dimensions: 'Strategic Dimensions and Weights',
-    dimensionsLead: 'Proportional weight distribution of each dimension across the CP2b monitoring framework.',
-    vision: 'Long-Term Vision (2035)',
-    principles: 'Guiding Principles',
-    weight: 'Weight',
-    total: 'Total',
-    indicatorsLabel: 'indicators',
-    points: 'pts',
-    weightNote:
-      'The numbers below are prioritization weights, not measured results: they distribute 100 points across the dimensions and their indicators to show the relative importance of each within the monitoring framework.',
-    pointsTitle: (n, name) => `${name}: weight ${n} of the framework's 100 points`,
+    subtitle: 'A simple and transparent view of how we follow science, innovation and impact.',
+    overviewEyebrow: 'Our monitoring model', overviewTitle: 'From research to real-world impact',
+    overviewLead: 'The indicators help CP2b turn institutional goals into clear evidence. They are not a score or ranking: they show what we observe so that we can learn, decide and evolve.',
+    dimensionsStat: 'connected dimensions', indicatorsStat: 'indicators observed', horizonStat: 'strategic horizon',
+    journey: [
+      { title: 'We observe', text: 'We gather evidence about research, technology, people and territories.', icon: 'bi-eye' },
+      { title: 'We understand', text: 'We analyze progress, challenges and connections across seven dimensions.', icon: 'bi-diagram-3' },
+      { title: 'We evolve', text: 'We use what we learn to guide decisions and expand the center’s impact.', icon: 'bi-arrow-up-right' },
+    ],
+    visionEyebrow: 'Where we want to go', visionTitle: 'CP2b Vision 2035', principles: 'Principles guiding this journey',
+    explorerEyebrow: 'Explore the framework', explorerTitle: 'What we monitor',
+    explorerLead: 'Select a dimension to learn which signals help CP2b understand its progress.',
+    dimension: 'Dimension', indicatorsLabel: 'indicators', observes: 'What we observe', selectedHint: 'Selected dimension',
   },
 };
+
+const dimensionMeta = {
+  cientifica: { icon: 'bi-journal-richtext', pt: 'Qualidade, alcance e continuidade da produção científica.', en: 'Quality, reach and continuity of scientific output.' },
+  tecnologica: { icon: 'bi-lightbulb', pt: 'Soluções que avançam da pesquisa para aplicações concretas.', en: 'Solutions advancing from research toward practical applications.' },
+  transferencia: { icon: 'bi-briefcase', pt: 'Conexões entre conhecimento, empresas e oportunidades de mercado.', en: 'Connections between knowledge, companies and market opportunities.' },
+  ambiental: { icon: 'bi-globe-americas', pt: 'Benefícios ambientais gerados pelas soluções e projetos do centro.', en: 'Environmental benefits generated by the center’s solutions and projects.' },
+  social: { icon: 'bi-people', pt: 'Transformações percebidas por comunidades, territórios e políticas públicas.', en: 'Change experienced by communities, territories and public policies.' },
+  formacao: { icon: 'bi-mortarboard', pt: 'Formação de pessoas e fortalecimento de novas competências.', en: 'People development and the strengthening of new capabilities.' },
+  governanca: { icon: 'bi-building-check', pt: 'Capacidade institucional, transparência e sustentabilidade do centro.', en: 'Institutional capacity, transparency and long-term sustainability.' },
+};
+
+const visionIcons = ['bi-compass', 'bi-award', 'bi-rocket-takeoff', 'bi-heart-pulse'];
 
 const Indicators = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
+  const [selectedDimensionId, setSelectedDimensionId] = useState(kpiDimensions[0].id);
   const seo = pageSeo.indicators[language] || pageSeo.indicators.pt;
   const t = labels[language] || labels.pt;
+  const selectedDimension = kpiDimensions.find((dimension) => dimension.id === selectedDimensionId) || kpiDimensions[0];
+  const selectedLabel = selectedDimension[language] || selectedDimension.pt;
+  const selectedMeta = dimensionMeta[selectedDimension.id];
 
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
-      <PageHero
-        eyebrow={t.eyebrow}
-        title={seo.title}
-        subtitle={t.subtitle(kpiIndicatorCount)}
-      />
+      <PageHero eyebrow={t.eyebrow} title={seo.title} subtitle={t.subtitle} />
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Container className="py-5">
-          {/* Vision and Principles Section */}
-          <Row className="mb-5 g-4">
-            <Col lg={7}>
-              <Card className="h-100 p-4 border-0 shadow-sm" style={{ borderRadius: 'var(--radius-lg, 16px)' }}>
-                <span className="mono-label text-success mb-2">{t.tag}</span>
-                <h3 className="fw-bold mb-3">{t.vision}</h3>
-                <ul className="text-muted mb-0 ps-3">
-                  {kpiVision2035[language].map((item) => (
-                    <li key={item} className="mb-2" style={{ lineHeight: 1.5 }}>
-                      {item}
-                    </li>
-                  ))}
-                </ul>
-              </Card>
-            </Col>
-            <Col lg={5}>
-              <Card className="h-100 p-4 border-0 shadow-sm" style={{ borderRadius: 'var(--radius-lg, 16px)' }}>
-                <h3 className="fw-bold mb-3">{t.principles}</h3>
-                <div className="d-flex flex-wrap gap-2">
-                  {kpiPrinciples[language].map((p) => (
-                    <span
-                      key={p}
-                      className="badge px-3 py-2 fw-semibold"
-                      style={{
-                        background: 'var(--gray-100)',
-                        color: 'var(--cp2b-azul-petroleo)',
-                        fontSize: '0.85rem',
-                        border: '1px solid var(--gray-300)',
-                        borderRadius: 'var(--radius-md, 8px)',
-                      }}
-                    >
-                      {p}
-                    </span>
-                  ))}
-                </div>
-              </Card>
-            </Col>
-          </Row>
-
-          {/* 100% Stacked Proportional Bar */}
-          <section className="mb-5 p-4 bg-white border-0 shadow-sm" style={{ borderRadius: 'var(--radius-lg, 16px)' }}>
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-baseline mb-3 gap-2">
-              <div>
-                <h3 className="fw-bold mb-1 fs-4">{t.dimensions}</h3>
-                <p className="text-muted small mb-1">{t.dimensionsLead}</p>
-                <p className="text-muted small mb-0" style={{ maxWidth: '46rem' }}>
-                  {t.weightNote}
-                </p>
-              </div>
-              <span className="mono-label fw-bold" style={{ color: 'var(--brand-primary)' }}>
-                {t.total}: {kpiFrameworkTotalWeight} {t.points} ({kpiIndicatorCount} {t.indicatorsLabel})
-              </span>
+      <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+        <Container className="indicators-page py-5">
+          <section className="indicators-overview" aria-labelledby="indicators-overview-title">
+            <div className="indicators-overview__copy">
+              <span className="indicators-eyebrow">{t.overviewEyebrow}</span>
+              <h2 id="indicators-overview-title">{t.overviewTitle}</h2>
+              <p>{t.overviewLead}</p>
             </div>
-
-            {/* Stacked Progress Bar (5-second visual read) */}
-            <div
-              className="d-flex w-100 mb-3"
-              style={{
-                height: 24,
-                borderRadius: 'var(--radius-full, 9999px)',
-                overflow: 'hidden',
-                background: 'var(--gray-200)',
-              }}
-              role="progressbar"
-              aria-valuenow={100}
-              aria-valuemin={0}
-              aria-valuemax={100}
-              aria-label={t.dimensions}
-            >
-              {kpiDimensions.map((dim) => {
-                const dimLabel = dim[language] || dim.pt;
-                const widthPercent = (dim.weight / kpiFrameworkTotalWeight) * 100;
-                return (
-                  <div
-                    key={dim.id}
-                    style={{
-                      width: `${widthPercent}%`,
-                      height: '100%',
-                      backgroundColor: dim.color,
-                      transition: 'width 0.3s ease',
-                    }}
-                    title={t.pointsTitle(dim.weight, dimLabel.title)}
-                  />
-                );
-              })}
-            </div>
-
-            {/* Legend Chips */}
-            <div className="d-flex flex-wrap gap-2 pt-1">
-              {kpiDimensions.map((dim) => {
-                const dimLabel = dim[language] || dim.pt;
-                return (
-                  <div
-                    key={dim.id}
-                    className="d-inline-flex align-items-center gap-2 px-2 py-1 rounded small"
-                    style={{ background: 'var(--gray-50)', fontSize: '0.8rem' }}
-                  >
-                    <span
-                      style={{
-                        width: 10,
-                        height: 10,
-                        borderRadius: '50%',
-                        backgroundColor: dim.color,
-                        display: 'inline-block',
-                        flexShrink: 0,
-                      }}
-                    />
-                    <span className="fw-semibold text-truncate" style={{ maxWidth: 220 }}>
-                      {dimLabel.title}
-                    </span>
-                    <span className="mono-label fw-bold ms-auto" style={{ color: dim.color }}>
-                      {dim.weight} {t.points}
-                    </span>
-                  </div>
-                );
-              })}
+            <div className="indicators-stats" aria-label={t.overviewEyebrow}>
+              <div className="indicators-stat"><strong>7</strong><span>{t.dimensionsStat}</span></div>
+              <div className="indicators-stat"><strong>{kpiIndicatorCount}</strong><span>{t.indicatorsStat}</span></div>
+              <div className="indicators-stat indicators-stat--year"><strong>2035</strong><span>{t.horizonStat}</span></div>
             </div>
           </section>
 
-          {/* Responsive 7-Card Grid (All indicators listed, no accordion) */}
-          <section>
-            <Row className="g-4">
-              {kpiDimensions.map((dim) => {
-                const dimLabel = dim[language] || dim.pt;
+          <section className="indicators-journey" aria-label={t.overviewTitle}>
+            {t.journey.map((step, index) => (
+              <article className="indicators-journey__step" key={step.title}>
+                <div className="indicators-journey__number">0{index + 1}</div>
+                <div className="indicators-journey__icon" aria-hidden="true"><i className={`bi ${step.icon}`} /></div>
+                <div><h3>{step.title}</h3><p>{step.text}</p></div>
+              </article>
+            ))}
+          </section>
+
+          <section className="indicators-vision" aria-labelledby="indicators-vision-title">
+            <div className="indicators-section-heading">
+              <span className="indicators-eyebrow">{t.visionEyebrow}</span>
+              <h2 id="indicators-vision-title">{t.visionTitle}</h2>
+            </div>
+            <div className="indicators-vision__grid">
+              {kpiVision2035[language].map((item, index) => (
+                <article className="indicators-vision__card" key={item}><i className={`bi ${visionIcons[index]}`} aria-hidden="true" /><p>{item}</p></article>
+              ))}
+            </div>
+            <div className="indicators-principles">
+              <strong>{t.principles}</strong>
+              <div>{kpiPrinciples[language].map((principle) => <span key={principle}>{principle}</span>)}</div>
+            </div>
+          </section>
+
+          <section className="indicators-explorer" aria-labelledby="indicators-explorer-title">
+            <div className="indicators-section-heading indicators-section-heading--centered">
+              <span className="indicators-eyebrow">{t.explorerEyebrow}</span>
+              <h2 id="indicators-explorer-title">{t.explorerTitle}</h2>
+              <p>{t.explorerLead}</p>
+            </div>
+
+            <div className="indicators-dimension-nav" aria-label={t.explorerTitle}>
+              {kpiDimensions.map((dimension, index) => {
+                const dimensionLabel = dimension[language] || dimension.pt;
+                const meta = dimensionMeta[dimension.id];
+                const active = dimension.id === selectedDimension.id;
+                const shortTitle = dimensionLabel.title.replace(/^Dimensão\s+/i, '').replace(/\s+Dimension$/i, '');
                 return (
-                  <Col key={dim.id} lg={6}>
-                    <Card
-                      className="h-100 border-0 shadow-sm"
-                      style={{
-                        borderRadius: 'var(--radius-lg, 16px)',
-                        borderTop: `4px solid ${dim.color}`,
-                        background: 'var(--bg-surface, #ffffff)',
-                      }}
-                    >
-                      <Card.Body className="p-4 d-flex flex-column">
-                        {/* Dimension Header */}
-                        <div className="d-flex justify-content-between align-items-start mb-3 pb-2 border-bottom">
-                          <div>
-                            <span className="mono-label text-muted small d-block mb-1">
-                              {dim.indicators.length} {t.indicatorsLabel}
-                            </span>
-                            <h4 className="fw-bold mb-0 fs-5" style={{ color: 'var(--text-primary)' }}>
-                              {dimLabel.title}
-                            </h4>
-                          </div>
-                          <div className="text-end">
-                            <span
-                              className="badge px-3 py-2 fw-bold"
-                              style={{
-                                backgroundColor: `${dim.color}15`,
-                                color: dim.color,
-                                border: `1px solid ${dim.color}40`,
-                                fontSize: '0.9rem',
-                                fontFamily: 'var(--font-mono, monospace)',
-                              }}
-                            >
-                              {t.weight} {dim.weight} {t.points}
-                            </span>
-                          </div>
-                        </div>
-
-                        {/* Relative Weight Bar inside Dimension */}
-                        <div
-                          className="mb-4"
-                          style={{
-                            height: 6,
-                            borderRadius: 3,
-                            background: 'var(--gray-200)',
-                            overflow: 'hidden',
-                          }}
-                        >
-                          <div
-                            style={{
-                              width: `${(dim.weight / kpiFrameworkTotalWeight) * 100}%`,
-                              height: '100%',
-                              background: dim.color,
-                            }}
-                          />
-                        </div>
-
-                        {/* Itemized Indicators List */}
-                        <div className="d-flex flex-column gap-3 flex-grow-1">
-                          {dim.indicators.map((ind) => {
-                            const indLabel = ind[language] || ind.pt;
-                            return (
-                              <div
-                                key={ind.code}
-                                className="p-2 rounded"
-                                style={{
-                                  background: 'var(--gray-50)',
-                                  borderLeft: `3px solid ${dim.color}`,
-                                }}
-                              >
-                                <div className="d-flex justify-content-between align-items-start gap-2 mb-1">
-                                  <div>
-                                    <span
-                                      className="mono-label fw-bold me-2"
-                                      style={{ color: dim.color, fontSize: '0.8rem' }}
-                                    >
-                                      {ind.code}
-                                    </span>
-                                    <span className="fw-semibold text-dark" style={{ fontSize: '0.9rem' }}>
-                                      {indLabel.name}
-                                    </span>
-                                  </div>
-                                  {/* Points, not "%": a bare "2%" next to
-                                      "Geração de ativos de conhecimento" reads as
-                                      "only 2% of our work generates knowledge".
-                                      These are weights in a 100-point framework. */}
-                                  <span
-                                    className="mono-label fw-bold flex-shrink-0"
-                                    style={{ color: dim.color, fontSize: '0.82rem' }}
-                                    title={t.pointsTitle(ind.weight, indLabel.name)}
-                                  >
-                                    {ind.weight} {t.points}
-                                  </span>
-                                </div>
-                                <div className="text-muted small ps-1" style={{ fontSize: '0.78rem', lineHeight: 1.35 }}>
-                                  {indLabel.measures}
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </Card.Body>
-                    </Card>
-                  </Col>
+                  <button key={dimension.id} type="button"
+                    className={`indicators-dimension-nav__item${active ? ' is-active' : ''}`}
+                    style={{ '--dimension-color': dimension.color }} aria-pressed={active}
+                    aria-label={`${t.dimension} ${index + 1}: ${dimensionLabel.title}`}
+                    onClick={() => setSelectedDimensionId(dimension.id)}>
+                    <span className="indicators-dimension-nav__icon" aria-hidden="true"><i className={`bi ${meta.icon}`} /></span>
+                    <span className="indicators-dimension-nav__text"><small>{t.dimension} {index + 1}</small><strong>{shortTitle}</strong></span>
+                  </button>
                 );
               })}
-            </Row>
+            </div>
+
+            <motion.div key={selectedDimension.id} className="indicators-dimension-panel"
+              style={{ '--dimension-color': selectedDimension.color }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
+              <header className="indicators-dimension-panel__header">
+                <div className="indicators-dimension-panel__icon" aria-hidden="true"><i className={`bi ${selectedMeta.icon}`} /></div>
+                <div><span>{t.selectedHint}</span><h3>{selectedLabel.title}</h3><p>{selectedMeta[language] || selectedMeta.pt}</p></div>
+                <div className="indicators-dimension-panel__count"><strong>{selectedDimension.indicators.length}</strong><span>{t.indicatorsLabel}</span></div>
+              </header>
+              <div className="indicators-list">
+                {selectedDimension.indicators.map((indicator) => {
+                  const indicatorLabel = indicator[language] || indicator.pt;
+                  return (
+                    <article className="indicators-list__item" key={indicator.code}>
+                      <span className="indicators-list__code">{indicator.code}</span>
+                      <div><h4>{indicatorLabel.name}</h4><p><span>{t.observes}:</span> {indicatorLabel.measures}</p></div>
+                    </article>
+                  );
+                })}
+              </div>
+            </motion.div>
           </section>
         </Container>
       </motion.div>
