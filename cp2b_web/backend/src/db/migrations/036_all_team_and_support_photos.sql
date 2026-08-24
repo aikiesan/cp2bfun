@@ -34,7 +34,11 @@ UPDATE team_members SET photo = '/assets/team/ana-beatriz-soares-aguiar.webp', p
 UPDATE team_members SET photo = '/assets/team/antonio-eduardo-colins-sena.webp', photo_url = '/assets/team/antonio-eduardo-colins-sena.webp' WHERE name ILIKE '%Antonio Eduardo Colins Sena%';
 UPDATE team_members SET photo = '/assets/team/barbara-janet-teruel-mederos.webp', photo_url = '/assets/team/barbara-janet-teruel-mederos.webp' WHERE name ILIKE '%Barbara Janet Teruel Mederos%';
 UPDATE team_members SET photo = '/assets/team/bruna-de-souza-moraes.webp', photo_url = '/assets/team/bruna-de-souza-moraes.webp' WHERE name ILIKE '%Bruna de Souza Moraes%';
-UPDATE team_members SET photo = '/assets/team/bruno-felipe-veloso.webp', photo_url = '/assets/team/bruno-felipe-veloso.webp' WHERE name ILIKE '%Bruno Felipe Veloso%';
+-- No source headshot was supplied for Bruno. Clear any stale path written by
+-- earlier data imports so the frontend renders its initials fallback.
+UPDATE team_members SET photo = NULL, photo_url = NULL WHERE name ILIKE '%Bruno Felipe Veloso%';
+-- Migration 034 referenced a file that was never supplied for Dante.
+UPDATE team_members SET photo = NULL, photo_url = NULL WHERE name ILIKE '%Dante Chiavareto Pezzin%' OR name ILIKE '%Dante Pezzin%';
 UPDATE team_members SET photo = '/assets/team/bruno-sidnei-da-silva.webp', photo_url = '/assets/team/bruno-sidnei-da-silva.webp' WHERE name ILIKE '%Bruno Sidnei da Silva%';
 UPDATE team_members SET photo = '/assets/team/caio-henrique-rufino.webp', photo_url = '/assets/team/caio-henrique-rufino.webp' WHERE name ILIKE '%Caio Henrique Rufino%';
 UPDATE team_members SET photo = '/assets/team/carla-kazue-nakao-cavaliero.webp', photo_url = '/assets/team/carla-kazue-nakao-cavaliero.webp' WHERE name ILIKE '%Carla Kazue Nakao Cavaliero%';

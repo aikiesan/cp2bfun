@@ -1266,9 +1266,7 @@ const isDirectRun = process.argv[1] && (
 );
 
 if (isDirectRun) {
-  ensureTestFile()
-    .then(() => generateSeo())
-    .then(() => writeWorkerMetadata())
+  generateSeo()
     .catch((err) => {
       console.error('generate-seo failed:', err);
       process.exit(1);
