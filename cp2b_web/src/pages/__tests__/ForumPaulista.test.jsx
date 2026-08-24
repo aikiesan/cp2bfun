@@ -22,6 +22,13 @@ describe('ForumPaulista', () => {
     expect(screen.getByText('Rever os melhores momentos').closest('a')).toHaveAttribute('href', '#fotos');
   });
 
+  it('keeps the Forum-to-opening memory and omits the removed long sections', () => {
+    renderWithProviders(<ForumPaulista />);
+    expect(screen.getByRole('heading', { name: 'Dois dias que marcaram a história do CP2b' })).toBeInTheDocument();
+    expect(screen.queryByText('Um evento contado em quatro momentos')).not.toBeInTheDocument();
+    expect(screen.queryByText('Os assuntos que moveram o dia')).not.toBeInTheDocument();
+  });
+
   it('starts with a curated selection and can reveal all 30 photographs', () => {
     renderWithProviders(<ForumPaulista />);
     expect(screen.getAllByRole('button', { name: /^Foto \d+ de 30:/ })).toHaveLength(12);

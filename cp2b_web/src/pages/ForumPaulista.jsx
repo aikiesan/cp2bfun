@@ -30,24 +30,10 @@ const content = {
     storyP1: 'O I Fórum Paulista de Biogás e Bioprodutos reuniu pesquisadores, estudantes, profissionais, empresas e representantes do poder público para conversar sobre os caminhos do setor — da pesquisa e do financiamento à regulação, ao mercado e à inovação.',
     storyP2: 'Mais do que uma programação de palestras, vivemos um dia de encontros: ideias compartilhadas no auditório, conversas no gramado, novos contatos e o fortalecimento de uma rede comprometida com a transição para uma economia circular e de baixo carbono.',
     verifiedNote: 'Total de participantes conforme a lista de presença final do evento.',
-    momentsTag: 'O QUE VIVEMOS', momentsTitle: 'Um evento contado em quatro momentos',
-    moments: [
-      { icon: 'bi-people', number: '01', title: 'Encontro', text: 'A comunidade do biogás e dos bioprodutos ocupou a Unicamp para trocar experiências e construir novas conexões.' },
-      { icon: 'bi-chat-square-text', number: '02', title: 'Diálogo', text: 'Os painéis aproximaram academia, indústria e poder público em conversas francas sobre desafios e oportunidades.' },
-      { icon: 'bi-file-earmark-text', number: '03', title: 'Conhecimento', text: 'Pôsteres, pesquisas e debates mostraram a diversidade de soluções que já estão sendo desenvolvidas.' },
-      { icon: 'bi-diagram-3', number: '04', title: 'Parcerias', text: 'A formalização da parceria entre Unicamp, CNPEM e Equinor marcou um novo capítulo de cooperação.' },
-    ],
     bridgeTag: 'DO FÓRUM À INAUGURAÇÃO', bridgeTitle: 'Dois dias que marcaram a história do CP2b',
     bridgeText: 'No dia seguinte ao Fórum, 29 de maio, a programação continuou com a inauguração dos espaços do CP2b. Foi o encerramento perfeito para uma semana dedicada a transformar colaboração em capacidade real de pesquisa, inovação e impacto.',
     forumLabel: '28 MAI · FÓRUM', openingLabel: '29 MAI · INAUGURAÇÃO',
-    programTag: 'A JORNADA', programTitle: 'Os assuntos que moveram o dia',
-    program: [
-      { time: 'Manhã', title: 'Abertura e alianças institucionais', text: 'Boas-vindas, visão de futuro e formalização de parcerias estratégicas para o CP2b.' },
-      { time: 'Meio-dia', title: 'Ciência, pôsteres e convivência', text: 'Apresentação dos eixos do Centro, pesquisas em destaque e brunch no gramado.' },
-      { time: 'Tarde', title: 'Financiamento e integração', text: 'Diálogos sobre recursos para P&D e sobre a aproximação entre academia e indústria.' },
-      { time: 'Encerramento', title: 'Mercado e políticas públicas', text: 'Debates sobre regulação, políticas e o ecossistema necessário ao avanço do biogás e do biometano.' },
-    ],
-    galleryTag: 'ÁLBUM DO EVENTO', galleryTitle: '30 lembranças de dois dias especiais', galleryLead: 'Uma seleção leve e cuidadosa entre mais de 150 registros. Clique em qualquer imagem para ampliar.',
+    galleryTag: 'ÁLBUM DO EVENTO', galleryTitle: '30 lembranças do nosso Fórum', galleryLead: 'Uma seleção leve e cuidadosa entre mais de 150 registros. Clique em qualquer imagem para ampliar.',
     showAll: 'Ver as 30 fotos', showLess: 'Mostrar seleção', previous: 'Foto anterior', next: 'Próxima foto', close: 'Fechar', photoOf: (current) => `Foto ${current} de 30`, alt: ptAlt,
     thanksTag: 'NOSSO MUITO OBRIGADO', thanksTitle: 'Este encontro só aconteceu porque muita gente construiu junto',
     thanksText: 'Agradecemos a cada participante, painelista, pesquisador, estudante, parceiro, patrocinador e integrante da equipe que deu vida à primeira edição.', sponsors: 'Patrocínio e apoio',
@@ -66,23 +52,10 @@ const content = {
     storyP1: 'The 1st São Paulo Forum on Biogas and Bioproducts brought together researchers, students, professionals, companies and public-sector representatives to discuss the sector’s future — from research and funding to regulation, markets and innovation.',
     storyP2: 'More than a programme of talks, it was a day of encounters: ideas shared in the auditorium, conversations on the lawn, new contacts and a stronger network committed to a circular, low-carbon economy.',
     verifiedNote: 'Attendance total according to the event’s final attendance list.',
-    momentsTag: 'WHAT WE EXPERIENCED', momentsTitle: 'The event in four moments',
-    moments: [
-      { icon: 'bi-people', number: '01', title: 'Meeting', text: 'The biogas and bioproducts community came to Unicamp to share experience and build new connections.' },
-      { icon: 'bi-chat-square-text', number: '02', title: 'Dialogue', text: 'Panels brought academia, industry and government together for candid conversations about challenges and opportunities.' },
-      { icon: 'bi-file-earmark-text', number: '03', title: 'Knowledge', text: 'Posters, research and debates revealed the breadth of solutions already under development.' },
-      { icon: 'bi-diagram-3', number: '04', title: 'Partnerships', text: 'The formal partnership between Unicamp, CNPEM and Equinor marked a new chapter in cooperation.' },
-    ],
     bridgeTag: 'FROM THE FORUM TO THE OPENING', bridgeTitle: 'Two days that became part of CP2b’s history',
     bridgeText: 'On May 29, the day after the Forum, the programme continued with the opening of CP2b’s facilities — a fitting close to a week devoted to turning collaboration into research, innovation and impact.',
-    forumLabel: 'MAY 28 · FORUM', openingLabel: 'MAY 29 · OPENING', programTag: 'THE JOURNEY', programTitle: 'The topics that moved the day',
-    program: [
-      { time: 'Morning', title: 'Opening and institutional alliances', text: 'A welcome, a shared vision of the future and strategic partnerships for CP2b.' },
-      { time: 'Midday', title: 'Science, posters and connection', text: 'An introduction to the Center’s research axes, featured work and brunch on the lawn.' },
-      { time: 'Afternoon', title: 'Funding and integration', text: 'Conversations about R&D resources and stronger links between academia and industry.' },
-      { time: 'Closing', title: 'Markets and public policy', text: 'Debates on regulation, policy and the ecosystem needed to advance biogas and biomethane.' },
-    ],
-    galleryTag: 'EVENT ALBUM', galleryTitle: '30 memories from two special days', galleryLead: 'A lightweight, carefully curated selection from more than 150 photographs. Select any image to enlarge it.',
+    forumLabel: 'MAY 28 · FORUM', openingLabel: 'MAY 29 · OPENING',
+    galleryTag: 'EVENT ALBUM', galleryTitle: '30 memories from our Forum', galleryLead: 'A lightweight, carefully curated selection from more than 150 photographs. Select any image to enlarge it.',
     showAll: 'View all 30 photos', showLess: 'Show highlights', previous: 'Previous photo', next: 'Next photo', close: 'Close', photoOf: (current) => `Photo ${current} of 30`,
     alt: Array.from({ length: 30 }, (_, index) => `Photographic record ${index + 1} of the 2026 São Paulo Forum on Biogas and Bioproducts`),
     thanksTag: 'THANK YOU', thanksTitle: 'This gathering happened because many people built it together',
@@ -136,23 +109,9 @@ const ForumPaulista = () => {
         <motion.figure className="forum-story__photo" {...reveal}><img src={gallery[10].src} alt={t.alt[10]} loading="lazy" decoding="async" /><figcaption>28.05.2026 · Unicamp</figcaption></motion.figure>
       </div></section>
 
-      <section className="forum-section forum-moments"><div className="forum-shell">
-        <motion.header className="forum-section-head" {...reveal}><span className="forum-kicker">{t.momentsTag}</span><h2>{t.momentsTitle}</h2></motion.header>
-        <div className="forum-moments__grid">{t.moments.map((moment, index) => (
-          <motion.article className="forum-moment" key={moment.number} {...reveal} transition={{ duration: 0.45, delay: index * 0.05 }}><div className="forum-moment__top"><i className={`bi ${moment.icon}`} aria-hidden="true" /><span>{moment.number}</span></div><h3>{moment.title}</h3><p>{moment.text}</p></motion.article>
-        ))}</div>
-      </div></section>
-
       <section className="forum-section forum-bridge"><div className="forum-shell forum-bridge__grid">
         <motion.div className="forum-bridge__copy" {...reveal}><span className="forum-kicker forum-kicker--light">{t.bridgeTag}</span><h2>{t.bridgeTitle}</h2><p>{t.bridgeText}</p></motion.div>
         <div className="forum-bridge__photos"><motion.figure {...reveal}><img src={gallery[8].src} alt={t.alt[8]} loading="lazy" decoding="async" /><figcaption>{t.forumLabel}</figcaption></motion.figure><motion.figure {...reveal}><img src={gallery[24].src} alt={t.alt[24]} loading="lazy" decoding="async" /><figcaption>{t.openingLabel}</figcaption></motion.figure></div>
-      </div></section>
-
-      <section className="forum-section forum-program"><div className="forum-shell forum-program__layout">
-        <motion.header {...reveal}><span className="forum-kicker">{t.programTag}</span><h2>{t.programTitle}</h2></motion.header>
-        <div className="forum-program__list">{t.program.map((item, index) => (
-          <motion.article className="forum-program__item" key={item.time} {...reveal}><span className="forum-program__number">0{index + 1}</span><div><small>{item.time}</small><h3>{item.title}</h3><p>{item.text}</p></div></motion.article>
-        ))}</div>
       </div></section>
 
       <section id="fotos" className="forum-section forum-gallery-section"><div className="forum-shell">
