@@ -1,48 +1,39 @@
-import { describe, it, expect, vi } from 'vitest';
-import { screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { fireEvent, screen } from '@testing-library/react';
 import { renderWithProviders } from '../../test/utils';
 import ForumPaulista from '../ForumPaulista';
 
-// A página busca os álbuns da galeria no mount; sem mock o teste dispara
-// uma chamada real e polui o console.
-vi.mock('../../services/api', () => ({
-  fetchGallery: vi.fn().mockResolvedValue([]),
-}));
-
 describe('ForumPaulista', () => {
-  it('renders the Forum Paulista title', () => {
+  it('presents the Forum as a completed event memoir', () => {
     renderWithProviders(<ForumPaulista />);
-    expect(screen.getByRole('heading', { name: /Fórum Paulista/i })).toBeInTheDocument();
-  });
-
-  it('presents the event as finished, not upcoming', () => {
-    renderWithProviders(<ForumPaulista />);
-    // O evento acabou: nada de "Inscreva-se" ou "Salvar Data na Agenda".
+    expect(screen.getByRole('heading', { name: 'Este foi o nosso Fórum. E foi incrível.' })).toBeInTheDocument();
+    expect(screen.getByText('Até o ano que vem!')).toBeInTheDocument();
     expect(screen.queryByText(/Inscreva-se/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/Salvar Data na Agenda/i)).not.toBeInTheDocument();
-    expect(screen.getByText(/Realizado em 28 de maio de 2026/i)).toBeInTheDocument();
   });
 
-  it('links to the photo section instead of the removed schedule page', () => {
+  it('shows the final attendance total supplied by the organizers', () => {
     renderWithProviders(<ForumPaulista />);
-    const link = screen.getByText('Ver as fotos').closest('a');
-    expect(link).toBeTruthy();
-    expect(link.getAttribute('href')).toBe('#fotos');
+    expect(screen.getByText('140')).toBeInTheDocument();
+    expect(screen.getByText('pessoas presentes')).toBeInTheDocument();
   });
 
-  it('renders the outcomes section', () => {
+  it('links the main action to the photographic record', () => {
     renderWithProviders(<ForumPaulista />);
-    expect(screen.getByText('O que ficou do Fórum')).toBeInTheDocument();
+    expect(screen.getByText('Rever os melhores momentos').closest('a')).toHaveAttribute('href', '#fotos');
   });
 
-  it('renders FAQ section', () => {
+  it('starts with a curated selection and can reveal all 30 photographs', () => {
     renderWithProviders(<ForumPaulista />);
-    expect(screen.getByText('Perguntas Frequentes')).toBeInTheDocument();
+    expect(screen.getAllByRole('button', { name: /^Foto \d+ de 30:/ })).toHaveLength(12);
+    fireEvent.click(screen.getByRole('button', { name: 'Ver as 30 fotos' }));
+    expect(screen.getAllByRole('button', { name: /^Foto \d+ de 30:/ })).toHaveLength(30);
   });
 
-  it('renders at least 5 FAQ items', () => {
+  it('opens and closes the accessible photo viewer', () => {
     renderWithProviders(<ForumPaulista />);
-    const faqButtons = screen.getAllByRole('button');
-    expect(faqButtons.length).toBeGreaterThanOrEqual(5);
+    fireEvent.click(screen.getByRole('button', { name: /^Foto 1 de 30:/ }));
+    expect(screen.getByRole('dialog', { name: 'Foto 1 de 30' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Fechar' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });

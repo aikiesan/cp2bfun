@@ -1307,11 +1307,11 @@ export const pageSeo = {
   forum: {
     pt: {
       title: 'I Fórum Paulista de Biogás e Bioprodutos',
-      description: 'Retrospectiva do I Fórum Paulista de Biogás e Bioprodutos, realizado em 28 de maio de 2026 na UNICAMP: programação, resultados e registro fotográfico.',
+      description: 'Memória do I Fórum Paulista de Biogás e Bioprodutos, que reuniu 140 participantes na UNICAMP em maio de 2026: momentos, diálogos e registro fotográfico.',
     },
     en: {
       title: 'I São Paulo Biogas and Bioproducts Forum',
-      description: 'Retrospective of the I São Paulo Biogas and Bioproducts Forum, held on May 28, 2026 at UNICAMP: programme, outcomes and photo coverage.',
+      description: 'Memories from the 1st São Paulo Biogas and Bioproducts Forum, which welcomed 140 attendees at UNICAMP in May 2026: moments, discussions and photo coverage.',
     },
   },
   solucoes: {

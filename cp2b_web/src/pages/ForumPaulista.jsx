@@ -1,622 +1,180 @@
-import { useState, useEffect } from 'react';
-import { Container, Row, Col, Accordion, Card } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { useLanguage } from '../context/LanguageContext';
 import { useLocation } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 import { pageSeo } from '../data/content';
-import { fetchGallery } from '../services/api';
 import SeoHead from '../components/SeoHead';
+import './ForumPaulista.css';
 
+const gallery = Array.from({ length: 30 }, (_, index) => ({
+  src: `/assets/forum-paulista/forum-2026-${String(index + 1).padStart(2, '0')}.webp`,
+  index,
+}));
+
+const ptAlt = [
+  'Estrutura externa preparada para receber os participantes', 'Participantes diante do painel do CP2b', 'Mesa de abertura institucional', 'Auditório do Fórum durante a abertura', 'Painel institucional diante do público', 'Visão geral do público no auditório', 'Painelistas em diálogo no palco', 'Registro de painelistas após uma sessão', 'Apresentação acompanhada pelo público', 'Participantes diante da identidade visual do CP2b', 'Encontro e conversas no gramado', 'Momento de convivência na área externa', 'Grupo de participantes no painel do CP2b', 'Participante diante do painel do CP2b', 'Retrato de participante no evento', 'Registro espontâneo na área externa', 'Duas participantes diante do painel do CP2b', 'Painel temático no auditório', 'Encerramento no palco', 'Momento de encerramento com o mascote do CP2b', 'Espaço do CP2b preparado para a inauguração', 'Visita aos espaços do CP2b', 'Mesa da cerimônia de inauguração', 'Assinatura durante a cerimônia institucional', 'Descerramento das placas inaugurais', 'Público acompanhando o descerramento das placas', 'Autoridades junto às placas inaugurais', 'Estudantes durante a visita aos espaços do CP2b', 'Participantes reunidos na área externa do CP2b', 'Equipe reunida ao final da programação',
+];
 
 const content = {
   pt: {
-    heroBadge: 'I EDIÇÃO • REALIZADO EM 28 MAI 2026',
-    heroTitle: 'I Fórum Paulista de Biogás e Bioprodutos',
-    heroSubtitle: 'Encontro da Cadeia de Biogás e Bioprodutos do Estado de São Paulo',
-    heroLocation: 'Centro de Convenções Unicamp — Auditório 3',
-    heroDate: 'Realizado em 28 de maio de 2026',
-    galleryBtn: 'Ver as fotos',
-
-    // TODO(lucas): substituir pelos números finais do evento.
-    statsParticipants: '90+',
-    statsParticipantsLabel: 'Participantes',
-    statsAxes: '8',
-    statsAxesLabel: 'Eixos Temáticos',
-    statsDay: '1',
-    statsDayLabel: 'Dia de imersão',
-
-    aboutTag: 'SOBRE O EVENTO',
-    aboutTitle: 'Um espaço de encontro e debate para a cadeia de biogás',
-    aboutP1:
-      'O I Fórum Paulista de Biogás e Bioprodutos foi uma iniciativa do CP2b, Centro Paulista de Estudos em Biogás e Bioprodutos, em parceria com o NIPE da Universidade Estadual de Campinas. O evento reuniu pesquisadores, estudantes, profissionais e empresas para debater os avanços, desafios e oportunidades da cadeia de biogás e bioprodutos no Estado de São Paulo.',
-    aboutP2:
-      'A proposta foi criar um ambiente propício à troca de experiências, ao fortalecimento de redes de colaboração e à articulação entre academia, setor produtivo e poder público, elementos essenciais para consolidar o ecossistema de biogás e bioprodutos em âmbito estadual e nacional.',
-    aboutInfoDate: '28 de maio de 2026',
-    aboutInfoLocation: 'Centro de Convenções',
-    aboutInfoOrg: 'Av. Érico Veríssimo, 500 – Cidade Universitária, Barão Geraldo, Campinas - SP, 13083-851',
-    aboutInfoAudience: 'Pesquisadores, estudantes, profissionais, empresas',
-    aboutInfoAudienceLabel: 'Público',
-
-    sponsorsTag: 'PATROCINADORES',
-    sponsorsTitle: 'Apoio e Patrocínio',
-    apoioTag: 'APOIO',
-    apoioLogos: [
-      { name: 'ABME',               logo: '/assets/LOGO_ABME.png'             },
-      { name: 'Mulheres do Biogás', logo: '/assets/LOGO_MULHERES_DO_BIOGAS.png' },
+    badge: '1ª EDIÇÃO · 28 DE MAIO DE 2026',
+    title: 'Este foi o nosso Fórum. E foi incrível.',
+    lead: 'Um encontro feito de ciência, diálogo e conexões para impulsionar o biogás e os bioprodutos no Estado de São Paulo.',
+    location: 'Centro de Convenções da Unicamp · Campinas, SP', photosButton: 'Rever os melhores momentos', nextEdition: 'Até o ano que vem!',
+    stats: [
+      { value: '140', label: 'pessoas presentes', note: 'na lista de presença final' },
+      { value: '60+', label: 'instituições conectadas', note: 'entre academia, mercado e poder público' },
+      { value: '3', label: 'painéis de diálogo', note: 'sobre os caminhos do setor' },
     ],
-
-    axesTag: 'EIXOS TEMÁTICOS',
-    axesTitle: 'Eixos Temáticos do Evento',
-    axes: [
-      { icon: 'bi-shield-check',   title: 'Governança, Regulação e Políticas para o Setor de Biogás' },
-      { icon: 'bi-recycle',        title: 'Sustentabilidade e Economia Circular na Cadeia do Biogás' },
-      { icon: 'bi-flask',          title: 'Pesquisa, Desenvolvimento e Inovação (PD&I) na Cadeia do Biogás' },
-      { icon: 'bi-graph-up-arrow', title: 'Economia e Modelos de Negócio do Biogás e Bioprodutos' },
+    storyTag: 'UMA MEMÓRIA EM MOVIMENTO', storyTitle: 'Quando diferentes vozes se encontram, novas possibilidades aparecem',
+    storyP1: 'O I Fórum Paulista de Biogás e Bioprodutos reuniu pesquisadores, estudantes, profissionais, empresas e representantes do poder público para conversar sobre os caminhos do setor — da pesquisa e do financiamento à regulação, ao mercado e à inovação.',
+    storyP2: 'Mais do que uma programação de palestras, vivemos um dia de encontros: ideias compartilhadas no auditório, conversas no gramado, novos contatos e o fortalecimento de uma rede comprometida com a transição para uma economia circular e de baixo carbono.',
+    verifiedNote: 'Total de participantes conforme a lista de presença final do evento.',
+    momentsTag: 'O QUE VIVEMOS', momentsTitle: 'Um evento contado em quatro momentos',
+    moments: [
+      { icon: 'bi-people', number: '01', title: 'Encontro', text: 'A comunidade do biogás e dos bioprodutos ocupou a Unicamp para trocar experiências e construir novas conexões.' },
+      { icon: 'bi-chat-square-text', number: '02', title: 'Diálogo', text: 'Os painéis aproximaram academia, indústria e poder público em conversas francas sobre desafios e oportunidades.' },
+      { icon: 'bi-file-earmark-text', number: '03', title: 'Conhecimento', text: 'Pôsteres, pesquisas e debates mostraram a diversidade de soluções que já estão sendo desenvolvidas.' },
+      { icon: 'bi-diagram-3', number: '04', title: 'Parcerias', text: 'A formalização da parceria entre Unicamp, CNPEM e Equinor marcou um novo capítulo de cooperação.' },
     ],
-
-    programTag: 'PROGRAMAÇÃO',
-    programTitle: 'Como foi o dia',
-    programNotice: 'Programação realizada em 28 de maio de 2026.',
+    bridgeTag: 'DO FÓRUM À INAUGURAÇÃO', bridgeTitle: 'Dois dias que marcaram a história do CP2b',
+    bridgeText: 'No dia seguinte ao Fórum, 29 de maio, a programação continuou com a inauguração dos espaços do CP2b. Foi o encerramento perfeito para uma semana dedicada a transformar colaboração em capacidade real de pesquisa, inovação e impacto.',
+    forumLabel: '28 MAI · FÓRUM', openingLabel: '29 MAI · INAUGURAÇÃO',
+    programTag: 'A JORNADA', programTitle: 'Os assuntos que moveram o dia',
     program: [
-      { time: '09:00', title: 'Credenciamento' },
-      { time: '09:30', title: 'Mesa de Abertura Institucional' },
-      { time: '10:00', title: 'Patrocinadores e Formalização da Parceria' },
-      { time: '10:30', title: 'Mesa: Financiamento para P&D' },
-      { time: '11:15', title: 'Mesa: Eixos Temáticos do CP2b' },
-      { time: '12:15', title: 'Parceria KI – CP2b' },
-      { time: '12:30', title: 'Brunch no Gramado + Pôsteres Temáticos', highlight: true },
-      { time: '14:30', title: 'Painel 1: Integração Academia-Indústria' },
-      { time: '15:30', title: 'Painel 2: Políticas Públicas e Regulação' },
-      { time: '16:30', title: 'Encerramento' },
+      { time: 'Manhã', title: 'Abertura e alianças institucionais', text: 'Boas-vindas, visão de futuro e formalização de parcerias estratégicas para o CP2b.' },
+      { time: 'Meio-dia', title: 'Ciência, pôsteres e convivência', text: 'Apresentação dos eixos do Centro, pesquisas em destaque e brunch no gramado.' },
+      { time: 'Tarde', title: 'Financiamento e integração', text: 'Diálogos sobre recursos para P&D e sobre a aproximação entre academia e indústria.' },
+      { time: 'Encerramento', title: 'Mercado e políticas públicas', text: 'Debates sobre regulação, políticas e o ecossistema necessário ao avanço do biogás e do biometano.' },
     ],
-
-    committeeTag: 'ORGANIZAÇÃO',
-    committeeTitle: 'Comissão Organizadora',
-    committee: [
-      { name: 'Bruna de Souza Moraes', role: 'Presidente', inst: 'UNICAMP' },
-      { name: 'Renata Piacentini Rodriguez', role: 'Membro', inst: 'UNIFAL' },
-      { name: 'Maria Paula Cardeal Volpi', role: 'Membro', inst: 'USP' },
-      { name: 'Ana Beatriz Soares Aguiar', role: 'Membro', inst: 'UNICAMP' },
-      { name: 'Lucas Nakamura Cerejo', role: 'Membro', inst: 'UNICAMP' },
-      { name: 'Fabiane Moreira Vieira', role: 'Membro', inst: 'UNICAMP' },
-      { name: 'Sofia Carolina da Silva', role: 'Membro', inst: 'UNICAMP' },
-      { name: 'Luciana Cristina Lenhari da Silva', role: 'Membro', inst: 'UNICAMP' },
-    ],
-
-    resultsTag: 'RESULTADOS',
-    resultsTitle: 'O que ficou do Fórum',
-    // TODO(lucas): substituir pelos resultados e encaminhamentos reais.
-    results: [
-      { icon: 'bi-people', title: 'Articulação da rede', text: 'TODO(lucas): descrever as conexões e parcerias firmadas durante o evento.' },
-      { icon: 'bi-lightbulb', title: 'Encaminhamentos', text: 'TODO(lucas): descrever os encaminhamentos definidos nos painéis.' },
-      { icon: 'bi-graph-up-arrow', title: 'Próximos passos', text: 'TODO(lucas): descrever os próximos passos anunciados no encerramento.' },
-    ],
-
-    galleryTag: 'REGISTRO FOTOGRÁFICO',
-    galleryTitle: 'Fotos do evento',
-    gallerySubtitle: 'Clique em um álbum para ver todas as fotos.',
-    galleryEmpty: 'As fotos do evento serão publicadas em breve.',
-    galleryPhotos: 'fotos',
-
-    faqTitle: 'Perguntas Frequentes',
-    faq: [
-      {
-        q: 'Quem participou?',
-        a: 'O evento foi aberto a pesquisadores, estudantes, profissionais e empresas com interesse na cadeia de biogás e bioprodutos.',
-      },
-      {
-        q: 'Onde foi realizado?',
-        a: 'O evento foi realizado no Centro de Convenções da Unicamp, Auditório 3, em Campinas - SP.',
-      },
-      {
-        q: 'Haverá uma próxima edição?',
-        a: 'TODO(lucas): confirmar se a II edição já tem data ou previsão, e ajustar esta resposta.',
-      },
-      {
-        q: 'Como acesso as apresentações?',
-        a: 'TODO(lucas): informar onde os resumos, pôsteres e apresentações ficarão disponíveis.',
-      },
-      {
-        q: 'Onde vejo as fotos?',
-        a: 'O registro fotográfico está na seção de fotos desta página e também na Galeria do site.',
-      },
-    ],
+    galleryTag: 'ÁLBUM DO EVENTO', galleryTitle: '30 lembranças de dois dias especiais', galleryLead: 'Uma seleção leve e cuidadosa entre mais de 150 registros. Clique em qualquer imagem para ampliar.',
+    showAll: 'Ver as 30 fotos', showLess: 'Mostrar seleção', previous: 'Foto anterior', next: 'Próxima foto', close: 'Fechar', photoOf: (current) => `Foto ${current} de 30`, alt: ptAlt,
+    thanksTag: 'NOSSO MUITO OBRIGADO', thanksTitle: 'Este encontro só aconteceu porque muita gente construiu junto',
+    thanksText: 'Agradecemos a cada participante, painelista, pesquisador, estudante, parceiro, patrocinador e integrante da equipe que deu vida à primeira edição.', sponsors: 'Patrocínio e apoio',
+    closing: 'A primeira edição terminou. A rede que ela aproximou continua crescendo.', closingStrong: 'Até a próxima edição!',
   },
   en: {
-    heroBadge: '1ST EDITION • HELD ON MAY 28, 2026',
-    heroTitle: 'I São Paulo Forum on Biogas and Bioproducts',
-    heroSubtitle: 'São Paulo State Biogas and Bioproducts Chain Meeting',
-    heroLocation: 'Unicamp Convention Center — Auditorium 3',
-    heroDate: 'Held on May 28, 2026',
-    galleryBtn: 'See the photos',
-
-    // TODO(lucas): replace with the final event figures.
-    statsParticipants: '90+',
-    statsParticipantsLabel: 'Participants',
-    statsAxes: '8',
-    statsAxesLabel: 'Research Axes',
-    statsDay: '1',
-    statsDayLabel: 'Day of immersion',
-
-    aboutTag: 'ABOUT THE EVENT',
-    aboutTitle: 'A meeting and discussion space for the biogas chain',
-    aboutP1:
-      'The I Fórum Paulista de Biogás e Bioprodutos was an initiative of CP2b, São Paulo Center for Biogas and Bioproducts Studies, in partnership with NIPE at the State University of Campinas. The event brought together researchers, students, professionals and companies to discuss advances, challenges and opportunities in the biogas and bioproducts chain in São Paulo State.',
-    aboutP2:
-      'The goal was to create an environment conducive to the exchange of experiences, strengthening collaboration networks and articulating academia, the productive sector and public authorities, essential elements to consolidate the biogas and bioproducts ecosystem at state and national levels.',
-    aboutInfoDate: 'May 28, 2026',
-    aboutInfoLocation: 'Convention Center',
-    aboutInfoOrg: 'Av. Érico Veríssimo, 500 – Cidade Universitária, Barão Geraldo, Campinas - SP, 13083-851',
-    aboutInfoAudience: 'Researchers, students, professionals, companies',
-    aboutInfoAudienceLabel: 'Audience',
-
-    sponsorsTag: 'SPONSORS',
-    sponsorsTitle: 'Support & Sponsorship',
-    apoioTag: 'SUPPORT',
-    apoioLogos: [
-      { name: 'ABME',               logo: '/assets/LOGO_ABME.png'             },
-      { name: 'Mulheres do Biogás', logo: '/assets/LOGO_MULHERES_DO_BIOGAS.png' },
+    badge: '1ST EDITION · MAY 28, 2026', title: 'This was our Forum. And it was remarkable.',
+    lead: 'A gathering shaped by science, dialogue and connections to advance biogas and bioproducts in São Paulo State.',
+    location: 'Unicamp Convention Center · Campinas, SP', photosButton: 'Relive the best moments', nextEdition: 'See you next year!',
+    stats: [
+      { value: '140', label: 'people attended', note: 'according to the final attendance list' },
+      { value: '60+', label: 'institutions connected', note: 'across academia, industry and government' },
+      { value: '3', label: 'discussion panels', note: 'on pathways for the sector' },
     ],
-
-    axesTag: 'THEMATIC AXES',
-    axesTitle: 'Event Thematic Axes',
-    axes: [
-      { icon: 'bi-shield-check',   title: 'Governance, Regulation and Policies for the Biogas Sector' },
-      { icon: 'bi-recycle',        title: 'Sustainability and Circular Economy in the Biogas Chain' },
-      { icon: 'bi-flask',          title: 'Research, Development and Innovation (RD&I) in the Biogas Chain' },
-      { icon: 'bi-graph-up-arrow', title: 'Economics and Business Models of Biogas and Bioproducts' },
+    storyTag: 'A LIVING MEMORY', storyTitle: 'When different voices meet, new possibilities emerge',
+    storyP1: 'The 1st São Paulo Forum on Biogas and Bioproducts brought together researchers, students, professionals, companies and public-sector representatives to discuss the sector’s future — from research and funding to regulation, markets and innovation.',
+    storyP2: 'More than a programme of talks, it was a day of encounters: ideas shared in the auditorium, conversations on the lawn, new contacts and a stronger network committed to a circular, low-carbon economy.',
+    verifiedNote: 'Attendance total according to the event’s final attendance list.',
+    momentsTag: 'WHAT WE EXPERIENCED', momentsTitle: 'The event in four moments',
+    moments: [
+      { icon: 'bi-people', number: '01', title: 'Meeting', text: 'The biogas and bioproducts community came to Unicamp to share experience and build new connections.' },
+      { icon: 'bi-chat-square-text', number: '02', title: 'Dialogue', text: 'Panels brought academia, industry and government together for candid conversations about challenges and opportunities.' },
+      { icon: 'bi-file-earmark-text', number: '03', title: 'Knowledge', text: 'Posters, research and debates revealed the breadth of solutions already under development.' },
+      { icon: 'bi-diagram-3', number: '04', title: 'Partnerships', text: 'The formal partnership between Unicamp, CNPEM and Equinor marked a new chapter in cooperation.' },
     ],
-
-    programTag: 'PROGRAM',
-    programTitle: 'Day Schedule',
-    programNotice: 'Programme held on May 28, 2026.',
+    bridgeTag: 'FROM THE FORUM TO THE OPENING', bridgeTitle: 'Two days that became part of CP2b’s history',
+    bridgeText: 'On May 29, the day after the Forum, the programme continued with the opening of CP2b’s facilities — a fitting close to a week devoted to turning collaboration into research, innovation and impact.',
+    forumLabel: 'MAY 28 · FORUM', openingLabel: 'MAY 29 · OPENING', programTag: 'THE JOURNEY', programTitle: 'The topics that moved the day',
     program: [
-      { time: '09:00', title: 'Check-in' },
-      { time: '09:30', title: 'Institutional Opening Session' },
-      { time: '10:00', title: 'Sponsors & Partnership Formalization' },
-      { time: '10:30', title: 'Table: R&D Funding Sources' },
-      { time: '11:15', title: 'Table: CP2b Research Axes' },
-      { time: '12:15', title: 'KI – CP2b Partnership' },
-      { time: '12:30', title: 'Lawn Brunch + Thematic Posters', highlight: true },
-      { time: '14:30', title: 'Panel 1: Academia-Industry Integration' },
-      { time: '15:30', title: 'Panel 2: Public Policies and Regulation' },
-      { time: '16:30', title: 'Closing' },
+      { time: 'Morning', title: 'Opening and institutional alliances', text: 'A welcome, a shared vision of the future and strategic partnerships for CP2b.' },
+      { time: 'Midday', title: 'Science, posters and connection', text: 'An introduction to the Center’s research axes, featured work and brunch on the lawn.' },
+      { time: 'Afternoon', title: 'Funding and integration', text: 'Conversations about R&D resources and stronger links between academia and industry.' },
+      { time: 'Closing', title: 'Markets and public policy', text: 'Debates on regulation, policy and the ecosystem needed to advance biogas and biomethane.' },
     ],
-
-    committeeTag: 'ORGANIZATION',
-    committeeTitle: 'Organizing Committee',
-    committee: [
-      { name: 'Bruna de Souza Moraes', role: 'President', inst: 'UNICAMP' },
-      { name: 'Renata Piacentini Rodriguez', role: 'Member', inst: 'UNIFAL' },
-      { name: 'Maria Paula Cardeal Volpi', role: 'Member', inst: 'USP' },
-      { name: 'Ana Beatriz Soares Aguiar', role: 'Member', inst: 'UNICAMP' },
-      { name: 'Lucas Nakamura Cerejo', role: 'Member', inst: 'UNICAMP' },
-      { name: 'Fabiane Moreira Vieira', role: 'Member', inst: 'UNICAMP' },
-      { name: 'Sofia Carolina da Silva', role: 'Member', inst: 'UNICAMP' },
-      { name: 'Luciana Cristina Lenhari da Silva', role: 'Member', inst: 'UNICAMP' },
-    ],
-
-    resultsTag: 'OUTCOMES',
-    resultsTitle: 'What came out of the Forum',
-    // TODO(lucas): replace with the real outcomes and next steps.
-    results: [
-      { icon: 'bi-people', title: 'Network building', text: 'TODO(lucas): describe the connections and partnerships established during the event.' },
-      { icon: 'bi-lightbulb', title: 'Action points', text: 'TODO(lucas): describe the action points defined in the panels.' },
-      { icon: 'bi-graph-up-arrow', title: 'Next steps', text: 'TODO(lucas): describe the next steps announced at the closing session.' },
-    ],
-
-    galleryTag: 'PHOTO COVERAGE',
-    galleryTitle: 'Event photos',
-    gallerySubtitle: 'Click an album to see all photos.',
-    galleryEmpty: 'Event photos will be published soon.',
-    galleryPhotos: 'photos',
-
-    faqTitle: 'Frequently Asked Questions',
-    faq: [
-      {
-        q: 'Who attended?',
-        a: 'The event was open to researchers, students, professionals and companies with interest in the biogas and bioproducts chain.',
-      },
-      {
-        q: 'Where was it held?',
-        a: 'The event was held at the Unicamp Convention Center, Auditorium 3, in Campinas - SP.',
-      },
-      {
-        q: 'Will there be a next edition?',
-        a: 'TODO(lucas): confirm whether the 2nd edition has a date or forecast, and adjust this answer.',
-      },
-      {
-        q: 'How do I access the presentations?',
-        a: 'TODO(lucas): state where abstracts, posters and presentations will be available.',
-      },
-      {
-        q: 'Where can I see the photos?',
-        a: 'Photo coverage is in the photos section of this page and also in the site Gallery.',
-      },
-    ],
+    galleryTag: 'EVENT ALBUM', galleryTitle: '30 memories from two special days', galleryLead: 'A lightweight, carefully curated selection from more than 150 photographs. Select any image to enlarge it.',
+    showAll: 'View all 30 photos', showLess: 'Show highlights', previous: 'Previous photo', next: 'Next photo', close: 'Close', photoOf: (current) => `Photo ${current} of 30`,
+    alt: Array.from({ length: 30 }, (_, index) => `Photographic record ${index + 1} of the 2026 São Paulo Forum on Biogas and Bioproducts`),
+    thanksTag: 'THANK YOU', thanksTitle: 'This gathering happened because many people built it together',
+    thanksText: 'Our thanks to every attendee, panelist, researcher, student, partner, sponsor and team member who brought the first edition to life.', sponsors: 'Sponsors and supporters',
+    closing: 'The first edition has ended. The network it brought together keeps growing.', closingStrong: 'See you at the next edition!',
   },
 };
+
+const reveal = { initial: { opacity: 0, y: 24 }, whileInView: { opacity: 1, y: 0 }, viewport: { once: true, amount: 0.18 }, transition: { duration: 0.5 } };
 
 const ForumPaulista = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
   const seo = pageSeo.forum[language] || pageSeo.forum.pt;
-  const t = content[language];
-  const [albums, setAlbums] = useState([]);
+  const t = content[language] || content.pt;
+  const [showAll, setShowAll] = useState(false);
+  const [activePhoto, setActivePhoto] = useState(null);
+  const visibleGallery = showAll ? gallery : gallery.slice(0, 12);
 
-  // Álbuns do Fórum na galeria. Mesmo padrão de EventDetail.jsx: a API não
-  // tem endpoint por álbum, então busca tudo e filtra no cliente.
-  // TODO(lucas): trocar por filtro no album_id real assim que as fotos subirem.
   useEffect(() => {
-    fetchGallery().then((photos) => {
-      if (!Array.isArray(photos) || photos.length === 0) return;
-      const counts = photos.reduce((acc, p) => {
-        if (!p.is_cover) acc[p.album_id] = (acc[p.album_id] || 0) + 1;
-        return acc;
-      }, {});
-      const matches = photos
-        .filter((p) => p.is_cover && /f[oó]rum/i.test(p.title || ''))
-        .map((a) => ({ ...a, photoCount: counts[a.album_id] || 0 }));
-      setAlbums(matches);
-    });
-  }, []);
-
+    if (activePhoto === null) return undefined;
+    const onKeyDown = (event) => {
+      if (event.key === 'Escape') setActivePhoto(null);
+      if (event.key === 'ArrowLeft') setActivePhoto((current) => (current + gallery.length - 1) % gallery.length);
+      if (event.key === 'ArrowRight') setActivePhoto((current) => (current + 1) % gallery.length);
+    };
+    document.body.style.overflow = 'hidden';
+    window.addEventListener('keydown', onKeyDown);
+    return () => { document.body.style.overflow = ''; window.removeEventListener('keydown', onKeyDown); };
+  }, [activePhoto]);
 
   return (
-    <>
+    <main className="forum-memoir">
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
-      {/* ── Section 1: Hero ── */}
-      <section
-        style={{
-          position: 'relative',
-          backgroundImage: 'url(/assets/DSC00361-1920x748.jpg)',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          minHeight: '480px',
-          display: 'flex',
-          alignItems: 'center',
-        }}
-      >
-        {/* Dark overlay */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background: 'rgba(0,0,0,0.72)',
-          }}
-        />
-        <Container style={{ position: 'relative', zIndex: 1 }} className="py-5">
-          <Row className="justify-content-center text-center">
-            <Col lg={9}>
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4 }}
-              >
-                <span className="mono-label text-success">{t.heroBadge}</span>
-                <h1 className="display-4 fw-bold text-white mt-2 mb-3">{t.heroTitle}</h1>
-                <p className="lead text-white-50 mb-4">{t.heroSubtitle}</p>
-
-                {/* Location + Date */}
-                <div className="d-flex justify-content-center gap-4 mb-4 flex-wrap text-white-75">
-                  <span className="text-white">
-                    <i className="bi bi-geo-alt-fill text-success me-1" />
-                    {t.heroLocation}
-                  </span>
-                  <span className="text-white">
-                    <i className="bi bi-calendar-event-fill text-success me-1" />
-                    {t.heroDate}
-                  </span>
-                </div>
-
-                {/* Evento encerrado: a única ação que resta é rever o registro. */}
-                <div className="d-flex justify-content-center gap-3 flex-wrap">
-                  <a href="#fotos" className="btn btn-success btn-lg px-4">
-                    <i className="bi bi-images me-2" />
-                    {t.galleryBtn}
-                  </a>
-                </div>
-              </motion.div>
-            </Col>
-          </Row>
-        </Container>
+      <section className="forum-hero" aria-labelledby="forum-title">
+        <img className="forum-hero__image" src={gallery[3].src} alt="" /><div className="forum-hero__veil" />
+        <div className="forum-shell forum-hero__content"><motion.div initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.65 }}>
+          <span className="forum-kicker forum-kicker--light">{t.badge}</span><h1 id="forum-title">{t.title}</h1><p className="forum-hero__lead">{t.lead}</p>
+          <div className="forum-hero__meta"><i className="bi bi-geo-alt" aria-hidden="true" /> {t.location}</div>
+          <div className="forum-hero__actions"><a className="forum-button forum-button--primary" href="#fotos"><i className="bi bi-images" aria-hidden="true" />{t.photosButton}</a><span className="forum-hero__promise">{t.nextEdition}</span></div>
+        </motion.div></div>
+        <a className="forum-scroll-cue" href="#memoria" aria-label={t.storyTag}><span /></a>
       </section>
 
-      {/* ── Section 2: Stats ── */}
-      <section className="py-5 bg-white">
-        <Container>
-          <Row className="justify-content-center">
-            <Col lg={10}>
-              <div className="bg-light rounded-4 p-4">
-                <Row className="text-center g-4">
-                  {[
-                    { value: t.statsParticipants, label: t.statsParticipantsLabel },
-                    { value: t.statsAxes, label: t.statsAxesLabel },
-                    { value: t.statsDay, label: t.statsDayLabel },
-                  ].map((stat, i) => (
-                    <Col md={4} key={i}>
-                      <div className="display-5 fw-bold text-success">{stat.value}</div>
-                      <div className="text-muted mt-1">{stat.label}</div>
-                    </Col>
-                  ))}
-                </Row>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
+      <section className="forum-stats" aria-label="Números do evento"><div className="forum-shell forum-stats__grid">{t.stats.map((stat) => (
+        <div className="forum-stat" key={stat.label}><strong>{stat.value}</strong><div><span>{stat.label}</span><small>{stat.note}</small></div></div>
+      ))}</div></section>
 
-      {/* ── Section 3: About ── */}
-      <section className="py-5">
-        <Container>
-          <Row className="align-items-start g-5">
-            {/* Left: text */}
-            <Col lg={6}>
-              <span className="mono-label text-success">{t.aboutTag}</span>
-              <h2 className="fw-bold mt-2 mb-4">{t.aboutTitle}</h2>
-              <p className="text-muted">{t.aboutP1}</p>
-              <p className="text-muted">{t.aboutP2}</p>
-            </Col>
-            {/* Right: info card */}
-            <Col lg={5} className="offset-lg-1">
-              <Card className="border-0 shadow-sm rounded-4 p-1">
-                <Card.Body>
-                  <ul className="list-unstyled mb-0" style={{ lineHeight: '2.2' }}>
-                    <li>
-                      <i className="bi bi-calendar-event-fill text-success me-2" />
-                      <strong>{t.aboutInfoDate}</strong>
-                    </li>
-                    <li>
-                      <i className="bi bi-geo-alt-fill text-success me-2" />
-                      <strong>{t.aboutInfoLocation}</strong>
-                    </li>
-                    <li>
-                      <i className="bi bi-building text-success me-2" />
-                      {t.aboutInfoOrg}
-                    </li>
-                    <li>
-                      <i className="bi bi-people-fill text-success me-2" />
-                      <span className="text-muted">{t.aboutInfoAudienceLabel}: </span>
-                      {t.aboutInfoAudience}
-                    </li>
-                  </ul>
-                </Card.Body>
-              </Card>
-              <div className="mt-3 rounded-4 overflow-hidden shadow-lg">
-                <video
-                  width="100%"
-                  height="auto"
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  controls
-                  poster="/assets/Forum-CP2B-junho-2025-Destaque-500x230.jpg"
-                  style={{ display: 'block' }}
-                >
-                  <source src="/assets/Em-breve-960-x-540-px-2.mp4" type="video/mp4" />
-                </video>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
+      <section id="memoria" className="forum-section forum-story"><div className="forum-shell forum-story__grid">
+        <motion.div {...reveal}><span className="forum-kicker">{t.storyTag}</span><h2>{t.storyTitle}</h2><p>{t.storyP1}</p><p>{t.storyP2}</p><small className="forum-data-note"><i className="bi bi-info-circle" aria-hidden="true" />{t.verifiedNote}</small></motion.div>
+        <motion.figure className="forum-story__photo" {...reveal}><img src={gallery[10].src} alt={t.alt[10]} loading="lazy" decoding="async" /><figcaption>28.05.2026 · Unicamp</figcaption></motion.figure>
+      </div></section>
 
-      {/* ── Section 3.2: Sponsors ── */}
-      <section className="py-5 bg-white">
-        <Container>
-          <div className="text-center mb-5">
-            <h2 className="fw-bold">{t.sponsorsTitle}</h2>
-            <span className="mono-label text-success">{t.sponsorsTag}</span>
-          </div>
+      <section className="forum-section forum-moments"><div className="forum-shell">
+        <motion.header className="forum-section-head" {...reveal}><span className="forum-kicker">{t.momentsTag}</span><h2>{t.momentsTitle}</h2></motion.header>
+        <div className="forum-moments__grid">{t.moments.map((moment, index) => (
+          <motion.article className="forum-moment" key={moment.number} {...reveal} transition={{ duration: 0.45, delay: index * 0.05 }}><div className="forum-moment__top"><i className={`bi ${moment.icon}`} aria-hidden="true" /><span>{moment.number}</span></div><h3>{moment.title}</h3><p>{moment.text}</p></motion.article>
+        ))}</div>
+      </div></section>
 
-          <div className="text-center mb-5">
-            <img
-              src="/assets/apoio-patrocinio.png"
-              alt="Patrocinadores Ouro, Prata e Bronze"
-              style={{ maxWidth: '100%', width: '720px', objectFit: 'contain' }}
-            />
-          </div>
+      <section className="forum-section forum-bridge"><div className="forum-shell forum-bridge__grid">
+        <motion.div className="forum-bridge__copy" {...reveal}><span className="forum-kicker forum-kicker--light">{t.bridgeTag}</span><h2>{t.bridgeTitle}</h2><p>{t.bridgeText}</p></motion.div>
+        <div className="forum-bridge__photos"><motion.figure {...reveal}><img src={gallery[8].src} alt={t.alt[8]} loading="lazy" decoding="async" /><figcaption>{t.forumLabel}</figcaption></motion.figure><motion.figure {...reveal}><img src={gallery[24].src} alt={t.alt[24]} loading="lazy" decoding="async" /><figcaption>{t.openingLabel}</figcaption></motion.figure></div>
+      </div></section>
 
-          <hr className="my-4" style={{ borderColor: '#e0e0e0' }} />
+      <section className="forum-section forum-program"><div className="forum-shell forum-program__layout">
+        <motion.header {...reveal}><span className="forum-kicker">{t.programTag}</span><h2>{t.programTitle}</h2></motion.header>
+        <div className="forum-program__list">{t.program.map((item, index) => (
+          <motion.article className="forum-program__item" key={item.time} {...reveal}><span className="forum-program__number">0{index + 1}</span><div><small>{item.time}</small><h3>{item.title}</h3><p>{item.text}</p></div></motion.article>
+        ))}</div>
+      </div></section>
 
-          {/* Seção APOIO */}
-          <div className="text-center mb-4 mt-4">
-            <span className="mono-label text-success">{t.apoioTag}</span>
-          </div>
-          <Row className="justify-content-center align-items-center g-4">
-            <Col xs={8} sm={4} md="auto" className="text-center px-4">
-              <img
-                src={t.apoioLogos[0].logo}
-                alt={t.apoioLogos[0].name}
-                style={{ maxHeight: '160px', maxWidth: '320px', width: '100%', objectFit: 'contain' }}
-              />
-            </Col>
-            <Col xs={8} sm={4} md="auto" className="text-center px-4">
-              <img
-                src={t.apoioLogos[1].logo}
-                alt={t.apoioLogos[1].name}
-                style={{ maxHeight: '80px', maxWidth: '200px', width: '100%', objectFit: 'contain' }}
-              />
-            </Col>
-          </Row>
-        </Container>
-      </section>
+      <section id="fotos" className="forum-section forum-gallery-section"><div className="forum-shell">
+        <motion.header className="forum-section-head forum-section-head--center" {...reveal}><span className="forum-kicker">{t.galleryTag}</span><h2>{t.galleryTitle}</h2><p>{t.galleryLead}</p></motion.header>
+        <div className="forum-gallery">{visibleGallery.map((photo, visibleIndex) => (
+          <motion.button className={`forum-gallery__item forum-gallery__item--${visibleIndex % 7}`} type="button" key={photo.src} onClick={() => setActivePhoto(photo.index)} aria-label={`${t.photoOf(photo.index + 1)}: ${t.alt[photo.index]}`} initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }} transition={{ duration: 0.35 }}><img src={photo.src} alt={t.alt[photo.index]} loading="lazy" decoding="async" /><span><i className="bi bi-arrows-fullscreen" aria-hidden="true" />{t.photoOf(photo.index + 1)}</span></motion.button>
+        ))}</div>
+        <div className="forum-gallery__controls"><button className="forum-button forum-button--outline" type="button" onClick={() => setShowAll((current) => !current)} aria-expanded={showAll}><i className={`bi ${showAll ? 'bi-grid-3x3-gap' : 'bi-images'}`} aria-hidden="true" />{showAll ? t.showLess : t.showAll}</button></div>
+      </div></section>
 
-      {/* ── Section 3.5: Eixos Temáticos ── */}
-      <section className="py-5" style={{ background: '#f8f9fa' }}>
-        <Container>
-          <div className="text-center mb-5">
-            <span className="mono-label text-success">{t.axesTag}</span>
-            <h2 className="fw-bold mt-2">{t.axesTitle}</h2>
-          </div>
-          <Row className="g-4 justify-content-center">
-            {t.axes.map((axis, i) => (
-              <Col md={6} lg={3} key={i}>
-                <Card className="border-0 shadow-sm rounded-4 h-100 hover-lift text-center">
-                  <Card.Body className="p-4 d-flex flex-column align-items-center">
-                    <div
-                      className="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center mb-3"
-                      style={{ width: '64px', height: '64px', flexShrink: 0 }}
-                    >
-                      <i className={`bi ${axis.icon} text-success`} style={{ fontSize: '1.75rem' }} />
-                    </div>
-                    <p className="fw-semibold mb-0">{axis.title}</p>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
+      <section className="forum-section forum-thanks"><div className="forum-shell"><motion.div className="forum-thanks__card" {...reveal}>
+        <div><span className="forum-kicker">{t.thanksTag}</span><h2>{t.thanksTitle}</h2><p>{t.thanksText}</p></div><div className="forum-thanks__logos"><span>{t.sponsors}</span><img src="/assets/apoio-patrocinio.png" alt={t.sponsors} loading="lazy" /></div>
+      </motion.div></div></section>
+      <section className="forum-closing"><div className="forum-shell"><p>{t.closing}</p><strong>{t.closingStrong}</strong></div></section>
 
-      {/* ── Section 4: Program ── */}
-      <section className="py-5" style={{ background: '#f8f9fa' }}>
-        <Container>
-          <Row className="justify-content-center">
-            <Col lg={8}>
-              <span className="mono-label text-success">{t.programTag}</span>
-              <h2 className="fw-bold mt-2 mb-4">{t.programTitle}</h2>
-
-              {/* Timeline */}
-              <div className="d-flex flex-column gap-0">
-                {t.program.map((item, i) => (
-                  <div
-                    key={i}
-                    className="d-flex align-items-start gap-3 py-3"
-                    style={{
-                      borderLeft: '3px solid #198754',
-                      paddingLeft: '1.25rem',
-                      background: item.highlight ? 'rgba(25,135,84,0.06)' : 'transparent',
-                      borderRadius: item.highlight ? '0 8px 8px 0' : undefined,
-                    }}
-                  >
-                    <div style={{ minWidth: '60px' }}>
-                      <span className="mono-label text-success" style={{ fontSize: '0.75rem' }}>
-                        {item.time}
-                      </span>
-                    </div>
-                    <div>
-                      <span
-                        className={`fw-semibold${item.highlight ? ' text-success' : ''}`}
-                      >
-                        {item.title}
-                      </span>
-                      {item.highlight && (
-                        <span className="ms-2 badge bg-success bg-opacity-10 text-success small">
-                          ★
-                        </span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-
-              <p className="text-muted small mt-3 fst-italic">* {t.programNotice}</p>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-
-      {/* ── Section 5: Committee ── */}
-      <section className="py-5 bg-white">
-        <Container>
-          <div className="text-center mb-5">
-            <span className="mono-label text-success">{t.committeeTag}</span>
-            <h2 className="fw-bold mt-2">{t.committeeTitle}</h2>
-          </div>
-          <Row className="g-3 justify-content-center">
-            {t.committee.map((person, i) => (
-              <Col md={4} sm={6} key={i}>
-                <Card className="border-0 shadow-sm p-3 h-100 hover-lift">
-                  <Card.Body className="p-1">
-                    <p className="fw-bold mb-0">{person.name}</p>
-                    <p className="text-success small mb-0">{person.inst}</p>
-                    <p className="text-muted small mb-0">{person.role}</p>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
-
-      {/* ── Section 6: Results ── */}
-      <section className="py-5 bg-white">
-        <Container>
-          <div className="text-center section-head">
-            <span className="eyebrow justify-content-center">{t.resultsTag}</span>
-            <h2 className="fw-bold mt-2">{t.resultsTitle}</h2>
-          </div>
-          <Row className="g-4">
-            {t.results.map((item, i) => (
-              <Col md={4} key={i}>
-                <Card className="border-0 shadow-sm rounded-4 h-100">
-                  <Card.Body className="p-4">
-                    <div className="bg-success bg-opacity-10 rounded-3 d-inline-flex p-3 mb-3">
-                      <i className={`bi ${item.icon} text-success`} style={{ fontSize: '1.5rem' }} />
-                    </div>
-                    <h5 className="fw-bold mb-2">{item.title}</h5>
-                    <p className="text-muted mb-0">{item.text}</p>
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </Container>
-      </section>
-
-      {/* ── Section 6.5: Photo gallery ── */}
-      <section id="fotos" className="py-5" style={{ background: 'var(--cp2b-light-gray)' }}>
-        <Container>
-          <div className="text-center section-head">
-            <span className="eyebrow justify-content-center">{t.galleryTag}</span>
-            <h2 className="fw-bold mt-2">{t.galleryTitle}</h2>
-            {albums.length > 0 && <p className="text-muted">{t.gallerySubtitle}</p>}
-          </div>
-          {albums.length === 0 ? (
-            <p className="text-center text-muted">{t.galleryEmpty}</p>
-          ) : (
-            <div className="album-grid">
-              {albums.map((album) => (
-                <Link key={album.album_id} to={`/galeria/${album.album_id}`} className="album-card text-decoration-none">
-                  <img src={album.url} alt={album.title} loading="lazy" />
-                  <div className="album-overlay">
-                    <span className="album-title">{album.title}</span>
-                    <span className="album-meta">{album.photoCount} {t.galleryPhotos}</span>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          )}
-        </Container>
-      </section>
-
-      {/* ── Section 7: FAQ ── */}
-      <section className="py-5 bg-white">
-        <Container>
-          <Row className="justify-content-center">
-            <Col lg={8}>
-              <h2 className="fw-bold mb-4">{t.faqTitle}</h2>
-              <div
-                className="rounded-4 p-1"
-                style={{ background: '#fafafa', border: '1px solid #e9ecef' }}
-              >
-                <Accordion flush>
-                  {t.faq.map((item, idx) => (
-                    <Accordion.Item key={idx} eventKey={String(idx)}>
-                      <Accordion.Header>{item.q}</Accordion.Header>
-                      <Accordion.Body className="text-muted">{item.a}</Accordion.Body>
-                    </Accordion.Item>
-                  ))}
-                </Accordion>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-    </>
+      {activePhoto !== null && <div className="forum-lightbox" role="dialog" aria-modal="true" aria-label={t.photoOf(activePhoto + 1)} onClick={() => setActivePhoto(null)}>
+        <button className="forum-lightbox__close" type="button" aria-label={t.close} onClick={() => setActivePhoto(null)}><i className="bi bi-x-lg" /></button>
+        <button className="forum-lightbox__nav forum-lightbox__nav--previous" type="button" aria-label={t.previous} onClick={(event) => { event.stopPropagation(); setActivePhoto((activePhoto + gallery.length - 1) % gallery.length); }}><i className="bi bi-chevron-left" /></button>
+        <figure onClick={(event) => event.stopPropagation()}><img src={gallery[activePhoto].src} alt={t.alt[activePhoto]} /><figcaption>{t.photoOf(activePhoto + 1)} · {t.alt[activePhoto]}</figcaption></figure>
+        <button className="forum-lightbox__nav forum-lightbox__nav--next" type="button" aria-label={t.next} onClick={(event) => { event.stopPropagation(); setActivePhoto((activePhoto + 1) % gallery.length); }}><i className="bi bi-chevron-right" /></button>
+      </div>}
+    </main>
   );
 };
 
