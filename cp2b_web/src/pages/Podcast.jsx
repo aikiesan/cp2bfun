@@ -76,21 +76,21 @@ const Podcast = () => {
         transition={{ duration: 0.4 }}
       >
         <PageHero eyebrow={labels.tag} title={labels.title} subtitle={labels.description} />
-        <Container className="py-5">
+        <Container className="py-4 py-md-5">
 
           {loading ? (
-            <div className="text-center py-5">
+            <div className="text-center py-4 py-md-5">
               <Spinner animation="border" variant="success" />
             </div>
           ) : episodes.length === 0 ? (
             <Row className="justify-content-center">
-              <Col lg={7} className="text-center text-muted py-5">
+              <Col lg={7} className="text-center text-muted py-4 py-md-5">
                 <i className="bi bi-mic-mute" style={{ fontSize: '3rem', opacity: 0.3 }}></i>
                 <p className="mt-3">{labels.empty}</p>
               </Col>
             </Row>
           ) : (
-            <Row className="g-4 justify-content-center">
+            <Row className="g-3 g-md-4 justify-content-center">
               {episodes.map((ep, idx) => {
                 const embedUrl = getSpotifyEmbedUrl(ep.spotify_url);
                 return (
@@ -101,7 +101,7 @@ const Podcast = () => {
                       transition={{ duration: 0.3, delay: idx * 0.06 }}
                     >
                       <Card className="border-0 shadow-sm">
-                        <Card.Body className="p-4">
+                        <Card.Body className="p-3 p-md-4">
                           <div className="d-flex align-items-start gap-3 mb-3">
                             {ep.episode_number && (
                               <Badge bg="success" className="flex-shrink-0 mt-1">

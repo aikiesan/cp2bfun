@@ -86,11 +86,11 @@ const Research = () => {
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <PageHero eyebrow={t.axes} title={labels.tag} subtitle={labels.subtitle} />
-    <Container className="py-5">
+    <Container className="py-4 py-md-5">
 
-      <div className="border-top border-dark pt-5">
+      <div className="border-top border-dark pt-3 pt-md-5">
         <h3 className="fw-bold mb-1">{labels.details}</h3>
-        <p className="text-muted mb-4">{labels.mindmapHint}</p>
+        <p className="text-muted mb-3 mb-md-4">{labels.mindmapHint}</p>
         <AxisMindMap
           axes={axes}
           detailsById={axisDetails}
@@ -100,16 +100,16 @@ const Research = () => {
       </div>
 
       {laboratories.length > 0 && (
-        <div className="border-top border-dark pt-5 mt-5">
+        <div className="border-top border-dark pt-3 pt-md-5 mt-4 mt-md-5">
           <h3 className="fw-bold mb-1">{labels.infraTitle}</h3>
-          <p className="text-muted mb-4">{labels.infraSubtitle}</p>
-          <Row className="g-4">
+          <p className="text-muted mb-3 mb-md-4">{labels.infraSubtitle}</p>
+          <Row className="g-3 g-md-4">
             {laboratories.map((lab) => (
-              <Col md={4} key={lab.name}>
+              <Col xs={12} sm={6} lg={4} key={lab.name}>
                 <Card className="border-0 shadow-sm h-100">
-                  <Card.Body className="p-4 d-flex flex-column">
+                  <Card.Body className="p-3 p-md-4 d-flex flex-column">
                     <span className="mono-label text-success mb-1">{lab.acronym}</span>
-                    <h5 className="fw-bold mb-2">{lab.name}</h5>
+                    <h5 className="fw-bold mb-2 mobile-compact-title">{lab.name}</h5>
                     <p className="text-muted small mb-2">{[lab.institution, lab.lead].filter(Boolean).join(' · ')}</p>
                     {lab.axes && lab.axes.length > 0 && (
                       <p className="text-muted small mb-3">

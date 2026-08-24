@@ -63,12 +63,12 @@ const Transparency = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <Container className="py-5">
+        <Container className="py-4 py-md-5">
           {/* FAPESP Process */}
-        <Row className="mb-5">
+        <Row className="mb-4 mb-md-5">
           <Col md={12}>
             <Card className="border-0 shadow-sm">
-              <Card.Body className="p-4">
+              <Card.Body className="p-3 p-md-4">
                 <h3 className="fw-bold mb-3">{content.sections.fapesp.title}</h3>
                 <p className="text-muted mb-3">
                   <strong>{language === 'pt' ? 'Número:' : 'Number:'}</strong> {content.sections.fapesp.number}
@@ -87,9 +87,9 @@ const Transparency = () => {
         </Row>
 
         {/* Annual Reports */}
-        <Row className="mb-5">
+        <Row className="mb-4 mb-md-5">
           <Col md={12}>
-            <h3 className="fw-bold mb-4">{content.sections.reports.title}</h3>
+            <h3 className="fw-bold mb-3 mb-md-4">{content.sections.reports.title}</h3>
             {content.sections.reports.description && (
               <p className="text-muted mb-3">{content.sections.reports.description}</p>
             )}
@@ -98,7 +98,7 @@ const Transparency = () => {
                 {content.sections.reports.items.map((report) => (
                   <Col md={6} key={report.id}>
                     <Card className="border-0 shadow-sm h-100">
-                      <Card.Body className="p-4">
+                      <Card.Body className="p-3 p-md-4">
                         <h5 className="fw-bold mb-1">{report.title}</h5>
                         {report.period && (
                           <p className="mono-label text-muted mb-2">{report.period}</p>
@@ -127,9 +127,9 @@ const Transparency = () => {
         </Row>
 
         {/* Financial Information */}
-        <Row className="bg-light p-4 rounded-3">
+        <Row className="bg-light p-3 p-md-4 rounded-3">
           <Col md={12}>
-            <h3 className="fw-bold mb-4">{content.sections.financials.title}</h3>
+            <h3 className="fw-bold mb-3 mb-md-4">{content.sections.financials.title}</h3>
             <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
               {content.sections.financials.content}
             </p>

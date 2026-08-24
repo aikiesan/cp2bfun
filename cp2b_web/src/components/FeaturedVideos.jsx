@@ -34,15 +34,14 @@ const FeaturedVideos = ({ itemA, itemB, itemC }) => {
 
   return (
     <div className="container">
-      <Row className="g-0 overflow-hidden rounded-4 shadow-lg" style={{ minHeight: '360px' }}>
+      <Row className="g-0 overflow-hidden rounded-4 shadow-lg featured-videos-row">
 
         {/* ── Left: player ── */}
         <Col lg={single ? 12 : 8} className="position-relative bg-black">
           {playing ? (
-            <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0 }}>
+            <div className="ratio ratio-16x9">
               <iframe
                 key={activeVideo.youtube_id}
-                style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}
                 src={`https://www.youtube.com/embed/${activeVideo.youtube_id}?autoplay=1`}
                 title={getTitle(activeVideo)}
                 frameBorder="0"
@@ -52,21 +51,21 @@ const FeaturedVideos = ({ itemA, itemB, itemC }) => {
             </div>
           ) : (
             <div
-              className="position-relative w-100 h-100 cursor-pointer"
-              style={{ minHeight: '360px', cursor: 'pointer' }}
+              className="position-relative w-100 h-100 cursor-pointer ratio ratio-16x9"
+              style={{ cursor: 'pointer' }}
               onClick={handlePlay}
             >
               <img
                 src={activeVideo.thumbnail_url}
                 alt={getTitle(activeVideo)}
-                className="w-100 h-100"
-                style={{ objectFit: 'cover', filter: 'brightness(0.65)', minHeight: '360px' }}
+                className="w-100 h-100 position-absolute top-0 start-0"
+                style={{ objectFit: 'cover', filter: 'brightness(0.65)' }}
               />
               {/* Play button */}
               <div
                 className="position-absolute top-50 start-50 translate-middle"
                 style={{
-                  width: '72px', height: '72px',
+                  width: '64px', height: '64px',
                   backgroundColor: 'rgba(255,255,255,0.9)',
                   borderRadius: '50%',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -76,11 +75,11 @@ const FeaturedVideos = ({ itemA, itemB, itemC }) => {
                 onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.1)'; }}
                 onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
               >
-                <FaPlay style={{ fontSize: '1.6rem', color: '#dc3545', marginLeft: '5px' }} />
+                <FaPlay style={{ fontSize: '1.4rem', color: '#dc3545', marginLeft: '4px' }} />
               </div>
               {/* Text overlay */}
               <div
-                className="position-absolute bottom-0 start-0 end-0 text-white p-4"
+                className="position-absolute bottom-0 start-0 end-0 text-white p-3 p-md-4"
                 style={{ background: 'linear-gradient(transparent, rgba(0,0,0,0.75))' }}
               >
                 {activeVideo.date_display && (
@@ -88,7 +87,7 @@ const FeaturedVideos = ({ itemA, itemB, itemC }) => {
                     {activeVideo.date_display}
                   </div>
                 )}
-                <h3 className="fw-bold text-white mb-1">{getTitle(activeVideo)}</h3>
+                <h3 className="fw-bold text-white mb-1 mobile-compact-title">{getTitle(activeVideo)}</h3>
                 {getDescription(activeVideo) && (
                   <p className="text-white-50 mb-0 small" style={{
                     display: '-webkit-box',
@@ -106,7 +105,7 @@ const FeaturedVideos = ({ itemA, itemB, itemC }) => {
 
         {/* ── Right: playlist (hidden for single video) ── */}
         {!single && (
-          <Col lg={4} className="d-flex flex-column" style={{ background: '#111', overflowY: 'auto', maxHeight: '500px' }}>
+          <Col lg={4} className="d-flex flex-column featured-videos-playlist" style={{ background: '#111', overflowY: 'auto' }}>
             {videos.map((video) => {
               const isActive = activeVideo?.youtube_id === video.youtube_id;
               return (

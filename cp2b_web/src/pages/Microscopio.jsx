@@ -68,21 +68,21 @@ const Microscopio = () => {
       transition={{ duration: 0.4 }}
     >
       <PageHero eyebrow={labels.tag} title={labels.title} subtitle={description} />
-      <Container className="py-5">
+      <Container className="py-4 py-md-5">
 
         {loading ? (
-          <div className="text-center py-5">
+          <div className="text-center py-4 py-md-5">
             <Spinner animation="border" variant="success" />
           </div>
         ) : items.length === 0 ? (
           <Row className="justify-content-center text-center">
             <Col lg={6}>
-              <i className="bi bi-binoculars text-success" style={{ fontSize: '4rem', opacity: 0.5 }}></i>
+              <i className="bi bi-binoculars text-success mobile-empty-icon" style={{ fontSize: '4rem', opacity: 0.5 }}></i>
               <p className="lead text-muted mt-3">{labels.empty}</p>
             </Col>
           </Row>
         ) : (
-          <Row className="g-4">
+          <Row className="g-3 g-md-4">
             {items.map((item) => (
               <Col lg={4} md={6} key={item.slug}>
                 <Card className="h-100 border-0 shadow-sm" style={{ transition: 'transform 0.2s' }}

@@ -73,7 +73,7 @@ const Indicators = () => {
       <PageHero eyebrow={t.eyebrow} title={seo.title} subtitle={t.subtitle} />
 
       <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Container className="indicators-page py-5">
+        <Container className="indicators-page py-4 py-md-5">
           <section className="indicators-overview" aria-labelledby="indicators-overview-title">
             <div className="indicators-overview__copy">
               <span className="indicators-eyebrow">{t.overviewEyebrow}</span>

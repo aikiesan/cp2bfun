@@ -93,13 +93,13 @@ const Contact = () => {
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <PageHero eyebrow={labels.tag} title={labels.title} />
-    <Container className="py-5">
+    <Container className="py-4 py-md-5">
 
-      <Row className="justify-content-center g-5">
+      <Row className="justify-content-center g-4 g-lg-5">
         <Col lg={5}>
-          <div className="mb-5">
-            <h4 className="fw-bold mb-3">{labels.address}</h4>
-            <p className="text-muted">
+          <div className="mb-4 mb-md-5">
+            <h4 className="fw-bold mb-2 mb-md-3">{labels.address}</h4>
+            <p className="text-muted mb-0">
               Rua Cora Coralina, 330<br/>
               Universidade Estadual de Campinas - UNICAMP<br/>
               Campinas - São Paulo, Brasil<br/>
@@ -107,14 +107,14 @@ const Contact = () => {
             </p>
           </div>
 
-          <div className="mb-5">
-            <h4 className="fw-bold mb-3">{labels.direct}</h4>
-            <p className="text-muted mb-1"><strong>{labels.general}:</strong> administrativo@cp2b.unicamp.br</p>
-            <p className="text-muted mb-1"><strong>{labels.coordination}:</strong> diretoria@cp2b.unicamp.br</p>
-            <p className="text-muted"><strong>{labels.phone}:</strong> +55 (19) 3521-1244</p>
+          <div className="mb-4 mb-md-5">
+            <h4 className="fw-bold mb-2 mb-md-3">{labels.direct}</h4>
+            <p className="text-muted mb-2"><strong>{labels.general}:</strong> <a href="mailto:administrativo@cp2b.unicamp.br" className="text-decoration-none text-dark hover-blue d-inline-block py-1">administrativo@cp2b.unicamp.br</a></p>
+            <p className="text-muted mb-2"><strong>{labels.coordination}:</strong> <a href="mailto:diretoria@cp2b.unicamp.br" className="text-decoration-none text-dark hover-blue d-inline-block py-1">diretoria@cp2b.unicamp.br</a></p>
+            <p className="text-muted mb-0"><strong>{labels.phone}:</strong> <a href="tel:+551935211244" className="text-decoration-none text-dark hover-blue d-inline-block py-1">+55 (19) 3521-1244</a></p>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-3 mt-md-4">
                <img
                  src="/assets/nipe_unicamp_2024-07-08_22-20-16_jpg_2024-07-08_22-20-16.webp"
                  alt="NIPE Unicamp"
@@ -124,8 +124,8 @@ const Contact = () => {
         </Col>
 
         <Col lg={6}>
-          <div className="bg-light p-4 border border-dark h-100">
-            <h4 className="fw-bold mb-4">{labels.sendMsg}</h4>
+          <div className="bg-light p-3 p-md-4 border border-dark h-100">
+            <h4 className="fw-bold mb-3 mb-md-4">{labels.sendMsg}</h4>
 
             {status.success && (
               <Alert variant="success" dismissible onClose={() => setStatus({ ...status, success: false })}>

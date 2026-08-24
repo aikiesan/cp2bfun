@@ -44,10 +44,12 @@ const Timeline = ({ items }) => {
   if (!items || items.length === 0) return null;
 
   return (
-    <div className="cp2b-timeline-grid">
-      {items.map((item, index) => (
-        <TimelineEntry key={index} item={item} index={index} />
-      ))}
+    <div className="cp2b-timeline-wrapper">
+      <div className="cp2b-timeline-grid">
+        {items.map((item, index) => (
+          <TimelineEntry key={index} item={item} index={index} />
+        ))}
+      </div>
     </div>
   );
 };

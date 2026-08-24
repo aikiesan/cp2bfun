@@ -153,29 +153,38 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
         return Math.min(Math.max(preferredPx, minPx), maxPx);
       };
 
-      // --fs-display-1: clamp(2.4rem, 1.4rem + 4vw, 4.2rem);
-      const fsDisplay1At320 = computeClamp(2.4, 1.4, 4, 4.2, 320);
+      // --fs-display-1: clamp(1.75rem, 1.1rem + 2.8vw, 4.2rem);
+      const fsDisplay1At320 = computeClamp(1.75, 1.1, 2.8, 4.2, 320);
       const fsDisplay1At1440 = computeClamp(2.4, 1.4, 4, 4.2, 1440);
-      expect(fsDisplay1At320).toBe(2.4 * 16); // 38.4px (clamped at min)
-      expect(fsDisplay1At1440).toBe(4.2 * 16); // 67.2px (clamped at max)
+      expect(fsDisplay1At320).toBe(1.75 * 16); // 28.0px (clamped at min)
+      expect(fsDisplay1At1440).toBe(4.2 * 16); // 67.2px (desktop value preserved)
 
-      // --fs-display-2: clamp(1.9rem, 1.2rem + 2.6vw, 3rem);
-      const fsDisplay2At320 = computeClamp(1.9, 1.2, 2.6, 3, 320);
+      // --fs-display-2: clamp(1.5rem, 1.0rem + 2.0vw, 3rem);
+      const fsDisplay2At320 = computeClamp(1.5, 1.0, 2.0, 3, 320);
       const fsDisplay2At1440 = computeClamp(1.9, 1.2, 2.6, 3, 1440);
-      expect(fsDisplay2At320).toBe(1.9 * 16); // 30.4px (clamped at min)
-      expect(fsDisplay2At1440).toBe(3.0 * 16); // 48.0px (clamped at max)
+      expect(fsDisplay2At320).toBe(1.5 * 16); // 24.0px (clamped at min)
+      expect(fsDisplay2At1440).toBe(3 * 16); // 48px (desktop value preserved)
 
-      // --fs-title: clamp(1.45rem, 1.1rem + 1.2vw, 2rem);
-      const fsTitleAt320 = computeClamp(1.45, 1.1, 1.2, 2, 320);
+      // --fs-title: clamp(1.25rem, 1.0rem + 1.0vw, 2rem);
+      const fsTitleAt320 = computeClamp(1.25, 1.0, 1.0, 2, 320);
       const fsTitleAt1440 = computeClamp(1.45, 1.1, 1.2, 2, 1440);
-      expect(fsTitleAt320).toBe(1.45 * 16); // 23.2px
-      expect(fsTitleAt1440).toBe(2.0 * 16); // 32.0px
+      expect(fsTitleAt320).toBe(1.25 * 16); // 20.0px (clamped at min)
+      expect(fsTitleAt1440).toBe(2 * 16); // 32px (desktop value preserved)
 
-      // --section-y: clamp(3.5rem, 2.5rem + 4vw, 6.5rem);
-      const sectionYAt320 = computeClamp(3.5, 2.5, 4, 6.5, 320);
+      // --section-y: clamp(1.75rem, 1.25rem + 2.5vw, 6.5rem);
+      const sectionYAt320 = computeClamp(1.75, 1.25, 2.5, 6.5, 320);
       const sectionYAt1440 = computeClamp(3.5, 2.5, 4, 6.5, 1440);
-      expect(sectionYAt320).toBe(3.5 * 16); // 56px (clamped at min)
-      expect(sectionYAt1440).toBe(97.6); // 97.6px (6.1rem, within [3.5rem, 6.5rem] range)
+      expect(sectionYAt320).toBe(1.75 * 16); // 28px (clamped at min)
+      expect(sectionYAt1440).toBeCloseTo(97.6, 2); // original desktop value preserved
+    });
+
+    it('scopes compact design tokens to mobile while retaining desktop defaults', async () => {
+      const tokensCss = await readFile(path.resolve('src/styles/tokens.css'), 'utf8');
+
+      expect(tokensCss).toContain('--fs-display-1: clamp(2.4rem, 1.4rem + 4vw, 4.2rem);');
+      expect(tokensCss).toContain('--section-y: clamp(3.5rem, 2.5rem + 4vw, 6.5rem);');
+      expect(tokensCss).toMatch(/@media \(max-width: 767\.98px\)[\s\S]*--fs-display-1: clamp\(1\.75rem, 1\.1rem \+ 2\.8vw, 4\.2rem\);/);
+      expect(tokensCss).toMatch(/@media \(max-width: 767\.98px\)[\s\S]*--section-y: clamp\(1\.75rem, 1\.25rem \+ 2\.5vw, 6\.5rem\);/);
     });
   });
 

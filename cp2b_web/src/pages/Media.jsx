@@ -46,24 +46,24 @@ const Media = () => {
         transition={{ duration: 0.4 }}
       >
         <PageHero eyebrow={labels.tag} title={labels.title} subtitle={labels.description} />
-        <Container className="py-5">
+        <Container className="py-4 py-md-5">
 
-          <Row className="justify-content-center g-4">
+          <Row className="justify-content-center g-3 g-md-4">
             <Col xs={12} sm={6} lg={4}>
-              <Card className="h-100 border-0 shadow-sm text-center p-4">
+              <Card className="h-100 border-0 shadow-sm text-center p-3 p-md-4">
                 <i className="bi bi-mic-fill text-success mb-3" style={{ fontSize: '2.5rem' }}></i>
                 <h4 className="fw-bold mb-2">{labels.podcastTitle}</h4>
-                <p className="text-muted mb-4 flex-grow-1">{labels.podcastDesc}</p>
+                <p className="text-muted mb-3 mb-md-4 flex-grow-1 mobile-card-copy">{labels.podcastDesc}</p>
                 <Link to="/podcast" className="btn btn-outline-success">
                   {labels.podcastLink}
                 </Link>
               </Card>
             </Col>
             <Col xs={12} sm={6} lg={4}>
-              <Card className="h-100 border-0 shadow-sm text-center p-4">
+              <Card className="h-100 border-0 shadow-sm text-center p-3 p-md-4">
                 <i className="bi bi-file-earmark-zip text-success mb-3" style={{ fontSize: '2.5rem' }}></i>
                 <h4 className="fw-bold mb-2">{labels.pressKitTitle}</h4>
-                <p className="text-muted mb-4 flex-grow-1">{labels.pressKitDesc}</p>
+                <p className="text-muted mb-3 mb-md-4 flex-grow-1 mobile-card-copy">{labels.pressKitDesc}</p>
                 <Link to="/press-kit" className="btn btn-outline-success">
                   {labels.pressKitLink}
                 </Link>

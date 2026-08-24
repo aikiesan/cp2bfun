@@ -208,28 +208,28 @@ const Solucoes = () => {
       />
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Container className="py-5">
+        <Container className="py-4 py-md-5">
           {/* Section 2: 5 Partnership Modalities */}
-          <section className="mb-5 pb-4">
-            <div className="text-center max-w-3xl mx-auto mb-5">
+          <section className="mb-4 mb-md-5 pb-3 pb-md-4">
+            <div className="text-center max-w-3xl mx-auto mb-4 mb-md-5">
               <span className="mono-label text-success d-block mb-2">{t.modalitiesSection.tag}</span>
-              <h2 className="fw-bold fs-2 mb-3">{t.modalitiesSection.title}</h2>
+              <h2 className="fw-bold fs-2 mb-2 mb-md-3">{t.modalitiesSection.title}</h2>
               <p className="text-muted lead fs-6">{t.modalitiesSection.subtitle}</p>
             </div>
 
-            <Row className="g-4">
+            <Row className="g-2 g-sm-3 g-md-4">
               {t.modalitiesSection.items.map((mod, idx) => (
-                <Col key={idx} md={6} lg={idx === 4 ? 12 : 6} xl={idx === 4 ? 4 : 4}>
+                <Col key={idx} xs={6} sm={6} md={6} lg={idx === 4 ? 12 : 6} xl={idx === 4 ? 4 : 4}>
                   <Card
-                    className="h-100 p-4 border-0 shadow-sm hover-lift"
+                    className="h-100 p-2 p-sm-3 p-md-4 border-0 shadow-sm hover-lift"
                     style={{
                       borderRadius: 'var(--radius-lg, 16px)',
                       background: 'var(--bg-surface, #ffffff)',
                     }}
                   >
-                    <div className="d-flex align-items-center justify-content-between mb-3">
+                    <div className="d-flex align-items-center justify-content-between mb-2 mb-md-3">
                       <div
-                        className="rounded-circle d-flex align-items-center justify-content-center"
+                        className="rounded-circle d-flex align-items-center justify-content-center solution-modality-icon"
                         style={{
                           width: 48,
                           height: 48,
@@ -242,16 +242,16 @@ const Solucoes = () => {
                       </div>
                       <Badge
                         bg="light"
-                        className="text-dark border px-2 py-1"
+                        className="text-dark border px-2 py-1 solution-modality-badge"
                         style={{ fontSize: '0.72rem', fontWeight: 600 }}
                       >
                         {mod.badge}
                       </Badge>
                     </div>
-                    <h3 className="fw-bold mb-2 fs-5" style={{ color: 'var(--text-primary)' }}>
+                    <h3 className="fw-bold mb-1 mb-md-2 fs-5 mobile-compact-title" style={{ color: 'var(--text-primary)' }}>
                       {mod.title}
                     </h3>
-                    <p className="text-muted small mb-0" style={{ lineHeight: 1.5 }}>
+                    <p className="text-muted small mb-0 solution-modality-copy" style={{ lineHeight: 1.5 }}>
                       {mod.description}
                     </p>
                   </Card>
@@ -261,7 +261,7 @@ const Solucoes = () => {
           </section>
 
           {/* Section 3: Technical Services with TRL Ranges */}
-          <section className="mb-5 pb-4 pt-4 border-top">
+          <section className="mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top">
             <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3">
               <div>
                 <span className="mono-label text-success d-block mb-1">{t.servicesSection.tag}</span>
@@ -272,14 +272,17 @@ const Solucoes = () => {
               {/* Lab Filter Nav */}
               <Nav
                 variant="pills"
-                className="bg-light p-1 rounded-pill d-inline-flex flex-wrap"
-                style={{ border: '1px solid var(--gray-300)', maxWidth: '100%' }}
+                className="bg-light p-1 rounded-pill d-inline-flex flex-wrap solucoes-filter-rail"
+                style={{
+                  border: '1px solid var(--gray-300)',
+                  maxWidth: '100%',
+                }}
               >
                 <Nav.Item>
                   <Nav.Link
                     active={activeLabFilter === 'all'}
                     onClick={() => setActiveLabFilter('all')}
-                    className="rounded-pill px-3 py-1 fw-semibold small"
+                    className="rounded-pill px-3 py-1 fw-semibold small text-nowrap"
                     style={{ cursor: 'pointer' }}
                   >
                     {t.servicesSection.allLabs}
@@ -289,7 +292,7 @@ const Solucoes = () => {
                   <Nav.Link
                     active={activeLabFilter === 'CEMARA'}
                     onClick={() => setActiveLabFilter('CEMARA')}
-                    className="rounded-pill px-3 py-1 fw-semibold small"
+                    className="rounded-pill px-3 py-1 fw-semibold small text-nowrap"
                     style={{ cursor: 'pointer' }}
                   >
                     CEMARA
@@ -299,7 +302,7 @@ const Solucoes = () => {
                   <Nav.Link
                     active={activeLabFilter === 'CP2b Lab'}
                     onClick={() => setActiveLabFilter('CP2b Lab')}
-                    className="rounded-pill px-3 py-1 fw-semibold small"
+                    className="rounded-pill px-3 py-1 fw-semibold small text-nowrap"
                     style={{ cursor: 'pointer' }}
                   >
                     CP2b Lab
@@ -309,7 +312,7 @@ const Solucoes = () => {
                   <Nav.Link
                     active={activeLabFilter === 'PPBIOEN'}
                     onClick={() => setActiveLabFilter('PPBIOEN')}
-                    className="rounded-pill px-3 py-1 fw-semibold small"
+                    className="rounded-pill px-3 py-1 fw-semibold small text-nowrap"
                     style={{ cursor: 'pointer' }}
                   >
                     PPBIOEN
@@ -318,21 +321,21 @@ const Solucoes = () => {
               </Nav>
             </div>
 
-            <Row className="g-4">
+            <Row className="g-2 g-sm-3 g-md-4">
               {filteredServices.map((service) => {
                 const trlColors = getTrlBadgeColor(service.trlMin);
                 const item = service[language] || service.pt;
 
                 return (
-                  <Col key={service.id} md={6} lg={4}>
+                  <Col key={service.id} xs={12} sm={6} md={6} lg={4}>
                     <Card
-                      className="h-100 p-3 border-0 shadow-sm hover-lift"
+                      className="h-100 p-2 p-sm-3 border-0 shadow-sm hover-lift"
                       style={{
                         borderRadius: 'var(--radius-lg, 16px)',
                         background: 'var(--bg-surface, #ffffff)',
                       }}
                     >
-                      <Card.Body className="p-2 d-flex flex-column">
+                      <Card.Body className="p-1 p-sm-2 d-flex flex-column">
                         <div className="d-flex justify-content-between align-items-start mb-2 gap-2">
                           <span
                             className="badge rounded-pill px-2 py-1"
@@ -374,18 +377,18 @@ const Solucoes = () => {
           </section>
 
           {/* Section 4: Infrastructure (3 Laboratories) */}
-          <section className="mb-5 pb-4 pt-4 border-top">
+          <section className="mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top">
             <div className="mb-4">
               <span className="mono-label text-success d-block mb-1">{t.infraSection.tag}</span>
               <h2 className="fw-bold fs-2 mb-2">{t.infraSection.title}</h2>
               <p className="text-muted small mb-0">{t.infraSection.subtitle}</p>
             </div>
 
-            <Row className="g-4">
+            <Row className="g-3 g-md-4">
               {laboratories.map((lab) => (
                 <Col key={lab.acronym} lg={4}>
                   <Card
-                    className="h-100 p-4 border-0 shadow-sm"
+                    className="h-100 p-3 p-md-4 border-0 shadow-sm"
                     style={{
                       borderRadius: 'var(--radius-lg, 16px)',
                       background: 'var(--bg-surface, #ffffff)',
@@ -439,18 +442,18 @@ const Solucoes = () => {
           </section>
 
           {/* Section 5: Getting Started Funnel */}
-          <section className="mb-5 pb-4 pt-4 border-top">
-            <div className="text-center max-w-3xl mx-auto mb-5">
+          <section className="mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top">
+            <div className="text-center max-w-3xl mx-auto mb-4 mb-md-5">
               <span className="mono-label text-success d-block mb-2">{t.funnelSection.tag}</span>
-              <h2 className="fw-bold fs-2 mb-3">{t.funnelSection.title}</h2>
+              <h2 className="fw-bold fs-2 mb-2 mb-md-3">{t.funnelSection.title}</h2>
               <p className="text-muted lead fs-6">{t.funnelSection.subtitle}</p>
             </div>
 
-            <Row className="g-4">
+            <Row className="g-2 g-sm-3 g-md-4">
               {t.funnelSection.steps.map((st) => (
-                <Col key={st.number} sm={6} lg={4}>
+                <Col key={st.number} xs={12} sm={6} lg={4}>
                   <Card
-                    className="h-100 p-4 border-0 shadow-sm"
+                    className="h-100 p-3 p-md-4 border-0 shadow-sm"
                     style={{
                       borderRadius: 'var(--radius-lg, 16px)',
                       background: 'var(--bg-surface, #ffffff)',
@@ -458,7 +461,7 @@ const Solucoes = () => {
                   >
                     <div className="d-flex align-items-center gap-3 mb-3">
                       <span
-                        className="mono-label fw-bold d-inline-flex align-items-center justify-content-center rounded-circle"
+                        className="mono-label fw-bold d-inline-flex align-items-center justify-content-center rounded-circle solution-step-number"
                         style={{
                           width: 36,
                           height: 36,
@@ -483,15 +486,15 @@ const Solucoes = () => {
           </section>
 
           {/* Section 6: CTA Section */}
-          <section className="text-center py-5 px-4 rounded-4" style={{ background: 'linear-gradient(135deg, var(--cp2b-azul-petroleo) 0%, var(--cp2b-verde-escuro) 100%)', color: '#fff' }}>
-            <Container className="max-w-2xl py-3">
+          <section className="text-center py-4 py-md-5 px-3 px-md-4 rounded-4" style={{ background: 'linear-gradient(135deg, var(--cp2b-azul-petroleo) 0%, var(--cp2b-verde-escuro) 100%)', color: '#fff' }}>
+            <Container className="max-w-2xl py-2 py-md-3">
               <h2 className="fw-bold fs-2 mb-3 text-white">{t.ctaSection.title}</h2>
               <p className="lead fs-6 mb-4 text-white-50">{t.ctaSection.lead}</p>
               <Button
                 as={Link}
                 to="/contato"
                 size="lg"
-                className="btn-glow px-5 py-3 rounded-pill fw-bold"
+                className="btn-glow px-4 px-md-5 py-2 py-md-3 rounded-pill fw-bold"
                 style={{
                   background: 'var(--cp2b-verde)',
                   border: 'none',

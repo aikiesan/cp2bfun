@@ -103,7 +103,7 @@ const Publications = () => {
         ? 'Artigos, relatórios e estudos técnicos produzidos pela rede de pesquisa do CP2b.'
         : 'Articles, reports and technical studies produced by the CP2b research network.'}
     />
-    <Container className="py-5">
+    <Container className="py-4 py-md-5">
 
       {/* Filters */}
       <Card className="mb-4">
@@ -154,7 +154,7 @@ const Publications = () => {
 
       {/* Publications grouped by year */}
       {sortedYears.map(year => (
-        <div key={year} className="mb-5">
+        <div key={year} className="mb-4 mb-md-5">
           <h2 className="mb-3">{year}</h2>
           {groupedByYear[year].map(pub => {
             const title = language === 'pt' ? pub.title_pt : (pub.title_en || pub.title_pt);
@@ -163,9 +163,9 @@ const Publications = () => {
             return (
               <Card key={pub.id} className="mb-3">
                 <Card.Body>
-                  <div className="d-flex justify-content-between align-items-start mb-2">
-                    <h5 className="mb-1">{title}</h5>
-                    <Badge bg="secondary">{typeLabels[pub.publication_type]}</Badge>
+                  <div className="d-flex justify-content-between align-items-start mb-2 gap-2">
+                    <h5 className="mb-1 mobile-compact-title">{title}</h5>
+                    <Badge bg="secondary" className="flex-shrink-0">{typeLabels[pub.publication_type]}</Badge>
                   </div>
                   <p className="text-muted mb-2"><strong>{pub.authors}</strong></p>
                   {pub.journal && (
@@ -173,7 +173,7 @@ const Publications = () => {
                       <em>{pub.journal}</em>, {pub.year}
                     </p>
                   )}
-                  {abstract && <p className="mb-2">{abstract}</p>}
+                  {abstract && <p className="mb-2 publication-abstract">{abstract}</p>}
                   <div className="d-flex gap-2">
                     {pub.doi && (
                       <a

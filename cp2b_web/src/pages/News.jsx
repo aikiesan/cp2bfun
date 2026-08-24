@@ -76,22 +76,22 @@ const News = () => {
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <PageHero eyebrow={language === 'pt' ? 'Comunicação' : 'Communication'} title={labels.title} />
-      <Container className="py-5">
+      <Container className="py-4 py-md-5">
 
       {/* Featured News - FAPESP Style */}
-      <section className="mb-5">
+      <section className="mb-4 mb-md-5">
         <Row className="g-0 bg-white shadow-sm overflow-hidden rounded-4 border border-light">
           <Col lg={7}>
-            <div style={{ height: '400px' }}>
+            <div className="news-featured-media">
               <img src={featured.image} alt={featured.title} className="w-100 h-100 object-fit-cover" />
             </div>
           </Col>
-          <Col lg={5} className="p-4 p-lg-5 d-flex flex-column justify-content-center">
+          <Col lg={5} className="p-3 p-md-4 p-lg-5 d-flex flex-column justify-content-center">
             <span className={`text-${featured.badgeColor} fw-bold text-uppercase small mb-2`}>{featured.badge}</span>
-            <h2 className="fw-bold mb-3 display-6">
+            <h2 className="fw-bold mb-2 mb-md-3 display-6 mobile-featured-title">
               <Link to={featured.link} className="text-decoration-none text-dark hover-blue">{featured.title}</Link>
             </h2>
-            <p className="text-muted mb-4">{featured.description}</p>
+            <p className="text-muted mb-3 mb-md-4">{featured.description}</p>
             <div className="mt-auto d-flex justify-content-between align-items-center">
               <span className="small text-muted" style={{ fontFamily: 'var(--font-mono)' }}>{featured.date}</span>
               <Link to={featured.link} className="fw-bold text-primary text-decoration-none">{labels.readMore} +</Link>
@@ -101,12 +101,12 @@ const News = () => {
       </section>
 
       {/* Others Grid */}
-      <h4 className="fw-bold mb-4 text-muted text-uppercase small" style={{ letterSpacing: '2px' }}>{labels.latest}</h4>
-      <Row className="g-4">
+      <h4 className="fw-bold mb-3 mb-md-4 text-muted text-uppercase small" style={{ letterSpacing: '2px' }}>{labels.latest}</h4>
+      <Row className="g-3 g-md-4">
         {others.map((item) => (
           <Col md={6} lg={4} key={item.id}>
             <Card className="h-100 border-0 bg-transparent" style={{ overflow: 'visible' }}>
-              <div className="overflow-hidden rounded-4 mb-3" style={{ height: '200px' }}>
+              <div className="overflow-hidden rounded-4 mb-3 news-card-media">
                 <img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover hover-scale" />
               </div>
               <Card.Body className="p-0 px-2">

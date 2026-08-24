@@ -49,9 +49,9 @@ const PartnerCard = ({ partner, language }) => {
         transition: 'transform var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard)',
       }}
     >
-      <Card.Body className="d-flex flex-column p-4">
+      <Card.Body className="d-flex flex-column p-2 p-sm-3 p-md-4">
         <div
-          className="d-flex align-items-center justify-content-center mb-3 rounded"
+          className="d-flex align-items-center justify-content-center mb-3 rounded partner-logo-frame"
           style={{
             height: '90px',
             backgroundColor: 'var(--gray-50)',
@@ -73,7 +73,7 @@ const PartnerCard = ({ partner, language }) => {
             />
           ) : (
             <div
-              className="d-flex align-items-center justify-content-center fw-bold"
+              className="d-flex align-items-center justify-content-center fw-bold partner-logo-placeholder"
               style={{
                 width: '64px',
                 height: '64px',
@@ -144,7 +144,7 @@ const HeadquartersCard = ({ partner, language, label }) => {
         borderRadius: 'var(--radius-xl)',
       }}
     >
-      <Card.Body className="p-4 p-md-5">
+      <Card.Body className="p-3 p-md-4 p-lg-5">
         <div className="d-flex flex-column flex-md-row align-items-md-center gap-4">
           <div
             className="d-flex align-items-center justify-content-center rounded"
@@ -292,10 +292,10 @@ const PartnersPage = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.5 }}
       >
-        <Container className="py-5">
+        <Container className="py-4 py-md-5">
           {/* Headquarters */}
           {hostPartner && (
-            <Row className="mb-5">
+            <Row className="mb-4 mb-md-5">
               <Col md={12}>
                 <HeadquartersCard
                   partner={hostPartner}
@@ -308,14 +308,14 @@ const PartnersPage = () => {
 
           {/* Public Institutions (controlled by defeso eleitoral in backend) */}
           {partners.public && partners.public.length > 0 && (
-            <Row className="mb-5">
+            <Row className="mb-4 mb-md-5">
               <Col md={12}>
-                <h3 className="fw-bold mb-4" style={{ color: 'var(--text-primary)' }}>
+                <h3 className="fw-bold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
                   {labels.public}
                 </h3>
-                <Row className="g-4">
+                <Row className="g-2 g-sm-3 g-md-4">
                   {partners.public.map((p) => (
-                    <Col xs={12} sm={6} lg={4} xl={3} key={p.id}>
+                    <Col xs={6} sm={6} lg={4} xl={3} key={p.id}>
                       <PartnerCard partner={p} language={language} />
                     </Col>
                   ))}
@@ -326,14 +326,14 @@ const PartnersPage = () => {
 
           {/* Partner Companies */}
           {partners.companies && partners.companies.length > 0 && (
-            <Row className="mb-5">
+            <Row className="mb-4 mb-md-5">
               <Col md={12}>
-                <h3 className="fw-bold mb-4" style={{ color: 'var(--text-primary)' }}>
+                <h3 className="fw-bold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
                   {labels.companies}
                 </h3>
-                <Row className="g-4">
+                <Row className="g-2 g-sm-3 g-md-4">
                   {partners.companies.map((p) => (
-                    <Col xs={12} sm={6} lg={4} xl={3} key={p.id}>
+                    <Col xs={6} sm={6} lg={4} xl={3} key={p.id}>
                       <PartnerCard partner={p} language={language} />
                     </Col>
                   ))}
@@ -346,12 +346,12 @@ const PartnersPage = () => {
           {partners.research && partners.research.length > 0 && (
             <Row>
               <Col md={12}>
-                <h3 className="fw-bold mb-4" style={{ color: 'var(--text-primary)' }}>
+                <h3 className="fw-bold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
                   {labels.research}
                 </h3>
-                <Row className="g-4">
+                <Row className="g-2 g-sm-3 g-md-4">
                   {partners.research.map((p) => (
-                    <Col xs={12} sm={6} lg={4} xl={3} key={p.id}>
+                    <Col xs={6} sm={6} lg={4} xl={3} key={p.id}>
                       <PartnerCard partner={p} language={language} />
                     </Col>
                   ))}

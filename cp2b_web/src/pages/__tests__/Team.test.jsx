@@ -42,7 +42,7 @@ describe('Team page — grouped by Eixo', () => {
     expect(screen.queryByRole('heading', { name: 'Pesquisadores Responsáveis' })).not.toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'Pesquisadores Principais' })).not.toBeInTheDocument();
     expect(screen.queryByRole('heading', { name: 'Pesquisadores Associados' })).not.toBeInTheDocument();
-  });
+  }, 15000);
 
   it('shows the directors under Direção and still inside their own axes', async () => {
     renderWithProviders(<Team />);

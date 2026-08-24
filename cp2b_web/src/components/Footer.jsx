@@ -83,7 +83,7 @@ const Footer = () => {
           </Col>
         </Row>
 
-        <Row className="gy-4 pb-5">
+        <Row className="gy-3 gy-lg-4 pb-5">
           <Col lg={4} md={6}>
             <img
               src="/assets/logos/cp2b-logo-negative-white.svg"
@@ -157,7 +157,7 @@ const Footer = () => {
           <Col md={4} className="text-md-end mt-3 mt-md-0">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="btn btn-link p-0 small fw-bold text-decoration-none"
+              className="btn btn-link p-0 small fw-bold text-decoration-none footer-back-to-top"
               style={{ color: 'var(--cp2b-lime-500)' }}
             >
               {labels.backToTop}

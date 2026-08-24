@@ -196,16 +196,26 @@ const Team = () => {
               </Col>
             </Row>
 
-            {/* Filter Chips with Count Badges */}
-            <div className="d-flex flex-wrap gap-2 pb-2" role="group" aria-label="Categorias da equipe">
+            {/* Filter Chips with Count Badges - Horizontal Scroll Rail on Mobile */}
+            <div
+              className="d-flex flex-nowrap overflow-x-auto gap-2 pb-2 category-chips-rail"
+              role="group"
+              aria-label="Categorias da equipe"
+              style={{
+                WebkitOverflowScrolling: 'touch',
+                scrollbarWidth: 'none',
+                msOverflowStyle: 'none',
+              }}
+            >
               <button
                 type="button"
-                className={`btn btn-sm rounded-pill px-3 py-2 fw-semibold d-inline-flex align-items-center gap-2 ${
+                className={`btn btn-sm rounded-pill px-3 py-2 fw-semibold d-inline-flex align-items-center gap-2 flex-shrink-0 ${
                   selectedCategory === 'all'
                     ? 'btn-success text-white'
                     : 'btn-outline-secondary bg-white text-dark'
                 }`}
                 style={{
+                  minHeight: '44px',
                   transition: 'all 0.2s ease',
                   borderColor: selectedCategory === 'all' ? 'transparent' : 'var(--gray-300)',
                 }}
@@ -231,12 +241,13 @@ const Team = () => {
                   <button
                     key={cat.category}
                     type="button"
-                    className={`btn btn-sm rounded-pill px-3 py-2 fw-semibold d-inline-flex align-items-center gap-2 ${
+                    className={`btn btn-sm rounded-pill px-3 py-2 fw-semibold d-inline-flex align-items-center gap-2 flex-shrink-0 ${
                       isSelected
                         ? 'btn-success text-white'
                         : 'btn-outline-secondary bg-white text-dark'
                     }`}
                     style={{
+                      minHeight: '44px',
                       transition: 'all 0.2s ease',
                       borderColor: isSelected ? 'transparent' : 'var(--gray-300)',
                     }}
@@ -260,8 +271,8 @@ const Team = () => {
           {/* Members by Group */}
           {filteredGroups.length > 0 ? (
             filteredGroups.map((group) => (
-              <section key={group.category} className="mb-5">
-                <div className="d-flex align-items-baseline justify-content-between border-bottom pb-2 mb-4">
+              <section key={group.category} className="mb-4 mb-md-5">
+                <div className="d-flex align-items-baseline justify-content-between border-bottom pb-2 mb-3 mb-md-4">
                   <h3
                     className="fw-bold mb-0 text-uppercase fs-6"
                     style={{ letterSpacing: '1px', color: 'var(--text-primary)' }}
@@ -276,26 +287,27 @@ const Team = () => {
                   </span>
                 </div>
 
-                <Row className="g-3 g-md-4">
+                <Row className="g-2 g-sm-3 g-md-4">
                   {group.members.map((member, idx) => (
-                    <Col key={`${group.category}-${member.name}-${idx}`} sm={6} lg={4} xl={3}>
+                    <Col key={`${group.category}-${member.name}-${idx}`} xs={6} sm={6} lg={4} xl={3}>
                       <Card
-                        className="h-100 p-3 border-0 shadow-sm hover-lift"
+                        className="h-100 p-2 p-sm-3 border-0 shadow-sm hover-lift team-member-card"
                         style={{
                           borderRadius: 'var(--radius-lg, 16px)',
                           background: 'var(--bg-surface, #ffffff)',
                           transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                         }}
                       >
-                        <div className="d-flex align-items-center gap-3">
+                        <div className="d-flex align-items-center gap-2 gap-sm-3 team-member-inner">
                           <Avatar
                             photo={member.photo}
                             name={member.name}
                             size={64}
+                            className="team-avatar"
                           />
                           <div style={{ minWidth: 0 }} className="flex-grow-1">
                             <h6
-                              className="fw-bold mb-1"
+                              className="fw-bold mb-1 team-member-name"
                               title={member.name}
                               style={{
                                 color: 'var(--text-primary, #222)',
@@ -307,7 +319,7 @@ const Team = () => {
                               {member.name}
                             </h6>
                             <div
-                              className="small fw-semibold mb-1"
+                              className="small fw-semibold mb-1 team-member-role"
                               style={{
                                 color: 'var(--brand-primary, #00573A)',
                                 fontSize: '0.75rem',
@@ -317,7 +329,7 @@ const Team = () => {
                               {member.role}
                             </div>
                             <div
-                              className="text-muted small text-truncate"
+                              className="text-muted small text-truncate team-member-inst"
                               title={member.institution}
                               style={{ fontSize: '0.75rem' }}
                             >
