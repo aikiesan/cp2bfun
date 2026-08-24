@@ -7,7 +7,17 @@ import { VitePWA } from 'vite-plugin-pwa'
 export default defineConfig({
   server: {
     watch: {
-      usePolling: true, // Adicione isso para o Docker "sentir" a mudança
+      usePolling: true,
+      interval: 1000,
+      ignored: [
+        '**/node_modules/**',
+        '**/.git/**',
+        '**/dist/**',
+        '**/coverage/**',
+        '**/.claude/**',
+        '**/backend/**',
+        '**/public/assets/**',
+      ],
     },
     host: true,
     proxy: {

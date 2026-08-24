@@ -4,7 +4,9 @@ import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { teamMembers as staticTeamMembers, menuLabels, pageSeo } from '../data/content';
 import { groupTeamByAxis } from '../utils/teamGroups';
-import { teamPhotos } from '../data/teamPhotos';
+import { getTeamPhoto } from '../data/teamPhotos';
+import { teamByAxis } from '../data/generated/teamByAxis';
+import { nameKey } from '../utils/nameKey';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchTeam } from '../services/api';
 import SeoHead from '../components/SeoHead';
@@ -15,16 +17,37 @@ import Avatar from '../components/Avatar';
 // renders them as ranks, so this is only used to walk the response.
 const apiCategories = ['coordinators', 'principals', 'associates', 'support', 'students'];
 
-// Flatten the static fallback, which is shaped as {category, members[]}.
-const flattenStatic = (groups, language) =>
-  groups.flatMap((group) =>
-    (group.members || []).map((m) => ({
-      name: m.name,
-      role: m[language] || m.role,
-      institution: m.institution,
-      axes: m.axes,
-    }))
+// Flatten the static fallback, merging content.js and teamByAxis.js
+const flattenStatic = (groups, language) => {
+  const seen = new Set();
+  const list = groups.flatMap((group) =>
+    (group.members || []).map((m) => {
+      seen.add(nameKey(m.name));
+      return {
+        name: m.name,
+        role: m[language] || m.role,
+        institution: m.institution,
+        photo: m.photo || getTeamPhoto(m.name),
+        axes: m.axes,
+      };
+    })
   );
+
+  for (const person of teamByAxis) {
+    if (!seen.has(nameKey(person.name))) {
+      list.push({
+        name: person.name,
+        role: person.role || person.level || (language === 'pt' ? 'Pesquisador(a)' : 'Researcher'),
+        institution: person.institution,
+        photo: getTeamPhoto(person.name),
+        axes: person.axes,
+        is_director: person.direction,
+      });
+    }
+  }
+
+  return list;
+};
 
 const Team = () => {
   const { language } = useLanguage();
@@ -50,7 +73,7 @@ const Team = () => {
                 name: m.name,
                 role: language === 'pt' ? (m.role_pt || m.role) : (m.role_en || m.role_pt || m.role),
                 institution: m.institution,
-                photo: m.photo || m.photo_url || teamPhotos[m.name] || null,
+                photo: m.photo || m.photo_url || getTeamPhoto(m.name) || null,
                 axes: m.axes,
                 is_director: m.is_director,
               }))
@@ -74,7 +97,7 @@ const Team = () => {
       ...group,
       members: group.members.map((m) => ({
         ...m,
-        photo: m.photo || teamPhotos[m.name] || null,
+        photo: m.photo || getTeamPhoto(m.name) || null,
       })),
     }));
   }, [apiMembers, language]);

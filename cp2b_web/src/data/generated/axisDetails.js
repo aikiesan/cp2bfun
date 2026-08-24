@@ -100,17 +100,17 @@ export const axisDetails = {
       "id": "equipe",
       "items": [
         {
-          "person": "Leonardo Ariel Benavidez Mamani",
-          "institution": "UNICAMP",
-          "level": "Doutorando",
-          "title": "Análise da sinergia em usinas de diferente porte para a geração de biogás aproveitando o glicerol cru como subproduto de biodiesel. Estudo de Caso Município de El Alto – Bolívia",
-          "area": "Planejamento de Sistemas Energéticos"
-        },
-        {
           "person": "Lucas Nakamura Cerejo",
           "institution": "NIPE/UNICAMP",
           "level": "Pós-Doc",
           "title": "Democratizing Biogas Assessment: An Open-Source Web Platform Integrating Satellite Imagery and Government Databases for Regional Energy Planning in São Paulo State, Brazil",
+          "area": "Planejamento Energético e Biogás"
+        },
+        {
+          "person": "Lucas Boaro",
+          "institution": "UNICAMP",
+          "level": "Iniciação Científica",
+          "title": "Pesquisa em Biogás - Eixo 1",
           "area": "Planejamento Energético e Biogás"
         }
       ]
@@ -325,6 +325,13 @@ export const axisDetails = {
           "level": "Pós-Doc",
           "title": "BIOINSUMOS E BIOFERTILIZANTES, COM APROVEITAMENTO DE RESÍDUOS AGROPECUÁRIOS E URBANOS PARA INSUMOS, ENERGIA, BIOGÁS, BIOMETANO E AMÔNIA VERDE",
           "area": "Engenharia Agrícola (Principal)"
+        },
+        {
+          "person": "Ana Beatriz Soares Aguiar",
+          "institution": "UNICAMP",
+          "level": "Pós-Doc",
+          "title": "Pesquisadora Associada - Eixo 2",
+          "area": "Biomassa e Bioprocessos"
         }
       ]
     },
@@ -610,6 +617,20 @@ export const axisDetails = {
           "level": "Professor",
           "title": "Aproveitamento de resíduos",
           "area": "Engenharia Agrícola e Mecanização"
+        },
+        {
+          "person": "Leonardo Ariel Benavidez Mamani",
+          "institution": "UNICAMP",
+          "level": "Doutorando",
+          "title": "Análise da sinergia em usinas para geração de biogás aproveitando glicerol cru",
+          "area": "Planejamento de Sistemas Energéticos"
+        },
+        {
+          "person": "Fabiane Moreira Vieira",
+          "institution": "FEAGRI/UNICAMP",
+          "level": "Pós-Doc",
+          "title": "Pesquisadora em Engenharia Agrícola e Biogás - Eixo 3",
+          "area": "Engenharia Agrícola e Bioprocessos"
         }
       ]
     },
@@ -852,11 +873,11 @@ export const axisDetails = {
           "area": "Ambiente e Sociedade"
         },
         {
-          "person": "Stephani Cetimia Mariotti Ruiz",
-          "institution": "IE/UNICAMP",
-          "level": "Pós-Doc",
-          "title": "Microdinâmica da cadeia de fornecimento de biomassa residual agrícola para produção de biocombustíveis avançados: modelagem baseada em agente",
-          "area": "Bioeconomia e Bioenergia / Biocombustíveis"
+          "person": "Isabela Minucio Pontes",
+          "institution": "UNICAMP",
+          "level": "Doutoranda",
+          "title": "PIR e Externalidades em Arranjos de Plataformas Tecnológicas em Biorrefinaria na produção de Bioprodutos e Bioenergia de Resíduos Sólidos e Líquidos na RAC.",
+          "area": "Arquitetura, Urbanismo Sustentável e Bioenergia"
         }
       ]
     }
@@ -1027,13 +1048,6 @@ export const axisDetails = {
           "area": "Engenharia Química Aplicada ao Biogás"
         },
         {
-          "person": "Isabela Minucio Pontes",
-          "institution": "UNICAMP",
-          "level": "Doutoranda",
-          "title": "PIR e Externalidades em Arranjos de Plataformas Tecnológicas em Biorrefinaria na produção de Bioprodutos e Bioenergia de Resíduos Sólidos e Líquidos na RAC.",
-          "area": "Arquitetura, Urbanismo Sustentável e Bioenergia"
-        },
-        {
           "person": "Mariana Conceição da Costa",
           "institution": "FEQ/UNICAMP",
           "level": "Professora",
@@ -1112,13 +1126,6 @@ export const axisDetails = {
     {
       "id": "equipe",
       "items": [
-        {
-          "person": "Amasa Ferreira Carvalho",
-          "institution": "NIPE/UNICAMP",
-          "level": "Doutora",
-          "title": null,
-          "area": "Ambiente, Sociedade e Emergência Climática"
-        },
         {
           "person": "Dante Pezzin",
           "institution": "USP/UNICAMP",
@@ -1781,6 +1788,13 @@ export const axisDetails = {
           "level": "Professor",
           "title": null,
           "area": "Planejamento Energético"
+        },
+        {
+          "person": "Luciana Cristina Lenhari da Silva",
+          "institution": "IG/UNICAMP",
+          "level": "Pesquisadora Associada",
+          "title": "Gestão e Estruturação do CP2b - Eixo 8",
+          "area": "Geociências e Gestão Científica"
         }
       ]
     }

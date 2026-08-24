@@ -28,6 +28,7 @@ import pageSettingsRoutes from './routes/pageSettings.js';
 import settingsRoutes from './routes/settings.js';
 import authRoutes from './routes/auth.js';
 import { adminGate, authEnabled, PUBLIC_WRITES } from './middleware/auth.js';
+import { initializeDatabase } from './db/init.js';
 
 dotenv.config();
 
@@ -109,6 +110,22 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Something went wrong!' });
 });
 
-app.listen(PORT, () => {
-  console.log(`CP2b Backend running on port ${PORT}`);
-});
+// Server startup with automated database migration
+async function startServer() {
+  if (process.env.DATABASE_URL) {
+    try {
+      console.log('🔄 Checking and applying database migrations...');
+      await initializeDatabase();
+    } catch (err) {
+      console.error('❌ Failed to run database migrations on boot:', err);
+    }
+  }
+
+  return app.listen(PORT, () => {
+    console.log(`CP2b Backend running on port ${PORT}`);
+  });
+}
+
+startServer();
+
+export { app, startServer };

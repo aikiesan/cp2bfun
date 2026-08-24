@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 // Componente compartilhado de Avatar: foto quando disponível,
 // círculo com iniciais elegantes do design system quando não.
 // Utilizado em CoordinatorAvatar (/eixos) e Team (/equipe).
@@ -16,15 +18,22 @@ const getInitials = (name) => {
   return (words[0][0] + words[words.length - 1][0]).toUpperCase();
 };
 
-const Avatar = ({ photo, name = '', size = 96, className = '', style = {} }) => {
+const AXIS_COLORS = [
+  '#2f6fd6', '#3fa34d', '#7b4fc9', '#2f9e6b',
+  '#e07a2c', '#c9a635', '#4a8fc4', '#a6455c',
+];
+
+const Avatar = ({ photo, name = '', axisId, size = 96, className = '', style = {} }) => {
+  const [imgError, setImgError] = useState(false);
   const initials = getInitials(name);
   const fontSize = Math.max(12, Math.round(size * 0.36));
 
-  if (photo) {
+  if (photo && !imgError) {
     return (
       <img
         src={photo}
         alt={name}
+        onError={() => setImgError(true)}
         className={className}
         style={{
           width: size,
@@ -38,6 +47,10 @@ const Avatar = ({ photo, name = '', size = 96, className = '', style = {} }) => 
     );
   }
 
+  const axisNum = axisId ? parseInt(axisId, 10) : null;
+  const isAxisBadge = Boolean(axisNum && axisNum >= 1 && axisNum <= 8);
+  const axisBg = isAxisBadge ? AXIS_COLORS[(axisNum - 1) % AXIS_COLORS.length] : null;
+
   return (
     <div
       className={className}
@@ -46,22 +59,23 @@ const Avatar = ({ photo, name = '', size = 96, className = '', style = {} }) => 
         width: size,
         height: size,
         borderRadius: '50%',
-        background: 'linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%)',
-        color: 'var(--cp2b-azul-petroleo)',
-        border: '1px solid var(--gray-300)',
+        background: isAxisBadge ? axisBg : 'linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%)',
+        color: isAxisBadge ? '#ffffff' : 'var(--cp2b-azul-petroleo)',
+        border: isAxisBadge ? 'none' : '1px solid var(--gray-300)',
+        boxShadow: isAxisBadge ? `0 2px 8px ${axisBg}40` : 'none',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        fontSize: `${fontSize}px`,
+        fontSize: isAxisBadge ? `${Math.round(size * 0.44)}px` : `${fontSize}px`,
         fontWeight: 700,
-        fontFamily: 'var(--font-mono, monospace)',
+        fontFamily: isAxisBadge ? 'var(--font-heading, var(--font-sans))' : 'var(--font-mono, monospace)',
         flexShrink: 0,
-        letterSpacing: '0.5px',
+        letterSpacing: isAxisBadge ? '-0.5px' : '0.5px',
         userSelect: 'none',
         ...style,
       }}
     >
-      {initials}
+      {isAxisBadge ? axisNum : initials}
     </div>
   );
 };

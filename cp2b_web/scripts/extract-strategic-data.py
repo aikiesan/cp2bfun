@@ -179,7 +179,8 @@ def extract_equipe(ws):
         filled = forward_fill_block(block, cols=[1, 2, 3])  # Eixo, Instituição, Nível
         first = filled[0]
         person = norm(first[0])
-        axis = parse_axis_list(first[1])
+        raw_axis = '' if first[1] is None else str(first[1])
+        axis = [i for i in re.findall(r'\d+', raw_axis) if i in VALID_AXES or i == '0']
         if not axis or not person:
             continue
         primary_area = next((norm(r[5]) for r in filled if norm(r[5])), None)
@@ -191,8 +192,6 @@ def extract_equipe(ws):
             'area': primary_area,
         }
         for axis_id in axis:
-            if axis_id not in VALID_AXES:
-                continue
             by_axis.setdefault(axis_id, []).append(entry)
     return by_axis
 

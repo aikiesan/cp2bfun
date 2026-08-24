@@ -10,10 +10,9 @@ services:
       - "5173:5173"
     command: sh -c "npm install && npm run dev -- --host 0.0.0.0"
     environment:
-      - NODE_ENV=development
-      - VITE_API_URL=/api
-      - VITE_INVITE_TOKEN=palavra-secreta
-      - VITE_PROXY_TARGET=http://backend:3001
+      - NODE_ENV=${NODE_ENV:-development}
+      - VITE_API_URL=${VITE_API_URL:-/api}
+      - VITE_PROXY_TARGET=${VITE_PROXY_TARGET:-http://backend:3001}
     depends_on:
       - backend
 
@@ -26,7 +25,7 @@ services:
       - "80:80"
     restart: unless-stopped
     environment:
-      - NODE_ENV=production
+      - NODE_ENV=${NODE_ENV:-production}
     depends_on:
       - backend
 
@@ -38,16 +37,17 @@ services:
     ports:
       - "3001:3001"
     environment:
-      - DATABASE_URL=postgres://cp2b:cp2b@db:5432/cp2b
-      - PORT=3001
-      - NODE_ENV=development
-      - FRONTEND_URL=http://localhost:5173
-      - SMTP_HOST=smtp.gmail.com
-      - SMTP_PORT=587
-      - SMTP_USER=
-      - SMTP_PASS=
-      - SMTP_FROM=CP2b Forum Paulista <noreply@cp2b.org>
-      - INVITE_TOKEN=palavra-secreta
+      - DATABASE_URL=${DATABASE_URL:-postgres://cp2b:cp2b@db:5432/cp2b}
+      - PORT=${PORT:-3001}
+      - NODE_ENV=${NODE_ENV:-development}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:5173}
+      - SMTP_HOST=${SMTP_HOST:-smtp.gmail.com}
+      - SMTP_PORT=${SMTP_PORT:-587}
+      - SMTP_USER=${SMTP_USER:-}
+      - SMTP_PASS=${SMTP_PASS:-}
+      - SMTP_FROM=${SMTP_FROM:-CP2b Forum Paulista <noreply@cp2b.org>}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-}
+      - INVITE_TOKEN=${INVITE_TOKEN:-}
     depends_on:
       db:
         condition: service_healthy
@@ -61,9 +61,9 @@ services:
   db:
     image: postgres:15-alpine
     environment:
-      - POSTGRES_USER=cp2b
-      - POSTGRES_PASSWORD=cp2b
-      - POSTGRES_DB=cp2b
+      - POSTGRES_USER=${POSTGRES_USER:-cp2b}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-cp2b}
+      - POSTGRES_DB=${POSTGRES_DB:-cp2b}
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./backend/src/db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql

@@ -9,10 +9,15 @@ export const stripAxisPrefix = (title) =>
   String(title || '').split('–').slice(1).join('–').trim() || String(title || '');
 
 export const DIRECTION_GROUP = 'direcao';
+export const SUPPORT_GROUP = 'apoio';
 export const COLLABORATORS_GROUP = 'colaboradores';
 
 const GROUP_LABELS = {
   [DIRECTION_GROUP]: { pt: 'Direção do CP2b', en: 'CP2b Direction' },
+  [SUPPORT_GROUP]: {
+    pt: 'Apoio Técnico e Administrativo',
+    en: 'Technical and Administrative Support',
+  },
   [COLLABORATORS_GROUP]: {
     pt: 'Colaboradores e Parceiros',
     en: 'Collaborators and Partners',
@@ -53,13 +58,9 @@ export function resolveAffiliation(member) {
  *
  * The centre asked to be read as units working side by side, not as a
  * hierarchy — so there are no "principal / associate / support" tiers here.
- * The only group that sits apart is the direction, because Bruna and Renata
- * direct the centre as a whole; they still appear in their own axes below,
- * which is the point of showing both.
- *
- * Anyone the spreadsheet does not place in an axis — largely the external
- * and partner researchers — lands in a single flat collaborators group
- * rather than being guessed into an axis.
+ * The direction sits at the top; each Eixo forms a working unit;
+ * technical & administrative support has a dedicated section, and partner
+ * collaborators form the final section.
  */
 export function groupTeamByAxis(members, language = 'pt') {
   const axes = researchAxes[language] || researchAxes.pt;
@@ -82,6 +83,12 @@ export function groupTeamByAxis(members, language = 'pt') {
       members: [],
     })),
     {
+      category: SUPPORT_GROUP,
+      title: GROUP_LABELS[SUPPORT_GROUP][lang],
+      shortTitle: lang === 'pt' ? 'Apoio' : 'Support',
+      members: [],
+    },
+    {
       category: COLLABORATORS_GROUP,
       title: GROUP_LABELS[COLLABORATORS_GROUP][lang],
       shortTitle: lang === 'pt' ? 'Colaboradores' : 'Collaborators',
@@ -99,9 +106,19 @@ export function groupTeamByAxis(members, language = 'pt') {
       byId.get(DIRECTION_GROUP).members.push(enriched);
     }
 
+    const isSupport =
+      member.category === 'support' ||
+      /apoio|administrativ|técnico|tecnico/i.test(member.role || '') ||
+      /apoio|administrativ|técnico|tecnico/i.test(member.role_pt || '');
+
     if (memberAxes.length === 0) {
-      // Not "unassigned" as a rank — simply nobody told us their axis.
-      if (!isDirector) byId.get(COLLABORATORS_GROUP).members.push(enriched);
+      if (!isDirector) {
+        if (isSupport) {
+          byId.get(SUPPORT_GROUP)?.members.push(enriched);
+        } else {
+          byId.get(COLLABORATORS_GROUP)?.members.push(enriched);
+        }
+      }
       continue;
     }
 

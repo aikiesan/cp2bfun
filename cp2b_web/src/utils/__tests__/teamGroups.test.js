@@ -83,6 +83,17 @@ describe('groupTeamByAxis', () => {
     expect(collaborators.members.map((m) => m.name)).toEqual(['Someone Without An Axis']);
   });
 
+  it('collects administrative and technical support under SUPPORT_GROUP', () => {
+    const supportMembers = [
+      ...members,
+      { name: 'Magali Luzia Maróstica', role: 'Apoio Administrativo', category: 'support' },
+    ];
+    const groups = groupTeamByAxis(supportMembers, 'pt');
+    const supportGroup = groups.find((g) => g.category === 'apoio');
+    expect(supportGroup).toBeDefined();
+    expect(supportGroup.members.map((m) => m.name)).toContain('Magali Luzia Maróstica');
+  });
+
   it('drops empty groups so no axis renders as a blank heading', () => {
     const groups = groupTeamByAxis(members, 'pt');
     expect(groups.every((g) => g.members.length > 0)).toBe(true);

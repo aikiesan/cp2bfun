@@ -139,7 +139,7 @@ const ArticleLayout = ({
         ) : null}
 
         {/* 7. Footer actions */}
-        <div className="article-fapesp-actions d-flex justify-content-between align-items-center">
+        <div className="article-fapesp-actions d-flex justify-content-between align-items-center flex-wrap gap-2">
           
           {/* Filho 1: Botão Voltar (Fica na esquerda) */}
           <Button
@@ -153,7 +153,7 @@ const ArticleLayout = ({
           </Button>
 
           {/* Filho 2: Caixinha das redes sociais (Fica na direita) */}
-          <div className="d-flex gap-3"> 
+          <div className="d-flex gap-2 flex-wrap"> 
             <Button
               href={whatsappUrl}
               target="_blank"

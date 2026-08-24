@@ -49,7 +49,7 @@ describe('FeaturedContent', () => {
 
   it.each([
     ['news', undefined, '/noticias/meu-slug'],
-    ['project', 'project', '/projetos/meu-slug'],
+    ['project', 'project', '/entrevistas/meu-slug'],
     ['microscopio', 'microscopio', '/microscopio/meu-slug'],
     ['opportunity', 'opportunity', '/oportunidades/meu-slug'],
   ])('links a %s headline to the correct route', (_label, contentType, expectedHref) => {

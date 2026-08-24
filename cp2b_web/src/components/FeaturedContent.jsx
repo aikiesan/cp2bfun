@@ -24,7 +24,7 @@ const FeaturedContent = ({ itemA, itemB, itemC }) => {
 
     // Determine link path based on content type
     const linkPaths = {
-      project: `/projetos/${item.slug}`,
+      project: `/entrevistas/${item.slug}`,
       microscopio: `/microscopio/${item.slug}`,
       opportunity: `/oportunidades/${item.slug}`,
     };

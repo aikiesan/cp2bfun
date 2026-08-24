@@ -272,8 +272,8 @@ const Solucoes = () => {
               {/* Lab Filter Nav */}
               <Nav
                 variant="pills"
-                className="bg-light p-1 rounded-pill d-inline-flex"
-                style={{ border: '1px solid var(--gray-300)' }}
+                className="bg-light p-1 rounded-pill d-inline-flex flex-wrap"
+                style={{ border: '1px solid var(--gray-300)', maxWidth: '100%' }}
               >
                 <Nav.Item>
                   <Nav.Link

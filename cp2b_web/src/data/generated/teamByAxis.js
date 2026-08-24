@@ -27,24 +27,14 @@ export const teamByAxis = [
     "level": "Mestre"
   },
   {
-    "name": "Amasa Ferreira Carvalho",
+    "name": "Ana Beatriz Soares Aguiar",
     "axes": [
-      "6"
+      "2"
     ],
     "direction": false,
     "institution": "NIPE/UNICAMP",
     "role": null,
-    "level": "Doutora"
-  },
-  {
-    "name": "Antonio Parice Bufalo",
-    "axes": [
-      "7"
-    ],
-    "direction": false,
-    "institution": "CP2b/UNICAMP",
-    "role": null,
-    "level": "Graduando"
+    "level": "Pós-Doc"
   },
   {
     "name": "Antonio Eduardo Colins Sena",
@@ -53,6 +43,16 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": null,
+    "role": null,
+    "level": "Graduando"
+  },
+  {
+    "name": "Antonio Parice Bufalo",
+    "axes": [
+      "7"
+    ],
+    "direction": false,
+    "institution": "CP2b/UNICAMP",
     "role": null,
     "level": "Graduando"
   },
@@ -118,6 +118,16 @@ export const teamByAxis = [
     "level": null
   },
   {
+    "name": "Fabiane Moreira Vieira",
+    "axes": [
+      "3"
+    ],
+    "direction": false,
+    "institution": "FEAGRI/UNICAMP",
+    "role": null,
+    "level": "Pós-Doc"
+  },
+  {
     "name": "Gabriel de Oliveira Rodrigues",
     "axes": [
       "3"
@@ -140,7 +150,7 @@ export const teamByAxis = [
   {
     "name": "Isabela Minucio Pontes",
     "axes": [
-      "5"
+      "4"
     ],
     "direction": false,
     "institution": "UNICAMP",
@@ -190,7 +200,7 @@ export const teamByAxis = [
   {
     "name": "Leonardo Ariel Benavidez Mamani",
     "axes": [
-      "1"
+      "3"
     ],
     "direction": false,
     "institution": "UNICAMP",
@@ -206,6 +216,16 @@ export const teamByAxis = [
     "institution": "FEC/UNICAMP",
     "role": "Professora UNICAMP",
     "level": null
+  },
+  {
+    "name": "Lucas Boaro",
+    "axes": [
+      "1"
+    ],
+    "direction": false,
+    "institution": "UNICAMP",
+    "role": null,
+    "level": "Iniciação Científica"
   },
   {
     "name": "Lucas Nakamura Cerejo",
@@ -226,6 +246,16 @@ export const teamByAxis = [
     "institution": "Engenharia Ambiental/USP",
     "role": "Professor USP",
     "level": null
+  },
+  {
+    "name": "Luciana Cristina Lenhari da Silva",
+    "axes": [
+      "8"
+    ],
+    "direction": false,
+    "institution": "NIPE/UNICAMP",
+    "role": null,
+    "level": "Pós-Doc"
   },
   {
     "name": "Luis Alberto Follegatti Romero",
@@ -258,16 +288,6 @@ export const teamByAxis = [
     "level": null
   },
   {
-    "name": "Marcelo Pereira Cunha",
-    "axes": [
-      "4"
-    ],
-    "direction": false,
-    "institution": "Economia/UNICAMP",
-    "role": "Professor UNICAMP",
-    "level": null
-  },
-  {
     "name": "Marcelo Marques de Magalhães",
     "axes": [
       "4"
@@ -276,6 +296,16 @@ export const teamByAxis = [
     "institution": "FCE/UNESP",
     "role": null,
     "level": "Professor"
+  },
+  {
+    "name": "Marcelo Pereira Cunha",
+    "axes": [
+      "4"
+    ],
+    "direction": false,
+    "institution": "Economia/UNICAMP",
+    "role": "Professor UNICAMP",
+    "level": null
   },
   {
     "name": "Marcelo Zaiat",
@@ -475,16 +505,6 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "NIPE/UNICAMP",
-    "role": null,
-    "level": "Pós-Doc"
-  },
-  {
-    "name": "Stephani Cetimia Mariotti Ruiz",
-    "axes": [
-      "4"
-    ],
-    "direction": false,
-    "institution": "IE/UNICAMP",
     "role": null,
     "level": "Pós-Doc"
   },

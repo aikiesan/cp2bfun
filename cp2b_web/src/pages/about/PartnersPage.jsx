@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { fetchPartnersGrouped } from '../../services/api';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../../data/content';
+import { getPartnerLogo } from '../../data/partnerLogos';
 import SeoHead from '../../components/SeoHead';
 import PageHero from '../../components/PageHero';
 
@@ -35,7 +36,8 @@ const PartnerCard = ({ partner, language }) => {
   const [imgError, setImgError] = useState(false);
   const name = language === 'pt' ? partner.name_pt : (partner.name_en || partner.name_pt);
   const initials = getPartnerInitials(name);
-  const hasLogo = Boolean(partner.logo) && !imgError;
+  const logoSrc = partner.logo || getPartnerLogo(partner.name_pt) || getPartnerLogo(partner.name_en);
+  const hasLogo = Boolean(logoSrc) && !imgError;
 
   const cardContent = (
     <Card
@@ -60,7 +62,7 @@ const PartnerCard = ({ partner, language }) => {
         >
           {hasLogo ? (
             <img
-              src={partner.logo}
+              src={logoSrc}
               alt={name}
               onError={() => setImgError(true)}
               style={{
@@ -98,11 +100,13 @@ const PartnerCard = ({ partner, language }) => {
           {partner.location}
         </p>
         {partner.website && (
-          <div className="mt-3 pt-2 border-top" style={{ borderColor: 'var(--border-divider)' }}>
-            <span className="mono-label" style={{ color: 'var(--brand-primary)', fontSize: '0.7rem' }}>
-              {language === 'pt' ? 'Visitar website ↗' : 'Visit website ↗'}
-            </span>
-          </div>
+          <span
+            className="small fw-semibold mt-3 d-inline-flex align-items-center gap-1"
+            style={{ color: 'var(--brand-primary)' }}
+          >
+            <span>{language === 'pt' ? 'Visitar site' : 'Visit website'}</span>
+            <i className="bi bi-arrow-up-right" style={{ fontSize: '0.75rem' }} />
+          </span>
         )}
       </Card.Body>
     </Card>
@@ -114,8 +118,7 @@ const PartnerCard = ({ partner, language }) => {
         href={partner.website}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-decoration-none text-reset d-block h-100 hover-lift"
-        aria-label={name}
+        className="text-decoration-none h-100 d-block"
       >
         {cardContent}
       </a>
@@ -129,7 +132,8 @@ const HeadquartersCard = ({ partner, language, label }) => {
   const [imgError, setImgError] = useState(false);
   const name = language === 'pt' ? partner.name_pt : (partner.name_en || partner.name_pt);
   const initials = getPartnerInitials(name);
-  const hasLogo = Boolean(partner.logo) && !imgError;
+  const logoSrc = partner.logo || getPartnerLogo(partner.name_pt) || getPartnerLogo(partner.name_en);
+  const hasLogo = Boolean(logoSrc) && !imgError;
 
   return (
     <Card
@@ -155,7 +159,7 @@ const HeadquartersCard = ({ partner, language, label }) => {
           >
             {hasLogo ? (
               <img
-                src={partner.logo}
+                src={logoSrc}
                 alt={name}
                 onError={() => setImgError(true)}
                 style={{

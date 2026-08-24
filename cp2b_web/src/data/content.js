@@ -125,8 +125,103 @@ export const forumData = {
   }
 };
 
+export const missionVisionValues = {
+  pt: {
+    sectionTag: 'DIRETRIZES ESTRATÉGICAS',
+    sectionTitle: 'Missão, Visão e Valores',
+    sectionSubtitle: 'Os princípios fundamentais que orientam a excelência científica, a governança e o impacto socioambiental do CP2b.',
+    mission: {
+      tag: 'MISSÃO',
+      title: 'Nossa Missão',
+      text: '“Desenvolver pesquisas, tecnologias e soluções inovadoras de biogás com motivação industrial, ambiental e social que promovam o aproveitamento inteligente de resíduos para o desenvolvimento sustentável”.'
+    },
+    vision: {
+      tag: 'VISÃO',
+      title: 'Nossa Visão',
+      text: '“ser referência nacional e internacional na gestão eficiente e sustentável de resíduos urbanos e agropecuários, transformando o estado de SP em vitrine de soluções inteligentes em biogás. Para isso, o CP2B busca criar novos conhecimentos e competências, com base em ciência de ponta, que possam apoiar o desenvolvimento de soluções aplicáveis de biogás no estado de SP (ESP), articulando ações conjuntas e complementares nas esferas industrial, política, social e ambiental”.'
+    },
+    valuesTitle: 'Nossos Valores',
+    valuesStatement: 'Valores CP2b estão refletidos nas competências e princípios norteadores:',
+    values: [
+      {
+        icon: 'bi-award',
+        title: 'Excelência Científica & Rigor Técnico',
+        description: 'Compromisso com a produção de conhecimento de alto impacto, rigor metodológico e padrões internacionais de qualidade em todas as etapas da pesquisa.'
+      },
+      {
+        icon: 'bi-tree',
+        title: 'Sustentabilidade & Impacto Socioambiental',
+        description: 'Foco permanente na descarbonização, na preservação dos recursos naturais, na circularidade produtiva e no desenvolvimento socioeconômico inclusivo.'
+      },
+      {
+        icon: 'bi-diagram-3',
+        title: 'Interdisciplinaridade & Integração',
+        description: 'Articulação contínua e colaborativa entre diversas áreas do conhecimento, grupos de pesquisa e instituições científicas de excelência.'
+      },
+      {
+        icon: 'bi-lightbulb',
+        title: 'Inovação & Cooperação com a Sociedade',
+        description: 'Conexão direta entre bancada científica, demandas do mercado produtivo e formulação de políticas públicas orientadas a problemas reais.'
+      },
+      {
+        icon: 'bi-shield-check',
+        title: 'Ética, Transparência & Governança',
+        description: 'Integridade absoluta na condução das pesquisas, responsabilidade na gestão dos recursos públicos e compromisso com a prestação de contas à sociedade.'
+      }
+    ]
+  },
+  en: {
+    sectionTag: 'STRATEGIC GUIDELINES',
+    sectionTitle: 'Mission, Vision and Values',
+    sectionSubtitle: 'The core principles guiding CP2b scientific excellence, governance and socio-environmental impact.',
+    mission: {
+      tag: 'MISSION',
+      title: 'Our Mission',
+      text: '“Develop research, technologies, and innovative biogas solutions with industrial, environmental, and social motivation that promote the smart use of waste for sustainable development.”'
+    },
+    vision: {
+      tag: 'VISION',
+      title: 'Our Vision',
+      text: '“To be a national and international reference in the efficient and sustainable management of urban and agricultural waste, transforming the State of São Paulo into a showcase of smart biogas solutions. To achieve this, CP2B seeks to create new knowledge and competencies, based on cutting-edge science, that can support the development of applicable biogas solutions in the State of São Paulo (ESP), coordinating joint and complementary actions across industrial, political, social, and environmental spheres.”'
+    },
+    valuesTitle: 'Our Values',
+    valuesStatement: 'CP2b values are reflected in our core competencies and guiding principles:',
+    values: [
+      {
+        icon: 'bi-award',
+        title: 'Scientific Excellence & Technical Rigor',
+        description: 'Commitment to high-impact knowledge production, methodological rigor, and international quality standards throughout all research phases.'
+      },
+      {
+        icon: 'bi-tree',
+        title: 'Sustainability & Socio-environmental Impact',
+        description: 'Permanent focus on decarbonization, natural resource preservation, productive circularity, and inclusive socioeconomic development.'
+      },
+      {
+        icon: 'bi-diagram-3',
+        title: 'Interdisciplinarity & Integration',
+        description: 'Continuous and collaborative articulation across diverse fields of knowledge, research groups, and scientific institutions of excellence.'
+      },
+      {
+        icon: 'bi-lightbulb',
+        title: 'Innovation & Societal Cooperation',
+        description: 'Direct link between laboratory research, industrial market demands, and real-world public policy formulation.'
+      },
+      {
+        icon: 'bi-shield-check',
+        title: 'Ethics, Transparency & Governance',
+        description: 'Absolute integrity in research conduct, responsible management of public resources, and commitment to public accountability.'
+      }
+    ]
+  }
+};
+
 export const aboutContent = {
   pt: {
+    missionVisionValues: missionVisionValues.pt,
+    missao: missionVisionValues.pt.mission.text,
+    visao: missionVisionValues.pt.vision.text,
+    valores: missionVisionValues.pt.valuesStatement,
     resumo: `O Centro Paulista de Estudos em Biogás e Bioprodutos é dedicado ao tema "Aproveitamento inteligente de resíduos para o desenvolvimento sustentável" e visa criar competências com base em ciência que conduzam ao desenvolvimento e aplicações de soluções inovadoras de biogás. Os sistemas energéticos sociotécnicos que incluem soluções de biogás têm um desempenho de sustentabilidade bastante positivo uma vez que tratam resíduos, produzem combustível renovável e criam nutrientes renováveis para as plantas. No Estado de São Paulo (ESP) há muito substrato disponível - um potencial de mais de 4,5 bilhões de m3 ano de biogás - assim como uma grande demanda por seus bioprodutos, mas apenas uma fração deste potencial é aproveitada.
 
 O papel do CP2b é criar novos conhecimentos e competências que levem a soluções aplicáveis ao biogás no Estado, e articular ações conjuntas nas esferas industrial, política, social e ambiental. O CP2b tem por principal objetivo contribuir para a gestão de resíduos orgânicos e lignocelulósicos - urbanos e agroindustriais -, com prioridade para as ações voltadas à gestão pública de resíduos em setores estratégicos para a economia do estado.
@@ -147,6 +242,10 @@ O centro irá atuar de forma transdisciplinar, organizado em oito eixos temátic
     (iv) Educação ambiental.`
   },
   en: {
+    missionVisionValues: missionVisionValues.en,
+    missao: missionVisionValues.en.mission.text,
+    visao: missionVisionValues.en.vision.text,
+    valores: missionVisionValues.en.valuesStatement,
     resumo: `The São Paulo Center for Biogas and Bioproducts Studies is dedicated to the theme "Intelligent use of waste for sustainable development" and aims to create science-based skills that lead to the development and applications of innovative biogas solutions. Sociotechnical energy systems that include biogas solutions have a very positive sustainability performance as they treat waste, produce renewable fuel and create renewable nutrients for plants. In the State of São Paulo (ESP) there is a lot of substrate available - a potential of more than 4.5 billion m3 of biogas per year - as well as a great demand for its bioproducts, but only a fraction of this potential is used.
 
 CP2b's role is to create new knowledge and skills that lead to applicable solutions for biogas in the State, and to articulate joint actions in the industrial, political, social and environmental spheres. CP2b's main objective is to contribute to the management of organic and lignocellulosic waste - urban and agro-industrial -, with priority given to actions aimed at public waste management in strategic sectors for the state's economy.
@@ -583,9 +682,10 @@ export const researchAxes = {
     {
       id: '4',
       title: 'Eixo 4 – Avaliação Integrada Socioeconômica, Ambiental e Energética',
-      coordinator: 'Profº Drº Marcelo Pereira Cunha',
+      coordinator: 'Profº Drº Marcelo Pereira Cunha (Coord.), Profº Drº Luiz Gustavo Antônio de Souza (Adj.)',
       coordinators: [
-        { name: 'Profº Drº Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/FOTO_MARCELO_CUNHA_EIXO_4.jpg' }
+        { name: 'Profº Drº Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/FOTO_MARCELO_CUNHA_EIXO_4.jpg' },
+        { name: 'Profº Drº Luiz Gustavo Antônio de Souza', role: 'Adj.', photo: null }
       ],
       content: `O Eixo 4 é o espaço da reflexão crítica. Sua missão é avaliar os impactos socioeconômicos, ambientais e energéticos.
       O eixo vai construir e avaliar cenários que subsidiem a formulação de políticas públicas.
@@ -596,9 +696,10 @@ export const researchAxes = {
     {
       id: '5',
       title: 'Eixo 5 – Inovação em Bioprodutos na Cadeia do Biogás',
-      coordinator: 'Profº Drº Luis Alberto Follegatti Romero',
+      coordinator: 'Profº Drº Luis Alberto Follegatti Romero (Coord.), Profª Drª Rachel Biancalana Costa (Adj.)',
       coordinators: [
-        { name: 'Profº Drº Luis Alberto Follegatti Romero', role: 'Coord.', photo: null }
+        { name: 'Profº Drº Luis Alberto Follegatti Romero', role: 'Coord.', photo: null },
+        { name: 'Profª Drª Rachel Biancalana Costa', role: 'Adj.', photo: null }
       ],
       content: `O Eixo 5 mergulha no conceito de biorrefinaria. A vinhaça é um bom exemplo de foco, contendo ácidos orgânicos de alto valor.
       A aposta é o biohitano (combinação de hidrogênio e metano).
@@ -633,10 +734,11 @@ export const researchAxes = {
     {
       id: '8',
       title: 'Eixo 8 – Políticas Públicas e Inovação Regulatória',
-      coordinator: 'Profº Drº Rafael de Brito Dias (Coord.), Profª Drª Natalia Molina Cetrulo (Adj.)',
+      coordinator: 'Profº Drº Rafael de Brito Dias (Coord.), Profª Drª Natalia Molina Cetrulo (Adj.), Profª Drª Thais Aparecida Dibbern (Adj.)',
       coordinators: [
         { name: 'Profº Drº Rafael de Brito Dias', role: 'Coord.', photo: '/assets/FOTO_RAFAEL_EIXO_8.jpg' },
-        { name: 'Profª Drª Natalia Molina Cetrulo', role: 'Adj.', photo: '/assets/FOTO_NATALIA.jpg' }
+        { name: 'Profª Drª Natalia Molina Cetrulo', role: 'Adj.', photo: '/assets/FOTO_NATALIA.jpg' },
+        { name: 'Profª Drª Thais Aparecida Dibbern', role: 'Adj.', photo: null }
       ],
       content: `O Eixo 8 analisa políticas públicas e propõe arranjos que otimizem as agendas.
       Prevê a realização de uma "oficina de inovação regulatória" e criação de um conselho com poder público e sociedade civil.
@@ -685,9 +787,10 @@ export const researchAxes = {
     {
       id: '4',
       title: 'Axis 4 – Integrated Socioeconomic, Environmental, and Energy Assessment',
-      coordinator: 'Prof. Dr. Marcelo Pereira Cunha',
+      coordinator: 'Prof. Dr. Marcelo Pereira Cunha (Coord.), Prof. Dr. Luiz Gustavo Antônio de Souza (Adj.)',
       coordinators: [
-        { name: 'Prof. Dr. Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/FOTO_MARCELO_CUNHA_EIXO_4.jpg' }
+        { name: 'Prof. Dr. Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/FOTO_MARCELO_CUNHA_EIXO_4.jpg' },
+        { name: 'Prof. Dr. Luiz Gustavo Antônio de Souza', role: 'Adj.', photo: null }
       ],
       content: `Axis 4 is the space for critical reflection. Its mission is to assess socioeconomic, environmental, and energy impacts.
       The axis will build and evaluate scenarios that support the formulation of public policies.
@@ -698,9 +801,10 @@ export const researchAxes = {
     {
       id: '5',
       title: 'Axis 5 – Bioproduct Innovation in the Biogas Chain',
-      coordinator: 'Prof. Dr. Luis Alberto Follegatti Romero',
+      coordinator: 'Prof. Dr. Luis Alberto Follegatti Romero (Coord.), Prof. Dr. Rachel Biancalana Costa (Adj.)',
       coordinators: [
-        { name: 'Prof. Dr. Luis Alberto Follegatti Romero', role: 'Coord.', photo: null }
+        { name: 'Prof. Dr. Luis Alberto Follegatti Romero', role: 'Coord.', photo: null },
+        { name: 'Prof. Dr. Rachel Biancalana Costa', role: 'Adj.', photo: null }
       ],
       content: `Axis 5 dives into the biorefinery concept. Vinasse is a prime focus, containing high-value organic acids.
       The focus is on biohitane (a combination of hydrogen and methane).
@@ -735,10 +839,11 @@ export const researchAxes = {
     {
       id: '8',
       title: 'Axis 8 – Public Policies and Regulatory Innovation',
-      coordinator: 'Prof. Dr. Rafael de Brito Dias (Coord.), Prof. Dr. Natalia Molina Cetrulo (Adj.)',
+      coordinator: 'Prof. Dr. Rafael de Brito Dias (Coord.), Prof. Dr. Natalia Molina Cetrulo (Adj.), Prof. Dr. Thais Aparecida Dibbern (Adj.)',
       coordinators: [
         { name: 'Prof. Dr. Rafael de Brito Dias', role: 'Coord.', photo: '/assets/FOTO_RAFAEL_EIXO_8.jpg' },
-        { name: 'Prof. Dr. Natalia Molina Cetrulo', role: 'Adj.', photo: '/assets/FOTO_NATALIA.jpg' }
+        { name: 'Prof. Dr. Natalia Molina Cetrulo', role: 'Adj.', photo: '/assets/FOTO_NATALIA.jpg' },
+        { name: 'Prof. Dr. Thais Aparecida Dibbern', role: 'Adj.', photo: null }
       ],
       content: `Axis 8 analyzes public policies and proposes arrangements that optimize agendas.
       It foresees the realization of a "regulatory innovation workshop" and the creation of a council with public authorities and civil society.

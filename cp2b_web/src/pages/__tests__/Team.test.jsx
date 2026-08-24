@@ -83,10 +83,10 @@ describe('Team page — grouped by Eixo', () => {
     const brunaImgs = screen.getAllByRole('img', { name: 'Bruna de Souza Moraes' });
     expect(brunaImgs[0]).toHaveAttribute('src', '/assets/team/bruna-de-souza-moraes.webp');
 
-    // Aline Veronese da Silva has no photo -> initials 'AV'.
-    expect(screen.getAllByText('Aline Veronese da Silva').length).toBeGreaterThan(0);
-    expect(screen.queryByRole('img', { name: 'Aline Veronese da Silva' })).not.toBeInTheDocument();
-    expect(screen.getAllByText('AV').length).toBeGreaterThan(0);
+    // Bruno Felipe Veloso has no photo -> initials 'BF'.
+    expect(screen.getAllByText('Bruno Felipe Veloso').length).toBeGreaterThan(0);
+    expect(screen.queryByRole('img', { name: 'Bruno Felipe Veloso' })).not.toBeInTheDocument();
+    expect(screen.getAllByText('BF').length).toBeGreaterThan(0);
   });
 
   it('filters members in real time when typing in the search field', async () => {

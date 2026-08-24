@@ -220,7 +220,7 @@ const AxisMindMap = ({ axes, detailsById, language, labels }) => {
       <span className="mono-label text-muted d-block mb-2">{labels.activities}</span>
       {activeAxis.coordinators?.length > 0 && (
         <div className="mmap__coords">
-          {activeAxis.coordinators.map((p) => <CoordinatorAvatar key={p.name} person={p} />)}
+          {activeAxis.coordinators.map((p) => <CoordinatorAvatar key={p.name} person={p} axisId={activeAxis.id} />)}
         </div>
       )}
       {activeAxis.content && <p className="mmap__axis-text">{activeAxis.content}</p>}
