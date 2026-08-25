@@ -9,11 +9,11 @@ Hoje a situação é:
 
 | | Pessoas |
 | --- | ---: |
-| Total na equipe | **99** |
+| Total na equipe | **98** |
 | Com Eixo informado na planilha | **50** |
-| **Sem Eixo** | **49** |
+| **Sem Eixo** | **48** |
 
-As 49 abaixo aparecem no site sob **"Colaboradores e Parceiros"** — um grupo
+As 48 abaixo aparecem no site sob **"Colaboradores e Parceiros"** — um grupo
 plano, sem hierarquia. Não chutamos um Eixo para ninguém: quem não está na
 planilha fica ali até que alguém informe.
 
@@ -52,7 +52,6 @@ colaborador pode simplesmente ficar sem Eixo.
 | Danúsia Arantes Ferreira | FEEC/UNICAMP | Pesquisador Associado |
 | Flávia Luciane Consoni | IG/UNICAMP | Pesquisador Associado |
 | Gabriel Dias Mangolini Neves | — | Pesquisador Responsável na Instituição Parceira |
-| Gustavo Mockaitis | FEAGRI/UNICAMP | Pesquisador Associado |
 | Hildo Guillardi Júnior | FESJBV/UNESP | Pesquisador Associado |
 | Jens Bo Holm-Nielsen | Aalborg University (AAU) | Pesquisador Responsável na Instituição Parceira |
 | Joaquim Eugênio Abel Seabra | FEM/UNICAMP | Apoio Técnico |
