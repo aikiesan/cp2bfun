@@ -142,7 +142,6 @@ INSERT INTO team_members (name, role_pt, role_en, institution, category, sort_or
 ('Danúsia Arantes Ferreira', 'Pesquisador Associado', 'Associate Researcher', 'FEEC/UNICAMP', 'associates', 8),
 ('Enelton Fagnani', 'Pesquisador Associado', 'Associate Researcher', 'FT/UNICAMP', 'associates', 9),
 ('Flávia Luciane Consoni', 'Pesquisador Associado', 'Associate Researcher', 'IG/UNICAMP', 'associates', 10),
-('Gustavo Mockaitis', 'Pesquisador Associado', 'Associate Researcher', 'FEAGRI/UNICAMP', 'associates', 11),
 ('Hildo Guillardi Júnior', 'Pesquisador Associado', 'Associate Researcher', 'FESJBV/UNESP', 'associates', 12),
 ('Ivo Leandro Dorileo', 'Pesquisador Associado', 'Associate Researcher', 'NIPE/UNICAMP', 'associates', 13),
 ('Joni de Almeida Amorim', 'Pesquisador Associado', 'Associate Researcher', 'FEEC/UNICAMP', 'associates', 14),

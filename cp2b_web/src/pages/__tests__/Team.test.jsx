@@ -135,4 +135,23 @@ describe('Team page — grouped by Eixo', () => {
     expect(screen.queryByText('bsmoraes@unicamp.br')).not.toBeInTheDocument();
     expect(screen.queryByText('+55 (19) 3521-1241')).not.toBeInTheDocument();
   });
+
+  it('does not display former members returned by an older API response', async () => {
+    fetchTeam.mockResolvedValue({
+      associates: [
+        { name: 'Marlon Fernandes de Souza', role_pt: 'Pesquisador Associado', institution: 'ESALQ/USP' },
+        { name: 'Gustavo Mockaitis', role_pt: 'Pesquisador Associado', institution: 'FEAGRI/UNICAMP' },
+        { name: 'Pesquisador Atual', role_pt: 'Pesquisador Associado', institution: 'UNICAMP' },
+      ],
+    });
+
+    renderWithProviders(<Team />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Pesquisador Atual')).toBeInTheDocument();
+    });
+
+    expect(screen.queryByText('Marlon Fernandes de Souza')).not.toBeInTheDocument();
+    expect(screen.queryByText('Gustavo Mockaitis')).not.toBeInTheDocument();
+  });
 });

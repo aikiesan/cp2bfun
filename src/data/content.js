@@ -519,7 +519,6 @@ export const teamMembers = [
       { name: 'Danúsia Arantes Ferreira', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'Enelton Fagnani', role: 'Pesquisador Associado', institution: 'FT/UNICAMP' },
       { name: 'Flávia Luciane Consoni', role: 'Pesquisador Associado', institution: 'IG/UNICAMP' },
-      { name: 'Gustavo Mockaitis', role: 'Pesquisador Associado', institution: 'FEAGRI/UNICAMP' },
       { name: 'Hildo Guillardi Júnior', role: 'Pesquisador Associado', institution: 'FESJBV/UNESP' },
       { name: 'Ivo Leandro Dorileo', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
       { name: 'Joni de Almeida Amorim', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },

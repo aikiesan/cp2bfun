@@ -17,6 +17,14 @@ import Avatar from '../components/Avatar';
 // renders them as ranks, so this is only used to walk the response.
 const apiCategories = ['coordinators', 'principals', 'associates', 'support', 'students'];
 
+// Keep former members out of both API-backed and static-fallback results. The
+// database migration removes the rows permanently; this also protects the
+// public page while an older API response is still cached or being upgraded.
+const removedTeamMemberKeys = new Set([
+  nameKey('Marlon Fernandes de Souza'),
+  nameKey('Gustavo Mockaitis'),
+]);
+
 // Flatten the static fallback, merging content.js and teamByAxis.js
 const flattenStatic = (groups, language) => {
   const seen = new Set();
@@ -92,7 +100,8 @@ const Team = () => {
 
   // Group horizontally by Eixo, not by rank — see utils/teamGroups.
   const allGroups = useMemo(() => {
-    const members = apiMembers || flattenStatic(staticTeamMembers, language);
+    const members = (apiMembers || flattenStatic(staticTeamMembers, language))
+      .filter((member) => !removedTeamMemberKeys.has(nameKey(member.name)));
     return groupTeamByAxis(members, language).map((group) => ({
       ...group,
       members: group.members.map((m) => ({
