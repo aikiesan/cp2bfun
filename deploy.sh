@@ -10,24 +10,32 @@ WEB_DIR="$REPO_DIR/cp2b_web"
 
 echo "==> Iniciando deploy CP2B..."
 
-echo "==> [1/5] Atualizando repositório..."
+echo "==> [1/6] Atualizando repositório..."
 cd "$REPO_DIR"
 git pull origin main
 
-echo "==> [2/5] Instalando dependências..."
+echo "==> [2/6] Instalando dependências..."
 cd "$WEB_DIR"
 npm install
 
-echo "==> [3/5] Gerando build de produção..."
+echo "==> [3/6] Gerando build de produção..."
 npm run build
 
-echo "==> [4/5] Reiniciando backend..."
+echo "==> [4/6] Aplicando migrações do banco de dados..."
+# Idempotente: usa CREATE TABLE / ADD COLUMN "IF NOT EXISTS" e ignora
+# objetos já existentes. Cria/atualiza tabelas novas (ex.: eventos,
+# configurações do site) sem apagar dados. Roda a partir de backend/
+# para que o dotenv leia o DATABASE_URL do backend/.env.
+cd "$WEB_DIR/backend"
+node src/db/init.js
+
+echo "==> [5/6] Reiniciando backend..."
 # Kill any orphan process holding port 3001 before restarting
 sudo kill -9 $(sudo lsof -t -i :3001) 2>/dev/null || true
 pm2 restart cp2b-backend
 pm2 save
 
-echo "==> [5/5] Verificando serviço..."
+echo "==> [6/6] Verificando serviço..."
 sleep 2
 HTTP_STATUS=$(curl -s -o /dev/null -w "%{http_code}" http://localhost)
 
