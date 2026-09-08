@@ -1048,6 +1048,26 @@ main#main-content,
   display: none;
 }
 
+/* O card de /equipe abre o perfil da pessoa, então é um <button> — mas deve
+   continuar a se ler como o conteúdo do card, não como um botão. O foco fica
+   visível porque é a única pista de que o card é acionável pelo teclado. */
+.team-member-trigger {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-md, 10px);
+}
+
+.team-member-trigger:focus-visible {
+  outline: 2px solid var(--brand-primary, #00573a);
+  outline-offset: 3px;
+}
+
 @media (max-width: 575.98px) {
   .team-member-card {
     padding: 0.65rem !important;

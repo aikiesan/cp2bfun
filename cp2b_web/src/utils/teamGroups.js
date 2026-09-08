@@ -10,7 +10,13 @@ export const stripAxisPrefix = (title) =>
 
 export const DIRECTION_GROUP = 'direcao';
 export const SUPPORT_GROUP = 'apoio';
-export const COLLABORATORS_GROUP = 'colaboradores';
+// "Colaboradores e Parceiros" reunia dois vínculos incomparáveis: pesquisadores
+// e estudantes do próprio CP2b sem eixo atribuído, e pesquisadores responsáveis
+// em instituições parceiras — colaboração externa formalizada por carta de
+// apoio à FAPESP. Lidos sob o mesmo título, o centro parecia menor do que é e o
+// parceiro externo, mais interno do que é.
+export const ASSOCIATES_GROUP = 'associados';
+export const PARTNERS_GROUP = 'parceiras';
 
 const GROUP_LABELS = {
   [DIRECTION_GROUP]: { pt: 'Direção do CP2b', en: 'CP2b Direction' },
@@ -18,9 +24,26 @@ const GROUP_LABELS = {
     pt: 'Apoio Técnico e Administrativo',
     en: 'Technical and Administrative Support',
   },
-  [COLLABORATORS_GROUP]: {
-    pt: 'Colaboradores e Parceiros',
-    en: 'Collaborators and Partners',
+  [ASSOCIATES_GROUP]: {
+    pt: 'Pesquisadores Associados',
+    en: 'Associate Researchers',
+  },
+  [PARTNERS_GROUP]: {
+    pt: 'Instituições Parceiras',
+    en: 'Partner Institutions',
+  },
+};
+
+// O título sozinho não desfaz a confusão — cada seção nova diz que vínculo
+// reúne.
+const GROUP_BLURBS = {
+  [ASSOCIATES_GROUP]: {
+    pt: 'Pesquisadores e estudantes do CP2b que ainda não têm eixo de pesquisa atribuído. Integram o centro do mesmo modo que quem aparece nos eixos acima.',
+    en: 'CP2b researchers and students not yet assigned to a research axis. They are part of the centre just as those listed under the axes above.',
+  },
+  [PARTNERS_GROUP]: {
+    pt: 'Pesquisadores responsáveis nas instituições parceiras do CP2b — colaboração externa formalizada por carta de apoio à FAPESP. Não integram o quadro do centro.',
+    en: 'Lead researchers at CP2b partner institutions — external collaboration formalised through a letter of support to FAPESP. They are not part of the centre’s own staff.',
   },
 };
 
@@ -53,14 +76,49 @@ export function resolveAffiliation(member) {
   };
 }
 
+// A heurística lê o cargo, e o cargo chega traduzido quando a página está em
+// inglês — por isso os dois idiomas. Sem a metade inglesa, /equipe em inglês
+// perdia a seção de parceiras inteira e jogava as 14 pessoas em associados.
+const SUPPORT_ROLE = /apoio|administrativ|técnico|tecnico|\bsupport\b/i;
+// O cargo separa os dois vínculos sem ambiguidade: "Pesquisador Responsável na
+// Instituição Parceira" é o rótulo formal da colaboração externa.
+const PARTNER_ROLE = /institui(ç|c)(ã|a)o parceira|partner institution/i;
+
+// Vínculos que nomeiam uma seção de quem não tem eixo. 'nucleo' e 'direcao'
+// não nomeiam nenhuma — quem os carrega aparece nos eixos ou na direção — por
+// isso um registro assim cai na heurística de cargo.
+const MEMBERSHIP_GROUPS = {
+  associado: ASSOCIATES_GROUP,
+  parceira: PARTNERS_GROUP,
+  apoio: SUPPORT_GROUP,
+};
+
+/**
+ * Em que seção cai quem não tem eixo atribuído.
+ *
+ * Prefere o que o registro carrega (`membership`, gravado pelo admin) e só cai
+ * para a heurística de cargo — mesma ordem de precedência de
+ * `resolveAffiliation`.
+ */
+export function resolveNoAxisGroup(member) {
+  const declared = MEMBERSHIP_GROUPS[String(member.membership || '').toLowerCase()];
+  if (declared) return declared;
+
+  const roles = [member.role, member.role_pt].filter(Boolean).join(' ');
+  if (member.category === 'support' || SUPPORT_ROLE.test(roles)) return SUPPORT_GROUP;
+  if (PARTNER_ROLE.test(roles)) return PARTNERS_GROUP;
+  return ASSOCIATES_GROUP;
+}
+
 /**
  * Group the team horizontally by Eixo rather than by rank.
  *
  * The centre asked to be read as units working side by side, not as a
  * hierarchy — so there are no "principal / associate / support" tiers here.
- * The direction sits at the top; each Eixo forms a working unit;
- * technical & administrative support has a dedicated section, and partner
- * collaborators form the final section.
+ * The direction sits at the top; each Eixo forms a working unit; then come the
+ * centre's own researchers with no axis yet, then the partner institutions —
+ * two different bonds, read separately — and technical & administrative
+ * support closes the page.
  */
 export function groupTeamByAxis(members, language = 'pt') {
   const axes = researchAxes[language] || researchAxes.pt;
@@ -83,15 +141,23 @@ export function groupTeamByAxis(members, language = 'pt') {
       members: [],
     })),
     {
-      category: SUPPORT_GROUP,
-      title: GROUP_LABELS[SUPPORT_GROUP][lang],
-      shortTitle: lang === 'pt' ? 'Apoio' : 'Support',
+      category: ASSOCIATES_GROUP,
+      title: GROUP_LABELS[ASSOCIATES_GROUP][lang],
+      shortTitle: lang === 'pt' ? 'Associados' : 'Associates',
+      blurb: GROUP_BLURBS[ASSOCIATES_GROUP][lang],
       members: [],
     },
     {
-      category: COLLABORATORS_GROUP,
-      title: GROUP_LABELS[COLLABORATORS_GROUP][lang],
-      shortTitle: lang === 'pt' ? 'Colaboradores' : 'Collaborators',
+      category: PARTNERS_GROUP,
+      title: GROUP_LABELS[PARTNERS_GROUP][lang],
+      shortTitle: lang === 'pt' ? 'Parceiras' : 'Partners',
+      blurb: GROUP_BLURBS[PARTNERS_GROUP][lang],
+      members: [],
+    },
+    {
+      category: SUPPORT_GROUP,
+      title: GROUP_LABELS[SUPPORT_GROUP][lang],
+      shortTitle: lang === 'pt' ? 'Apoio' : 'Support',
       members: [],
     },
   ];
@@ -106,18 +172,9 @@ export function groupTeamByAxis(members, language = 'pt') {
       byId.get(DIRECTION_GROUP).members.push(enriched);
     }
 
-    const isSupport =
-      member.category === 'support' ||
-      /apoio|administrativ|técnico|tecnico/i.test(member.role || '') ||
-      /apoio|administrativ|técnico|tecnico/i.test(member.role_pt || '');
-
     if (memberAxes.length === 0) {
       if (!isDirector) {
-        if (isSupport) {
-          byId.get(SUPPORT_GROUP)?.members.push(enriched);
-        } else {
-          byId.get(COLLABORATORS_GROUP)?.members.push(enriched);
-        }
+        byId.get(resolveNoAxisGroup(member))?.members.push(enriched);
       }
       continue;
     }

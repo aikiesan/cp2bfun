@@ -5,7 +5,9 @@ import {
   resolveAffiliation,
   stripAxisPrefix,
   DIRECTION_GROUP,
-  COLLABORATORS_GROUP,
+  ASSOCIATES_GROUP,
+  PARTNERS_GROUP,
+  SUPPORT_GROUP,
 } from '../teamGroups';
 
 describe('nameKey', () => {
@@ -77,10 +79,88 @@ describe('groupTeamByAxis', () => {
     expect(names('eixo-7')).toContain('Bruna de Souza Moraes');
   });
 
-  it('collects people with no axis under collaborators', () => {
+  // Sem eixo atribuído, o cargo diz de que vínculo se trata: reunir os dois
+  // sob "Colaboradores e Parceiros" fazia o centro parecer menor do que é e o
+  // parceiro externo, mais interno do que é.
+  it('reads someone from the centre with no axis as an associate', () => {
     const groups = groupTeamByAxis(members, 'pt');
-    const collaborators = groups.find((g) => g.category === COLLABORATORS_GROUP);
-    expect(collaborators.members.map((m) => m.name)).toEqual(['Someone Without An Axis']);
+    const associates = groups.find((g) => g.category === ASSOCIATES_GROUP);
+    expect(associates.members.map((m) => m.name)).toEqual(['Someone Without An Axis']);
+    expect(groups.find((g) => g.category === PARTNERS_GROUP)).toBeUndefined();
+  });
+
+  it('reads a lead researcher at a partner institution as a partner', () => {
+    const groups = groupTeamByAxis(
+      [
+        ...members,
+        {
+          name: 'Jens Bo Holm-Nielsen',
+          role: 'Pesquisador Responsável na Instituição Parceira',
+        },
+      ],
+      'pt'
+    );
+
+    const partners = groups.find((g) => g.category === PARTNERS_GROUP);
+    expect(partners.members.map((m) => m.name)).toEqual(['Jens Bo Holm-Nielsen']);
+
+    const associates = groups.find((g) => g.category === ASSOCIATES_GROUP);
+    expect(associates.members.map((m) => m.name)).not.toContain('Jens Bo Holm-Nielsen');
+  });
+
+  it('prefers the membership the record carries over the role heuristic', () => {
+    // Mesma precedência de resolveAffiliation: o registro ganha da heurística.
+    // É como o Prof. Seabra sai do apoio técnico sem depender do texto do
+    // cargo.
+    const groups = groupTeamByAxis(
+      [
+        ...members,
+        {
+          name: 'Joaquim Eugênio Abel Seabra',
+          role: 'Apoio Técnico',
+          membership: 'associado',
+        },
+      ],
+      'pt'
+    );
+
+    const associates = groups.find((g) => g.category === ASSOCIATES_GROUP);
+    expect(associates.members.map((m) => m.name)).toContain('Joaquim Eugênio Abel Seabra');
+    expect(groups.find((g) => g.category === SUPPORT_GROUP)).toBeUndefined();
+  });
+
+  it('explains the bond of each new section, not just its title', () => {
+    const groups = groupTeamByAxis(
+      [
+        ...members,
+        { name: 'Partner Person', role: 'Pesquisador Responsável na Instituição Parceira' },
+      ],
+      'pt'
+    );
+
+    expect(groups.find((g) => g.category === ASSOCIATES_GROUP).blurb).toMatch(/eixo/i);
+    expect(groups.find((g) => g.category === PARTNERS_GROUP).blurb).toMatch(/FAPESP/);
+  });
+
+  it('orders the sections direction, axes, associates, partners, support', () => {
+    const groups = groupTeamByAxis(
+      [
+        ...members,
+        { name: 'Partner Person', role: 'Pesquisador Responsável na Instituição Parceira' },
+        { name: 'Support Person', role: 'Apoio Administrativo' },
+      ],
+      'pt'
+    );
+
+    expect(groups.map((g) => g.category)).toEqual([
+      DIRECTION_GROUP,
+      'eixo-1',
+      'eixo-6',
+      'eixo-7',
+      ASSOCIATES_GROUP,
+      PARTNERS_GROUP,
+      SUPPORT_GROUP,
+    ]);
   });
 
   it('collects administrative and technical support under SUPPORT_GROUP', () => {
@@ -98,6 +178,26 @@ describe('groupTeamByAxis', () => {
     const groups = groupTeamByAxis(members, 'pt');
     expect(groups.every((g) => g.members.length > 0)).toBe(true);
     expect(groups.find((g) => g.category === 'eixo-2')).toBeUndefined();
+  });
+
+  it('still separates partners when the roles arrive in English', () => {
+    // O cargo chega traduzido quando a página está em inglês. Sem ler as duas
+    // grafias, /equipe em inglês perdia a seção de parceiras inteira e jogava
+    // as 14 pessoas em associados.
+    const groups = groupTeamByAxis(
+      [
+        ...members,
+        { name: 'Jens Bo Holm-Nielsen', role: 'Lead Researcher at Partner Institution' },
+        { name: 'Magali Luzia Maróstica', role: 'Administrative Support' },
+        { name: 'Bruno Felipe Veloso', role: 'Technical Support' },
+      ],
+      'en'
+    );
+
+    const names = (id) => (groups.find((g) => g.category === id)?.members || []).map((m) => m.name);
+    expect(names(PARTNERS_GROUP)).toEqual(['Jens Bo Holm-Nielsen']);
+    expect(names(SUPPORT_GROUP)).toEqual(['Magali Luzia Maróstica', 'Bruno Felipe Veloso']);
+    expect(names(ASSOCIATES_GROUP)).toEqual(['Someone Without An Axis']);
   });
 
   it('labels groups in English when asked', () => {
