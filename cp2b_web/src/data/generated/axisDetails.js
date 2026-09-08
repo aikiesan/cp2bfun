@@ -627,7 +627,7 @@ export const axisDetails = {
         },
         {
           "person": "Fabiane Moreira Vieira",
-          "institution": "FEAGRI/UNICAMP",
+          "institution": "NIPE/UNICAMP",
           "level": "Pós-Doc",
           "title": "Pesquisadora em Engenharia Agrícola e Biogás - Eixo 3",
           "area": "Engenharia Agrícola e Bioprocessos"

@@ -35,6 +35,11 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // O registro vive em src/registerServiceWorker.js, que recarrega a
+      // página quando o service worker novo assume. O registerSW.js que o
+      // plugin injetava só registrava, e não tinha hash no nome — a regra
+      // `immutable` do Apache o congelaria por um ano.
+      injectRegister: null,
       manifest: {
         name: 'CP2b - Centro Paulista de Estudos em Biogas e Bioprodutos',
         short_name: 'CP2b',
@@ -84,7 +89,9 @@ export default defineConfig({
               cacheName: 'images',
               expiration: {
                 maxEntries: 60,
-                maxAgeSeconds: 60 * 60 * 24 * 30,
+                // Um dia. As fotos não têm hash no nome, então trocar a foto
+                // de alguém mantendo o arquivo não apareceria antes disso.
+                maxAgeSeconds: 60 * 60 * 24,
               },
             },
           },

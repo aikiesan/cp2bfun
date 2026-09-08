@@ -6,6 +6,9 @@
 // fonte do vínculo pessoa→eixo usado em /equipe; os nomes e instituições
 // vêm da planilha da Luciana, não digitados à mão.
 //
+// Correção de 08/09/2026, informada pela direção: Fabiane Moreira Vieira é do
+// NIPE/UNICAMP, não da FEAGRI. Espelhada na migration 042.
+//
 // ANEXO 11 (Composição da Coordenação dos Eixos, vigente 08/09/2026):
 // aplicado à mão sobre a geração — troca de eixo de Priscila (2→3),
 // Ana Beatriz (2→3) e Fabiane (3→2), rótulos de coordenação e a inclusão
@@ -139,7 +142,7 @@ export const teamByAxis = [
       "2"
     ],
     "direction": false,
-    "institution": "FEAGRI/UNICAMP",
+    "institution": "NIPE/UNICAMP",
     "role": "Coordenadora do Eixo 2",
     "level": "Pós-Doc"
   },
