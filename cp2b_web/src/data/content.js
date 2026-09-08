@@ -931,6 +931,8 @@ export const teamMembers = [
       { name: 'Flávia Luciane Consoni', role: 'Pesquisador Associado', institution: 'IG/UNICAMP' },
       { name: 'Hildo Guillardi Júnior', role: 'Pesquisador Associado', institution: 'FESJBV/UNESP' },
       { name: 'Ivo Leandro Dorileo', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
+      // Professor da FEM/UNICAMP — estava classificado como Apoio Técnico.
+      { name: 'Joaquim Eugênio Abel Seabra', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP', membership: 'associado' },
       { name: 'Joni de Almeida Amorim', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'João Guilherme Ito Cypriano', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'Karla Adriana Martins Bessa', role: 'Pesquisador Associado', institution: 'PAGU/UNICAMP' },
@@ -973,7 +975,6 @@ export const teamMembers = [
     en: 'Technical and Administrative Support',
     members: [
       { name: 'Bruno Felipe Veloso', role: 'Apoio Técnico', institution: 'CCUEC/UNICAMP' },
-      { name: 'Joaquim Eugênio Abel Seabra', role: 'Apoio Técnico', institution: 'FEM/UNICAMP' },
       { name: 'Raffaella Rossetto', role: 'Apoio Técnico', institution: 'APTA/SAASP' },
       { name: 'Magali Luzia Maróstica', role: 'Apoio Administrativo', institution: 'NIPE/UNICAMP' },
       { name: 'Paulo César de Almeida Pinheiro', role: 'Apoio Administrativo', institution: 'NIPE/UNICAMP' },

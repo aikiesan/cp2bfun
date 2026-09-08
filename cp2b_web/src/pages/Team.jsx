@@ -6,12 +6,14 @@ import { teamMembers as staticTeamMembers, menuLabels, pageSeo } from '../data/c
 import { groupTeamByAxis } from '../utils/teamGroups';
 import { getTeamPhoto } from '../data/teamPhotos';
 import { teamByAxis } from '../data/generated/teamByAxis';
+import { getResearcherProfile } from '../data/generated/researcherProfiles';
 import { nameKey } from '../utils/nameKey';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchTeam } from '../services/api';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import Avatar from '../components/Avatar';
+import ResearcherModal from '../components/ResearcherModal';
 
 // The API still stores people under the old ranks; the page no longer
 // renders them as ranks, so this is only used to walk the response.
@@ -25,6 +27,28 @@ const removedTeamMemberKeys = new Set([
   nameKey('Gustavo Mockaitis'),
 ]);
 
+// Identifiers and bio, in the profile shape ResearcherModal expects.
+//
+// The database has a column per identifier and is the editable source; the
+// generated spreadsheet file fills in whoever the database does not carry yet.
+// Called with just a `{ name }` for the static fallback, where the sheet is
+// the only source there is.
+const resolveProfile = (row) => {
+  const sheet = getResearcherProfile(row.name);
+
+  return {
+    orcid: row.orcid || sheet.orcid,
+    lattes: row.lattes || sheet.lattes,
+    scholar: row.scholar || sheet.scholar,
+    scopus: row.scopus || sheet.scopus,
+    wos: row.wos || sheet.wos,
+    bvFapesp: row.bv_fapesp || sheet.bvFapesp,
+    institutional: row.institutional_url || sheet.institutional,
+    bioPt: row.bio_pt || sheet.bioPt,
+    bioEn: row.bio_en || sheet.bioEn,
+  };
+};
+
 // Flatten the static fallback, merging content.js and teamByAxis.js
 const flattenStatic = (groups, language) => {
   const seen = new Set();
@@ -34,9 +58,14 @@ const flattenStatic = (groups, language) => {
       return {
         name: m.name,
         role: m[language] || m.role,
+        // O cargo em português é o que a classificação de vínculo lê: em
+        // inglês, `role` chega traduzido.
+        role_pt: m.role,
         institution: m.institution,
         photo: m.photo || getTeamPhoto(m.name),
         axes: m.axes,
+        membership: m.membership,
+        profile: resolveProfile(m),
       };
     })
   );
@@ -46,10 +75,12 @@ const flattenStatic = (groups, language) => {
       list.push({
         name: person.name,
         role: person.role || person.level || (language === 'pt' ? 'Pesquisador(a)' : 'Researcher'),
+        role_pt: person.role || person.level,
         institution: person.institution,
         photo: getTeamPhoto(person.name),
         axes: person.axes,
         is_director: person.direction,
+        profile: resolveProfile(person),
       });
     }
   }
@@ -66,6 +97,8 @@ const Team = () => {
   const [apiMembers, setApiMembers] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  // One modal for the whole page, holding whichever person was clicked.
+  const [selectedMember, setSelectedMember] = useState(null);
 
   useEffect(() => {
     const loadTeam = async () => {
@@ -80,10 +113,13 @@ const Team = () => {
               apiData[cat].map((m) => ({
                 name: m.name,
                 role: language === 'pt' ? (m.role_pt || m.role) : (m.role_en || m.role_pt || m.role),
+                role_pt: m.role_pt || m.role,
                 institution: m.institution,
                 photo: m.photo || m.photo_url || getTeamPhoto(m.name) || null,
                 axes: m.axes,
                 is_director: m.is_director,
+                membership: m.membership,
+                profile: resolveProfile(m),
               }))
             );
           if (flat.length > 0) {
@@ -296,6 +332,12 @@ const Team = () => {
                   </span>
                 </div>
 
+                {group.blurb && (
+                  <p className="text-muted small mb-3" style={{ maxWidth: '62ch' }}>
+                    {group.blurb}
+                  </p>
+                )}
+
                 <Row className="g-2 g-sm-3 g-md-4">
                   {group.members.map((member, idx) => (
                     <Col key={`${group.category}-${member.name}-${idx}`} xs={6} sm={6} lg={4} xl={3}>
@@ -307,7 +349,14 @@ const Team = () => {
                           transition: 'transform 0.2s ease, box-shadow 0.2s ease',
                         }}
                       >
-                        <div className="d-flex align-items-center gap-2 gap-sm-3 team-member-inner">
+                        {/* The card used to be a dead end. It now opens the
+                            person's profile, so it has to be a real button. */}
+                        <button
+                          type="button"
+                          aria-haspopup="dialog"
+                          onClick={() => setSelectedMember(member)}
+                          className="d-flex align-items-center gap-2 gap-sm-3 team-member-inner team-member-trigger"
+                        >
                           <Avatar
                             photo={member.photo}
                             name={member.name}
@@ -345,7 +394,7 @@ const Team = () => {
                               {member.institution}
                             </div>
                           </div>
-                        </div>
+                        </button>
                       </Card>
                     </Col>
                   ))}
@@ -374,6 +423,12 @@ const Team = () => {
           )}
         </Container>
       </motion.div>
+
+      <ResearcherModal
+        member={selectedMember}
+        show={Boolean(selectedMember)}
+        onHide={() => setSelectedMember(null)}
+      />
     </>
   );
 };

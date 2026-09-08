@@ -3,6 +3,61 @@ import pool from '../db/connection.js';
 
 const router = Router();
 
+// Colunas que o admin pode gravar.
+//
+// Antes daqui saía uma lista fixa de oito campos, e `axes`, `is_director`,
+// `photo` e `photo_url` — que só existiam via SQL — eram descartados em
+// silêncio: cada edição no admin apagava o eixo e a foto da pessoa. Os
+// identificadores e a biografia entram na mesma lista para não repetir o
+// problema.
+const WRITABLE_FIELDS = [
+  'name',
+  'role_pt',
+  'role_en',
+  'institution',
+  'email',
+  'phone',
+  'category',
+  'sort_order',
+  'axes',
+  'is_director',
+  'photo',
+  'photo_url',
+  'membership',
+  'orcid',
+  'lattes',
+  'scholar',
+  'scopus',
+  'wos',
+  'bv_fapesp',
+  'institutional_url',
+  'bio_pt',
+  'bio_en',
+];
+
+const BOOLEAN_FIELDS = new Set(['is_director']);
+const NUMERIC_FIELDS = new Set(['sort_order']);
+
+// O formulário do admin manda string vazia para campo apagado, e apagar um
+// identificador errado precisa mesmo gravar NULL — senão a página cai no valor
+// da planilha e o link errado volta.
+const normalize = (field, value) => {
+  if (BOOLEAN_FIELDS.has(field)) return Boolean(value);
+  if (NUMERIC_FIELDS.has(field)) {
+    const number = Number(value);
+    return Number.isFinite(number) ? number : null;
+  }
+  if (typeof value === 'string' && value.trim() === '') return null;
+  return value;
+};
+
+// Só o que o corpo traz. Campo ausente fica como está — o que permite um PUT
+// parcial sem zerar o resto.
+const collectFields = (body) =>
+  WRITABLE_FIELDS.filter((field) => Object.prototype.hasOwnProperty.call(body, field)).map(
+    (field) => [field, normalize(field, body[field])]
+  );
+
 // Get all team members
 router.get('/', async (req, res) => {
   try {
@@ -70,15 +125,19 @@ router.get('/:id', async (req, res) => {
 // Create team member
 router.post('/', async (req, res) => {
   try {
-    const {
-      name, role_pt, role_en, institution, email, phone, category, sort_order
-    } = req.body;
+    const fields = collectFields(req.body);
+    if (fields.length === 0) {
+      return res.status(400).json({ error: 'No team member fields provided' });
+    }
+
+    const columns = fields.map(([field]) => field);
+    const placeholders = fields.map((_, index) => `$${index + 1}`);
 
     const result = await pool.query(
-      `INSERT INTO team_members (name, role_pt, role_en, institution, email, phone, category, sort_order)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+      `INSERT INTO team_members (${columns.join(', ')})
+       VALUES (${placeholders.join(', ')})
        RETURNING *`,
-      [name, role_pt, role_en, institution, email, phone, category, sort_order || 0]
+      fields.map(([, value]) => value)
     );
 
     res.status(201).json(result.rows[0]);
@@ -92,23 +151,20 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const {
-      name, role_pt, role_en, institution, email, phone, category, sort_order
-    } = req.body;
+
+    const fields = collectFields(req.body);
+    if (fields.length === 0) {
+      return res.status(400).json({ error: 'No team member fields provided' });
+    }
+
+    const assignments = fields.map(([field], index) => `${field} = $${index + 1}`);
 
     const result = await pool.query(
       `UPDATE team_members SET
-         name = COALESCE($1, name),
-         role_pt = COALESCE($2, role_pt),
-         role_en = COALESCE($3, role_en),
-         institution = COALESCE($4, institution),
-         email = COALESCE($5, email),
-         phone = COALESCE($6, phone),
-         category = COALESCE($7, category),
-         sort_order = COALESCE($8, sort_order)
-       WHERE id = $9
+         ${assignments.join(',\n         ')}
+       WHERE id = $${fields.length + 1}
        RETURNING *`,
-      [name, role_pt, role_en, institution, email, phone, category, sort_order, id]
+      [...fields.map(([, value]) => value), id]
     );
 
     if (result.rows.length === 0) {
