@@ -1,10 +1,16 @@
-// GERADO — não editar à mão.
+// GERADO — não editar à mão, EXCETO pelas correções do ANEXO 11 abaixo.
 // Gerado por scripts/extract-strategic-data.py a partir das abas
 // 'Coord Eixos' e 'Pesquisadores' da planilha estratégica do CP2b.
 //
 // Uma entrada por pessoa, com todos os eixos em que ela aparece. É a
 // fonte do vínculo pessoa→eixo usado em /equipe; os nomes e instituições
 // vêm da planilha da Luciana, não digitados à mão.
+//
+// ANEXO 11 (Composição da Coordenação dos Eixos, vigente 08/09/2026):
+// aplicado à mão sobre a geração — troca de eixo de Priscila (2→3),
+// Ana Beatriz (2→3) e Fabiane (3→2), rótulos de coordenação e a inclusão
+// de Carlos Eduardo Driemeier. O cargo de Coordenador Adjunto foi extinto.
+// Refletir essas mudanças na planilha de origem antes da próxima geração.
 export const teamByAxis = [
   {
     "name": "Alexandre Da Silva Souza",
@@ -29,11 +35,11 @@ export const teamByAxis = [
   {
     "name": "Ana Beatriz Soares Aguiar",
     "axes": [
-      "2"
+      "3"
     ],
     "direction": false,
     "institution": "NIPE/UNICAMP",
-    "role": null,
+    "role": "Coordenadora do Eixo 3",
     "level": "Pós-Doc"
   },
   {
@@ -65,6 +71,16 @@ export const teamByAxis = [
     "direction": true,
     "institution": "NIPE/UNICAMP",
     "role": "Diretora do CP2b",
+    "level": null
+  },
+  {
+    "name": "Carlos Eduardo Driemeier",
+    "axes": [
+      "4"
+    ],
+    "direction": false,
+    "institution": "NIPE/UNICAMP",
+    "role": "Coordenador do Eixo 4",
     "level": null
   },
   {
@@ -120,11 +136,11 @@ export const teamByAxis = [
   {
     "name": "Fabiane Moreira Vieira",
     "axes": [
-      "3"
+      "2"
     ],
     "direction": false,
     "institution": "FEAGRI/UNICAMP",
-    "role": null,
+    "role": "Coordenadora do Eixo 2",
     "level": "Pós-Doc"
   },
   {
@@ -234,7 +250,7 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "NIPE/UNICAMP",
-    "role": null,
+    "role": "Coordenador do Eixo 1",
     "level": "Pós-Doc"
   },
   {
@@ -244,7 +260,7 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "Engenharia Ambiental/USP",
-    "role": "Professor USP",
+    "role": "Coordenador do Eixo 2",
     "level": null
   },
   {
@@ -268,16 +284,6 @@ export const teamByAxis = [
     "level": null
   },
   {
-    "name": "Luiza Arones Gaspar",
-    "axes": [
-      "2"
-    ],
-    "direction": false,
-    "institution": null,
-    "role": null,
-    "level": "Graduanda"
-  },
-  {
     "name": "Luiz Gustavo Antônio de Souza",
     "axes": [
       "4"
@@ -286,6 +292,16 @@ export const teamByAxis = [
     "institution": "ITA/Fortaleza",
     "role": "Professor ITA",
     "level": null
+  },
+  {
+    "name": "Luiza Arones Gaspar",
+    "axes": [
+      "2"
+    ],
+    "direction": false,
+    "institution": null,
+    "role": null,
+    "level": "Graduanda"
   },
   {
     "name": "Marcelo Marques de Magalhães",
@@ -304,7 +320,7 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "Economia/UNICAMP",
-    "role": "Professor UNICAMP",
+    "role": "Coordenador do Eixo 4",
     "level": null
   },
   {
@@ -328,6 +344,16 @@ export const teamByAxis = [
     "level": "Mestre"
   },
   {
+    "name": "Maria Paula Cardeal Volpi",
+    "axes": [
+      "7"
+    ],
+    "direction": false,
+    "institution": "ESALQ/USP",
+    "role": "Coordenadora do Eixo 7",
+    "level": null
+  },
+  {
     "name": "Mariana Conceição da Costa",
     "axes": [
       "5"
@@ -336,16 +362,6 @@ export const teamByAxis = [
     "institution": "FEQ/UNICAMP",
     "role": null,
     "level": "Professora"
-  },
-  {
-    "name": "Maria Paula Cardeal Volpi",
-    "axes": [
-      "7"
-    ],
-    "direction": false,
-    "institution": "ESALQ/USP",
-    "role": "Professora USP",
-    "level": null
   },
   {
     "name": "Mauro Donizetti Berni",
@@ -374,7 +390,7 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "FCA/UNICAMP",
-    "role": "Professora UNICAMP",
+    "role": "Coordenadora do Eixo 8",
     "level": null
   },
   {
@@ -400,11 +416,11 @@ export const teamByAxis = [
   {
     "name": "Priscila Rosseto Camiloti",
     "axes": [
-      "2"
+      "3"
     ],
     "direction": false,
     "institution": "Divisão Científica de Planejamento, Análise e Desenvolvimento Energético do Instituto de Energia e Ambiente/USP",
-    "role": "Professora USP",
+    "role": "Coordenadora do Eixo 3",
     "level": null
   },
   {
@@ -414,7 +430,7 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "POLI/USP",
-    "role": "Professora USP",
+    "role": "Coordenadora do Eixo 5",
     "level": null
   },
   {
@@ -455,7 +471,7 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "NIPE/UNICAMP",
-    "role": "Pesquisador Sênior",
+    "role": "Coordenador do Eixo 1",
     "level": null
   },
   {
@@ -515,7 +531,7 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "FCA/UNICAMP",
-    "role": "Professora UNICAMP",
+    "role": "Coordenadora do Eixo 8",
     "level": null
   },
   {

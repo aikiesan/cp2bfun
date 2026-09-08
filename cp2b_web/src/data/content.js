@@ -133,12 +133,12 @@ export const missionVisionValues = {
     mission: {
       tag: 'MISSÃO',
       title: 'Nossa Missão',
-      text: '“Desenvolver pesquisas, tecnologias e soluções inovadoras de biogás com motivação industrial, ambiental e social que promovam o aproveitamento inteligente de resíduos para o desenvolvimento sustentável”.'
+      text: '“Desenvolver pesquisas, tecnologias e soluções inovadoras em biogás, com motivação industrial, ambiental e social, promovendo o aproveitamento inteligente de resíduos e contribuindo para um desenvolvimento sustentável, inclusivo e equitativo”.'
     },
     vision: {
       tag: 'VISÃO',
       title: 'Nossa Visão',
-      text: '“ser referência nacional e internacional na gestão eficiente e sustentável de resíduos urbanos e agropecuários, transformando o estado de SP em vitrine de soluções inteligentes em biogás. Para isso, o CP2B busca criar novos conhecimentos e competências, com base em ciência de ponta, que possam apoiar o desenvolvimento de soluções aplicáveis de biogás no estado de SP (ESP), articulando ações conjuntas e complementares nas esferas industrial, política, social e ambiental”.'
+      text: '“Ser referência nacional e internacional na gestão eficiente e sustentável de resíduos urbanos e agropecuários, transformando o estado de São Paulo em vitrine de soluções inteligentes em biogás e de desenvolvimento sustentável, inclusivo e equitativo. Para isso, o CP2B busca criar novos conhecimentos e competências, com base em ciência de ponta, que possam apoiar o desenvolvimento de soluções aplicáveis de biogás no estado de SP (ESP), articulando ações conjuntas e complementares nas esferas industrial, política, social e ambiental”.'
     },
     valuesTitle: 'Nossos Valores',
     valuesStatement: 'Valores CP2b estão refletidos nas competências e princípios norteadores:',
@@ -167,6 +167,11 @@ export const missionVisionValues = {
         icon: 'bi-shield-check',
         title: 'Ética, Transparência & Governança',
         description: 'Integridade absoluta na condução das pesquisas, responsabilidade na gestão dos recursos públicos e compromisso com a prestação de contas à sociedade.'
+      },
+      {
+        icon: 'bi-people',
+        title: 'Diversidade & Equidade de Gênero',
+        description: 'Valorizar a diversidade e promover a equidade de gênero, assegurando oportunidades, participação, reconhecimento e desenvolvimento para todas as pessoas nos espaços de ciência, tecnologia, inovação e liderança.'
       }
     ]
   },
@@ -177,12 +182,12 @@ export const missionVisionValues = {
     mission: {
       tag: 'MISSION',
       title: 'Our Mission',
-      text: '“Develop research, technologies, and innovative biogas solutions with industrial, environmental, and social motivation that promote the smart use of waste for sustainable development.”'
+      text: '“Develop research, technologies, and innovative biogas solutions with industrial, environmental, and social motivation, promoting the smart use of waste and contributing to sustainable, inclusive and equitable development.”'
     },
     vision: {
       tag: 'VISION',
       title: 'Our Vision',
-      text: '“To be a national and international reference in the efficient and sustainable management of urban and agricultural waste, transforming the State of São Paulo into a showcase of smart biogas solutions. To achieve this, CP2B seeks to create new knowledge and competencies, based on cutting-edge science, that can support the development of applicable biogas solutions in the State of São Paulo (ESP), coordinating joint and complementary actions across industrial, political, social, and environmental spheres.”'
+      text: '“To be a national and international reference in the efficient and sustainable management of urban and agricultural waste, transforming the State of São Paulo into a showcase of smart biogas solutions and of sustainable, inclusive and equitable development. To achieve this, CP2B seeks to create new knowledge and competencies, based on cutting-edge science, that can support the development of applicable biogas solutions in the State of São Paulo (ESP), coordinating joint and complementary actions across industrial, political, social, and environmental spheres.”'
     },
     valuesTitle: 'Our Values',
     valuesStatement: 'CP2b values are reflected in our core competencies and guiding principles:',
@@ -211,6 +216,11 @@ export const missionVisionValues = {
         icon: 'bi-shield-check',
         title: 'Ethics, Transparency & Governance',
         description: 'Absolute integrity in research conduct, responsible management of public resources, and commitment to public accountability.'
+      },
+      {
+        icon: 'bi-people',
+        title: 'Diversity & Gender Equity',
+        description: 'Valuing diversity and advancing gender equity, ensuring opportunity, participation, recognition and development for everyone in science, technology, innovation and leadership.'
       }
     ]
   }
@@ -645,9 +655,10 @@ export const researchAxes = {
     {
       id: '1',
       title: 'Eixo 1 – Inventário de Resíduos e Mapeamento Tecnológico',
-      coordinator: 'Profº Drº Rubens Augusto Camargo Lamparelli',
+      coordinator: 'Profº Drº Rubens Augusto Camargo Lamparelli, Drº Lucas Nakamura Cerejo',
       coordinators: [
-        { name: 'Profº Drº Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/FOTO_RUBENS_LAMPARELLI_EIXO_1.jpg' }
+        { name: 'Profº Drº Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/team/rubens-augusto-camargo-lamparelli.webp' },
+        { name: 'Drº Lucas Nakamura Cerejo', role: 'Coord.', photo: '/assets/team/lucas-nakamura-cerejo.webp' }
       ],
       content: `O Eixo 1 mapeia cadeias agroindustriais e resíduos com georreferenciamento de alta precisão para identificar oportunidades de aproveitamento e integrar geradores em uma plataforma digital acessível.
       ODS: 7, 11, 13 e 15.`,
@@ -656,10 +667,10 @@ export const researchAxes = {
     {
       id: '2',
       title: 'Eixo 2 – Ciência e Tecnologia de Base',
-      coordinator: 'Profº Drº Lucas Tadeu Fuess (Coord.), Profª Drª Priscila Rosseto Camiloti (Adj.)',
+      coordinator: 'Profº Drº Lucas Tadeu Fuess, Drª Fabiane Moreira Vieira',
       coordinators: [
-        { name: 'Profº Drº Lucas Tadeu Fuess', role: 'Coord.', photo: '/assets/FOTO_LUCAS_TADEU_FUESS.jpg' },
-        { name: 'Profª Drª Priscila Rosseto Camiloti', role: 'Adj.', photo: '/assets/FOTO_PRISCILA.jpg' }
+        { name: 'Profº Drº Lucas Tadeu Fuess', role: 'Coord.', photo: '/assets/team/lucas-tadeu-fuess.webp' },
+        { name: 'Drª Fabiane Moreira Vieira', role: 'Coord.', photo: '/assets/team/fabiane-moreira-vieira.webp' }
       ],
       content: `O Eixo 2 se dedica à pesquisa científica fundamental que sustenta os avanços tecnológicos na cadeia do biogás. O principal desafio é a operação de reatores biológicos durante a entressafra da cana-de-açúcar.
       As pesquisas serão organizadas em três etapas: upstream, midstream e downstream.
@@ -669,10 +680,10 @@ export const researchAxes = {
     {
       id: '3',
       title: 'Eixo 3 – Engenharia de Processos e Bioprocessos',
-      coordinator: 'Profª Drª Luana Mattos de Oliveira Cruz (Coord.), Profº Drº Enelton Fagnani (Adj.)',
+      coordinator: 'Profª Drª Priscila Rosseto Camiloti, Drª Ana Beatriz Soares Aguiar',
       coordinators: [
-        { name: 'Profª Drª Luana Mattos de Oliveira Cruz', role: 'Coord.', photo: '/assets/FOTO_LUANA_EIXO_3.jpg' },
-        { name: 'Profº Drº Enelton Fagnani', role: 'Adj.', photo: '/assets/FOTO_ENELTON_EIXO_3.jpg' }
+        { name: 'Profª Drª Priscila Rosseto Camiloti', role: 'Coord.', photo: '/assets/team/priscila-rosseto-camiloti.webp' },
+        { name: 'Drª Ana Beatriz Soares Aguiar', role: 'Coord.', photo: '/assets/team/ana-beatriz-soares-aguiar.webp' }
       ],
       content: `O Eixo 3 é o momento de tirar as ideias do papel e testar em escala maior. O objetivo é ajudar os parceiros a atravessar o famoso "vale da morte" tecnológico.
       As pesquisas alcançarão níveis de maturidade tecnológica (TRL) 6 e 7. A parceria com empresas é o coração deste eixo (SABESP, COPERCANA, Embrapii).
@@ -682,10 +693,10 @@ export const researchAxes = {
     {
       id: '4',
       title: 'Eixo 4 – Avaliação Integrada Socioeconômica, Ambiental e Energética',
-      coordinator: 'Profº Drº Marcelo Pereira Cunha (Coord.), Profº Drº Luiz Gustavo Antônio de Souza (Adj.)',
+      coordinator: 'Profº Drº Marcelo Pereira Cunha, Drº Carlos Eduardo Driemeier',
       coordinators: [
-        { name: 'Profº Drº Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/FOTO_MARCELO_CUNHA_EIXO_4.jpg' },
-        { name: 'Profº Drº Luiz Gustavo Antônio de Souza', role: 'Adj.', photo: null }
+        { name: 'Profº Drº Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/team/marcelo-pereira-da-cunha.webp' },
+        { name: 'Drº Carlos Eduardo Driemeier', role: 'Coord.', photo: null }
       ],
       content: `O Eixo 4 é o espaço da reflexão crítica. Sua missão é avaliar os impactos socioeconômicos, ambientais e energéticos.
       O eixo vai construir e avaliar cenários que subsidiem a formulação de políticas públicas.
@@ -696,10 +707,9 @@ export const researchAxes = {
     {
       id: '5',
       title: 'Eixo 5 – Inovação em Bioprodutos na Cadeia do Biogás',
-      coordinator: 'Profº Drº Luis Alberto Follegatti Romero (Coord.), Profª Drª Rachel Biancalana Costa (Adj.)',
+      coordinator: 'Profª Drª Rachel Biancalana Costa, Vaga temporariamente em aberto',
       coordinators: [
-        { name: 'Profº Drº Luis Alberto Follegatti Romero', role: 'Coord.', photo: null },
-        { name: 'Profª Drª Rachel Biancalana Costa', role: 'Adj.', photo: null }
+        { name: 'Profª Drª Rachel Biancalana Costa', role: 'Coord.', photo: '/assets/team/rachel-biancalana-costa.webp' }
       ],
       content: `O Eixo 5 mergulha no conceito de biorrefinaria. A vinhaça é um bom exemplo de foco, contendo ácidos orgânicos de alto valor.
       A aposta é o biohitano (combinação de hidrogênio e metano).
@@ -709,10 +719,10 @@ export const researchAxes = {
     {
       id: '6',
       title: 'Eixo 6 – Educação e Capacitação',
-      coordinator: 'Profª Drª Renata Piacentini Rodriguez (Coord.), Profª Drª Bruna de Souza Moraes (Adj.)',
+      coordinator: 'Profª Drª Renata Piacentini Rodriguez, Profª Drª Bruna de Souza Moraes',
       coordinators: [
-        { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/FOTO_RENATA.jpg' },
-        { name: 'Profª Drª Bruna de Souza Moraes', role: 'Adj.', photo: '/assets/FOTO_BRUNA.jpg' }
+        { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/team/renata-piacentini-rodriguez.webp' },
+        { name: 'Profª Drª Bruna de Souza Moraes', role: 'Coord.', photo: '/assets/team/bruna-de-souza-moraes.webp' }
       ],
       content: `O Eixo 6 é dedicado à formação de pessoas. O CP2b vai atuar como centro de capacitação profissional oferecendo cursos.
       No desenvolvimento social, atuará na educação socioambiental de comunidades periféricas (ex: Comunidade Capadócia).
@@ -722,10 +732,10 @@ export const researchAxes = {
     {
       id: '7',
       title: 'Eixo 7 – Difusão Científica e Comunicação',
-      coordinator: 'Profª Drª Maria Paula Cardeal Volpi (Coord.), Profª Drª Renata Piacentini Rodriguez (Adj.)',
+      coordinator: 'Profª Drª Maria Paula Cardeal Volpi, Profª Drª Renata Piacentini Rodriguez',
       coordinators: [
-        { name: 'Profª Drª Maria Paula Cardeal Volpi', role: 'Coord.', photo: '/assets/FOTO_MARIA_PAULA.jpg' },
-        { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Adj.', photo: '/assets/FOTO_RENATA.jpg' }
+        { name: 'Profª Drª Maria Paula Cardeal Volpi', role: 'Coord.', photo: '/assets/team/maria-paula-cardeal-volpi.webp' },
+        { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/team/renata-piacentini-rodriguez.webp' }
       ],
       content: `O conhecimento precisa ultrapassar os muros da universidade. O centro vai promover visitas científicas, palestras e projetos de estímulo à ciência.
       ODS: 4, 7 e 17.`,
@@ -734,11 +744,10 @@ export const researchAxes = {
     {
       id: '8',
       title: 'Eixo 8 – Políticas Públicas e Inovação Regulatória',
-      coordinator: 'Profº Drº Rafael de Brito Dias (Coord.), Profª Drª Natalia Molina Cetrulo (Adj.), Profª Drª Thais Aparecida Dibbern (Adj.)',
+      coordinator: 'Profª Drª Natalia Molina Cetrulo, Drª Thais Aparecida Dibbern',
       coordinators: [
-        { name: 'Profº Drº Rafael de Brito Dias', role: 'Coord.', photo: '/assets/FOTO_RAFAEL_EIXO_8.jpg' },
-        { name: 'Profª Drª Natalia Molina Cetrulo', role: 'Adj.', photo: '/assets/FOTO_NATALIA.jpg' },
-        { name: 'Profª Drª Thais Aparecida Dibbern', role: 'Adj.', photo: null }
+        { name: 'Profª Drª Natalia Molina Cetrulo', role: 'Coord.', photo: '/assets/team/natalia-molina-cetrulo.webp' },
+        { name: 'Drª Thais Aparecida Dibbern', role: 'Coord.', photo: '/assets/team/thais-aparecida-dibbern.webp' }
       ],
       content: `O Eixo 8 analisa políticas públicas e propõe arranjos que otimizem as agendas.
       Prevê a realização de uma "oficina de inovação regulatória" e criação de um conselho com poder público e sociedade civil.
@@ -750,9 +759,10 @@ export const researchAxes = {
     {
       id: '1',
       title: 'Axis 1 – Waste Inventory and Technology Mapping',
-      coordinator: 'Prof. Dr. Rubens Augusto Camargo Lamparelli',
+      coordinator: 'Prof. Dr. Rubens Augusto Camargo Lamparelli, Dr. Lucas Nakamura Cerejo',
       coordinators: [
-        { name: 'Prof. Dr. Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/FOTO_RUBENS_LAMPARELLI_EIXO_1.jpg' }
+        { name: 'Prof. Dr. Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/team/rubens-augusto-camargo-lamparelli.webp' },
+        { name: 'Dr. Lucas Nakamura Cerejo', role: 'Coord.', photo: '/assets/team/lucas-nakamura-cerejo.webp' }
       ],
       content: `Axis 1 maps agro-industrial chains and waste streams using high-precision georeferencing to identify recovery opportunities and connect generators through an accessible digital platform.
       SDGs: 7, 11, 13, and 15.`,
@@ -761,10 +771,10 @@ export const researchAxes = {
     {
       id: '2',
       title: 'Axis 2 – Basic Science and Technology',
-      coordinator: 'Prof. Dr. Lucas Tadeu Fuess (Coord.), Prof. Dr. Priscila Rosseto Camiloti (Adj.)',
+      coordinator: 'Prof. Dr. Lucas Tadeu Fuess, Dr. Fabiane Moreira Vieira',
       coordinators: [
-        { name: 'Prof. Dr. Lucas Tadeu Fuess', role: 'Coord.', photo: '/assets/FOTO_LUCAS_TADEU_FUESS.jpg' },
-        { name: 'Prof. Dr. Priscila Rosseto Camiloti', role: 'Adj.', photo: '/assets/FOTO_PRISCILA.jpg' }
+        { name: 'Prof. Dr. Lucas Tadeu Fuess', role: 'Coord.', photo: '/assets/team/lucas-tadeu-fuess.webp' },
+        { name: 'Dr. Fabiane Moreira Vieira', role: 'Coord.', photo: '/assets/team/fabiane-moreira-vieira.webp' }
       ],
       content: `Axis 2 is dedicated to fundamental scientific research that supports technological advances in the biogas chain. The main challenge is the operation of biological reactors during the sugarcane off-season.
       Research will be organized into three stages: upstream, midstream, and downstream.
@@ -774,10 +784,10 @@ export const researchAxes = {
     {
       id: '3',
       title: 'Axis 3 – Process and Bioprocess Engineering',
-      coordinator: 'Prof. Dr. Luana Mattos de Oliveira Cruz (Coord.), Prof. Dr. Enelton Fagnani (Adj.)',
+      coordinator: 'Prof. Dr. Priscila Rosseto Camiloti, Dr. Ana Beatriz Soares Aguiar',
       coordinators: [
-        { name: 'Prof. Dr. Luana Mattos de Oliveira Cruz', role: 'Coord.', photo: '/assets/FOTO_LUANA_EIXO_3.jpg' },
-        { name: 'Prof. Dr. Enelton Fagnani', role: 'Adj.', photo: '/assets/FOTO_ENELTON_EIXO_3.jpg' }
+        { name: 'Prof. Dr. Priscila Rosseto Camiloti', role: 'Coord.', photo: '/assets/team/priscila-rosseto-camiloti.webp' },
+        { name: 'Dr. Ana Beatriz Soares Aguiar', role: 'Coord.', photo: '/assets/team/ana-beatriz-soares-aguiar.webp' }
       ],
       content: `Axis 3 is the moment to put ideas into practice and test them on a larger scale. The goal is to help partners cross the famous technological "valley of death."
       Research will reach technological readiness levels (TRL) 6 and 7. Partnerships with companies are the heart of this axis (SABESP, COPERCANA, Embrapii).
@@ -787,10 +797,10 @@ export const researchAxes = {
     {
       id: '4',
       title: 'Axis 4 – Integrated Socioeconomic, Environmental, and Energy Assessment',
-      coordinator: 'Prof. Dr. Marcelo Pereira Cunha (Coord.), Prof. Dr. Luiz Gustavo Antônio de Souza (Adj.)',
+      coordinator: 'Prof. Dr. Marcelo Pereira Cunha, Dr. Carlos Eduardo Driemeier',
       coordinators: [
-        { name: 'Prof. Dr. Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/FOTO_MARCELO_CUNHA_EIXO_4.jpg' },
-        { name: 'Prof. Dr. Luiz Gustavo Antônio de Souza', role: 'Adj.', photo: null }
+        { name: 'Prof. Dr. Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/team/marcelo-pereira-da-cunha.webp' },
+        { name: 'Dr. Carlos Eduardo Driemeier', role: 'Coord.', photo: null }
       ],
       content: `Axis 4 is the space for critical reflection. Its mission is to assess socioeconomic, environmental, and energy impacts.
       The axis will build and evaluate scenarios that support the formulation of public policies.
@@ -801,10 +811,9 @@ export const researchAxes = {
     {
       id: '5',
       title: 'Axis 5 – Bioproduct Innovation in the Biogas Chain',
-      coordinator: 'Prof. Dr. Luis Alberto Follegatti Romero (Coord.), Prof. Dr. Rachel Biancalana Costa (Adj.)',
+      coordinator: 'Prof. Dr. Rachel Biancalana Costa, Position temporarily open',
       coordinators: [
-        { name: 'Prof. Dr. Luis Alberto Follegatti Romero', role: 'Coord.', photo: null },
-        { name: 'Prof. Dr. Rachel Biancalana Costa', role: 'Adj.', photo: null }
+        { name: 'Prof. Dr. Rachel Biancalana Costa', role: 'Coord.', photo: '/assets/team/rachel-biancalana-costa.webp' }
       ],
       content: `Axis 5 dives into the biorefinery concept. Vinasse is a prime focus, containing high-value organic acids.
       The focus is on biohitane (a combination of hydrogen and methane).
@@ -814,10 +823,10 @@ export const researchAxes = {
     {
       id: '6',
       title: 'Axis 6 – Education and Training',
-      coordinator: 'Prof. Dr. Renata Piacentini Rodriguez (Coord.), Prof. Dr. Bruna de Souza Moraes (Adj.)',
+      coordinator: 'Prof. Dr. Renata Piacentini Rodriguez, Prof. Dr. Bruna de Souza Moraes',
       coordinators: [
-        { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/FOTO_RENATA.jpg' },
-        { name: 'Prof. Dr. Bruna de Souza Moraes', role: 'Adj.', photo: '/assets/FOTO_BRUNA.jpg' }
+        { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/team/renata-piacentini-rodriguez.webp' },
+        { name: 'Prof. Dr. Bruna de Souza Moraes', role: 'Coord.', photo: '/assets/team/bruna-de-souza-moraes.webp' }
       ],
       content: `Axis 6 is dedicated to human resources training. CP2b will act as a professional training center offering courses.
       In social development, it will work on socio-environmental education for peripheral communities (e.g., Capadócia Community).
@@ -827,10 +836,10 @@ export const researchAxes = {
     {
       id: '7',
       title: 'Axis 7 – Scientific Dissemination and Communication',
-      coordinator: 'Prof. Dr. Maria Paula Cardeal Volpi (Coord.), Prof. Dr. Renata Piacentini Rodriguez (Adj.)',
+      coordinator: 'Prof. Dr. Maria Paula Cardeal Volpi, Prof. Dr. Renata Piacentini Rodriguez',
       coordinators: [
-        { name: 'Prof. Dr. Maria Paula Cardeal Volpi', role: 'Coord.', photo: '/assets/FOTO_MARIA_PAULA.jpg' },
-        { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Adj.', photo: '/assets/FOTO_RENATA.jpg' }
+        { name: 'Prof. Dr. Maria Paula Cardeal Volpi', role: 'Coord.', photo: '/assets/team/maria-paula-cardeal-volpi.webp' },
+        { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/team/renata-piacentini-rodriguez.webp' }
       ],
       content: `Knowledge needs to go beyond the university walls. The center will promote scientific visits, lectures, and projects to stimulate science.
       SDGs: 4, 7, and 17.`,
@@ -839,11 +848,10 @@ export const researchAxes = {
     {
       id: '8',
       title: 'Axis 8 – Public Policies and Regulatory Innovation',
-      coordinator: 'Prof. Dr. Rafael de Brito Dias (Coord.), Prof. Dr. Natalia Molina Cetrulo (Adj.), Prof. Dr. Thais Aparecida Dibbern (Adj.)',
+      coordinator: 'Prof. Dr. Natalia Molina Cetrulo, Dr. Thais Aparecida Dibbern',
       coordinators: [
-        { name: 'Prof. Dr. Rafael de Brito Dias', role: 'Coord.', photo: '/assets/FOTO_RAFAEL_EIXO_8.jpg' },
-        { name: 'Prof. Dr. Natalia Molina Cetrulo', role: 'Adj.', photo: '/assets/FOTO_NATALIA.jpg' },
-        { name: 'Prof. Dr. Thais Aparecida Dibbern', role: 'Adj.', photo: null }
+        { name: 'Prof. Dr. Natalia Molina Cetrulo', role: 'Coord.', photo: '/assets/team/natalia-molina-cetrulo.webp' },
+        { name: 'Dr. Thais Aparecida Dibbern', role: 'Coord.', photo: '/assets/team/thais-aparecida-dibbern.webp' }
       ],
       content: `Axis 8 analyzes public policies and proposes arrangements that optimize agendas.
       It foresees the realization of a "regulatory innovation workshop" and the creation of a council with public authorities and civil society.
@@ -901,7 +909,7 @@ export const teamMembers = [
       { name: 'José Maria Ferreira Jardim da Silveira', role: 'Pesquisador Principal', institution: 'IE/UNICAMP' },
       { name: 'Luis Alberto Follegatti Romero', role: 'Pesquisador Principal', institution: 'EP/USP' },
       { name: 'Rafael de Brito Dias', role: 'Pesquisador Principal', institution: 'FCA/UNICAMP' },
-      { name: 'Rubens Augusto Camargo Lamparelli', role: 'Pesquisador Principal', institution: 'NIPE/UNICAMP', email: 'lamparel@unicamp.br' }
+      { name: 'Rubens Augusto Camargo Lamparelli', role: 'Coordenador do Eixo 1', institution: 'NIPE/UNICAMP', email: 'lamparel@unicamp.br' }
     ]
   },
   {
@@ -910,7 +918,8 @@ export const teamMembers = [
     en: 'Associate Researchers',
     members: [
       { name: 'Aline Veronese da Silva', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
-      { name: 'Ana Beatriz Soares Aguiar', role: 'Pesquisador Associado', institution: 'UNICAMP' },
+      { name: 'Ana Beatriz Soares Aguiar', role: 'Coordenadora do Eixo 3', institution: 'UNICAMP' },
+      { name: 'Carlos Eduardo Driemeier', role: 'Coordenador do Eixo 4', institution: 'NIPE/UNICAMP' },
       { name: 'Barbara Janet Teruel Mederos', role: 'Pesquisador Associado', institution: 'FEAGRI/UNICAMP' },
       { name: 'Caio Henrique Rufino', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
       { name: 'Carla Kazue Nakao Cavaliero', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
@@ -928,7 +937,7 @@ export const teamMembers = [
       { name: 'Leandro Wang Hantao', role: 'Pesquisador Associado', institution: 'IQ/UNICAMP' },
       { name: 'Lira Luz Benites Lazaro', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'Luana Mattos de Oliveira Cruz', role: 'Pesquisador Associado', institution: 'FEC/UNICAMP' },
-      { name: 'Lucas Tadeu Fuess', role: 'Pesquisador Associado', institution: 'EESC/USP' },
+      { name: 'Lucas Tadeu Fuess', role: 'Coordenador do Eixo 2', institution: 'EESC/USP' },
       { name: 'Luciana Cristina Lenhari da Silva', role: 'Pesquisador Associado', institution: 'IG/UNICAMP' },
       { name: 'Luiz Carlos Pereira da Silva', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'Luiz Carlos Roma Júnior', role: 'Pesquisador Associado', institution: 'IZ/SAASP' },
@@ -936,23 +945,23 @@ export const teamMembers = [
       { name: 'Marcelo Antunes Nolasco', role: 'Pesquisador Associado', institution: 'EACH/USP' },
       { name: 'Marcelo de Carvalho Pereira', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
       { name: 'Marcelo Marques de Magalhães', role: 'Pesquisador Associado', institution: 'CET/UNESP' },
-      { name: 'Marcelo Pereira da Cunha', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
+      { name: 'Marcelo Pereira da Cunha', role: 'Coordenador do Eixo 4', institution: 'IE/UNICAMP' },
       { name: 'Marcelo Zaiat', role: 'Pesquisador Associado', institution: 'EESC/USP' },
-      { name: 'Maria Paula Cardeal Volpi', role: 'Pesquisador Associado', institution: 'ESALQ/USP' },
+      { name: 'Maria Paula Cardeal Volpi', role: 'Coordenadora do Eixo 7', institution: 'ESALQ/USP' },
       { name: 'Mariana Conceição da Costa', role: 'Pesquisador Associado', institution: 'FEQ/UNICAMP' },
       { name: 'Mauro Donizeti Berni', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
-      { name: 'Natalia Molina Cetrulo', role: 'Pesquisador Associado', institution: 'EACH/USP' },
+      { name: 'Natalia Molina Cetrulo', role: 'Coordenadora do Eixo 8', institution: 'FCA/UNICAMP' },
       { name: 'Patricia Jacqueline Thyssen', role: 'Pesquisador Associado', institution: 'IB/UNICAMP' },
       { name: 'Patricia Nunes da Silva Mariuzzo', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
       { name: 'Paulo Cesar Souza Manduca', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
       { name: 'Paulo Sergio Graziano Magalhães', role: 'Pesquisador Associado', institution: 'UPP' },
-      { name: 'Priscila Rosseto Camiloti', role: 'Pesquisador Associado', institution: 'IEE/USP' },
-      { name: 'Rachel Biancalana Costa', role: 'Pesquisador Associado', institution: 'POLI/USP' },
+      { name: 'Priscila Rosseto Camiloti', role: 'Coordenadora do Eixo 3', institution: 'IEE/USP' },
+      { name: 'Rachel Biancalana Costa', role: 'Coordenadora do Eixo 5', institution: 'POLI/USP' },
       { name: 'Sarita Cândida Rabelo', role: 'Pesquisador Associado', institution: 'FCA/UNESP' },
       { name: 'Sergio Valdir Bajay', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
       { name: 'Solange Teles da Silva', role: 'Pesquisador Associado', institution: 'CPG/UPM' },
       { name: 'Sonia Regina da Cal Seixas', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
-      { name: 'Thais Aparecida Dibbern', role: 'Pesquisador Associado', institution: 'FCA/UNICAMP' },
+      { name: 'Thais Aparecida Dibbern', role: 'Coordenadora do Eixo 8', institution: 'FCA/UNICAMP' },
       { name: 'Thalita dos Santos Dalbelo', role: 'Pesquisador Associado', institution: 'FEC/UNICAMP' },
       { name: 'Valeria Maia Merzel', role: 'Pesquisador Associado', institution: 'CPQBA/UNICAMP' },
       { name: 'Waldyr Luiz Ribeiro Gallo', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' }

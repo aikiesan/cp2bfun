@@ -35,7 +35,7 @@ describe('Research', () => {
     const user = userEvent.setup();
     renderWithProviders(<Research />);
 
-    // Eixo 2 tem competências, projetos, equipe e infraestrutura.
+    // Eixo 2 tem competências, projetos e infraestrutura.
     const axisNodes = document.querySelectorAll('.mmap-node--axis');
     await user.click(axisNodes[1]);
 
@@ -43,6 +43,23 @@ describe('Research', () => {
     expect(branchNodes.length).toBeGreaterThan(0);
     // Cada ramo mostra um contador de itens.
     expect(document.querySelectorAll('.mmap-node__count').length).toBe(branchNodes.length);
+  });
+
+  it('does not attribute the axes to people', async () => {
+    // Os eixos não são apessoados: a coordenação muda a cada ano e as
+    // pessoas vivem em /equipe. Ver AxisMindMap (HIDDEN_BRANCHES).
+    const user = userEvent.setup();
+    renderWithProviders(<Research />);
+
+    expect(document.querySelector('.mmap__coords')).toBeNull();
+    expect(screen.queryByText(/Rubens Augusto Camargo Lamparelli/)).toBeNull();
+
+    const axisNodes = document.querySelectorAll('.mmap-node--axis');
+    for (const node of axisNodes) {
+      await user.click(node);
+      const branches = [...document.querySelectorAll('.mmap-node--branch')].map((b) => b.textContent);
+      expect(branches.some((b) => /Equipe/i.test(b))).toBe(false);
+    }
   });
 
   it('lists the laboratory infrastructure section', () => {

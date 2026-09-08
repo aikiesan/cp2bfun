@@ -1,7 +1,6 @@
 import { useState, useEffect, useLayoutEffect, useMemo, useRef, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import CoordinatorAvatar from './CoordinatorAvatar';
 import { sdgMap } from '../data/content';
 import './AxisMindMap.css';
 
@@ -14,17 +13,20 @@ import './AxisMindMap.css';
 // não cabem, e forçar scroll horizontal seria repetir o problema que a
 // timeline da home tinha.
 
+// Os eixos não são apessoados: a composição da coordenação muda a cada ano,
+// então /eixos descreve o trabalho, não quem o assina. As pessoas ficam em
+// /equipe. Por isso não há ramo 'Equipe' aqui e os itens não trazem nomes.
+const HIDDEN_BRANCHES = new Set(['equipe']);
+
 const BRANCH_META = {
   pt: {
     competencias: { label: 'Competências', icon: 'bi-lightbulb' },
     projetos: { label: 'Projetos', icon: 'bi-diagram-3' },
-    equipe: { label: 'Equipe', icon: 'bi-people' },
     infra: { label: 'Infraestrutura', icon: 'bi-building' },
   },
   en: {
     competencias: { label: 'Competencies', icon: 'bi-lightbulb' },
     projetos: { label: 'Projects', icon: 'bi-diagram-3' },
-    equipe: { label: 'Team', icon: 'bi-people' },
     infra: { label: 'Infrastructure', icon: 'bi-building' },
   },
 };
@@ -57,7 +59,6 @@ const ItemCard = ({ branchId, item, color }) => {
         <h4 className="mmap-item__title">{item.competency || item.area}</h4>
         {item.area && item.competency && <p className="mmap-item__sub">{item.area}</p>}
         {item.definition && <p className="mmap-item__text">{item.definition}</p>}
-        {item.person && <span className="mmap-chip">{item.person}</span>}
         {item.institution && <span className="mmap-chip">{item.institution}</span>}
       </article>
     );
@@ -70,19 +71,8 @@ const ItemCard = ({ branchId, item, color }) => {
         <div className="mmap-item__chips">
           {item.period && <span className="mmap-chip">{item.period}</span>}
           {item.trl && <span className="mmap-chip mmap-chip--accent" style={{ color }}>TRL {item.trl}</span>}
-          {item.person && <span className="mmap-chip">{item.person}</span>}
           {item.partners && <span className="mmap-chip">{item.partners}</span>}
         </div>
-      </article>
-    );
-  }
-  if (branchId === 'equipe') {
-    return (
-      <article className="mmap-item">
-        <h4 className="mmap-item__title">{item.person}</h4>
-        <p className="mmap-item__sub">{[item.level, item.institution].filter(Boolean).join(' · ')}</p>
-        {item.title && <p className="mmap-item__text">{item.title}</p>}
-        {item.area && <span className="mmap-chip">{item.area}</span>}
       </article>
     );
   }
@@ -109,7 +99,8 @@ const AxisMindMap = ({ axes, detailsById, language, labels }) => {
   // Memoizado: sem isso a referência muda a cada render e o efeito que mede
   // os conectores rodaria em loop.
   const branches = useMemo(
-    () => (activeAxis && (activeAxis.details || detailsById[activeAxis.id])) || [],
+    () => ((activeAxis && (activeAxis.details || detailsById[activeAxis.id])) || [])
+      .filter((b) => !HIDDEN_BRANCHES.has(b.id)),
     [activeAxis, detailsById]
   );
   const activeBranchId = branches.some((b) => b.id === urlBranch)
@@ -218,11 +209,6 @@ const AxisMindMap = ({ axes, detailsById, language, labels }) => {
   const branchColumn = activeAxis && (
     <div className="mmap__col mmap__col--branches">
       <span className="mono-label text-muted d-block mb-2">{labels.activities}</span>
-      {activeAxis.coordinators?.length > 0 && (
-        <div className="mmap__coords">
-          {activeAxis.coordinators.map((p) => <CoordinatorAvatar key={p.name} person={p} axisId={activeAxis.id} />)}
-        </div>
-      )}
       {activeAxis.content && <p className="mmap__axis-text">{activeAxis.content}</p>}
       {activeAxis.sdgs?.length > 0 && (
         <div className="mmap__sdgs">

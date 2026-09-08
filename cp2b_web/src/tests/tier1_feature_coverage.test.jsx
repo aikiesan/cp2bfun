@@ -115,18 +115,20 @@ describe('Tier 1 — Data Synchronization', () => {
     });
   });
 
-  it('verifies all coordinators and co-coordinators across the 8 axes', () => {
+  it('verifies the ANEXO 11 coordination across the 8 axes', () => {
     const coordinatorsFlat = researchAxes.pt.flatMap((a) => a.coordinators.map((c) => c.name));
 
-    // Core coordinators
+    // Coordenação vigente desde 08/09/2026 (ANEXO 11), sem adjuntos.
     expect(coordinatorsFlat.some((n) => n.includes('Rubens'))).toBe(true);
+    expect(coordinatorsFlat.some((n) => n.includes('Lucas Nakamura Cerejo'))).toBe(true);
     expect(coordinatorsFlat.some((n) => n.includes('Lucas Tadeu Fuess'))).toBe(true);
-    expect(coordinatorsFlat.some((n) => n.includes('Luana Mattos'))).toBe(true);
+    expect(coordinatorsFlat.some((n) => n.includes('Priscila Rosseto Camiloti'))).toBe(true);
     expect(coordinatorsFlat.some((n) => n.includes('Marcelo Pereira Cunha'))).toBe(true);
-    expect(coordinatorsFlat.some((n) => n.includes('Luis Alberto Follegatti Romero'))).toBe(true);
+    expect(coordinatorsFlat.some((n) => n.includes('Carlos Eduardo Driemeier'))).toBe(true);
+    expect(coordinatorsFlat.some((n) => n.includes('Rachel Biancalana Costa'))).toBe(true);
     expect(coordinatorsFlat.some((n) => n.includes('Renata Piacentini Rodriguez'))).toBe(true);
     expect(coordinatorsFlat.some((n) => n.includes('Maria Paula Cardeal Volpi'))).toBe(true);
-    expect(coordinatorsFlat.some((n) => n.includes('Rafael de Brito Dias'))).toBe(true);
+    expect(coordinatorsFlat.some((n) => n.includes('Natalia Molina Cetrulo'))).toBe(true);
   });
 
   it('synchronizes the 3 official laboratories in generated/laboratories.js', () => {
