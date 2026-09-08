@@ -12,29 +12,30 @@ describe('Milestone M1 Content and Data Synchronization', () => {
       expect(missionVisionValues.en).toBeDefined();
     });
 
-    it('contains verbatim Missão and Visão from slide 5 in pt', () => {
-      expect(missionVisionValues.pt.mission.text).toContain('Desenvolver pesquisas, tecnologias e soluções inovadoras de biogás');
-      expect(missionVisionValues.pt.mission.text).toContain('aproveitamento inteligente de resíduos para o desenvolvimento sustentável');
-      expect(missionVisionValues.pt.vision.text).toContain('ser referência nacional e internacional na gestão eficiente e sustentável de resíduos urbanos e agropecuários');
-      expect(missionVisionValues.pt.vision.text).toContain('transformando o estado de SP em vitrine de soluções inteligentes em biogás');
+    it('contains the revised Missão and Visão in pt, naming inclusive development', () => {
+      expect(missionVisionValues.pt.mission.text).toContain('Desenvolver pesquisas, tecnologias e soluções inovadoras em biogás');
+      expect(missionVisionValues.pt.mission.text).toContain('desenvolvimento sustentável, inclusivo e equitativo');
+      expect(missionVisionValues.pt.vision.text).toContain('Ser referência nacional e internacional na gestão eficiente e sustentável de resíduos urbanos e agropecuários');
+      expect(missionVisionValues.pt.vision.text).toContain('vitrine de soluções inteligentes em biogás e de desenvolvimento sustentável, inclusivo e equitativo');
     });
 
     it('contains professional English translations for Mission and Vision', () => {
       expect(missionVisionValues.en.mission.text).toContain('Develop research, technologies, and innovative biogas solutions');
-      expect(missionVisionValues.en.mission.text).toContain('smart use of waste for sustainable development');
+      expect(missionVisionValues.en.mission.text).toContain('sustainable, inclusive and equitable development');
       expect(missionVisionValues.en.vision.text).toContain('To be a national and international reference in the efficient and sustainable management of urban and agricultural waste');
-      expect(missionVisionValues.en.vision.text).toContain('transforming the State of São Paulo into a showcase of smart biogas solutions');
+      expect(missionVisionValues.en.vision.text).toContain('showcase of smart biogas solutions and of sustainable, inclusive and equitable development');
     });
 
-    it('contains 5 Core Guiding Values with icons in pt and en', () => {
-      expect(missionVisionValues.pt.values).toHaveLength(5);
-      expect(missionVisionValues.en.values).toHaveLength(5);
+    it('contains 6 Core Guiding Values with icons in pt and en', () => {
+      expect(missionVisionValues.pt.values).toHaveLength(6);
+      expect(missionVisionValues.en.values).toHaveLength(6);
       expect(missionVisionValues.pt.values.map(v => v.title)).toEqual([
         'Excelência Científica & Rigor Técnico',
         'Sustentabilidade & Impacto Socioambiental',
         'Interdisciplinaridade & Integração',
         'Inovação & Cooperação com a Sociedade',
         'Ética, Transparência & Governança',
+        'Diversidade & Equidade de Gênero',
       ]);
       expect(missionVisionValues.en.values.map(v => v.title)).toEqual([
         'Scientific Excellence & Technical Rigor',
@@ -42,6 +43,7 @@ describe('Milestone M1 Content and Data Synchronization', () => {
         'Interdisciplinarity & Integration',
         'Innovation & Societal Cooperation',
         'Ethics, Transparency & Governance',
+        'Diversity & Gender Equity',
       ]);
     });
 
@@ -58,32 +60,48 @@ describe('Milestone M1 Content and Data Synchronization', () => {
     });
   });
 
-  describe('Research Axes & Co-Coordinators', () => {
-    it('includes Luiz Gustavo Antônio de Souza as co-coordinator in Eixo 4', () => {
-      const axis4Pt = researchAxes.pt.find(a => a.id === '4');
-      const axis4En = researchAxes.en.find(a => a.id === '4');
-      expect(axis4Pt.coordinator).toContain('Luiz Gustavo Antônio de Souza');
-      expect(axis4Pt.coordinators.some(c => c.name.includes('Luiz Gustavo Antônio de Souza'))).toBe(true);
-      expect(axis4En.coordinator).toContain('Luiz Gustavo Antônio de Souza');
-      expect(axis4En.coordinators.some(c => c.name.includes('Luiz Gustavo Antônio de Souza'))).toBe(true);
+  describe('Research Axes Coordination (ANEXO 11)', () => {
+    // ANEXO 11, vigente 08/09/2026: o cargo de Coordenador Adjunto foi
+    // extinto e a composição de cinco eixos mudou.
+    const expected = {
+      '1': ['Rubens Augusto Camargo Lamparelli', 'Lucas Nakamura Cerejo'],
+      '2': ['Lucas Tadeu Fuess', 'Fabiane Moreira Vieira'],
+      '3': ['Priscila Rosseto Camiloti', 'Ana Beatriz Soares Aguiar'],
+      '4': ['Marcelo Pereira Cunha', 'Carlos Eduardo Driemeier'],
+      '5': ['Rachel Biancalana Costa'],
+      '6': ['Renata Piacentini Rodriguez', 'Bruna de Souza Moraes'],
+      '7': ['Maria Paula Cardeal Volpi', 'Renata Piacentini Rodriguez'],
+      '8': ['Natalia Molina Cetrulo', 'Thais Aparecida Dibbern'],
+    };
+
+    it.each(Object.entries(expected))('lists the ANEXO 11 coordination for Eixo %s', (id, names) => {
+      for (const lang of ['pt', 'en']) {
+        const axis = researchAxes[lang].find((a) => a.id === id);
+        expect(axis.coordinators).toHaveLength(names.length);
+        names.forEach((name, i) => {
+          expect(axis.coordinators[i].name).toContain(name);
+          expect(axis.coordinator).toContain(name);
+        });
+      }
     });
 
-    it('includes Rachel Biancalana Costa as co-coordinator in Eixo 5', () => {
-      const axis5Pt = researchAxes.pt.find(a => a.id === '5');
-      const axis5En = researchAxes.en.find(a => a.id === '5');
-      expect(axis5Pt.coordinator).toContain('Rachel Biancalana Costa');
-      expect(axis5Pt.coordinators.some(c => c.name.includes('Rachel Biancalana Costa'))).toBe(true);
-      expect(axis5En.coordinator).toContain('Rachel Biancalana Costa');
-      expect(axis5En.coordinators.some(c => c.name.includes('Rachel Biancalana Costa'))).toBe(true);
+    it('no longer carries adjunct coordinators', () => {
+      for (const lang of ['pt', 'en']) {
+        for (const axis of researchAxes[lang]) {
+          expect(axis.coordinators.every((c) => c.role === 'Coord.')).toBe(true);
+          expect(axis.coordinator).not.toContain('(Adj.)');
+        }
+      }
     });
 
-    it('includes Thais Aparecida Dibbern as co-coordinator in Eixo 8', () => {
-      const axis8Pt = researchAxes.pt.find(a => a.id === '8');
-      const axis8En = researchAxes.en.find(a => a.id === '8');
-      expect(axis8Pt.coordinator).toContain('Thais Aparecida Dibbern');
-      expect(axis8Pt.coordinators.some(c => c.name.includes('Thais Aparecida Dibbern'))).toBe(true);
-      expect(axis8En.coordinator).toContain('Thais Aparecida Dibbern');
-      expect(axis8En.coordinators.some(c => c.name.includes('Thais Aparecida Dibbern'))).toBe(true);
+    it('drops the coordinators replaced by ANEXO 11', () => {
+      const all = ['pt', 'en'].flatMap((lang) =>
+        researchAxes[lang].flatMap((a) => a.coordinators.map((c) => c.name))
+      );
+      for (const gone of ['Luana Mattos', 'Enelton Fagnani', 'Luis Alberto Follegatti Romero',
+        'Luiz Gustavo', 'Rafael de Brito Dias']) {
+        expect(all.some((n) => n.includes(gone))).toBe(false);
+      }
     });
   });
 
@@ -93,7 +111,7 @@ describe('Milestone M1 Content and Data Synchronization', () => {
       const luciana = teamByAxis.find(p => p.name === 'Luciana Cristina Lenhari da Silva');
 
       expect(ana).toBeDefined();
-      expect(ana.axes).toContain('2');
+      expect(ana.axes).toContain('3');
       expect(ana.direction).toBe(false);
 
       expect(luciana).toBeDefined();
