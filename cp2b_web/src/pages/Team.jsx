@@ -46,6 +46,10 @@ const resolveProfile = (row) => {
     institutional: row.institutional_url || sheet.institutional,
     bioPt: row.bio_pt || sheet.bioPt,
     bioEn: row.bio_en || sheet.bioEn,
+    // Só o banco tem as áreas de atuação: a planilha gerada carrega
+    // identificadores, não conteúdo redigido.
+    researchAreasPt: row.research_areas_pt || null,
+    researchAreasEn: row.research_areas_en || null,
   };
 };
 

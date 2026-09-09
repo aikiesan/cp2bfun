@@ -33,10 +33,16 @@ const WRITABLE_FIELDS = [
   'institutional_url',
   'bio_pt',
   'bio_en',
+  'research_areas_pt',
+  'research_areas_en',
 ];
 
 const BOOLEAN_FIELDS = new Set(['is_director']);
 const NUMERIC_FIELDS = new Set(['sort_order']);
+// Colunas TEXT[]: o admin edita uma área por linha do textarea. Uma lista
+// vazia grava NULL, e não um array de uma string vazia, para que a página
+// possa simplesmente testar a ausência.
+const ARRAY_FIELDS = new Set(['research_areas_pt', 'research_areas_en']);
 
 // O formulário do admin manda string vazia para campo apagado, e apagar um
 // identificador errado precisa mesmo gravar NULL — senão a página cai no valor
@@ -46,6 +52,16 @@ const normalize = (field, value) => {
   if (NUMERIC_FIELDS.has(field)) {
     const number = Number(value);
     return Number.isFinite(number) ? number : null;
+  }
+  if (ARRAY_FIELDS.has(field)) {
+    // Aceita tanto o array pronto quanto o textarea do admin, uma área por
+    // linha. Linhas em branco somem; lista vazia vira NULL, para a página
+    // poder testar só a ausência.
+    const list = Array.isArray(value)
+      ? value
+      : String(value ?? '').split('\n');
+    const clean = list.map((item) => String(item).trim()).filter(Boolean);
+    return clean.length > 0 ? clean : null;
   }
   if (typeof value === 'string' && value.trim() === '') return null;
   return value;
