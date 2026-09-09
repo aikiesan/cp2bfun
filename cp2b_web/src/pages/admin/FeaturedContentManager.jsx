@@ -1,13 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Alert, Spinner, Card, Row, Col } from 'react-bootstrap';
-import { fetchNews, fetchProjects, fetchMicroscopia, fetchOpportunities, fetchFeaturedContent, updateFeaturedContent } from '../../services/api';
+import { fetchNews, fetchProjects, fetchMicroscopia, fetchOpportunities, fetchBoletins, fetchPodcastEpisodes, fetchEvents, fetchFeaturedContent, updateFeaturedContent } from '../../services/api';
 
 const FeaturedContentManager = () => {
   const [allNews, setAllNews] = useState([]);
   const [allProjects, setAllProjects] = useState([]);
   const [allMicroscopia, setAllMicroscopia] = useState([]);
   const [allOpportunities, setAllOpportunities] = useState([]);
+  const [allBoletins, setAllBoletins] = useState([]);
+  const [allPodcast, setAllPodcast] = useState([]);
+  const [allEvents, setAllEvents] = useState([]);
   const [currentFeatured, setCurrentFeatured] = useState({ A: null, B: null, C: null });
+
+// Boletim e podcast não têm slug — a listagem do admin e a gravação usam o id.
+const identifierOf = (item) => (item.slug ?? String(item.id));
 
   // Each position has type and slug
   const [positionA, setPositionA] = useState({ type: '', slug: '' });
@@ -25,11 +31,14 @@ const FeaturedContentManager = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [newsData, projectsData, microscopiaData, opportunitiesData, featuredData] = await Promise.all([
+      const [newsData, projectsData, microscopiaData, opportunitiesData, boletinsData, podcastData, eventsData, featuredData] = await Promise.all([
         fetchNews(),
         fetchProjects(),
         fetchMicroscopia(),
         fetchOpportunities(),
+        fetchBoletins(),
+        fetchPodcastEpisodes(),
+        fetchEvents(),
         fetchFeaturedContent()
       ]);
 
@@ -37,6 +46,9 @@ const FeaturedContentManager = () => {
       setAllProjects(projectsData || []);
       setAllMicroscopia(microscopiaData || []);
       setAllOpportunities(opportunitiesData || []);
+      setAllBoletins(boletinsData || []);
+      setAllPodcast(podcastData || []);
+      setAllEvents(eventsData || []);
       setCurrentFeatured(featuredData);
 
       // Set dropdown values to current selections
@@ -97,11 +109,16 @@ const FeaturedContentManager = () => {
     }
   };
 
+  // 'project' é o tipo antigo da seção que hoje se chama Entrevistas — o valor
+  // continua o mesmo no banco e na rota; só o rótulo acompanha o site.
   const typeLabels = {
     news: 'Notícia',
-    project: 'Projeto',
+    project: 'Entrevista',
     microscopio: 'Microscópio',
     opportunity: 'Oportunidade',
+    boletim: 'Boletim',
+    podcast: 'Podcast',
+    event: 'Evento',
   };
 
   const itemsByType = {
@@ -109,6 +126,9 @@ const FeaturedContentManager = () => {
     project: allProjects,
     microscopio: allMicroscopia,
     opportunity: allOpportunities,
+    boletim: allBoletins,
+    podcast: allPodcast,
+    event: allEvents,
   };
 
   const renderPositionSelector = (position, setPosition, label, currentItem) => {
@@ -128,10 +148,9 @@ const FeaturedContentManager = () => {
                   onChange={(e) => setPosition({ type: e.target.value, slug: '' })}
                 >
                   <option value="">-- Selecione --</option>
-                  <option value="news">Notícia</option>
-                  <option value="project">Projeto</option>
-                  <option value="microscopio">Microscópio</option>
-                  <option value="opportunity">Oportunidade</option>
+                  {Object.entries(typeLabels).map(([value, label]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -146,7 +165,7 @@ const FeaturedContentManager = () => {
                   >
                     <option value="">-- Nenhum --</option>
                     {items.map((item) => (
-                      <option key={item.slug} value={item.slug}>
+                      <option key={identifierOf(item)} value={identifierOf(item)}>
                         {item.title_pt} {item.date_display && `(${item.date_display})`}
                       </option>
                     ))}
@@ -188,8 +207,10 @@ const FeaturedContentManager = () => {
         <Card.Body>
           <Card.Title>Selecione o conteúdo para cada posição</Card.Title>
           <Card.Text className="text-muted mb-4">
-            Escolha notícias ou projetos para destacar na página inicial.
-            A Posição A é a maior (lado esquerdo), e B/C são menores (lado direito, topo/base).
+            Escolha o conteúdo de cada posição: notícia, entrevista, microscópio,
+            oportunidade, boletim, podcast ou evento. A Posição A é a maior (lado
+            esquerdo), e B/C são menores (lado direito, topo/base). Boletim e podcast
+            levam à listagem, porque não têm página própria.
           </Card.Text>
 
           <Form onSubmit={handleSave}>
