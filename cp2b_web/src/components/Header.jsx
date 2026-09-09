@@ -13,7 +13,7 @@ const Header = () => {
   const isAboutActive = ['/sobre', '/oportunidades', '/eventos'].some(
     (p) => location.pathname.startsWith(p)
   );
-  const isNewsActive = ['/noticias', '/na-midia', '/microscopio', '/entrevistas', '/galeria', '/press-kit', '/podcast'].some(
+  const isNewsActive = ['/noticias', '/na-midia', '/microscopio', '/entrevistas', '/galeria', '/press-kit', '/podcast', '/boletins', '/newsletter'].some(
     (p) => location.pathname.startsWith(p)
   );
   const [fontSize, setFontSize] = useState(() => {
@@ -246,6 +246,9 @@ const Header = () => {
                 <NavDropdown.Item as={NavLink} to="/podcast">
                   {t.newsSubmenu.podcast}
                 </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/boletins">
+                  {t.newsSubmenu.boletins}
+                </NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to="/galeria">
                   {t.newsSubmenu.gallery}
                 </NavDropdown.Item>
@@ -254,6 +257,12 @@ const Header = () => {
                 </NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to="/na-midia">
                   {t.newsSubmenu.media}
+                </NavDropdown.Item>
+                {/* Separado dos itens de conteúdo: aqui não se lê nada, se
+                    assina. */}
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={NavLink} to="/newsletter">
+                  {t.newsSubmenu.newsletter}
                 </NavDropdown.Item>
               </NavDropdown>
 

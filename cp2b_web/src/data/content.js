@@ -26,9 +26,11 @@ export const menuLabels = {
       microscopio: 'Coluna Microscópio',
       entrevistas: 'Entrevistas',
       podcast: 'Podcast',
+      boletins: 'Boletins',
       gallery: 'Galeria de Fotos',
       pressKit: 'Press Kit',
       media: 'Na Mídia',
+      newsletter: 'Newsletter',
     },
     team: 'Equipe',
     publications: 'Publicações Científicas',
@@ -65,9 +67,13 @@ export const menuLabels = {
       microscopio: 'Microscope Column',
       entrevistas: 'Interviews',
       podcast: 'Podcast',
+      // "Bulletins" e não "Newsletters": o item logo abaixo é o cadastro da
+      // newsletter, e dois rótulos iguais no mesmo dropdown confundiriam.
+      boletins: 'Bulletins',
       gallery: 'Photo Gallery',
       pressKit: 'Press Kit',
       media: 'In the Media',
+      newsletter: 'Newsletter',
     },
     team: 'Team',
     publications: 'Scientific Publications',
@@ -1291,6 +1297,26 @@ export const pageSeo = {
     en: {
       title: 'CP2b Podcast',
       description: 'CP2b podcast episodes on biogas, bioproducts and energy transition in Brazil.',
+    },
+  },
+  boletins: {
+    pt: {
+      title: 'Boletins CP2b',
+      description: 'Edições do boletim do CP2b sobre biogás e bioprodutos, disponíveis para download em PDF.',
+    },
+    en: {
+      title: 'CP2b Bulletins',
+      description: 'Issues of the CP2b bulletin on biogas and bioproducts, available for download as PDF.',
+    },
+  },
+  newsletter: {
+    pt: {
+      title: 'Newsletter CP2b',
+      description: 'Cadastre-se na newsletter do CP2b e receba oportunidades, boletins e convites para eventos por e-mail.',
+    },
+    en: {
+      title: 'CP2b Newsletter',
+      description: 'Subscribe to the CP2b newsletter and receive opportunities, bulletins and event invitations by email.',
     },
   },
   microscopio: {

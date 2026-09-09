@@ -634,6 +634,35 @@ export const createPodcastEpisode = async (data) => (await api.post('/podcast', 
 export const updatePodcastEpisode = async (id, data) => (await api.put(`/podcast/${id}`, data)).data;
 export const deletePodcastEpisode = async (id) => (await api.delete(`/podcast/${id}`)).data;
 
+// ============================================================
+// Boletins API
+// ============================================================
+
+export const fetchBoletins = async () => {
+  try {
+    const res = await api.get('/boletins');
+    return res.data;
+  } catch (error) {
+    if (error.response?.status >= 500) console.error('Error fetching boletins:', error);
+    return [];
+  }
+};
+
+// Inclui os inativos — só o admin usa.
+export const fetchAllBoletins = async () => {
+  try {
+    const res = await api.get('/boletins/all');
+    return res.data;
+  } catch (error) {
+    if (error.response?.status >= 500) console.error('Error fetching all boletins:', error);
+    return [];
+  }
+};
+
+export const createBoletim = async (data) => (await api.post('/boletins', data)).data;
+export const updateBoletim = async (id, data) => (await api.put(`/boletins/${id}`, data)).data;
+export const deleteBoletim = async (id) => (await api.delete(`/boletins/${id}`)).data;
+
 // ---- Events calendar ----
 export const fetchEvents = async () => {
   try {

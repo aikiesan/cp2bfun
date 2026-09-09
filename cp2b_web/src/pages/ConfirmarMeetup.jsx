@@ -3,6 +3,7 @@ import { useSearchParams, Link } from 'react-router-dom';
 import { Container, Row, Col, Alert, Spinner, Card } from 'react-bootstrap';
 import { useLanguage } from '../context/LanguageContext';
 import { confirmMeetup } from '../services/api';
+import SeoHead from '../components/SeoHead';
 
 const labels = {
   pt: {
@@ -60,6 +61,10 @@ const ConfirmarMeetup = () => {
   }, []);
 
   return (
+    <>
+      {/* Reached only through a one-time token link in an email — nothing here
+          belongs in search results. */}
+      <SeoHead title={t.title} description={t.title} language={language} noIndex />
     <Container className="py-5">
       <Row className="justify-content-center">
         <Col md={6} className="text-center">
@@ -111,6 +116,7 @@ const ConfirmarMeetup = () => {
         </Col>
       </Row>
     </Container>
+    </>
   );
 };
 

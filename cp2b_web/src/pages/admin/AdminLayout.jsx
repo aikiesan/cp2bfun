@@ -105,7 +105,8 @@ const AdminLayout = () => {
         { path: '/admin/microscopio', label: 'Microscópio', icon: 'bi-binoculars' },
         { path: '/admin/oportunidades', label: 'Oportunidades', icon: 'bi-briefcase', isNew: true },
         { path: '/admin/press-kit', label: 'Press Kit', icon: 'bi-file-earmark-zip' },
-        { path: '/admin/podcast', label: 'Podcast', icon: 'bi-mic' }
+        { path: '/admin/podcast', label: 'Podcast', icon: 'bi-mic' },
+        { path: '/admin/boletins', label: 'Boletins', icon: 'bi-journal-text', isNew: true }
       ]
     },
     {
