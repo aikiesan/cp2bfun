@@ -79,6 +79,16 @@ const ResearcherModal = ({ member, show, onHide }) => {
   // axisDetails — então aparecem como estão nos dois idiomas.
   const summary = getResearcherSummary(member.name);
 
+  // As áreas de atuação passam a vir do banco quando existem: são as fichas de
+  // referência da equipe, redigidas e revisadas, e diferentemente da planilha
+  // estratégica têm versão em inglês. A planilha continua atendendo quem ainda
+  // não tem ficha.
+  const areasList =
+    (language === 'pt' ? profile.researchAreasPt : profile.researchAreasEn) ||
+    profile.researchAreasPt ||
+    summary?.areas ||
+    [];
+
   const axes = researchAxes[language] || researchAxes.pt;
   const memberAxes = (member.axes || [])
     .map((id) => axes.find((axis) => String(axis.id) === String(id)))
@@ -126,11 +136,11 @@ const ResearcherModal = ({ member, show, onHide }) => {
 
         {bio && <p className="mb-4" style={{ lineHeight: 1.7 }}>{bio}</p>}
 
-        {summary?.areas.length > 0 && (
+        {areasList.length > 0 && (
           <div className="mb-4">
             <h3 className="mono-label text-muted small text-uppercase mb-2">{t.areas}</h3>
             <ul className="list-unstyled mb-0">
-              {summary.areas.map((area) => (
+              {areasList.map((area) => (
                 <li key={area} className="d-flex gap-2 mb-1">
                   <i
                     className="bi bi-dot flex-shrink-0"

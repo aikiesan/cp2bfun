@@ -31,6 +31,8 @@ const EMPTY_FORM = {
   institutional_url: '',
   bio_pt: '',
   bio_en: '',
+  research_areas_pt: '',
+  research_areas_en: '',
 };
 
 const TeamEditor = () => {
@@ -72,7 +74,10 @@ const TeamEditor = () => {
         Object.fromEntries(
           Object.entries(EMPTY_FORM).map(([field, fallback]) => [
             field,
-            member[field] ?? fallback,
+            // As áreas de atuação são TEXT[] no banco e um textarea aqui, uma
+            // por linha. A conversão é feita nos dois sentidos: o backend
+            // aceita de volta tanto o array quanto o texto com quebras.
+            Array.isArray(member[field]) ? member[field].join('\n') : member[field] ?? fallback,
           ])
         )
       );
@@ -457,6 +462,34 @@ const TeamEditor = () => {
                 value={formData.bio_en}
                 onChange={handleChange}
               />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Áreas de atuação (PT)</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="research_areas_pt"
+                value={formData.research_areas_pt}
+                onChange={handleChange}
+              />
+              <Form.Text muted>
+                Uma área por linha. Aparecem como lista no perfil, abaixo da biografia.
+              </Form.Text>
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label>Áreas de atuação (EN)</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                name="research_areas_en"
+                value={formData.research_areas_en}
+                onChange={handleChange}
+              />
+              <Form.Text muted>
+                Sem tradução, o perfil em inglês mostra as áreas em português.
+              </Form.Text>
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
