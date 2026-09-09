@@ -13,7 +13,7 @@ const Header = () => {
   const isAboutActive = ['/sobre', '/oportunidades', '/eventos'].some(
     (p) => location.pathname.startsWith(p)
   );
-  const isNewsActive = ['/noticias', '/na-midia', '/microscopio', '/entrevistas', '/galeria', '/press-kit', '/podcast', '/boletins', '/newsletter'].some(
+  const isNewsActive = ['/noticias', '/microscopio', '/entrevistas', '/galeria', '/press-kit', '/podcast', '/boletins', '/newsletter'].some(
     (p) => location.pathname.startsWith(p)
   );
   const [fontSize, setFontSize] = useState(() => {
@@ -254,9 +254,6 @@ const Header = () => {
                 </NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to="/press-kit">
                   {t.newsSubmenu.pressKit}
-                </NavDropdown.Item>
-                <NavDropdown.Item as={NavLink} to="/na-midia">
-                  {t.newsSubmenu.media}
                 </NavDropdown.Item>
                 {/* Separado dos itens de conteúdo: aqui não se lê nada, se
                     assina. */}

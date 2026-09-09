@@ -66,7 +66,6 @@ import Opportunities from './pages/Opportunities';
 import Publications from './pages/Publications';
 import Projects from './pages/Projects';
 import Microscopio from './pages/Microscopio';
-import Media from './pages/Media';
 import PressKit from './pages/PressKit';
 import Podcast from './pages/Podcast';
 import Boletins from './pages/Boletins';
@@ -246,7 +245,6 @@ function App() {
                     <Route path="/gallery/:albumId" element={<LegacyAlbumRedirect />} />
                     <Route path="/entrevistas" element={<GuardedRoute pageKey="entrevistas" element={<Projects />} />} />
                     <Route path="/entrevistas/:slug" element={<GuardedRoute pageKey="entrevistas" element={<ProjectDetail />} />} />
-                    <Route path="/na-midia" element={<GuardedRoute pageKey="na-midia" element={<Media />} />} />
                     <Route path="/press-kit" element={<GuardedRoute pageKey="press-kit" element={<PressKit />} />} />
                     <Route path="/podcast" element={<GuardedRoute pageKey="podcast" element={<Podcast />} />} />
                     <Route path="/boletins" element={<GuardedRoute pageKey="boletins" element={<Boletins />} />} />
