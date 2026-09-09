@@ -24,6 +24,7 @@ import eventsRoutes from './routes/events.js';
 import newsletterRoutes from './routes/newsletter.js';
 import pressKitRoutes from './routes/presskit.js';
 import podcastRoutes from './routes/podcast.js';
+import boletinsRoutes from './routes/boletins.js';
 import pageSettingsRoutes from './routes/pageSettings.js';
 import settingsRoutes from './routes/settings.js';
 import authRoutes from './routes/auth.js';
@@ -96,6 +97,7 @@ app.use('/api/events', eventsRoutes);
 app.use('/api/newsletter', newsletterRoutes);
 app.use('/api/press-kit', pressKitRoutes);
 app.use('/api/podcast', podcastRoutes);
+app.use('/api/boletins', boletinsRoutes);
 app.use('/api/page-settings', pageSettingsRoutes);
 app.use('/api/settings', settingsRoutes);
 

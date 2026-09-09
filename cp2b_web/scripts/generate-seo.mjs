@@ -49,6 +49,8 @@ export const ROUTES = {
   '/na-midia': { seoKey: 'media', priority: '0.6', changefreq: 'weekly', schemaType: 'breadcrumb' },
   '/press-kit': { seoKey: 'pressKit', priority: '0.5', changefreq: 'monthly', schemaType: 'breadcrumb' },
   '/podcast': { seoKey: 'podcast', priority: '0.7', changefreq: 'weekly', schemaType: 'breadcrumb' },
+  '/boletins': { seoKey: 'boletins', priority: '0.7', changefreq: 'monthly', schemaType: 'breadcrumb' },
+  '/newsletter': { seoKey: 'newsletter', priority: '0.5', changefreq: 'yearly', schemaType: 'breadcrumb' },
   '/forum-paulista': { seoKey: 'forum', priority: '0.8', changefreq: 'weekly', schemaType: 'breadcrumb' },
   '/contato': { seoKey: 'contact', priority: '0.7', changefreq: 'yearly', schemaType: 'breadcrumb' },
 };
@@ -73,6 +75,8 @@ export const ROUTE_TITLES_PT = {
   'na-midia': 'Na Mídia',
   'press-kit': 'Press Kit',
   'podcast': 'Podcast',
+  'boletins': 'Boletins',
+  'newsletter': 'Newsletter',
   'forum-paulista': 'Fórum Paulista de Biogás',
   'contato': 'Contato',
 };

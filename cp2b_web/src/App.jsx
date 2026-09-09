@@ -69,6 +69,8 @@ import Microscopio from './pages/Microscopio';
 import Media from './pages/Media';
 import PressKit from './pages/PressKit';
 import Podcast from './pages/Podcast';
+import Boletins from './pages/Boletins';
+import Newsletter from './pages/Newsletter';
 import Others from './pages/Others';
 import NotFound from './pages/NotFound';
 import Manutencao from './pages/Manutencao';
@@ -115,6 +117,7 @@ import {
   PressKitAdmin,
   PodcastList,
   PodcastEditor,
+  BoletinsAdmin,
   PageStatusManager,
   EventsList,
   EventsEditor,
@@ -196,6 +199,7 @@ function App() {
             <Route path="podcast"        element={<PodcastList />} />
             <Route path="podcast/new"    element={<PodcastEditor />} />
             <Route path="podcast/:id"    element={<PodcastEditor />} />
+            <Route path="boletins"       element={<BoletinsAdmin />} />
             <Route path="page-status"    element={<PageStatusManager />} />
             <Route path="events"         element={<EventsList />} />
             <Route path="events/new"     element={<EventsEditor />} />
@@ -245,6 +249,8 @@ function App() {
                     <Route path="/na-midia" element={<GuardedRoute pageKey="na-midia" element={<Media />} />} />
                     <Route path="/press-kit" element={<GuardedRoute pageKey="press-kit" element={<PressKit />} />} />
                     <Route path="/podcast" element={<GuardedRoute pageKey="podcast" element={<Podcast />} />} />
+                    <Route path="/boletins" element={<GuardedRoute pageKey="boletins" element={<Boletins />} />} />
+                    <Route path="/newsletter" element={<Newsletter />} />
                     <Route path="/outros" element={<Others />} />
                     <Route path="/forum-paulista" element={<GuardedRoute pageKey="forum-paulista" element={<ForumPaulista />} />} />
                     {/* Fórum de 2026 encerrado: /registro, /agenda-meetups e
