@@ -1,0 +1,58 @@
+# Apache config for the prerendered CP2b build.
+#
+# Why this file exists — the indexing bug it fixes:
+#
+# `npm run build` writes a prerendered directory per route (dist/sobre/index.html).
+# Because /sobre is a real directory, mod_dir's DirectorySlash issued a
+# 301 from /sobre to /sobre/ — and built that Location with the *http* scheme,
+# since TLS is terminated upstream. http://cp2b.unicamp.br is answered by
+# UNICAMP's central server, which returns 403 for everything.
+#
+# So every content URL in sitemap.xml resolved as:
+#   https://cp2b.unicamp.br/sobre  ->  301  ->  http://cp2b.unicamp.br/sobre/  ->  403
+#
+# Browsers never showed it (HSTS rewrites to https before the request leaves),
+# but Googlebot followed the redirect and reported
+# "Bloqueada devido a acesso proibido (403)" for ~30 pages.
+#
+# The fix: serve /sobre directly from /sobre/index.html and never redirect.
+# This also matches the canonical the prerenderer emits (no trailing slash).
+
+<IfModule mod_dir.c>
+    # Stop mod_dir from redirecting /sobre -> /sobre/ (the source of the bad 301).
+    DirectorySlash Off
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    RewriteRule ^index\.html$ - [L]
+
+    # Serve the prerendered file for an extensionless route, with no redirect.
+    # /sobre -> /sobre/index.html (200, not 301)
+    RewriteCond %{REQUEST_URI} !^/pilar2b
+    RewriteCond %{REQUEST_URI} !^/abiove
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
+    RewriteRule ^(.*[^/])$ /$1/index.html [L]
+
+    # SPA fallback: anything not on disk is handled by the React router.
+    #
+    # The /pilar2b and /abiove exclusions mirror the vhost's <Directory> block.
+    # They must be repeated here: mod_rewrite does NOT inherit rules from the
+    # parent context, so these .htaccess rules replace the vhost ones outright.
+    # Without them, a PILAR-2b or ABIOVE URL that reached this directory would
+    # be swallowed by the CP2b SPA.
+    RewriteCond %{REQUEST_URI} !^/pilar2b
+    RewriteCond %{REQUEST_URI} !^/abiove
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Safety net: if anything still emits an http:// Location (mod_dir, mod_alias,
+    # a future rule), rewrite it to https so a redirect can never leave TLS.
+    Header always edit Location "^http://" "https://"
+</IfModule>

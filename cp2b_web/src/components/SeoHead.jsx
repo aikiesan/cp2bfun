@@ -17,7 +17,11 @@ const SeoHead = ({
   const fullTitle = title
     ? `${title} | ${SITE_NAME}`
     : `${SITE_NAME} - Centro Paulista de Estudos em Biogás e Bioprodutos`;
-  const canonical = `${DOMAIN}${path}`;
+  // Normalize the trailing slash so /forum-paulista/ and /forum-paulista emit the
+  // same canonical. Google had indexed both forms and reported "duplicate without
+  // user-selected canonical"; the no-slash form is what the prerenderer writes.
+  const normalizedPath = path.length > 1 ? path.replace(/\/+$/, '') : '/';
+  const canonical = `${DOMAIN}${normalizedPath}`;
   const ogImage = image
     ? (image.startsWith('http') ? image : `${DOMAIN}${image}`)
     : DEFAULT_IMAGE;

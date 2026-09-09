@@ -1,6 +1,7 @@
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import SeoHead from '../components/SeoHead';
 
 const content = {
   pt: {
@@ -22,6 +23,11 @@ const Manutencao = () => {
   const t = content[language];
 
   return (
+    <>
+      {/* GuardedRoute sends every disabled page here, so this thin page is what a
+          crawler sees for those routes. noindex keeps it out of the index and
+          stops it counting as a soft 404. */}
+      <SeoHead title={t.title} description={t.subtitle} language={language} noIndex />
     <Container className="py-5 text-center" style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <div className="mb-4">
         <i className="bi bi-tools" style={{ fontSize: '4rem', color: '#6c757d' }}></i>
@@ -36,6 +42,7 @@ const Manutencao = () => {
         </Link>
       </div>
     </Container>
+    </>
   );
 };
 

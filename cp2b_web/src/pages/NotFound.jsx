@@ -1,6 +1,7 @@
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import SeoHead from '../components/SeoHead';
 
 const NotFound = () => {
   const { language } = useLanguage();
@@ -21,6 +22,15 @@ const NotFound = () => {
   }[language];
 
   return (
+    <>
+      {/* The SPA answers unknown URLs with HTTP 200, so Google read this page as a
+          "soft 404". noindex is the signal that keeps it out of the index. */}
+      <SeoHead
+        title={labels.message}
+        description={labels.description}
+        language={language}
+        noIndex
+      />
     <Container className="py-5 text-center" style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <h1 className="display-1 fw-bold text-muted">{labels.title}</h1>
       <h2 className="mb-3">{labels.message}</h2>
@@ -29,6 +39,7 @@ const NotFound = () => {
         {labels.backHome}
       </Link>
     </Container>
+    </>
   );
 };
 
