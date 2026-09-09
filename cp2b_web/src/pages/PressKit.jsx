@@ -23,9 +23,9 @@ const PressKit = () => {
 
   const labels = {
     pt: {
-      tag: 'IMPRENSA',
-      title: 'Press Kit',
-      description: 'Baixe os materiais de imprensa do CP2b: logos, fotos institucionais e apresentações.',
+      tag: 'MARCA',
+      title: 'Identidade Visual',
+      description: 'Logotipos, manual de identidade, paleta e tipografia do CP2b, prontos para uso em publicações e materiais de imprensa.',
       download: 'Baixar',
       logosTitle: 'Logotipos',
       logosHint: 'Arquivos vetoriais (SVG), prontos para impressão e web. Clique para baixar.',
@@ -38,9 +38,9 @@ const PressKit = () => {
       otherTitle: 'Outros materiais',
     },
     en: {
-      tag: 'PRESS',
-      title: 'Press Kit',
-      description: 'Download CP2b press materials: logos, institutional photos and presentations.',
+      tag: 'BRAND',
+      title: 'Visual Identity',
+      description: 'CP2b logos, identity manual, palette and typography, ready for use in publications and press materials.',
       download: 'Download',
       logosTitle: 'Logos',
       logosHint: 'Vector files (SVG), ready for print and web. Click to download.',

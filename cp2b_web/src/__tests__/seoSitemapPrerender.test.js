@@ -263,7 +263,7 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
       expect(opportunities.length).toBeGreaterThanOrEqual(2);
     });
 
-    it('defines all 23 core static routes in the ROUTES table', () => {
+    it('defines all 22 core static routes in the ROUTES table', () => {
       const expectedRoutes = [
         '/',
         '/sobre',
@@ -281,7 +281,6 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
         '/eventos',
         '/galeria',
         '/entrevistas',
-        '/na-midia',
         '/press-kit',
         '/podcast',
         '/boletins',
@@ -290,7 +289,7 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
         '/contato',
       ];
       expect(Object.keys(ROUTES).sort()).toEqual(expectedRoutes.sort());
-      expect(Object.keys(ROUTES).length).toBe(23);
+      expect(Object.keys(ROUTES).length).toBe(22);
     });
   });
 
@@ -327,7 +326,7 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
       }
     });
 
-    it('prerenders 23 static shells + dynamic shells and writes complete sitemap.xml in offline fallback mode', async () => {
+    it('prerenders 22 static shells + dynamic shells and writes complete sitemap.xml in offline fallback mode', async () => {
       const logs = [];
       const result = await generateSeo({
         distDir: tmpDir,
@@ -336,7 +335,7 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
         log: (msg) => logs.push(msg),
       });
 
-      expect(result.prerenderedStatic).toBe(23);
+      expect(result.prerenderedStatic).toBe(22);
       expect(result.prerenderedDynamic).toBeGreaterThanOrEqual(14);
       expect(result.sitemapUrlsCount).toBeGreaterThanOrEqual(35);
 
