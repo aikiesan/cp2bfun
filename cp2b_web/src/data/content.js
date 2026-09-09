@@ -28,8 +28,7 @@ export const menuLabels = {
       podcast: 'Podcast',
       boletins: 'Boletins',
       gallery: 'Galeria de Fotos',
-      pressKit: 'Press Kit',
-      media: 'Na Mídia',
+      pressKit: 'Identidade Visual',
       newsletter: 'Newsletter',
     },
     team: 'Equipe',
@@ -71,8 +70,7 @@ export const menuLabels = {
       // newsletter, e dois rótulos iguais no mesmo dropdown confundiriam.
       boletins: 'Bulletins',
       gallery: 'Photo Gallery',
-      pressKit: 'Press Kit',
-      media: 'In the Media',
+      pressKit: 'Visual Identity',
       newsletter: 'Newsletter',
     },
     team: 'Team',
@@ -1411,12 +1409,12 @@ export const pageSeo = {
   },
   pressKit: {
     pt: {
-      title: 'Press Kit',
-      description: 'Materiais de imprensa do CP2b: logos, fotos e arquivos para download.',
+      title: 'Identidade Visual',
+      description: 'Logotipos, manual de identidade, paleta e tipografia oficiais do CP2b, prontos para download.',
     },
     en: {
-      title: 'Press Kit',
-      description: 'CP2b press materials: logos, photos and files for download.',
+      title: 'Visual Identity',
+      description: 'CP2b logos, identity manual, palette and official typography, ready to download.',
     },
   },
   gallery: {

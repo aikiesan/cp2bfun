@@ -36,7 +36,6 @@ import Opportunities from '../pages/Opportunities';
 import Publications from '../pages/Publications';
 import Events from '../pages/Events';
 import Projects from '../pages/Projects';
-import Media from '../pages/Media';
 import Others from '../pages/Others';
 import ForumPaulista from '../pages/ForumPaulista';
 import NotFound from '../pages/NotFound';
@@ -61,7 +60,6 @@ describe('Public pages smoke tests', () => {
     ['Publications (/publicacoes)', Publications],
     ['Events (/eventos)', Events],
     ['Projects (/projetos)', Projects],
-    ['Media (/na-midia)', Media],
     ['Others (/outros)', Others],
     ['ForumPaulista (/forum-paulista)', ForumPaulista],
     ['NotFound (404)', NotFound],

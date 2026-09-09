@@ -315,7 +315,11 @@ const About = () => {
               </Col>
             </Row>
 
-            {/* Values: 5-Card Responsive Grid */}
+            {/* Valores: grade 3x2 no desktop.
+                Eram 5 cards em `row-cols-lg-5`; com o sexto valor (Diversidade
+                & Equidade de Gênero) a última linha ficava com um card órfão.
+                Três colunas dividem os seis em duas linhas cheias e ainda dão
+                mais largura para as descrições, que são longas. */}
             {Array.isArray(mvv.values) && mvv.values.length > 0 && (
               <div className="mt-4">
                 <div className="mb-3 text-center text-md-start">
@@ -327,7 +331,7 @@ const About = () => {
                   )}
                 </div>
 
-                <Row className="row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-5 g-2 g-md-3">
+                <Row className="row-cols-1 row-cols-sm-2 row-cols-lg-3 g-3 g-md-4">
                   {mvv.values.map((val, idx) => (
                     <Col key={idx}>
                       <div

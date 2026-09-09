@@ -85,8 +85,11 @@ const Footer = () => {
 
         <Row className="gy-3 gy-lg-4 pb-5">
           <Col lg={4} md={6}>
+            {/* Versão colorida sobre fundo escuro: folhas e molécula em cor,
+                "CP2b" e o descritivo em branco. O negativo totalmente branco
+                perdia a identidade cromática da marca no rodapé. */}
             <img
-              src="/assets/logos/cp2b-logo-negative-white.svg"
+              src="/assets/logos/cp2b-logo-gradient-alt.svg"
               alt="CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos"
               style={{ maxHeight: '64px', borderRadius: 0 }}
               className="mb-3"

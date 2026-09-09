@@ -27,6 +27,12 @@
     RewriteEngine On
     RewriteBase /
 
+    # /na-midia foi removida em definitivo (set/2026). 410 Gone diz ao Google
+    # que a página não volta — sem isso a SPA responderia 200 com a tela de
+    # "não encontrado", que o Search Console classifica como soft 404 e mantém
+    # em fila de recrawl por muito mais tempo.
+    RewriteRule ^na-midia/?$ - [G,L]
+
     RewriteRule ^index\.html$ - [L]
 
     # Serve the prerendered file for an extensionless route, with no redirect.
