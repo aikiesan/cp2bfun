@@ -61,4 +61,17 @@
     # Safety net: if anything still emits an http:// Location (mod_dir, mod_alias,
     # a future rule), rewrite it to https so a redirect can never leave TLS.
     Header always edit Location "^http://" "https://"
+
+    # Páginas rasas por natureza, marcadas com noindex.
+    #
+    # O SeoHead já emite a meta tag, mas só depois que o JS roda: o HTML servido
+    # vem do index.html, que diz "index, follow". O Googlebot renderiza JS e
+    # acabaria vendo o noindex, porém mais tarde e como sinal mais fraco — e
+    # justamente nestas páginas o HTML inicial afirma o contrário do pretendido.
+    # O cabeçalho não depende de JS e vale desde a primeira resposta.
+    #
+    # `follow` de propósito: os links internos devem continuar sendo seguidos.
+    # A condição vai como expressão do próprio mod_headers em vez de SetEnvIf:
+    # evita depender também do mod_setenvif, e mantém a regra num só lugar.
+    Header always set X-Robots-Tag "noindex, follow" "expr=%{REQUEST_URI} =~ m#^/(outros|manutencao|confirmar-meetup)/?$#"
 </IfModule>
