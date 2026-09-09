@@ -71,7 +71,12 @@
     # O cabeçalho não depende de JS e vale desde a primeira resposta.
     #
     # `follow` de propósito: os links internos devem continuar sendo seguidos.
-    # A condição vai como expressão do próprio mod_headers em vez de SetEnvIf:
-    # evita depender também do mod_setenvif, e mantém a regra num só lugar.
-    Header always set X-Robots-Tag "noindex, follow" "expr=%{REQUEST_URI} =~ m#^/(outros|manutencao|confirmar-meetup)/?$#"
+    # A condição lê THE_REQUEST, não REQUEST_URI.
+    #
+    # O mod_headers avalia na resposta, depois de o mod_rewrite já ter
+    # reescrito a URI para /index.html pelo fallback da SPA — a essa altura
+    # %{REQUEST_URI} não é mais /outros, e a regra nunca casava (verificado
+    # contra um Apache 2.4 real com este mesmo .htaccess). THE_REQUEST guarda
+    # a linha de requisição original e não é afetado pelo rewrite.
+    Header always set X-Robots-Tag "noindex, follow" "expr=%{THE_REQUEST} =~ m#^[A-Z]+ /(outros|manutencao|confirmar-meetup)/?[ ?]#"
 </IfModule>
