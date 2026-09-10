@@ -1,3 +1,4 @@
+import { lazy, Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
@@ -86,51 +87,29 @@ import Indicators from './pages/about/Indicators';
 import Transparency from './pages/about/Transparency';
 import PartnersPage from './pages/about/PartnersPage';
 
-// Admin Pages
-import {
-  AdminLayout,
-  Dashboard,
-  NewsList,
-  NewsEditor,
-  VideosList,
-  VideosEditor,
-  TeamEditor,
-  AxesEditor,
-  MessagesPanel,
-  PartnersEditor,
-  PublicationsList,
-  PublicationsEditor,
-  MicroscopioList,
-  MicroscopioEditor,
-  ProjectsList,
-  ProjectsEditor,
-  ParticipantsPanel,
-  MeetupSlotsManager,
-  MeetupRequestsPanel,
-  ForumDashboard,
-  NewsletterPanel,
-  OportunidadesList,
-  OportunidadesEditor,
-  GalleryList,
-  GalleryUpload,
-  PressKitAdmin,
-  PodcastList,
-  PodcastEditor,
-  BoletinsAdmin,
-  PageStatusManager,
-  EventsList,
-  EventsEditor,
-  SiteSettingsAdmin,
-  AjudaAdmin,
-} from './pages/admin';
-import FeaturedContentManager from './pages/admin/FeaturedContentManager';
-import {
-  HomeContentEditor,
-  AboutContentEditor,
-  GovernanceContentEditor,
-  TransparencyContentEditor,
-  MicroscopioContentEditor
-} from './pages/admin/content';
+// Painel administrativo: um único chunk carregado sob demanda em /admin.
+// Ver src/AdminApp.jsx para o motivo.
+const AdminApp = lazy(() => import('./AdminApp'));
+
+// Placeholder enquanto o chunk do admin é baixado. role="status" + aria-live
+// fazem o leitor de tela anunciar o carregamento em vez de ficar em silêncio.
+const AdminLoading = () => (
+  <div
+    role="status"
+    aria-live="polite"
+    style={{
+      minHeight: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '0.75rem',
+      color: '#1E3E4C',
+    }}
+  >
+    <span className="spinner-border spinner-border-sm" aria-hidden="true" />
+    Carregando o painel…
+  </div>
+);
 
 // Route guard: redirects to /manutencao when page is disabled
 const GuardedRoute = ({ pageKey, element }) => {
@@ -156,56 +135,15 @@ function App() {
         <SocialSidebar />
         <CookieConsent />
         <Routes>
-          {/* Admin Routes - No Header/Footer */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="news" element={<NewsList />} />
-            <Route path="news/new" element={<NewsEditor />} />
-            <Route path="news/:slug" element={<NewsEditor />} />
-            <Route path="videos" element={<VideosList />} />
-            <Route path="videos/new" element={<VideosEditor />} />
-            <Route path="videos/:id" element={<VideosEditor />} />
-            <Route path="featured" element={<FeaturedContentManager />} />
-            <Route path="publications" element={<PublicationsList />} />
-            <Route path="publications/new" element={<PublicationsEditor />} />
-            <Route path="publications/:id" element={<PublicationsEditor />} />
-            <Route path="microscopio" element={<MicroscopioList />} />
-            <Route path="microscopio/new" element={<MicroscopioEditor />} />
-            <Route path="microscopio/:slug" element={<MicroscopioEditor />} />
-            <Route path="projects" element={<ProjectsList />} />
-            <Route path="projects/new" element={<ProjectsEditor />} />
-            <Route path="projects/:slug" element={<ProjectsEditor />} />
-            <Route path="team" element={<TeamEditor />} />
-            <Route path="axes" element={<AxesEditor />} />
-            <Route path="content/home" element={<HomeContentEditor />} />
-            <Route path="content/about" element={<AboutContentEditor />} />
-            <Route path="content/governance" element={<GovernanceContentEditor />} />
-            <Route path="content/transparency" element={<TransparencyContentEditor />} />
-            <Route path="content/microscopio" element={<MicroscopioContentEditor />} />
-            <Route path="partners" element={<PartnersEditor />} />
-            <Route path="messages" element={<MessagesPanel />} />
-            <Route path="forum" element={<ForumDashboard />} />
-            <Route path="forum/participants" element={<ParticipantsPanel />} />
-            <Route path="forum/slots"        element={<MeetupSlotsManager />} />
-            <Route path="forum/meetups"      element={<MeetupRequestsPanel />} />
-            <Route path="newsletter"         element={<NewsletterPanel />} />
-            <Route path="oportunidades"      element={<OportunidadesList />} />
-            <Route path="oportunidades/new"  element={<OportunidadesEditor />} />
-            <Route path="oportunidades/:slug" element={<OportunidadesEditor />} />
-            <Route path="gallery"        element={<GalleryList />} />
-            <Route path="gallery/upload" element={<GalleryUpload />} />
-            <Route path="press-kit"      element={<PressKitAdmin />} />
-            <Route path="podcast"        element={<PodcastList />} />
-            <Route path="podcast/new"    element={<PodcastEditor />} />
-            <Route path="podcast/:id"    element={<PodcastEditor />} />
-            <Route path="boletins"       element={<BoletinsAdmin />} />
-            <Route path="page-status"    element={<PageStatusManager />} />
-            <Route path="events"         element={<EventsList />} />
-            <Route path="events/new"     element={<EventsEditor />} />
-            <Route path="events/:id"     element={<EventsEditor />} />
-            <Route path="settings"       element={<SiteSettingsAdmin />} />
-            <Route path="ajuda"          element={<AjudaAdmin />} />
-          </Route>
+          {/* Admin: chunk próprio, sem Header/Footer */}
+          <Route
+            path="/admin/*"
+            element={
+              <Suspense fallback={<AdminLoading />}>
+                <AdminApp />
+              </Suspense>
+            }
+          />
 
           {/* Public Routes - With Header/Footer */}
           <Route

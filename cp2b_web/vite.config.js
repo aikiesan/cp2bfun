@@ -31,6 +31,30 @@ export default defineConfig({
       },
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        // Separa só as bibliotecas compartilhadas por site público e admin,
+        // para que uma troca de código nosso não invalide o cache delas.
+        // Devolver undefined nos outros casos é intencional: deixa o Rollup
+        // decidir, e é o que mantém quill/dnd/image-compression dentro do
+        // chunk sob demanda do admin (ver src/AdminApp.jsx). Agrupar todo o
+        // node_modules em um "vendor" desfaria esse split.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return;
+          if (/[\\/]node_modules[\\/](react|react-dom|scheduler|react-router|react-router-dom)[\\/]/.test(id)) {
+            return 'react-vendor';
+          }
+          if (/[\\/]node_modules[\\/](bootstrap|react-bootstrap|@restart)[\\/]/.test(id)) {
+            return 'bootstrap-vendor';
+          }
+          if (/[\\/]node_modules[\\/]framer-motion[\\/]/.test(id)) {
+            return 'motion';
+          }
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     VitePWA({
