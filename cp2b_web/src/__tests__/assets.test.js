@@ -62,3 +62,50 @@ describe('Static /assets references resolve to real files', () => {
     expect(fs.existsSync(filePath), `Missing asset file for reference "${ref}"`).toBe(true);
   });
 });
+
+/**
+ * Dynamic /assets/ directory guard.
+ *
+ * The scan above deliberately discards template-literal paths, because it
+ * cannot resolve the interpolated part. That left a real blind spot: the Fórum
+ * gallery builds 30 paths as
+ *   `/assets/forum-paulista/forum-2026-${n}.webp`
+ * so moving that whole folder out of public/assets broke the page in
+ * production without failing a single test.
+ *
+ * This guard can't know which files a pattern expands to, but it can assert
+ * that the folder a pattern points into still exists and still has files in
+ * it — which is exactly what goes wrong when a directory is moved or emptied.
+ */
+const DYNAMIC_ASSET_DIR = /\/assets\/([A-Za-z0-9_\-./]+)\/[^"'`)\s]*\$\{/g;
+
+function collectDynamicAssetDirs() {
+  const dirs = new Set();
+  for (const file of collectSourceFiles(srcDir)) {
+    const text = fs.readFileSync(file, 'utf8');
+    for (const match of text.matchAll(DYNAMIC_ASSET_DIR)) {
+      dirs.add(match[1]);
+    }
+  }
+  return [...dirs].sort();
+}
+
+const dynamicAssetDirs = collectDynamicAssetDirs();
+
+describe('Directories behind interpolated /assets paths still have files', () => {
+  it('finds interpolated asset directories to verify', () => {
+    expect(dynamicAssetDirs.length).toBeGreaterThan(0);
+  });
+
+  it.each(dynamicAssetDirs)('/assets/%s is a non-empty directory', (dir) => {
+    const dirPath = path.join(assetsDir, dir);
+    expect(
+      fs.existsSync(dirPath) && fs.statSync(dirPath).isDirectory(),
+      `A template literal builds paths inside /assets/${dir}/, but that directory is missing`
+    ).toBe(true);
+    expect(
+      fs.readdirSync(dirPath).length,
+      `/assets/${dir}/ exists but is empty, so every interpolated path into it 404s`
+    ).toBeGreaterThan(0);
+  });
+});
