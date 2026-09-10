@@ -88,11 +88,22 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globIgnores: ['**/assets/logos/cp2b-logo-og.png'],
+        globIgnores: [
+          '**/assets/logos/cp2b-logo-og.png',
+          // O chunk do admin (~600 KB) é carregado sob demanda em /admin.
+          // Sem isso o workbox o pré-cachearia em todo visitante do site
+          // público, desfazendo metade do ganho do split.
+          '**/assets/AdminApp-*.js',
+          '**/assets/AdminApp-*.css',
+        ],
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api\//, /^\/pilar2b/],
         cleanupOutdatedCaches: true,
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,otf}'],
+        // Imagens ficam fora do precache: os logos da marca em @8x somavam
+        // ~10 MB, baixados em segundo plano por todo visitante que instalava
+        // o service worker. Elas continuam cacheadas, mas sob demanda, pela
+        // regra de runtimeCaching de imagens abaixo.
+        globPatterns: ['**/*.{js,css,html,ico,woff,woff2,otf}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         runtimeCaching: [
           {
@@ -107,7 +118,7 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\.(?:jpg|jpeg|webp|gif)$/i,
+            urlPattern: /\.(?:jpg|jpeg|webp|gif|png|svg)$/i,
             handler: 'CacheFirst',
             options: {
               cacheName: 'images',
