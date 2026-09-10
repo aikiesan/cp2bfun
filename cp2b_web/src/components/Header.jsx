@@ -183,8 +183,12 @@ const Header = () => {
       >
         <Container className="py-3">
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
+            {/* O SVG do press kit em vez do PNG @8x: é o mesmo logo, mas o
+                PNG tinha 15360x5854 px e 860 KB para ser exibido a 55px de
+                altura, em toda página. O vetor pesa 15 KB e fica nítido em
+                qualquer densidade de tela. */}
             <img
-              src="/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png"
+              src="/assets/logos/cp2b-logo-gradient.svg"
               alt="CP2b Logo"
               className={`me-2 ${isScrolled ? 'logo-shrunk' : ''}`}
               style={{ height: isScrolled ? '35px' : '55px', width: 'auto', transition: 'height 0.3s ease' }}

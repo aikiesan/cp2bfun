@@ -6,8 +6,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const assetsDir = path.resolve(__dirname, '../public/assets');
-const outputDir = path.join(assetsDir, 'team');
+// As fotos originais moraram em public/assets até serem movidas para
+// assets-src/, que não é publicado — elas pesavam ~2,5 MB cada e iam para o
+// dist a cada build sem nunca serem requisitadas. A saída continua em
+// public/assets/team, que é o que o site serve.
+const sourceDir = path.resolve(__dirname, '../assets-src');
+const outputDir = path.resolve(__dirname, '../public/assets/team');
 
 if (!fs.existsSync(outputDir)) {
   fs.mkdirSync(outputDir, { recursive: true });
@@ -37,7 +41,7 @@ const photoSources = [
 
 async function run() {
   for (const { source, slug } of photoSources) {
-    const inputPath = path.join(assetsDir, source);
+    const inputPath = path.join(sourceDir, source);
     const outputPath = path.join(outputDir, `${slug}.webp`);
 
     if (!fs.existsSync(inputPath)) {
