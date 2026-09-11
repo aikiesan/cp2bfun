@@ -173,9 +173,12 @@ const Header = () => {
         </Container>
       </div>
 
-      {/* Main Navbar */}
+      {/* Main Navbar.
+          expand="xl", nao "lg": com a segunda pill (Arqueia) o menu horizontal
+          passa de 980px e estoura o container de 960px do breakpoint lg, e o
+          botao ficava cortado. Abaixo de 1200px tudo vai para o sanfonado. */}
       <Navbar
-        expand="lg"
+        expand="xl"
         sticky="top"
         expanded={expanded}
         onToggle={setExpanded}

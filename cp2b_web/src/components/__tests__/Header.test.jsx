@@ -64,4 +64,25 @@ describe('Header', () => {
     await user.click(ptBtn);
     expect(screen.getByText('Sobre')).toBeInTheDocument();
   });
+  it('publica PILAR-2b e Arqueia como links completos, nao rotas da SPA', () => {
+    renderWithProviders(<Header />);
+
+    // Ambas as aplicacoes ficam atras do proxy do Apache em outra porta, entao
+    // precisam de navegacao completa (<a>), nao de transicao do react-router.
+    for (const [label, path] of [['PILAR-2b', '/pilar2b'], ['Arqueia', '/arqueia']]) {
+      const link = screen.getByRole('link', { name: label });
+      expect(link).toHaveAttribute('href', path);
+      expect(link.tagName).toBe('A');
+    }
+  });
+
+  it('diferencia visualmente as duas plataformas', () => {
+    renderWithProviders(<Header />);
+
+    const pilar = screen.getByRole('link', { name: 'PILAR-2b' });
+    const arqueia = screen.getByRole('link', { name: 'Arqueia' });
+
+    expect(arqueia.style.background).not.toBe('');
+    expect(arqueia.style.background).not.toBe(pilar.style.background);
+  });
 });
