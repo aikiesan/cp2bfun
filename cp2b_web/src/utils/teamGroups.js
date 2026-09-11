@@ -84,6 +84,34 @@ const SUPPORT_ROLE = /apoio|administrativ|técnico|tecnico|\bsupport\b/i;
 // Instituição Parceira" é o rótulo formal da colaboração externa.
 const PARTNER_ROLE = /institui(ç|c)(ã|a)o parceira|partner institution/i;
 
+// Quem coordena o eixo. Como em SUPPORT_ROLE e PARTNER_ROLE, os dois idiomas
+// entram: o cargo de um registro vindo da API chega traduzido quando a página
+// está em inglês, enquanto o do teamByAxis é sempre português.
+const COORDINATOR_ROLE = /coordenador|coordenadora|coordinator/i;
+
+/**
+ * A pessoa coordena o eixo?
+ *
+ * Lê os dois campos de cargo pelo mesmo motivo de resolveNoAxisGroup: `role`
+ * pode já estar traduzido e `role_pt` guarda o original.
+ */
+export function isCoordinator(member) {
+  const roles = [member.role, member.role_pt].filter(Boolean).join(' ');
+  return COORDINATOR_ROLE.test(roles);
+}
+
+// Dentro do eixo, quem coordena vem primeiro; o resto segue em ordem
+// alfabética. Antes a ordem era a da planilha, que é alfabética pelo primeiro
+// nome — e deixava a coordenação enterrada no meio da lista (no Eixo 8, nas
+// posições 2 e 5). `localeCompare` com 'pt' ordena acento junto da letra base,
+// senão "Ângela" cairia depois de "Zuleica".
+const byCoordinatorThenName = (a, b) => {
+  const coordA = isCoordinator(a);
+  const coordB = isCoordinator(b);
+  if (coordA !== coordB) return coordA ? -1 : 1;
+  return String(a.name || '').localeCompare(String(b.name || ''), 'pt');
+};
+
 // Vínculos que nomeiam uma seção de quem não tem eixo. 'nucleo' e 'direcao'
 // não nomeiam nenhuma — quem os carrega aparece nos eixos ou na direção — por
 // isso um registro assim cai na heurística de cargo.
@@ -181,6 +209,15 @@ export function groupTeamByAxis(members, language = 'pt') {
 
     for (const axisId of memberAxes) {
       byId.get(`eixo-${axisId}`)?.members.push(enriched);
+    }
+  }
+
+  // Só os grupos de eixo são reordenados. Direção, associados, parceiras e
+  // apoio mantêm a ordem que já tinham: ali "coordenador" não é um papel da
+  // seção, e mexer nelas seria mudança que ninguém pediu.
+  for (const group of groups) {
+    if (group.category.startsWith('eixo-')) {
+      group.members.sort(byCoordinatorThenName);
     }
   }
 

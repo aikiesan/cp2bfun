@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { nameKey } from '../nameKey';
 import {
   groupTeamByAxis,
+  isCoordinator,
   resolveAffiliation,
   stripAxisPrefix,
   DIRECTION_GROUP,
@@ -204,5 +205,61 @@ describe('groupTeamByAxis', () => {
     const groups = groupTeamByAxis(members, 'en');
     expect(groups.find((g) => g.category === DIRECTION_GROUP).title).toBe('CP2b Direction');
     expect(groups.find((g) => g.category === 'eixo-1').shortTitle).toBe('Axis 1');
+  });
+});
+
+describe('isCoordinator', () => {
+  it('recognises the role in both genders and in English', () => {
+    expect(isCoordinator({ role: 'Coordenador do Eixo 1' })).toBe(true);
+    expect(isCoordinator({ role: 'Coordenadora do Eixo 3' })).toBe(true);
+    expect(isCoordinator({ role: 'Axis 3 Coordinator' })).toBe(true);
+  });
+
+  it('reads role_pt too, because role arrives translated on the English page', () => {
+    expect(isCoordinator({ role: 'Axis 8 Lead', role_pt: 'Coordenadora do Eixo 8' })).toBe(true);
+  });
+
+  it('does not mistake other roles for coordination', () => {
+    expect(isCoordinator({ role: 'Professor UNICAMP' })).toBe(false);
+    expect(isCoordinator({ role: 'Diretora do CP2b' })).toBe(false);
+    expect(isCoordinator({})).toBe(false);
+  });
+});
+
+describe('axis groups put coordination first', () => {
+  // Antes desta ordenação a lista saía na ordem da planilha, que é alfabética
+  // pelo primeiro nome — no Eixo 8 real isso deixava as duas coordenadoras nas
+  // posições 2 e 5, atrás de quem não tem cargo nenhum.
+  const members = [
+    { name: 'Zuleica Alves', axes: ['3'], role: 'Pesquisadora' },
+    { name: 'Ana Beatriz Soares Aguiar', axes: ['3'], role: 'Coordenadora do Eixo 3' },
+    { name: 'Ângela Cruz Guirao', axes: ['3'], role: 'Pesquisadora' },
+    { name: 'Bruno Sidnei da Silva', axes: ['3'], role: 'Coordenador do Eixo 3' },
+  ];
+
+  const axisGroup = () =>
+    groupTeamByAxis(members, 'pt').find((g) => g.category === 'eixo-3');
+
+  it('lists both coordinators before everyone else', () => {
+    const names = axisGroup().members.map((m) => m.name);
+    expect(names.slice(0, 2)).toEqual([
+      'Ana Beatriz Soares Aguiar',
+      'Bruno Sidnei da Silva',
+    ]);
+  });
+
+  it('keeps the rest alphabetical, with accents beside their base letter', () => {
+    const names = axisGroup().members.map((m) => m.name);
+    // "Ângela" antes de "Zuleica": localeCompare('pt'), não ordem de code point.
+    expect(names.slice(2)).toEqual(['Ângela Cruz Guirao', 'Zuleica Alves']);
+  });
+
+  it('leaves non-axis groups in the order they already had', () => {
+    const staff = [
+      { name: 'Zulmira Apoio', membership: 'apoio', role: 'Apoio Administrativo' },
+      { name: 'Ana Apoio', membership: 'apoio', role: 'Apoio Técnico' },
+    ];
+    const group = groupTeamByAxis(staff, 'pt').find((g) => g.category === SUPPORT_GROUP);
+    expect(group.members.map((m) => m.name)).toEqual(['Zulmira Apoio', 'Ana Apoio']);
   });
 });
