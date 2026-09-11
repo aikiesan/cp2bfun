@@ -190,26 +190,6 @@ CREATE TABLE IF NOT EXISTS featured_videos (
   updated_at TIMESTAMP DEFAULT NOW()
 );
 
--- Evolucao de bancos que ja existiam antes destas colunas entrarem no schema.
---
--- Por que isto e necessario: CREATE TABLE IF NOT EXISTS nao altera uma tabela
--- que ja existe. Num banco criado antes de 009 e 014, news e projects ficam sem
--- featured_position e sort_order, e os CREATE INDEX logo abaixo falham com
--- 42703 (coluna nao existe).
---
--- E por que isso trava o deploy inteiro: o init.js roda este arquivo ANTES do
--- diretorio migrations/. Quando ele aborta aqui, as proprias migracoes que
--- adicionariam as colunas (009_add_sort_order_to_news, 014_add_featured_position)
--- nunca chegam a rodar. O deploy falhava no passo de banco em todo servidor ja
--- existente, e passava despercebido porque o build do frontend ja tinha
--- terminado com sucesso.
---
--- Os ALTERs abaixo sao idempotentes e replicam o que aquelas migracoes fazem,
--- entao um banco novo nao muda em nada.
-ALTER TABLE news     ADD COLUMN IF NOT EXISTS featured_position VARCHAR(1) CHECK (featured_position IN ('A', 'B', 'C'));
-ALTER TABLE news     ADD COLUMN IF NOT EXISTS sort_order INTEGER;
-ALTER TABLE projects ADD COLUMN IF NOT EXISTS featured_position VARCHAR(1) CHECK (featured_position IN ('A', 'B', 'C'));
-
 -- Create indexes for better query performance
 CREATE INDEX IF NOT EXISTS idx_news_slug ON news(slug);
 CREATE INDEX IF NOT EXISTS idx_news_published_at ON news(published_at DESC);

@@ -27,7 +27,10 @@ echo "==> [4/6] Aplicando migrações do banco de dados..."
 # configurações do site) sem apagar dados. Roda a partir de backend/
 # para que o dotenv leia o DATABASE_URL do backend/.env.
 cd "$WEB_DIR/backend"
-node src/db/init.js
+# env -u: limpa variaveis de banco herdadas da sessao. Um `set -a; . ./.env`
+# de outro projeto no mesmo shell fazia este passo rodar contra o banco
+# daquele projeto, nao contra o do site.
+env -u DATABASE_URL -u PGDATABASE -u PGUSER -u PGPASSWORD -u PGHOST -u PGPORT \n  node src/db/init.js
 
 echo "==> [5/6] Reiniciando backend..."
 # Kill any orphan process holding port 3001 before restarting
