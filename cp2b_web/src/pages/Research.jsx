@@ -33,6 +33,15 @@ const transformApiAxes = (apiAxes, lang) =>
     };
   });
 
+// Um rótulo de TRL cabe numa badge; uma frase não. O corte é só por tamanho,
+// e não por laboratório: o campo é de texto livre na planilha, e o próximo
+// valor longo pode vir de qualquer um deles. Os rótulos reais hoje têm 13 e 14
+// caracteres e a frase do CP2b Lab tem 100, então 45 separa com folga larga
+// dos dois lados. Não olhar pontuação é deliberado — "TRL 4 e TRL 6." termina
+// em ponto e continua sendo rótulo.
+const TRL_BADGE_MAX_CHARS = 45;
+const isShortTrl = (value) => String(value || '').trim().length <= TRL_BADGE_MAX_CHARS;
+
 const Research = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
@@ -116,10 +125,22 @@ const Research = () => {
                         {labels.axesLabel}: {lab.axes.join(', ')}
                       </p>
                     )}
+                    {/* O trlSuggested vem de campo livre de planilha: às vezes
+                        é um rótulo ("TRL 2 e TRL 4"), às vezes uma frase
+                        inteira, como a do CP2b Lab, com 100 caracteres. A
+                        frase dentro de um <span class="badge"> estourava o
+                        card. Rótulo curto continua badge; texto longo vira
+                        parágrafo, que é o que ele já é. */}
                     {lab.trlSuggested && (
-                      <span className="badge bg-light text-dark border align-self-start mt-auto">
-                        {labels.trl}: {lab.trlSuggested}
-                      </span>
+                      isShortTrl(lab.trlSuggested) ? (
+                        <span className="badge bg-light text-dark border align-self-start mt-auto">
+                          {labels.trl}: {lab.trlSuggested}
+                        </span>
+                      ) : (
+                        <p className="text-muted small mb-0 mt-auto">
+                          <span className="fw-semibold">{labels.trl}:</span> {lab.trlSuggested}
+                        </p>
+                      )
                     )}
                   </Card.Body>
                 </Card>

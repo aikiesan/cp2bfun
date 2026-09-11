@@ -90,25 +90,53 @@ const PARTNER_ROLE = /institui(ç|c)(ã|a)o parceira|partner institution/i;
 const COORDINATOR_ROLE = /coordenador|coordenadora|coordinator/i;
 
 /**
- * A pessoa coordena o eixo?
+ * O cargo da pessoa já anuncia que ela coordena?
  *
- * Lê os dois campos de cargo pelo mesmo motivo de resolveNoAxisGroup: `role`
- * pode já estar traduzido e `role_pt` guarda o original.
+ * Só decide a APRESENTAÇÃO — quem de fato coordena vem de
+ * researchAxes[].coordinators, abaixo. A diferença importa para Bruna e
+ * Renata: elas coordenam os eixos 6 e 7, mas o cargo delas diz "Diretora" e
+ * "Vice-diretora", então precisam de uma tag a mais em vez de ter o cargo
+ * transformado em tag.
  */
 export function isCoordinator(member) {
   const roles = [member.role, member.role_pt].filter(Boolean).join(' ');
   return COORDINATOR_ROLE.test(roles);
 }
 
-// Dentro do eixo, quem coordena vem primeiro; o resto segue em ordem
-// alfabética. Antes a ordem era a da planilha, que é alfabética pelo primeiro
-// nome — e deixava a coordenação enterrada no meio da lista (no Eixo 8, nas
-// posições 2 e 5). `localeCompare` com 'pt' ordena acento junto da letra base,
-// senão "Ângela" cairia depois de "Zuleica".
-const byCoordinatorThenName = (a, b) => {
-  const coordA = isCoordinator(a);
-  const coordB = isCoordinator(b);
-  if (coordA !== coordB) return coordA ? -1 : 1;
+/**
+ * Eixo -> nomes de quem coordena, na ordem em que researchAxes os lista.
+ *
+ * Essa ordem não é alfabética nem acidental: é a hierarquia da coordenação, e
+ * a página precisa respeitá-la (Eixo 1 abre com Rubens, não com Lucas). Os
+ * nomes vêm com títulos — "Profº Drº Rubens..." — e nameKey os descarta, que é
+ * o que permite casar com o registro da pessoa na lista da equipe.
+ */
+const coordinatorRankByAxis = new Map(
+  (researchAxes.pt || []).map((axis) => [
+    String(axis.id),
+    new Map((axis.coordinators || []).map((c, i) => [nameKey(c.name), i])),
+  ])
+);
+
+/**
+ * Posição da pessoa na coordenação do eixo, ou Infinity se ela não coordena.
+ */
+export function coordinatorRank(member, axisId) {
+  const ranks = coordinatorRankByAxis.get(String(axisId));
+  if (!ranks) return Infinity;
+  const rank = ranks.get(nameKey(member.name));
+  return rank === undefined ? Infinity : rank;
+}
+
+// Dentro do eixo: a coordenação primeiro, na ordem do researchAxes; o resto em
+// ordem alfabética. Antes a lista saía na ordem da planilha, que é alfabética
+// pelo primeiro nome, e enterrava a coordenação no meio do grupo.
+// `localeCompare` com 'pt' ordena acento junto da letra base, senão "Ângela"
+// cairia depois de "Zuleica".
+const byCoordinationThenName = (axisId) => (a, b) => {
+  const rankA = coordinatorRank(a, axisId);
+  const rankB = coordinatorRank(b, axisId);
+  if (rankA !== rankB) return rankA - rankB;
   return String(a.name || '').localeCompare(String(b.name || ''), 'pt');
 };
 
@@ -208,16 +236,22 @@ export function groupTeamByAxis(members, language = 'pt') {
     }
 
     for (const axisId of memberAxes) {
-      byId.get(`eixo-${axisId}`)?.members.push(enriched);
+      // `coordinatesAxis` guarda o eixo, não um booleano: a mesma pessoa pode
+      // coordenar um eixo e apenas integrar outro — a Renata coordena o 6 e o
+      // 7, e o card precisa dizer de qual eixo a tag fala.
+      byId.get(`eixo-${axisId}`)?.members.push({
+        ...enriched,
+        coordinatesAxis: coordinatorRank(member, axisId) < Infinity ? String(axisId) : null,
+      });
     }
   }
 
   // Só os grupos de eixo são reordenados. Direção, associados, parceiras e
-  // apoio mantêm a ordem que já tinham: ali "coordenador" não é um papel da
+  // apoio mantêm a ordem que já tinham: ali coordenação não é um papel da
   // seção, e mexer nelas seria mudança que ninguém pediu.
   for (const group of groups) {
     if (group.category.startsWith('eixo-')) {
-      group.members.sort(byCoordinatorThenName);
+      group.members.sort(byCoordinationThenName(group.category.slice('eixo-'.length)));
     }
   }
 
