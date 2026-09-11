@@ -1,5 +1,11 @@
 // Avatar de coordenador de eixo: foto quando disponível, iniciais em círculo
 // quando não. Extraído de Research.jsx para ser reaproveitado por AxisMindMap.
+//
+// ATENÇÃO: hoje nenhuma página o importa — só o tier2_boundary_corner_cases.
+// O reaproveitamento pelo AxisMindMap descrito acima não chegou a acontecer.
+// Está mantido, e não removido, porque é exatamente a peça de que a tela de
+// coordenação sob demanda em /eixos precisa. Quem for mexer aqui: confirme
+// antes se ainda está órfão, para não apagar algo que acabou de ser ligado.
 import Avatar from './Avatar';
 import { getTeamPhoto } from '../data/teamPhotos';
 

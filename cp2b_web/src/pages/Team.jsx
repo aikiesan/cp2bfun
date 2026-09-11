@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, Form, InputGroup } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { teamMembers as staticTeamMembers, menuLabels, pageSeo } from '../data/content';
-import { groupTeamByAxis } from '../utils/teamGroups';
+import { groupTeamByAxis, isCoordinator } from '../utils/teamGroups';
 import { getTeamPhoto } from '../data/teamPhotos';
 import { teamByAxis } from '../data/generated/teamByAxis';
 import { getResearcherProfile } from '../data/generated/researcherProfiles';
@@ -380,12 +380,29 @@ const Team = () => {
                             >
                               {member.name}
                             </h6>
+                            {/* Quem coordena o eixo ganha o cargo em pílula
+                                contornada. O destaque é só visual de propósito:
+                                o texto já diz "Coordenadora do Eixo 3", então a
+                                informação não depende da cor nem da borda para
+                                ser entendida (WCAG 1.4.1). Sem cor nova — a
+                                mesma var(--brand-primary) que o cargo já usava,
+                                que tem contraste de sobra sobre o branco. */}
                             <div
-                              className="small fw-semibold mb-1 team-member-role"
+                              className={`small fw-semibold mb-1 team-member-role${
+                                isCoordinator(member) ? ' team-member-role--coordinator' : ''
+                              }`}
                               style={{
                                 color: 'var(--brand-primary, #00573A)',
                                 fontSize: '0.75rem',
                                 lineHeight: 1.25,
+                                ...(isCoordinator(member)
+                                  ? {
+                                      display: 'inline-block',
+                                      border: '1px solid currentColor',
+                                      borderRadius: '999px',
+                                      padding: '0.05rem 0.5rem',
+                                    }
+                                  : null),
                               }}
                             >
                               {member.role}
