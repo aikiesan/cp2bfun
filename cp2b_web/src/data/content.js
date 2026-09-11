@@ -46,7 +46,8 @@ export const menuLabels = {
     forumAbout: 'Sobre o Evento',
     events: 'Eventos',
     gallery: 'Galeria',
-    pilar2b: 'PILAR-2b'
+    pilar2b: 'PILAR-2b',
+    arqueia: 'Arqueia'
   },
   en: {
     about: 'About',
@@ -88,7 +89,8 @@ export const menuLabels = {
     forumAbout: 'About the Event',
     events: 'Events',
     gallery: 'Gallery',
-    pilar2b: 'PILAR-2b'
+    pilar2b: 'PILAR-2b',
+    arqueia: 'Arqueia'
   }
 };
 

@@ -97,7 +97,7 @@ export default defineConfig({
           '**/assets/AdminApp-*.css',
         ],
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api\//, /^\/pilar2b/],
+        navigateFallbackDenylist: [/^\/api\//, /^\/pilar2b/, /^\/arqueia/],
         cleanupOutdatedCaches: true,
         // Imagens ficam fora do precache: os logos da marca em @8x somavam
         // ~10 MB, baixados em segundo plano por todo visitante que instalava

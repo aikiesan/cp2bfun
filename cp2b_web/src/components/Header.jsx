@@ -173,9 +173,12 @@ const Header = () => {
         </Container>
       </div>
 
-      {/* Main Navbar */}
+      {/* Main Navbar.
+          expand="xl", nao "lg": com a segunda pill (Arqueia) o menu horizontal
+          passa de 980px e estoura o container de 960px do breakpoint lg, e o
+          botao ficava cortado. Abaixo de 1200px tudo vai para o sanfonado. */}
       <Navbar
-        expand="lg"
+        expand="xl"
         sticky="top"
         expanded={expanded}
         onToggle={setExpanded}
@@ -287,6 +290,26 @@ const Header = () => {
                   }}
                 >
                   {t.pilar2b}
+                </a>
+              </Nav.Item>
+              {/* Como o PILAR-2b: <a> cru, não <Link>. O Apache faz proxy de
+                  /arqueia para outra aplicação, então a navegação precisa ser
+                  completa. Gradiente próprio para as duas pills não ficarem
+                  indistinguíveis lado a lado. */}
+              <Nav.Item>
+                <a
+                  href="/arqueia"
+                  className="btn btn-sm rounded-pill fw-semibold ms-2 px-3 btn-glow"
+                  style={{
+                    background: 'linear-gradient(135deg, var(--cp2b-verde-escuro) 0%, var(--cp2b-ambar) 100%)',
+                    color: '#fff',
+                    border: 'none',
+                    letterSpacing: '0.5px',
+                    fontSize: '0.88rem',
+                    lineHeight: '1.5',
+                  }}
+                >
+                  {t.arqueia}
                 </a>
               </Nav.Item>
             </Nav>

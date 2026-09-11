@@ -39,19 +39,22 @@
     # /sobre -> /sobre/index.html (200, not 301)
     RewriteCond %{REQUEST_URI} !^/pilar2b
     RewriteCond %{REQUEST_URI} !^/abiove
+    RewriteCond %{REQUEST_URI} !^/arqueia
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
     RewriteRule ^(.*[^/])$ /$1/index.html [L]
 
     # SPA fallback: anything not on disk is handled by the React router.
     #
-    # The /pilar2b and /abiove exclusions mirror the vhost's <Directory> block.
+    # The /pilar2b, /abiove and /arqueia exclusions mirror the vhost's
+    # <Directory> block.
     # They must be repeated here: mod_rewrite does NOT inherit rules from the
     # parent context, so these .htaccess rules replace the vhost ones outright.
-    # Without them, a PILAR-2b or ABIOVE URL that reached this directory would
-    # be swallowed by the CP2b SPA.
+    # Without them, a PILAR-2b, ABIOVE or Arqueia URL that reached this
+    # directory would be swallowed by the CP2b SPA.
     RewriteCond %{REQUEST_URI} !^/pilar2b
     RewriteCond %{REQUEST_URI} !^/abiove
+    RewriteCond %{REQUEST_URI} !^/arqueia
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule . /index.html [L]
