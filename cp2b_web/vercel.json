@@ -1,6 +1,6 @@
 {
   "rewrites": [
-    { "source": "/((?!pilar2b).*)", "destination": "/index.html" }
+    { "source": "/((?!pilar2b|arqueia).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
