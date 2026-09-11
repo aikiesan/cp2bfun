@@ -26,8 +26,11 @@ print_error() {
 
 # Configuration
 BACKUP_DIR="/var/www/cp2b/backups"
-DB_NAME="cp2b"
-DB_USER="cp2b"
+# O banco do site e cp2b_db. O banco chamado apenas "cp2b" e a instancia
+# Supabase do PILAR-2b, compartilhada nesta VM — apontar para ela aqui
+# gerava backups do sistema errado.
+DB_NAME="cp2b_db"
+DB_USER="cp2b_user"
 UPLOAD_DIR="/var/www/cp2b/backend/uploads"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 RETENTION_DAYS=7

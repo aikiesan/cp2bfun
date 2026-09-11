@@ -15,6 +15,39 @@ async function initializeDatabase() {
   try {
     console.log('🔄 Initializing database...');
 
+    // Guarda de banco alvo.
+    //
+    // O schema.sql usa CREATE TABLE IF NOT EXISTS, que é silenciosamente
+    // inofensivo no banco certo e desastroso no errado: apontado para outra
+    // aplicação, ele cria o schema inteiro do site lá dentro e commita.
+    //
+    // Já aconteceu: um `set -a; . ./.env` do projeto Arqueia deixou
+    // DATABASE_URL exportada na sessão, e como o dotenv não sobrescreve
+    // variáveis existentes, o deploy do site rodou contra o banco de produção
+    // da Arqueia. Só não destruiu nada porque aquele banco tem uma tabela
+    // `projects` de formato diferente, e o índice sobre featured_position
+    // falhou, revertendo a transação implícita.
+    //
+    // A verificação abaixo não depende de como a variável chegou: ela olha o
+    // conteúdo do banco. Um banco do site ou está vazio, ou já tem `news`.
+    const { rows: [target] } = await client.query(
+      `SELECT current_database() AS db,
+              to_regclass('public.news') IS NOT NULL AS has_news,
+              (SELECT count(*) FROM information_schema.tables
+                WHERE table_schema = 'public') AS table_count`
+    );
+
+    if (!target.has_news && Number(target.table_count) > 0) {
+      throw new Error(
+        `Banco "${target.db}" tem ${target.table_count} tabela(s) mas nenhuma chamada "news". ` +
+        'Isto não parece o banco do site CP2b, e criar o schema aqui misturaria ' +
+        'duas aplicações. Verifique DATABASE_URL — inclusive se ela veio exportada ' +
+        'no ambiente em vez do backend/.env.'
+      );
+    }
+
+    console.log(`📍 Banco alvo: ${target.db}`);
+
     // Read and execute schema.sql
     const schemaPath = path.join(__dirname, 'schema.sql');
     const schemaSql = fs.readFileSync(schemaPath, 'utf8');
