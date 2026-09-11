@@ -2,6 +2,7 @@ import { describe, it, expect } from 'vitest';
 import { nameKey } from '../nameKey';
 import {
   groupTeamByAxis,
+  coordinatorRank,
   isCoordinator,
   resolveAffiliation,
   stripAxisPrefix,
@@ -208,7 +209,7 @@ describe('groupTeamByAxis', () => {
   });
 });
 
-describe('isCoordinator', () => {
+describe('isCoordinator (o cargo já anuncia a coordenação?)', () => {
   it('recognises the role in both genders and in English', () => {
     expect(isCoordinator({ role: 'Coordenador do Eixo 1' })).toBe(true);
     expect(isCoordinator({ role: 'Coordenadora do Eixo 3' })).toBe(true);
@@ -219,39 +220,94 @@ describe('isCoordinator', () => {
     expect(isCoordinator({ role: 'Axis 8 Lead', role_pt: 'Coordenadora do Eixo 8' })).toBe(true);
   });
 
-  it('does not mistake other roles for coordination', () => {
-    expect(isCoordinator({ role: 'Professor UNICAMP' })).toBe(false);
+  it('is false for the directors, who coordinate without the role saying so', () => {
+    // Bruna e Renata coordenam os eixos 6 e 7, mas o cargo delas diz outra
+    // coisa — é o que faz elas precisarem de uma tag a mais.
     expect(isCoordinator({ role: 'Diretora do CP2b' })).toBe(false);
+    expect(isCoordinator({ role: 'Vice-diretora do CP2b' })).toBe(false);
+    expect(isCoordinator({ role: 'Professor UNICAMP' })).toBe(false);
     expect(isCoordinator({})).toBe(false);
   });
 });
 
-describe('axis groups put coordination first', () => {
-  // Antes desta ordenação a lista saía na ordem da planilha, que é alfabética
-  // pelo primeiro nome — no Eixo 8 real isso deixava as duas coordenadoras nas
-  // posições 2 e 5, atrás de quem não tem cargo nenhum.
+describe('coordinatorRank (quem coordena vem de researchAxes, não do cargo)', () => {
+  it('ranks each axis in the order researchAxes lists, which is not alphabetical', () => {
+    // A ordem pedida pelo centro: Eixo 1 abre com Rubens, não com Lucas.
+    expect(coordinatorRank({ name: 'Rubens Augusto Camargo Lamparelli' }, '1')).toBe(0);
+    expect(coordinatorRank({ name: 'Lucas Nakamura Cerejo' }, '1')).toBe(1);
+    expect(coordinatorRank({ name: 'Lucas Tadeu Fuess' }, '2')).toBe(0);
+    expect(coordinatorRank({ name: 'Fabiane Moreira Vieira' }, '2')).toBe(1);
+    expect(coordinatorRank({ name: 'Priscila Rosseto Camiloti' }, '3')).toBe(0);
+    expect(coordinatorRank({ name: 'Ana Beatriz Soares Aguiar' }, '3')).toBe(1);
+    expect(coordinatorRank({ name: 'Marcelo Pereira Cunha' }, '4')).toBe(0);
+    expect(coordinatorRank({ name: 'Carlos Eduardo Driemeier' }, '4')).toBe(1);
+  });
+
+  it('matches through the academic titles researchAxes carries', () => {
+    // O dado guarda "Profº Drº Rubens...", a lista da equipe guarda o nome
+    // limpo. nameKey é o que costura os dois.
+    expect(coordinatorRank({ name: 'Profº Drº Rubens Augusto Camargo Lamparelli' }, '1')).toBe(0);
+  });
+
+  it('finds the directors, whose role never says "coordenadora"', () => {
+    expect(coordinatorRank({ name: 'Renata Piacentini Rodriguez' }, '6')).toBe(0);
+    expect(coordinatorRank({ name: 'Bruna de Souza Moraes' }, '6')).toBe(1);
+    expect(coordinatorRank({ name: 'Renata Piacentini Rodriguez' }, '7')).toBe(1);
+  });
+
+  it('returns Infinity for someone who only belongs to the axis', () => {
+    expect(coordinatorRank({ name: 'Lucas Boaro' }, '1')).toBe(Infinity);
+    expect(coordinatorRank({ name: 'Bruna de Souza Moraes' }, '1')).toBe(Infinity);
+    expect(coordinatorRank({ name: 'Quem Quer Que Seja' }, '99')).toBe(Infinity);
+  });
+});
+
+describe('axis groups put coordination first, in the centre order', () => {
   const members = [
-    { name: 'Zuleica Alves', axes: ['3'], role: 'Pesquisadora' },
-    { name: 'Ana Beatriz Soares Aguiar', axes: ['3'], role: 'Coordenadora do Eixo 3' },
-    { name: 'Ângela Cruz Guirao', axes: ['3'], role: 'Pesquisadora' },
-    { name: 'Bruno Sidnei da Silva', axes: ['3'], role: 'Coordenador do Eixo 3' },
+    { name: 'Lucas Boaro', axes: ['1'], role: 'Iniciação Científica' },
+    { name: 'Lucas Nakamura Cerejo', axes: ['1'], role: 'Coordenador do Eixo 1' },
+    { name: 'Rubens Augusto Camargo Lamparelli', axes: ['1'], role: 'Coordenador do Eixo 1' },
+    { name: 'Ângela Cruz Guirao', axes: ['1'], role: 'Pesquisadora' },
   ];
 
-  const axisGroup = () =>
-    groupTeamByAxis(members, 'pt').find((g) => g.category === 'eixo-3');
+  const axisGroup = () => groupTeamByAxis(members, 'pt').find((g) => g.category === 'eixo-1');
 
-  it('lists both coordinators before everyone else', () => {
-    const names = axisGroup().members.map((m) => m.name);
-    expect(names.slice(0, 2)).toEqual([
-      'Ana Beatriz Soares Aguiar',
-      'Bruno Sidnei da Silva',
+  it('opens with Rubens then Lucas — the researchAxes order, not the alphabet', () => {
+    expect(axisGroup().members.map((m) => m.name).slice(0, 2)).toEqual([
+      'Rubens Augusto Camargo Lamparelli',
+      'Lucas Nakamura Cerejo',
     ]);
   });
 
   it('keeps the rest alphabetical, with accents beside their base letter', () => {
-    const names = axisGroup().members.map((m) => m.name);
-    // "Ângela" antes de "Zuleica": localeCompare('pt'), não ordem de code point.
-    expect(names.slice(2)).toEqual(['Ângela Cruz Guirao', 'Zuleica Alves']);
+    expect(axisGroup().members.map((m) => m.name).slice(2)).toEqual([
+      'Ângela Cruz Guirao',
+      'Lucas Boaro',
+    ]);
+  });
+
+  it('tags each coordinator with the axis they coordinate', () => {
+    const byName = Object.fromEntries(axisGroup().members.map((m) => [m.name, m]));
+    expect(byName['Rubens Augusto Camargo Lamparelli'].coordinatesAxis).toBe('1');
+    expect(byName['Lucas Boaro'].coordinatesAxis).toBe(null);
+  });
+
+  it('tags the directors on the axis they coordinate and not on others', () => {
+    // A Renata coordena o 6 e o 7; a Bruna, só o 6. Nos dois casos o cargo
+    // delas não diz isso, e é a tag que passa a dizer.
+    const both = [
+      { name: 'Bruna de Souza Moraes', axes: ['6', '7'], role: 'Diretora do CP2b' },
+      { name: 'Renata Piacentini Rodriguez', axes: ['6', '7'], role: 'Vice-diretora do CP2b' },
+    ];
+    const groups = groupTeamByAxis(both, 'pt');
+    const find = (cat, name) =>
+      groups.find((g) => g.category === cat).members.find((m) => m.name === name);
+
+    expect(find('eixo-6', 'Bruna de Souza Moraes').coordinatesAxis).toBe('6');
+    expect(find('eixo-6', 'Renata Piacentini Rodriguez').coordinatesAxis).toBe('6');
+    expect(find('eixo-7', 'Renata Piacentini Rodriguez').coordinatesAxis).toBe('7');
+    // A Bruna integra o Eixo 7 mas não o coordena.
+    expect(find('eixo-7', 'Bruna de Souza Moraes').coordinatesAxis).toBe(null);
   });
 
   it('leaves non-axis groups in the order they already had', () => {

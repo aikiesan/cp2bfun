@@ -19,6 +19,28 @@ import ResearcherModal from '../components/ResearcherModal';
 // renders them as ranks, so this is only used to walk the response.
 const apiCategories = ['coordinators', 'principals', 'associates', 'support', 'students'];
 
+// "Coordenação" em vez de "Coordenador"/"Coordenadora": o rótulo é gerado a
+// partir do número do eixo, e derivar o gênero do nome da pessoa seria
+// adivinhação. A forma neutra é português corrente e vale para qualquer um.
+// O \u00A0 entre "Eixo" e o número é espaço não-separável: o card é estreito e,
+// com espaço comum, a pílula quebrava deixando o número sozinho na segunda
+// linha ("Coordenação do Eixo" / "6").
+const COORDINATION_LABEL = {
+  pt: (axisId) => `Coordenação do Eixo\u00A0${axisId}`,
+  en: (axisId) => `Axis\u00A0${axisId} Coordination`,
+};
+
+// A pílula que marca a coordenação. Fica aqui, e não repetida nos dois pontos
+// de uso, para as duas formas não divergirem de aparência.
+const coordinatorPillStyle = {
+  display: 'inline-block',
+  border: '1px solid currentColor',
+  borderRadius: '999px',
+  padding: '0.05rem 0.5rem',
+  fontSize: '0.75rem',
+  lineHeight: 1.25,
+};
+
 // Keep former members out of both API-backed and static-fallback results. The
 // database migration removes the rows permanently; this also protects the
 // public page while an older API response is still cached or being upgraded.
@@ -380,28 +402,41 @@ const Team = () => {
                             >
                               {member.name}
                             </h6>
-                            {/* Quem coordena o eixo ganha o cargo em pílula
-                                contornada. O destaque é só visual de propósito:
-                                o texto já diz "Coordenadora do Eixo 3", então a
-                                informação não depende da cor nem da borda para
-                                ser entendida (WCAG 1.4.1). Sem cor nova — a
-                                mesma var(--brand-primary) que o cargo já usava,
-                                que tem contraste de sobra sobre o branco. */}
+                            {/* Duas formas de anunciar a coordenação, porque há
+                                dois casos. Quando o próprio cargo já diz
+                                ("Coordenador do Eixo 1"), ele vira a pílula.
+                                Quando não diz — Bruna e Renata, cujo cargo é
+                                "Diretora" e "Vice-diretora" mas que coordenam
+                                os eixos 6 e 7 —, o cargo fica como está e uma
+                                pílula a mais nomeia a coordenação.
+
+                                O destaque é só visual de propósito: o texto diz
+                                o que a pílula significa, então a informação não
+                                depende da cor nem da borda para ser entendida
+                                (WCAG 1.4.1). Sem cor nova — a mesma
+                                var(--brand-primary) que o cargo já usava. */}
+                            {member.coordinatesAxis && !isCoordinator(member) && (
+                              <div
+                                className="small fw-semibold mb-1 team-member-role--coordinator"
+                                style={{ ...coordinatorPillStyle, color: 'var(--brand-primary, #00573A)' }}
+                              >
+                                {(COORDINATION_LABEL[language] || COORDINATION_LABEL.pt)(
+                                  member.coordinatesAxis
+                                )}
+                              </div>
+                            )}
                             <div
                               className={`small fw-semibold mb-1 team-member-role${
-                                isCoordinator(member) ? ' team-member-role--coordinator' : ''
+                                member.coordinatesAxis && isCoordinator(member)
+                                  ? ' team-member-role--coordinator'
+                                  : ''
                               }`}
                               style={{
                                 color: 'var(--brand-primary, #00573A)',
                                 fontSize: '0.75rem',
                                 lineHeight: 1.25,
-                                ...(isCoordinator(member)
-                                  ? {
-                                      display: 'inline-block',
-                                      border: '1px solid currentColor',
-                                      borderRadius: '999px',
-                                      padding: '0.05rem 0.5rem',
-                                    }
+                                ...(member.coordinatesAxis && isCoordinator(member)
+                                  ? coordinatorPillStyle
                                   : null),
                               }}
                             >
