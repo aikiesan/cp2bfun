@@ -34,6 +34,38 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
+        // Tudo que não é o shell sai para assets/pages/, e é essa pasta que o
+        // workbox deixa de pré-cachear (ver globIgnores adiante). Sem a
+        // separação por pasta o service worker baixaria, em toda primeira
+        // visita, as ~30 páginas que o React.lazy acabou de tirar do caminho
+        // crítico — o ganho do split valeria só para o primeiro paint.
+        //
+        // O shell é o que qualquer rota precisa: o chunk de entrada e os três
+        // vendors abaixo (o framer-motion entra porque o SocialSidebar, que
+        // fica fora do <Routes>, o usa).
+        chunkFileNames(chunk) {
+          const shell = chunk.isEntry
+            || ['react-vendor', 'bootstrap-vendor', 'motion'].includes(chunk.name);
+          return shell ? 'assets/[name]-[hash].js' : 'assets/pages/[name]-[hash].js';
+        },
+        // O CSS de uma página sob demanda acompanha o JS dela: o Vite emite um
+        // arquivo por chunk com CSS próprio (AdminApp, ForumPaulista,
+        // Indicators, Research, Governance). Sem mandá-los para a mesma pasta,
+        // ficariam no precache sozinhos — o do admin sozinho já são 21 KB que
+        // nenhum visitante do site público usa.
+        //
+        // Só o CSS é redirecionado. As fontes e imagens vivem em public/ e são
+        // copiadas sem passar por aqui; qualquer outro asset segue o padrão.
+        assetFileNames(asset) {
+          const source = asset.names?.[0] ?? asset.name ?? '';
+          if (source.endsWith('.css')) {
+            const base = source.slice(0, -'.css'.length);
+            if (!['index', 'bootstrap-vendor', 'react-vendor', 'motion'].includes(base)) {
+              return 'assets/pages/[name]-[hash][extname]';
+            }
+          }
+          return 'assets/[name]-[hash][extname]';
+        },
         // Separa só as bibliotecas compartilhadas por site público e admin,
         // para que uma troca de código nosso não invalide o cache delas.
         // Devolver undefined nos outros casos é intencional: deixa o Rollup
@@ -90,11 +122,12 @@ export default defineConfig({
       workbox: {
         globIgnores: [
           '**/assets/logos/cp2b-logo-og.png',
-          // O chunk do admin (~600 KB) é carregado sob demanda em /admin.
-          // Sem isso o workbox o pré-cachearia em todo visitante do site
-          // público, desfazendo metade do ganho do split.
-          '**/assets/AdminApp-*.js',
-          '**/assets/AdminApp-*.css',
+          // Chunks sob demanda: uma página por arquivo, mais o painel admin
+          // (~600 KB). Pré-cacheá-los somava ~2 MB baixados em segundo plano
+          // por todo visitante, inclusive quem lia uma notícia e ia embora.
+          // Continuam cacheados, mas só depois de visitados, pela regra de
+          // runtimeCaching abaixo. Ver build.rollupOptions.chunkFileNames.
+          '**/assets/pages/**',
         ],
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api\//, /^\/pilar2b/, /^\/arqueia/],
@@ -103,9 +136,29 @@ export default defineConfig({
         // ~10 MB, baixados em segundo plano por todo visitante que instalava
         // o service worker. Elas continuam cacheadas, mas sob demanda, pela
         // regra de runtimeCaching de imagens abaixo.
-        globPatterns: ['**/*.{js,css,html,ico,woff,woff2,otf}'],
+        // Entre os formatos de fonte, só woff2 entra no precache. Os .otf da
+        // marca (styles/fonts.css) e o .woff dos bootstrap-icons são fallback
+        // do woff2 que está ao lado deles: juntos somavam ~1,1 MB pré-baixados
+        // para servir navegadores que não existem mais no acesso real. Os
+        // arquivos continuam publicados — quem precisar deles os busca na rede.
+        globPatterns: ['**/*.{js,css,html,ico,woff2}'],
         maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
         runtimeCaching: [
+          {
+            // Os chunks de página que saíram do precache. O nome carrega o
+            // hash do conteúdo, então o arquivo nunca muda sob a mesma URL e
+            // CacheFirst é seguro: quem já visitou a página abre offline e
+            // sem rede na próxima vez, e quem não visitou não paga por ela.
+            urlPattern: /\/assets\/pages\/.*\.(?:js|css)$/i,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'page-chunks',
+              expiration: {
+                maxEntries: 60,
+                maxAgeSeconds: 60 * 60 * 24 * 30,
+              },
+            },
+          },
           {
             urlPattern: /^https:\/\/flagcdn\.com\/.*/i,
             handler: 'CacheFirst',

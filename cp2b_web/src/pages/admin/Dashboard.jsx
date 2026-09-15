@@ -115,9 +115,12 @@ const Dashboard = () => {
       subtitle: stats.publicationsThisYear > 0 ? `${stats.publicationsThisYear} este ano` : null,
     },
     {
-      title: 'Projetos',
+      // "Entrevistas" e nao "Projetos": e assim que o menu lateral e o site
+      // publico (/entrevistas) chamam este conteudo. O nome antigo fazia o
+      // Dashboard contar uma coisa que a equipe nao achava no menu.
+      title: 'Entrevistas',
       count: stats.projectsCount,
-      icon: 'bi-folder',
+      icon: 'bi-mic',
       link: '/admin/projects',
       color: '#00695C',
     },
@@ -298,7 +301,7 @@ const Dashboard = () => {
                 </Col>
                 <Col md={4} sm={6}>
                   <Link to="/admin/projects/new" className="btn btn-outline-primary w-100">
-                    <i className="bi bi-folder-plus me-2"></i>Novo Projeto
+                    <i className="bi bi-mic me-2"></i>Nova Entrevista
                     <Badge bg="success" className="ms-2">NEW</Badge>
                   </Link>
                 </Col>
