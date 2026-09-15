@@ -8,7 +8,7 @@
  * chunk que só é baixado quando alguém abre /admin.
  *
  * Os caminhos são relativos a /admin: a rota splat do App.jsx os resolve
- * (o Router já roda com v7_relativeSplatPath).
+ * (o react-router v7 resolve rotas splat de forma relativa por padrão).
  */
 import { Routes, Route } from 'react-router-dom';
 

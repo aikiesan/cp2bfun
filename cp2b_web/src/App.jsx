@@ -129,7 +129,9 @@ function App() {
   return (
     <LanguageProvider>
       <PageStatusProvider>
-      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      {/* react-router v7 já aplica startTransition e a resolução relativa de
+          rotas splat por padrão — as future flags do v6 saíram junto com o upgrade. */}
+      <Router>
         <SeoHead jsonLd={organizationJsonLd} />
         <ScrollToTop />
         <SocialSidebar />

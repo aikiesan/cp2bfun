@@ -147,7 +147,8 @@ const AdminLayout = () => {
       label: 'ENGAJAMENTO',
       icon: 'bi-chat-dots',
       items: [
-        { path: '/admin/messages', label: 'Mensagens', icon: 'bi-envelope', badge: unreadCount }
+        { path: '/admin/messages', label: 'Mensagens', icon: 'bi-envelope', badge: unreadCount },
+        { path: '/admin/newsletter', label: 'Newsletter', icon: 'bi-send' }
       ]
     },
     {
