@@ -5,7 +5,15 @@ const Breadcrumbs = () => {
   const location = useLocation();
   const pathSegments = location.pathname.split('/').filter(segment => segment);
 
-  // Map path segments to readable labels
+  // Rótulo de cada segmento de caminho.
+  //
+  // Um segmento que falte aqui aparece cru na trilha — era o caso de
+  // "newsletter", "page-status" e "settings", que mostravam o slug da URL
+  // enquanto as vizinhas mostravam "Mensagens" e "Equipe". Ao criar uma rota
+  // nova em AdminApp.jsx, acrescente o segmento dela nesta tabela.
+  //
+  // Segmentos dinâmicos (o :slug de uma notícia, o :id de um vídeo) não entram:
+  // para esses, o próprio slug é a informação útil na trilha.
   const labelMap = {
     admin: 'Admin',
     news: 'Notícias',
@@ -14,7 +22,7 @@ const Breadcrumbs = () => {
     microscopio: 'Microscópio',
     oportunidades: 'Oportunidades',
     videos: 'Vídeos',
-    projects: 'Projetos',
+    projects: 'Entrevistas',
     team: 'Equipe',
     axes: 'Eixos',
     content: 'Conteúdo',
@@ -26,6 +34,21 @@ const Breadcrumbs = () => {
     participants: 'Participantes',
     slots: 'Horários',
     meetups: 'Meet-ups',
+    newsletter: 'Newsletter',
+    gallery: 'Galeria',
+    upload: 'Enviar Fotos',
+    events: 'Eventos',
+    'press-kit': 'Identidade Visual',
+    podcast: 'Podcast',
+    boletins: 'Boletins',
+    'page-status': 'Status das Páginas',
+    settings: 'Configurações do Site',
+    ajuda: 'Guia de Uso',
+    // Sub-páginas de "Conteúdo de Páginas".
+    home: 'Página Inicial',
+    about: 'Página Sobre',
+    governance: 'Governança',
+    transparency: 'Transparência',
   };
 
   // Build breadcrumb items
