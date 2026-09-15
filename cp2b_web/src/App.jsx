@@ -51,54 +51,71 @@ import SocialSidebar from './components/SocialSidebar';
 import ErrorBoundary from './components/ErrorBoundary';
 import CookieConsent from './components/CookieConsent';
 
-// Pages
+// Páginas carregadas junto com o shell.
+//
+// A Home é a porta de entrada da maioria das visitas: deixá-la sob demanda
+// custaria um round trip extra justamente no caminho mais percorrido. As
+// outras duas são telas de fallback — a Manutencao é o destino do
+// GuardedRoute e a NotFound o da rota curinga —, então precisam estar
+// disponíveis no mesmo instante em que a rota decide desviar para elas.
+// Todas as demais viram chunk próprio logo abaixo.
 import Home from './pages/Home';
-import About from './pages/About';
-import Research from './pages/Research';
-import Solucoes from './pages/Solucoes';
-import Team from './pages/Team';
-import News from './pages/News';
-import NewsDetail from './pages/NewsDetail';
-import OportunidadesDetail from './pages/OportunidadesDetail';
-import MicroscopioDetail from './pages/MicroscopioDetail';
-import ProjectDetail from './pages/ProjectDetail';
-import Contact from './pages/Contact';
-import Opportunities from './pages/Opportunities';
-import Publications from './pages/Publications';
-import Projects from './pages/Projects';
-import Microscopio from './pages/Microscopio';
-import PressKit from './pages/PressKit';
-import Podcast from './pages/Podcast';
-import Boletins from './pages/Boletins';
-import Newsletter from './pages/Newsletter';
-import Others from './pages/Others';
 import NotFound from './pages/NotFound';
 import Manutencao from './pages/Manutencao';
-import ForumPaulista from './pages/ForumPaulista';
-import ConfirmarMeetup from './pages/ConfirmarMeetup';
-import Events from './pages/Events';
-import EventDetail from './pages/EventDetail';
-import Gallery from './pages/Gallery';
-import AlbumView from './pages/AlbumView';
+
+// Demais páginas: um chunk por rota.
+//
+// Antes deste split, o bundle de entrada carregava as ~30 páginas públicas de
+// uma vez — quem abria a Home baixava também a Galeria, o Fórum e todos os
+// detalhes de notícia. Com React.lazy o Rollup emite um arquivo por página e
+// o visitante busca só a que pediu. O Suspense que cobre essas rotas fica
+// dentro do <main>, para que Header, Footer e MoleculeField permaneçam na
+// tela enquanto o chunk chega.
+const About = lazy(() => import('./pages/About'));
+const Research = lazy(() => import('./pages/Research'));
+const Solucoes = lazy(() => import('./pages/Solucoes'));
+const Team = lazy(() => import('./pages/Team'));
+const News = lazy(() => import('./pages/News'));
+const NewsDetail = lazy(() => import('./pages/NewsDetail'));
+const OportunidadesDetail = lazy(() => import('./pages/OportunidadesDetail'));
+const MicroscopioDetail = lazy(() => import('./pages/MicroscopioDetail'));
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Opportunities = lazy(() => import('./pages/Opportunities'));
+const Publications = lazy(() => import('./pages/Publications'));
+const Projects = lazy(() => import('./pages/Projects'));
+const Microscopio = lazy(() => import('./pages/Microscopio'));
+const PressKit = lazy(() => import('./pages/PressKit'));
+const Podcast = lazy(() => import('./pages/Podcast'));
+const Boletins = lazy(() => import('./pages/Boletins'));
+const Newsletter = lazy(() => import('./pages/Newsletter'));
+const Others = lazy(() => import('./pages/Others'));
+const ForumPaulista = lazy(() => import('./pages/ForumPaulista'));
+const ConfirmarMeetup = lazy(() => import('./pages/ConfirmarMeetup'));
+const Events = lazy(() => import('./pages/Events'));
+const EventDetail = lazy(() => import('./pages/EventDetail'));
+const Gallery = lazy(() => import('./pages/Gallery'));
+const AlbumView = lazy(() => import('./pages/AlbumView'));
 
 // About sub-pages
-import Governance from './pages/about/Governance';
-import Indicators from './pages/about/Indicators';
-import Transparency from './pages/about/Transparency';
-import PartnersPage from './pages/about/PartnersPage';
+const Governance = lazy(() => import('./pages/about/Governance'));
+const Indicators = lazy(() => import('./pages/about/Indicators'));
+const Transparency = lazy(() => import('./pages/about/Transparency'));
+const PartnersPage = lazy(() => import('./pages/about/PartnersPage'));
 
 // Painel administrativo: um único chunk carregado sob demanda em /admin.
 // Ver src/AdminApp.jsx para o motivo.
 const AdminApp = lazy(() => import('./AdminApp'));
 
-// Placeholder enquanto o chunk do admin é baixado. role="status" + aria-live
-// fazem o leitor de tela anunciar o carregamento em vez de ficar em silêncio.
-const AdminLoading = () => (
+// Placeholder enquanto um chunk sob demanda é baixado. role="status" +
+// aria-live fazem o leitor de tela anunciar o carregamento em vez de ficar em
+// silêncio.
+const ChunkLoading = ({ label, minHeight }) => (
   <div
     role="status"
     aria-live="polite"
     style={{
-      minHeight: '100vh',
+      minHeight,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
@@ -107,8 +124,18 @@ const AdminLoading = () => (
     }}
   >
     <span className="spinner-border spinner-border-sm" aria-hidden="true" />
-    Carregando o painel…
+    {label}
   </div>
+);
+
+const AdminLoading = () => (
+  <ChunkLoading label="Carregando o painel…" minHeight="100vh" />
+);
+
+// O Header e o Footer já estão na tela quando este fallback aparece, então ele
+// ocupa só a altura do <main> — sem isso a página saltaria a cada navegação.
+const PageLoading = () => (
+  <ChunkLoading label="Carregando…" minHeight="80vh" />
 );
 
 // Route guard: redirects to /manutencao when page is disabled
@@ -159,6 +186,7 @@ function App() {
                 <MoleculeField />
                 <ErrorBoundary>
                 <main id="main-content" style={{ minHeight: '80vh' }}>
+                  <Suspense fallback={<PageLoading />}>
                   <Routes>
                     <Route path="/" element={<GuardedRoute pageKey="home" element={<Home />} />} />
                     <Route path="/sobre" element={<GuardedRoute pageKey="sobre" element={<About />} />} />
@@ -198,6 +226,7 @@ function App() {
                     <Route path="/manutencao" element={<Manutencao />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
+                  </Suspense>
                 </main>
                 </ErrorBoundary>
                 <Footer />
