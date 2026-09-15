@@ -89,7 +89,9 @@ When adding new text, add both Portuguese and English versions to the relevant e
 
 ### Routing
 
-Routes use Portuguese paths (`/sobre`, `/pesquisa`, `/equipe`, etc.). The Vercel config (`vercel.json`) rewrites all paths to `index.html` for SPA client-side routing.
+Routes use Portuguese paths (`/sobre`, `/pesquisa`, `/equipe`, etc.). Both deploy targets rewrite unknown paths to `index.html` for SPA client-side routing: `cp2b_web/vercel.json` on Vercel and `cp2b_web/public/.htaccess` on the Unicamp Apache server. Both exclude `/pilar2b` and `/arqueia`, which are served as separate apps.
+
+Everything the app needs lives under `cp2b_web/` — CI (`.github/workflows/ci.yml`) and `deploy.sh` both build only from there.
 
 ### Static Assets
 
