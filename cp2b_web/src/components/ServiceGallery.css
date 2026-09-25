@@ -1,0 +1,172 @@
+/* Galeria de serviços técnicos — ilustração em destaque, título curto e TRL;
+   a descrição abre sob demanda. Mesma linguagem de /eixos e da régua de TRL:
+   filetes finos, cor forte só no estado ativo, sem rolagem lateral. */
+
+.svc-grid {
+  --svc-ink: var(--cp2b-verde-escuro);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 14.5rem), 1fr));
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-items: start;
+}
+
+.svc {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+}
+
+.svc:hover,
+.svc.is-open {
+  border-color: color-mix(in srgb, var(--cp2b-verde) 50%, white);
+  box-shadow: 0 16px 34px -22px rgb(0 87 58 / .4);
+}
+
+/* Quadro da ilustração: fundo claro com uma leve luz da marca, sem caixa
+   dentro de caixa — a imagem recortada "flutua" no card. */
+.svc__art {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  padding: 0.75rem;
+  background:
+    radial-gradient(70% 70% at 50% 55%, color-mix(in srgb, var(--cp2b-lima) 16%, transparent), transparent 75%),
+    color-mix(in srgb, var(--cp2b-verde) 4%, white);
+  border-bottom: 1px solid var(--border-divider);
+}
+
+.svc__art img {
+  display: block;
+  width: auto;
+  height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+}
+
+.svc__art--icon i {
+  display: grid;
+  place-items: center;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 1px solid color-mix(in srgb, var(--cp2b-verde) 30%, white);
+  font-size: 1.9rem;
+  color: var(--svc-ink);
+}
+
+.svc__body { display: flex; flex-direction: column; padding: 0.9rem 1rem 1rem; }
+
+.svc__meta {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cp2b-verde);
+}
+
+.svc__meta span { color: var(--gray-400); margin: 0 0.1rem; }
+
+.svc__title {
+  margin: 0.3rem 0 0.55rem;
+  font-family: var(--font-display);
+  font-size: 0.96rem;
+  font-weight: 700;
+  line-height: 1.28;
+  color: var(--svc-ink);
+  text-wrap: balance;
+}
+
+.svc__more {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.7rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--svc-ink);
+  cursor: pointer;
+}
+
+.svc__more:hover,
+.svc.is-open .svc__more { background: var(--svc-ink); border-color: var(--svc-ink); color: #fff; }
+.svc__more:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+.svc__text {
+  margin: 0.7rem 0 0;
+  font-size: 0.84rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+/* Celular: duas colunas, só ilustração e título à vista. */
+@media (max-width: 575.98px) {
+  .svc-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.6rem; }
+  .svc { border-radius: var(--radius-lg); }
+  .svc__art { aspect-ratio: 1; padding: 0.5rem; }
+  .svc__art--icon i { width: 3.4rem; height: 3.4rem; font-size: 1.4rem; }
+  .svc__body { padding: 0.65rem 0.7rem 0.75rem; }
+  .svc__meta { font-size: 0.56rem; letter-spacing: 0.08em; }
+  .svc__title { font-size: 0.82rem; margin-bottom: 0.45rem; }
+  .svc__more { padding: 0.25rem 0.55rem; font-size: 0.7rem; }
+  /* Aberto, o card ocupa a linha toda em formato horizontal: ilustração
+     pequena à esquerda, texto à direita — sem esticar a imagem. */
+  .svc.is-open { grid-column: 1 / -1; flex-direction: row; align-items: stretch; }
+  .svc.is-open .svc__art { flex: 0 0 7rem; aspect-ratio: auto; border-bottom: none; border-right: 1px solid var(--border-divider); }
+  .svc.is-open .svc__art img { width: 100%; height: auto; }
+}
+
+/* ---------- filtro por laboratório ---------- */
+.svc-filter {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, auto));
+  gap: 4px;
+  padding: 4px;
+  background: var(--gray-100);
+  border-radius: 0.75rem;
+}
+
+.svc-filter__btn {
+  min-width: 0;
+  padding: 0.5rem 0.95rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.55rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.svc-filter__btn:hover { color: var(--text-primary); }
+
+.svc-filter__btn.is-active {
+  background: var(--bg-surface);
+  color: var(--cp2b-verde-escuro);
+  box-shadow: 0 1px 3px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--cp2b-verde-escuro) 12%, white);
+}
+
+.svc-filter__btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+@media (max-width: 767.98px) {
+  .svc-filter { grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; }
+  .svc-filter__btn { padding: 0.5rem 0.25rem; font-size: 0.78rem; overflow: hidden; text-overflow: ellipsis; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .svc-filter__btn { transition: background var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard); }
+  .svc,
+  .svc__more { transition: border-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard); }
+}
