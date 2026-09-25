@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Spinner, Button, Nav } from 'react-bootstrap';
+import { Container, Row, Col, Spinner, Button } from 'react-bootstrap';
 import { Link, useLocation } from 'react-router-dom';
 import {
   aboutContent as staticAboutContent,
@@ -7,11 +7,14 @@ import {
   projectDetails,
   missionVisionValues as staticMissionVisionValues,
   pageSeo,
+  researchAxes,
 } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchPageContent } from '../services/api';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
+import AboutSubnav from '../components/AboutSubnav';
+import AxisConstellation from '../components/AxisConstellation';
 
 const About = () => {
   const { language } = useLanguage();
@@ -40,13 +43,10 @@ const About = () => {
       companies: 'Empresas Parceiras',
       associated: 'Instituições de Pesquisa Associadas',
       viewAllPartners: 'Ver Catálogo de Parceiros',
-      subnav: {
-        overview: 'Visão Geral',
-        governance: 'Governança',
-        indicators: 'Indicadores',
-        transparency: 'Transparência',
-        partners: 'Parceiros',
-      },
+      axesTag: 'ESTRUTURA TEMÁTICA',
+      axesTitle: 'Oito eixos de atuação integrados',
+      axesSubtitle: 'Do inventário de resíduos às políticas públicas: a atuação do CP2b se organiza em oito eixos temáticos.',
+      axesFigure: { axis: 'EIXO', title: 'Eixos de atuação do CP2b', hint: 'Clique em um eixo para conhecer seu escopo, competências e projetos.' },
     },
     en: {
       tag: 'ABOUT THE PROJECT',
@@ -64,13 +64,10 @@ const About = () => {
       companies: 'Partner Companies',
       associated: 'Associated Research Institutions',
       viewAllPartners: 'View Partners Catalog',
-      subnav: {
-        overview: 'Overview',
-        governance: 'Governance',
-        indicators: 'Indicators',
-        transparency: 'Transparency',
-        partners: 'Partners',
-      },
+      axesTag: 'THEMATIC STRUCTURE',
+      axesTitle: 'Eight integrated thematic axes',
+      axesSubtitle: 'From waste inventory to public policy: CP2b work is organized into eight thematic axes.',
+      axesFigure: { axis: 'AXIS', title: 'CP2b thematic axes', hint: 'Click an axis to see its scope, competencies and projects.' },
     },
   }[language];
 
@@ -133,73 +130,8 @@ const About = () => {
       </PageHero>
 
       <Container className="py-4 py-md-5">
-        {/* 2. Sub-Navigation Bar - Horizontal Scroll Rail on Mobile */}
-        <div className="d-flex justify-content-center mb-4 mb-md-5">
-          <Nav
-            variant="pills"
-            className="bg-light p-1 rounded-pill flex-wrap justify-content-start justify-content-md-center shadow-sm about-subnav-rail"
-            style={{
-              border: '1px solid var(--border-default, #E2E8F0)',
-              gap: '0.25rem',
-            }}
-          >
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/sobre"
-                active={pathname === '/sobre'}
-                className="rounded-pill px-3 py-2 fw-semibold small text-nowrap flex-shrink-0"
-              >
-                <i className="bi bi-info-circle me-1" />
-                {labels.subnav.overview}
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/sobre/governanca"
-                active={pathname === '/sobre/governanca'}
-                className="rounded-pill px-3 py-2 fw-semibold small text-nowrap flex-shrink-0"
-              >
-                <i className="bi bi-diagram-3 me-1" />
-                {labels.subnav.governance}
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/sobre/indicadores"
-                active={pathname === '/sobre/indicadores'}
-                className="rounded-pill px-3 py-2 fw-semibold small text-nowrap flex-shrink-0"
-              >
-                <i className="bi bi-speedometer2 me-1" />
-                {labels.subnav.indicators}
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/sobre/transparencia"
-                active={pathname === '/sobre/transparencia'}
-                className="rounded-pill px-3 py-2 fw-semibold small text-nowrap flex-shrink-0"
-              >
-                <i className="bi bi-file-earmark-text me-1" />
-                {labels.subnav.transparency}
-              </Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link
-                as={Link}
-                to="/sobre/parceiros"
-                active={pathname === '/sobre/parceiros'}
-                className="rounded-pill px-3 py-2 fw-semibold small text-nowrap flex-shrink-0"
-              >
-                <i className="bi bi-building me-1" />
-                {labels.subnav.partners}
-              </Nav.Link>
-            </Nav.Item>
-          </Nav>
-        </div>
+        {/* 2. Navegação da seção Sobre (a mesma em todas as páginas dela) */}
+        <AboutSubnav />
 
         {/* 3. Missão, Visão e Valores Section */}
         {mvv && (
@@ -375,6 +307,19 @@ const About = () => {
             )}
           </section>
         )}
+
+        {/* 3b. Estrutura temática: figura dos 8 eixos, versão compacta — só os
+            títulos e o logo do CP2b no centro, sem coordenadores. */}
+        <section className="mb-4 mb-md-5 pb-3" aria-labelledby="about-axes-title">
+          <div className="text-center max-w-3xl mx-auto mb-4">
+            <span className="mono-label text-success d-block mb-1">{labels.axesTag}</span>
+            <h2 id="about-axes-title" className="fw-bold fs-2 mb-2" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
+              {labels.axesTitle}
+            </h2>
+            <p className="text-muted lead fs-6 mb-0">{labels.axesSubtitle}</p>
+          </div>
+          <AxisConstellation axes={researchAxes[language] || researchAxes.pt} labels={labels.axesFigure} compact />
+        </section>
 
         {/* 4. Institutional Video (Responsive 16:9 container) */}
         <div

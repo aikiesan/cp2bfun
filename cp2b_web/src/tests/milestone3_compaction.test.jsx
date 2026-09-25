@@ -143,8 +143,12 @@ describe('Milestone 3 — Public Pages & Card Grids Compaction', () => {
     const { container } = renderWithProviders(<Solucoes />);
     const modalityCols = container.querySelectorAll('.row.g-2.g-sm-3.g-md-4 .col-6');
     expect(modalityCols.length).toBeGreaterThanOrEqual(4);
-    const filterRail = container.querySelector('.solucoes-filter-rail');
-    expect(filterRail).toBeInTheDocument();
+    // Filtro de laboratórios: controle segmentado de 4 botões que divide a
+    // largura (sem rolagem lateral), no lugar do trilho de pills que rolava.
+    const filter = container.querySelector('.svc-filter');
+    expect(filter).toBeInTheDocument();
+    expect(filter.querySelectorAll('button')).toHaveLength(4);
+    expect(container.querySelector('.solucoes-filter-rail')).toBeNull();
   });
 
   it('renders Publications with compact filter card and line-clamp abstract', async () => {
@@ -158,8 +162,10 @@ describe('Milestone 3 — Public Pages & Card Grids Compaction', () => {
   it('renders About and Indicators with responsive nav rails and grids', async () => {
     const { container: aboutContainer } = renderWithProviders(<About />);
     await waitFor(() => {
-      const subnavRail = aboutContainer.querySelector('.about-subnav-rail');
-      expect(subnavRail).toBeInTheDocument();
+      // Navegação da seção Sobre: 5 links num controle segmentado, sem rolagem.
+      const subnav = aboutContainer.querySelector('.about-subnav');
+      expect(subnav).toBeInTheDocument();
+      expect(subnav.querySelectorAll('a')).toHaveLength(5);
     });
 
     const { container: indContainer } = renderWithProviders(<Indicators />);
