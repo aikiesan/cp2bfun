@@ -4,7 +4,7 @@
  * Verifies core project requirements and interface contracts:
  * 1. Missão, Visão e Valores (PT & EN verbatim matching PPTX slides 5 & 6)
  * 2. Data synchronization: 8 research axes, coordinators + co-coordinators,
- *    Eixo 0 researchers, 3 laboratories, and 15 technical services with TRL badges
+ *    Eixo 0 researchers, 3 core laboratories, and 15 technical services with TRL badges
  * 3. Secrets verification (confirm no plaintext INVITE_TOKEN in docker-compose or backend configs)
  * 4. Database auto-migration verification on startup (initializeDatabase invocation)
  * 5. Schema.org JSON-LD generation (Organization, ResearchProject, NewsArticle, BreadcrumbList)
@@ -131,15 +131,18 @@ describe('Tier 1 — Data Synchronization', () => {
     expect(coordinatorsFlat.some((n) => n.includes('Natalia Molina Cetrulo'))).toBe(true);
   });
 
-  it('synchronizes the 3 official laboratories in generated/laboratories.js', () => {
-    expect(laboratories).toHaveLength(3);
+  it('synchronizes the 3 core bioprocess laboratories in generated/laboratories.js', () => {
+    const core = laboratories.filter((l) => l.group === 'bioprocessos');
+    expect(core).toHaveLength(3);
 
-    const acronyms = laboratories.map((l) => l.acronym);
+    const acronyms = core.map((l) => l.acronym);
     expect(acronyms.some((a) => a.includes('CEMARA'))).toBe(true);
     expect(acronyms.some((a) => a.includes('CP2b Lab'))).toBe(true);
     expect(acronyms.some((a) => a.includes('PPBIOEN'))).toBe(true);
 
-    laboratories.forEach((lab) => {
+    core.forEach((lab) => {
+      expect(lab.trl.min).toBeLessThanOrEqual(lab.trl.focus);
+      expect(lab.trl.focus).toBeLessThanOrEqual(lab.trl.max);
       expect(lab).toHaveProperty('name');
       expect(lab).toHaveProperty('institution');
       expect(lab).toHaveProperty('lead');

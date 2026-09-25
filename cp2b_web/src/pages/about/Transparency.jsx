@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../../data/content';
 import SeoHead from '../../components/SeoHead';
 import PageHero from '../../components/PageHero';
+import AboutSubnav from '../../components/AboutSubnav';
 
 const Transparency = () => {
   const { language } = useLanguage();
@@ -64,6 +65,7 @@ const Transparency = () => {
         transition={{ duration: 0.5 }}
       >
         <Container className="py-4 py-md-5">
+          <AboutSubnav />
           {/* FAPESP Process */}
         <Row className="mb-4 mb-md-5">
           <Col md={12}>

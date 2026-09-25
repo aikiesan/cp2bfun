@@ -54,7 +54,7 @@ describe('Tier 4 — Real-World Application Scenarios', () => {
 
     // Step 1: Partner views solutions headline and partnership modalities
     await waitFor(() => {
-      expect(screen.getByRole('heading', { name: /Quais problemas conseguimos ajudar a resolver\?/i })).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: /Infraestrutura e Soluções/i })).toBeInTheDocument();
     });
 
     // Step 2: Verify technical services with TRL are present
@@ -74,15 +74,15 @@ describe('Tier 4 — Real-World Application Scenarios', () => {
     // Step 1: Render Eixos page
     const { unmount } = renderWithProviders(<Research />);
     await waitFor(() => {
-      const axisButtons = document.querySelectorAll('.mmap-node--axis');
+      const axisButtons = document.querySelectorAll('.axx-tab');
       expect(axisButtons.length).toBe(8);
     });
 
     // Step 2: Drill down into Eixo 2
-    const axisButtons = document.querySelectorAll('.mmap-node--axis');
+    const axisButtons = document.querySelectorAll('.axx-tab');
     if (axisButtons[1]) {
       await user.click(axisButtons[1]);
-      const branchNodes = document.querySelectorAll('.mmap-node--branch');
+      const branchNodes = document.querySelectorAll('.axx-branch');
       expect(branchNodes.length).toBeGreaterThan(0);
     }
     unmount();
@@ -145,7 +145,7 @@ describe('Tier 4 — Real-World Application Scenarios', () => {
 
     // 3. Check static data completeness
     expect(researchAxes.pt.length).toBe(8);
-    expect(laboratories.length).toBe(3);
+    expect(laboratories.filter((l) => l.group === 'bioprocessos').length).toBe(3);
     expect(technicalServices.length).toBe(15);
   });
 });

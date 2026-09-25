@@ -10,6 +10,11 @@ Luciana enviar uma nova versão (v3, v4, ...). Requer `pip install openpyxl`.
 
 Uso:
     python scripts/extract-strategic-data.py <caminho-para-o-xlsx>
+    python scripts/extract-strategic-data.py --labs-only <caminho-para-o-xlsx>
+
+O modo --labs-only lê só a aba 'Laboratórios' e regrava só laboratories.js —
+para planilhas que trazem apenas essa aba (ex.: a versão
+"Planejamento_Estrategico_CP2B_laboratórios_atualizado.xlsx").
 
 Particularidade da planilha: as abas usam blocos "esparsos" — como se
 células tivessem sido mescladas e depois desmescladas sem repetir o valor.
@@ -196,22 +201,155 @@ def extract_equipe(ws):
     return by_axis
 
 
+# Células que a planilha preenche com "Não se aplica" contam como vazias.
+_NA = {'nao se aplica', 'não se aplica', 'n/a', '-', '—'}
+
+
+def norm_na(v):
+    v = norm(v)
+    if isinstance(v, str) and v.strip().rstrip('.').lower() in _NA:
+        return None
+    return v
+
+
+def paragraphs_of(text):
+    if not text:
+        return []
+    return [p.strip() for p in re.split(r'\n+', str(text)) if p.strip()]
+
+
+def slug_of(acronym):
+    """'CEMARA (UNIFAL)' -> 'cemara'; 'CP2b Lab' -> 'cp2b-lab'."""
+    text = re.sub(r'\(.*?\)', '', str(acronym or ''))
+    text = unicodedata.normalize('NFKD', text)
+    text = ''.join(c for c in text if not unicodedata.combining(c))
+    return re.sub(r'[^a-z0-9]+', '-', text.lower()).strip('-')
+
+
+_LEAD_ROLE = re.compile(r'^(.*?)\s*\(((?:vice-)?coordenador[a]?)\)\s*$', re.I)
+_CRITERIA = re.compile(r'^(Valor para o cliente|Dificuldade de imitação|Acesso a mercados)\s*:\s*(.+)$', re.I)
+_TRL_LEVEL = re.compile(r'^TRL\s*(\d)\s*\(([^)]+)\)\s*:\s*(.+)$')
+_POINT = re.compile(r'^([^:]{3,90}):\s+(.+)$')
+
+
+def split_equipment(raw):
+    """'Reatores, equipamentos de caracterização...' -> ['Reatores', 'Equipamentos de ...']."""
+    raw = norm_na(raw)
+    if not raw:
+        return []
+    items = [i.strip() for i in re.split(r'[;,]', str(raw)) if i.strip()]
+    return [i[0].upper() + i[1:] for i in items]
+
+
+def parse_competency(raw):
+    """Parágrafos de abertura + os três critérios de competência essencial."""
+    intro, criteria, criteria_intro = [], [], None
+    for p in paragraphs_of(norm_na(raw)):
+        m = _CRITERIA.match(p)
+        if m:
+            criteria.append({'title': m.group(1), 'text': m.group(2).strip()})
+        elif p.endswith(':'):
+            criteria_intro = p[:-1].strip()
+        else:
+            intro.append(p)
+    return intro, criteria_intro, criteria
+
+
+def parse_approach(raw):
+    """Coluna de serviços: só o texto antes de 'Serviços Ofertados'. A lista
+    de serviços em si vem de extract_servicos, que já tem as traduções."""
+    raw = norm_na(raw)
+    if not raw:
+        return None
+    head = re.split(r'Servi[çc]os Ofertados\s*:', str(raw), maxsplit=1)[0]
+    head = ' '.join(paragraphs_of(head))
+    return head or None
+
+
+def parse_trl(suggested, informed, justification):
+    """Faixa (min, max), foco e a justificativa por nível."""
+    levels = []
+    for p in paragraphs_of(norm_na(justification)):
+        m = _TRL_LEVEL.match(p)
+        if m:
+            levels.append({'level': int(m.group(1)), 'name': m.group(2).strip(), 'text': m.group(3).strip()})
+    nums = [int(n) for n in re.findall(r'TRL\s*(\d)', str(suggested or ''))]
+    if not nums:
+        return None
+    lo, hi = min(nums), max(nums)
+    focus = None
+    m = re.search(r'centro de gravidade[^\d]*TRL\s*(\d)', str(suggested), re.I)
+    if m:
+        focus = int(m.group(1))
+    if focus is None:
+        for lv in levels:
+            if re.search(r'ponto forte|foco principal', lv['text'], re.I):
+                focus = lv['level']
+                break
+    if focus is None:
+        inf = [int(n) for n in re.findall(r'\d', str(informed or ''))]
+        if len(inf) == 1 and lo <= inf[0] <= hi:
+            focus = inf[0]
+    if focus is None:
+        focus = round((lo + hi) / 2)
+    return {'min': lo, 'max': hi, 'focus': focus, 'levels': levels}
+
+
+def parse_mission(raw):
+    """Missão estratégica: os tópicos 'Título: texto'. A frase de abertura de
+    cada célula é análise interna ('Mudar o perfil de TRL...') e fica de fora."""
+    paras = paragraphs_of(norm_na(raw))
+    points = []
+    for p in paras:
+        m = _POINT.match(p)
+        if m:
+            points.append({'title': m.group(1).strip(), 'text': m.group(2).strip()})
+    if points:
+        return {'statement': None, 'points': points}
+    return {'statement': ' '.join(paras), 'points': []} if paras else None
+
+
 def extract_laboratorios(ws):
-    """Aba 'Laboratórios' -> lista de labs com axes: [ids], mais um índice { axis_id: [lab,...] }."""
+    """Aba 'Laboratórios' -> lista de labs com axes: [ids], mais um índice { axis_id: [lab,...] }.
+
+    Colunas: 0 sigla, 1 nome, 2 instituição, 3 responsável, 4 eixos,
+    5 infraestrutura, 6 equipamentos, 7 competência essencial, 8 serviços,
+    9 TRL informado, 10 TRL sugerido, 11 justificativa do TRL, 12 missão.
+    """
     labs = []
     for row in rows_of(ws):
-        acronym, name, institution, lead = norm(row[0]), norm(row[1]), norm(row[2]), norm(row[3])
-        if not name:
+        row = list(row) + [None] * (14 - len(row))
+        acronym, name, institution = norm(row[0]), norm_na(row[1]), norm(row[2])
+        # Linhas de observação ('EIXO 1 | NÃO SE APLICA') não são laboratórios.
+        if not name or not acronym or re.match(r'^eixo\s*\d', str(acronym), re.I):
             continue
+        lead, lead_role = norm(row[3]), None
+        m = _LEAD_ROLE.match(lead or '')
+        if m:
+            lead, lead_role = m.group(1).strip(), m.group(2).lower()
         axes = parse_axis_list(row[4])
+        comp_intro, criteria_intro, criteria = parse_competency(row[7])
+        trl = parse_trl(norm_na(row[10]), norm_na(row[9]), row[11])
         labs.append({
+            'slug': slug_of(acronym),
             'acronym': acronym,
             'name': name,
             'institution': institution,
             'lead': lead,
+            'leadRole': lead_role,
             'axes': axes,
-            'trlSuggested': norm(row[10]),
-            'competency': norm(row[7]),
+            'group': 'bioprocessos' if trl else 'sociedade',
+            'infrastructure': norm_na(row[5]),
+            'equipment': split_equipment(row[6]),
+            'competency': norm_na(row[7]),
+            'competencyIntro': comp_intro,
+            'criteriaIntro': criteria_intro,
+            'criteria': criteria,
+            'approach': parse_approach(row[8]),
+            'trlInformed': norm_na(row[9]),
+            'trlSuggested': norm_na(row[10]),
+            'trl': trl,
+            'mission': parse_mission(row[12]),
         })
     by_axis = {}
     for lab in labs:
@@ -219,6 +357,16 @@ def extract_laboratorios(ws):
             if axis_id in VALID_AXES:
                 by_axis.setdefault(axis_id, []).append(lab)
     return labs, by_axis
+
+
+def write_laboratories(out_dir, labs):
+    labs_js = f"""// GERADO — não editar à mão.
+// Gerado por scripts/extract-strategic-data.py a partir da aba
+// 'Laboratórios' da planilha estratégica do CP2b. Textos em português, como
+// na planilha; a página /infraestrutura avisa isso na versão em inglês.
+export const laboratories = {to_js(labs)};
+"""
+    (out_dir / 'laboratories.js').write_text(labs_js, encoding='utf-8')
 
 
 def extract_coord_people(ws):
@@ -522,10 +670,21 @@ def extract_servicos(ws):
 
 
 def main():
-    if len(sys.argv) != 2:
+    args = sys.argv[1:]
+    labs_only = '--labs-only' in args
+    args = [a for a in args if a != '--labs-only']
+    if len(args) != 1:
         sys.exit(__doc__)
-    src = Path(sys.argv[1])
+    src = Path(args[0])
     wb = openpyxl.load_workbook(src, read_only=True, data_only=True)
+    out_dir = Path(__file__).resolve().parent.parent / 'src' / 'data' / 'generated'
+    out_dir.mkdir(parents=True, exist_ok=True)
+
+    if labs_only:
+        labs, _ = extract_laboratorios(wb['Laboratórios'])
+        write_laboratories(out_dir, labs)
+        print(f"laboratories.js: {len(labs)} laboratories (--labs-only: demais arquivos intocados)")
+        return
 
     competencias = extract_competencias(wb['Coord Eixos'])
     projetos = extract_projetos(wb['Projetos Coord Eixos'])
@@ -537,9 +696,6 @@ def main():
     coord_people = extract_coord_people(wb['Coord Eixos'])
     team_by_axis = build_team_by_axis(coord_people, equipe)
 
-    out_dir = Path(__file__).resolve().parent.parent / 'src' / 'data' / 'generated'
-    out_dir.mkdir(parents=True, exist_ok=True)
-
     axis_details_js = f"""// GERADO — não editar à mão.
 // Gerado por scripts/extract-strategic-data.py a partir da planilha
 // estratégica do CP2b (Coord Eixos, Projetos Coord Eixos, Pesquisadores,
@@ -549,12 +705,7 @@ export const axisDetails = {to_js(axis_details)};
 """
     (out_dir / 'axisDetails.js').write_text(axis_details_js, encoding='utf-8')
 
-    labs_js = f"""// GERADO — não editar à mão.
-// Gerado por scripts/extract-strategic-data.py a partir da aba
-// 'Laboratórios' da planilha estratégica do CP2b.
-export const laboratories = {to_js(labs)};
-"""
-    (out_dir / 'laboratories.js').write_text(labs_js, encoding='utf-8')
+    write_laboratories(out_dir, labs)
 
     services_js = f"""// GERADO — não editar à mão.
 // Gerado por scripts/extract-strategic-data.py a partir da aba

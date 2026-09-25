@@ -76,7 +76,7 @@ describe('Tier 3 — Cross-Feature Interactions: Language Toggling', () => {
 
     // PT mode: 8 axes rendered
     await waitFor(() => {
-      const axisNodesPt = document.querySelectorAll('.mmap-node--axis');
+      const axisNodesPt = document.querySelectorAll('.axx-tab');
       expect(axisNodesPt.length).toBe(8);
     });
 
@@ -86,7 +86,7 @@ describe('Tier 3 — Cross-Feature Interactions: Language Toggling', () => {
 
     // Axes still present in EN
     await waitFor(() => {
-      const axisNodesEn = document.querySelectorAll('.mmap-node--axis');
+      const axisNodesEn = document.querySelectorAll('.axx-tab');
       expect(axisNodesEn.length).toBe(8);
     });
   });

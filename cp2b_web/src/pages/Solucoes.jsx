@@ -1,21 +1,22 @@
-import { useState } from 'react';
-import { Container, Row, Col, Card, Button, Badge, Nav } from 'react-bootstrap';
+import { useState, useRef } from 'react';
+import { Container, Row, Col, Card, Button, Badge } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { pageSeo } from '../data/content';
 import { technicalServices } from '../data/generated/services';
-import { laboratories } from '../data/generated/laboratories';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
+import LabInfrastructure from '../components/LabInfrastructure';
+import ServiceGallery from '../components/ServiceGallery';
 
 const content = {
   pt: {
     hero: {
-      eyebrow: 'Catálogo de Soluções & Parcerias',
-      title: 'Quais problemas conseguimos ajudar a resolver?',
+      eyebrow: 'Laboratórios, serviços e parcerias',
+      title: 'Infraestrutura e Soluções',
       subtitle:
-        'O CP2b conecta ciência de ponta às necessidades do mercado, oferecendo infraestrutura analítica da bancada à escala piloto (TRL 2 a 6), serviços especializados e modelos flexíveis de cooperação tecnológica.',
+        'O CP2b conecta ciência de ponta às necessidades do mercado, oferecendo infraestrutura laboratorial da bancada à escala piloto (TRL 2 a 6), serviços especializados e modelos flexíveis de cooperação tecnológica.',
     },
     modalitiesSection: {
       tag: 'MODELOS DE COOPERAÇÃO',
@@ -64,15 +65,11 @@ const content = {
       title: 'Serviços Técnicos Especializados',
       subtitle: '15 capacidades analíticas e operacionais distribuídas nos 3 laboratórios centrais do CP2b.',
       allLabs: 'Todos os Laboratórios',
+      allShort: 'Todos',
+      filterLabel: 'Filtrar por laboratório',
+      details: 'Como funciona',
+      hideDetails: 'Fechar',
       trlLabel: 'Maturidade Tecnológica',
-    },
-    infraSection: {
-      tag: 'INSTALAÇÕES & EQUIPAMENTOS',
-      title: 'Infraestrutura Laboratorial Integrada',
-      subtitle: 'Estrutura multiusuária com equipamentos analíticos de última geração da bancada ao escalonamento piloto.',
-      leadLabel: 'Coordenação Científica',
-      axesLabel: 'Eixos Atendidos',
-      competencyLabel: 'Competência Essencial',
     },
     funnelSection: {
       tag: 'PASSO A PASSO',
@@ -95,10 +92,10 @@ const content = {
   },
   en: {
     hero: {
-      eyebrow: 'Solutions & Partnership Catalog',
-      title: 'What problems can we help you solve?',
+      eyebrow: 'Laboratories, services and partnerships',
+      title: 'Infrastructure and Solutions',
       subtitle:
-        'CP2b connects cutting-edge science to market demands, providing analytical infrastructure from bench to pilot scale (TRL 2 to 6), specialized technical services, and flexible technological cooperation models.',
+        'CP2b connects cutting-edge science to market demands, providing laboratory infrastructure from bench to pilot scale (TRL 2 to 6), specialized technical services, and flexible technological cooperation models.',
     },
     modalitiesSection: {
       tag: 'COOPERATION MODELS',
@@ -147,15 +144,11 @@ const content = {
       title: 'Specialized Technical Services',
       subtitle: '15 analytical and operational capabilities available across CP2b core laboratories.',
       allLabs: 'All Laboratories',
+      allShort: 'All',
+      filterLabel: 'Filter by laboratory',
+      details: 'How it works',
+      hideDetails: 'Close',
       trlLabel: 'Technological Maturity',
-    },
-    infraSection: {
-      tag: 'FACILITIES & EQUIPMENT',
-      title: 'Integrated Laboratory Infrastructure',
-      subtitle: 'Multi-user facilities with advanced analytical instruments from bench testing to pilot-scale demonstration.',
-      leadLabel: 'Scientific Leadership',
-      axesLabel: 'Connected Axes',
-      competencyLabel: 'Core Competency',
     },
     funnelSection: {
       tag: 'STEP BY STEP',
@@ -178,12 +171,6 @@ const content = {
   },
 };
 
-const getTrlBadgeColor = (trlMin) => {
-  if (trlMin <= 2) return { bg: 'rgba(47, 111, 214, 0.12)', color: '#2f6fd6', border: 'rgba(47, 111, 214, 0.3)' };
-  if (trlMin <= 3) return { bg: 'rgba(92, 160, 50, 0.12)', color: '#00573A', border: 'rgba(92, 160, 50, 0.3)' };
-  return { bg: 'rgba(211, 116, 2, 0.12)', color: '#D37402', border: 'rgba(211, 116, 2, 0.3)' };
-};
-
 const Solucoes = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
@@ -191,6 +178,15 @@ const Solucoes = () => {
   const seo = pageSeo.solucoes[language] || pageSeo.solucoes.pt;
 
   const [activeLabFilter, setActiveLabFilter] = useState('all');
+
+  // O painel dos laboratórios não repete os serviços: leva ao catálogo
+  // abaixo, já filtrado pelo laboratório escolhido.
+  const servicesRef = useRef(null);
+  const showServices = (labKey) => {
+    setActiveLabFilter(labKey);
+    const el = servicesRef.current;
+    if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+  };
 
   const filteredServices = technicalServices.filter((s) => {
     if (activeLabFilter === 'all') return true;
@@ -205,10 +201,55 @@ const Solucoes = () => {
         eyebrow={t.hero.eyebrow}
         title={t.hero.title}
         subtitle={t.hero.subtitle}
+        className="page-hero--overlap"
       />
 
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-        <Container className="py-4 py-md-5">
+        <Container className="pb-4 pb-md-5">
+          {/* Infraestrutura laboratorial: régua de TRL (sobre o hero), painel
+              dos laboratórios de bioprocessos e laboratórios do Eixo 8. */}
+          <LabInfrastructure language={language} onShowServices={showServices} />
+
+          {/* Section 3: Technical Services with TRL Ranges */}
+          <section id="servicos" ref={servicesRef} className="solucoes-services mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top">
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3">
+              <div>
+                <span className="mono-label text-success d-block mb-1">{t.servicesSection.tag}</span>
+                <h2 className="fw-bold fs-2 mb-2">{t.servicesSection.title}</h2>
+                <p className="text-muted small mb-0">{t.servicesSection.subtitle}</p>
+              </div>
+
+              {/* Filtro por laboratório: controle segmentado que divide a largura
+                  — cabe em qualquer tela sem rolagem lateral. */}
+              <div className="svc-filter" role="group" aria-label={t.servicesSection.filterLabel}>
+                {[
+                  { key: 'all', label: t.servicesSection.allLabs, short: t.servicesSection.allShort },
+                  { key: 'CEMARA', label: 'CEMARA' },
+                  { key: 'CP2b Lab', label: 'CP2b Lab' },
+                  { key: 'PPBIOEN', label: 'PPBIOEN' },
+                ].map((f) => (
+                  <button
+                    key={f.key}
+                    type="button"
+                    className={`svc-filter__btn${activeLabFilter === f.key ? ' is-active' : ''}`}
+                    aria-pressed={activeLabFilter === f.key}
+                    onClick={() => setActiveLabFilter(f.key)}
+                  >
+                    {f.short ? (
+                      <>
+                        <span className="d-none d-sm-inline">{f.label}</span>
+                        <span className="d-sm-none">{f.short}</span>
+                      </>
+                    ) : f.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Galeria: ilustração + título + TRL; a descrição abre sob demanda. */}
+            <ServiceGallery services={filteredServices} language={language} labels={t.servicesSection} />
+          </section>
+
           {/* Section 2: 5 Partnership Modalities */}
           <section className="mb-4 mb-md-5 pb-3 pb-md-4">
             <div className="text-center max-w-3xl mx-auto mb-4 mb-md-5">
@@ -254,187 +295,6 @@ const Solucoes = () => {
                     <p className="text-muted small mb-0 solution-modality-copy" style={{ lineHeight: 1.5 }}>
                       {mod.description}
                     </p>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-          </section>
-
-          {/* Section 3: Technical Services with TRL Ranges */}
-          <section className="mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top">
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3">
-              <div>
-                <span className="mono-label text-success d-block mb-1">{t.servicesSection.tag}</span>
-                <h2 className="fw-bold fs-2 mb-2">{t.servicesSection.title}</h2>
-                <p className="text-muted small mb-0">{t.servicesSection.subtitle}</p>
-              </div>
-
-              {/* Lab Filter Nav */}
-              <Nav
-                variant="pills"
-                className="bg-light p-1 rounded-pill d-inline-flex flex-wrap solucoes-filter-rail"
-                style={{
-                  border: '1px solid var(--gray-300)',
-                  maxWidth: '100%',
-                }}
-              >
-                <Nav.Item>
-                  <Nav.Link
-                    active={activeLabFilter === 'all'}
-                    onClick={() => setActiveLabFilter('all')}
-                    className="rounded-pill px-3 py-1 fw-semibold small text-nowrap"
-                    style={{ cursor: 'pointer' }}
-                  >
-                    {t.servicesSection.allLabs}
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link
-                    active={activeLabFilter === 'CEMARA'}
-                    onClick={() => setActiveLabFilter('CEMARA')}
-                    className="rounded-pill px-3 py-1 fw-semibold small text-nowrap"
-                    style={{ cursor: 'pointer' }}
-                  >
-                    CEMARA
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link
-                    active={activeLabFilter === 'CP2b Lab'}
-                    onClick={() => setActiveLabFilter('CP2b Lab')}
-                    className="rounded-pill px-3 py-1 fw-semibold small text-nowrap"
-                    style={{ cursor: 'pointer' }}
-                  >
-                    CP2b Lab
-                  </Nav.Link>
-                </Nav.Item>
-                <Nav.Item>
-                  <Nav.Link
-                    active={activeLabFilter === 'PPBIOEN'}
-                    onClick={() => setActiveLabFilter('PPBIOEN')}
-                    className="rounded-pill px-3 py-1 fw-semibold small text-nowrap"
-                    style={{ cursor: 'pointer' }}
-                  >
-                    PPBIOEN
-                  </Nav.Link>
-                </Nav.Item>
-              </Nav>
-            </div>
-
-            <Row className="g-2 g-sm-3 g-md-4">
-              {filteredServices.map((service) => {
-                const trlColors = getTrlBadgeColor(service.trlMin);
-                const item = service[language] || service.pt;
-
-                return (
-                  <Col key={service.id} xs={12} sm={6} md={6} lg={4}>
-                    <Card
-                      className="h-100 p-2 p-sm-3 border-0 shadow-sm hover-lift"
-                      style={{
-                        borderRadius: 'var(--radius-lg, 16px)',
-                        background: 'var(--bg-surface, #ffffff)',
-                      }}
-                    >
-                      <Card.Body className="p-1 p-sm-2 d-flex flex-column">
-                        <div className="d-flex justify-content-between align-items-start mb-2 gap-2">
-                          <span
-                            className="badge rounded-pill px-2 py-1"
-                            style={{
-                              backgroundColor: 'var(--gray-100)',
-                              color: 'var(--text-secondary)',
-                              fontSize: '0.72rem',
-                              fontFamily: 'var(--font-mono, monospace)',
-                            }}
-                          >
-                            {service.labAcronym}
-                          </span>
-                          <span
-                            className="badge rounded-pill px-2 py-1 fw-bold"
-                            style={{
-                              backgroundColor: trlColors.bg,
-                              color: trlColors.color,
-                              border: `1px solid ${trlColors.border}`,
-                              fontSize: '0.72rem',
-                              fontFamily: 'var(--font-mono, monospace)',
-                            }}
-                          >
-                            {service.trl}
-                          </span>
-                        </div>
-
-                        <h4 className="fw-bold fs-6 mb-2" style={{ color: 'var(--text-primary)', lineHeight: 1.3 }}>
-                          {item.title}
-                        </h4>
-                        <p className="text-muted small mb-0 flex-grow-1" style={{ lineHeight: 1.45, fontSize: '0.82rem' }}>
-                          {item.description}
-                        </p>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                );
-              })}
-            </Row>
-          </section>
-
-          {/* Section 4: Infrastructure (3 Laboratories) */}
-          <section className="mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top">
-            <div className="mb-4">
-              <span className="mono-label text-success d-block mb-1">{t.infraSection.tag}</span>
-              <h2 className="fw-bold fs-2 mb-2">{t.infraSection.title}</h2>
-              <p className="text-muted small mb-0">{t.infraSection.subtitle}</p>
-            </div>
-
-            <Row className="g-3 g-md-4">
-              {laboratories.map((lab) => (
-                <Col key={lab.acronym} lg={4}>
-                  <Card
-                    className="h-100 p-3 p-md-4 border-0 shadow-sm"
-                    style={{
-                      borderRadius: 'var(--radius-lg, 16px)',
-                      background: 'var(--bg-surface, #ffffff)',
-                    }}
-                  >
-                    <div className="d-flex justify-content-between align-items-baseline mb-2">
-                      <span className="mono-label fw-bold" style={{ color: 'var(--brand-primary)' }}>
-                        {lab.acronym}
-                      </span>
-                      <span className="badge bg-light text-dark border px-2 py-1 small">
-                        {lab.trlSuggested}
-                      </span>
-                    </div>
-
-                    <h3 className="fw-bold fs-5 mb-1" style={{ color: 'var(--text-primary)' }}>
-                      {lab.name}
-                    </h3>
-                    <div className="text-muted small mb-3">
-                      <strong>{lab.institution}</strong> · {t.infraSection.leadLabel}: {lab.lead}
-                    </div>
-
-                    <div className="p-3 rounded mb-3 flex-grow-1" style={{ background: 'var(--gray-50)' }}>
-                      <span className="mono-label text-muted d-block small mb-1">
-                        {t.infraSection.competencyLabel}
-                      </span>
-                      <p className="small text-dark mb-0" style={{ lineHeight: 1.45, fontSize: '0.82rem' }}>
-                        {lab.competency}
-                      </p>
-                    </div>
-
-                    <div className="d-flex align-items-center gap-2">
-                      <span className="mono-label text-muted small">{t.infraSection.axesLabel}:</span>
-                      {lab.axes.map((ax) => (
-                        <span
-                          key={ax}
-                          className="badge rounded-pill"
-                          style={{
-                            background: 'var(--cp2b-verde-escuro)',
-                            color: '#fff',
-                            fontSize: '0.72rem',
-                          }}
-                        >
-                          Eixo {ax}
-                        </span>
-                      ))}
-                    </div>
                   </Card>
                 </Col>
               ))}

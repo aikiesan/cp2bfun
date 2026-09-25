@@ -67,10 +67,14 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
           const valueCards = container.querySelectorAll('.card-editorial');
           expect(valueCards.length).toBeGreaterThanOrEqual(2);
 
-          // Verify Subnav pills have flex-wrap
-          const subnav = container.querySelector('.nav-pills');
+          // Navegação da seção Sobre: controle segmentado de 5 links, sem rolagem
+          const subnav = container.querySelector('.about-subnav');
           expect(subnav).toBeInTheDocument();
-          expect(subnav.className).toContain('flex-wrap');
+          expect(subnav.querySelectorAll('a')).toHaveLength(5);
+
+          // Figura compacta dos 8 eixos, sem coordenadores
+          expect(container.querySelectorAll('.axo--compact .axo-card')).toHaveLength(8);
+          expect(container.querySelector('.axo--compact .axo-card__people')).toBeNull();
 
           // Verify video container has 16:9 ratio class
           const videoRatio = container.querySelector('.ratio-16x9');
@@ -86,14 +90,14 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
           // 15 technical services
           expect(screen.getByText(/Serviços Técnicos Especializados|Specialized Technical Services/i)).toBeInTheDocument();
 
-          // Lab filter nav
-          const labFilterNav = container.querySelector('.nav-pills');
-          expect(labFilterNav).toBeInTheDocument();
-          expect(labFilterNav.className).toContain('flex-wrap');
+          // Filtro de laboratórios: controle segmentado, sem rolagem lateral
+          const labFilter = container.querySelector('.svc-filter');
+          expect(labFilter).toBeInTheDocument();
+          expect(labFilter.querySelectorAll('button')).toHaveLength(4);
 
-          // Check that cards exist and do not crash
-          const serviceCards = container.querySelectorAll('.card');
-          expect(serviceCards.length).toBeGreaterThanOrEqual(15);
+          // Os 15 serviços aparecem na galeria (ilustração ou ícone + título).
+          const serviceCards = container.querySelectorAll('.svc-grid .svc');
+          expect(serviceCards.length).toBe(15);
         });
 
         it(`renders ArticleLayout with flex-wrap on action buttons at ${width}px`, () => {

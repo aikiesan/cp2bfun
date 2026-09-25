@@ -62,7 +62,7 @@ export const ROUTE_TITLES_PT = {
   'transparencia': 'Transparência',
   'parceiros': 'Parceiros',
   'eixos': 'Eixos Temáticos',
-  'solucoes': 'Soluções',
+  'solucoes': 'Infraestrutura e Soluções',
   'equipe': 'Equipe',
   'noticias': 'Notícias',
   'oportunidades': 'Oportunidades',

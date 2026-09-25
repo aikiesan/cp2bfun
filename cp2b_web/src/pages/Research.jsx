@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
-import { Container, Row, Col, Card } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { motion } from 'framer-motion';
-import { researchAxes, menuLabels } from '../data/content';
+import { researchAxes } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchAxes } from '../services/api';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
-import AxisMindMap from '../components/AxisMindMap';
+import AxisExplorer from '../components/AxisExplorer';
+import AxisConstellation from '../components/AxisConstellation';
 import { axisDetails } from '../data/generated/axisDetails';
-import { laboratories } from '../data/generated/laboratories';
 
 const transformApiAxes = (apiAxes, lang) =>
   apiAxes.map((row) => {
@@ -33,21 +33,24 @@ const transformApiAxes = (apiAxes, lang) =>
     };
   });
 
-// Um rótulo de TRL cabe numa badge; uma frase não. O corte é só por tamanho,
-// e não por laboratório: o campo é de texto livre na planilha, e o próximo
-// valor longo pode vir de qualquer um deles. Os rótulos reais hoje têm 13 e 14
-// caracteres e a frase do CP2b Lab tem 100, então 45 separa com folga larga
-// dos dois lados. Não olhar pontuação é deliberado — "TRL 4 e TRL 6." termina
-// em ponto e continua sendo rótulo.
-const TRL_BADGE_MAX_CHARS = 45;
-const isShortTrl = (value) => String(value || '').trim().length <= TRL_BADGE_MAX_CHARS;
-
 const Research = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
   const seo = pageSeo.research[language] || pageSeo.research.pt;
   const [apiAxes, setApiAxes] = useState(null);
-  const t = menuLabels[language];
+
+  // Links como /eixos?eixo=3#explorar-eixos (das fichas de laboratório)
+  // abrem direto no detalhamento. Adiado um quadro: o ScrollToTop do App
+  // roda depois deste efeito e levaria a página de volta ao topo.
+  const { hash } = useLocation();
+  useEffect(() => {
+    if (hash !== '#explorar-eixos') return undefined;
+    const id = requestAnimationFrame(() => {
+      const el = document.getElementById('explorar-eixos');
+      if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start' });
+    });
+    return () => cancelAnimationFrame(id);
+  }, [hash]);
 
   useEffect(() => {
     fetchAxes().then((data) => {
@@ -59,34 +62,60 @@ const Research = () => {
 
   const labels = {
     pt: {
-      tag: 'Estrutura de Pesquisa',
-      subtitle: 'A atuação do CP2b está organizada em oito eixos temáticos integrados, cobrindo desde o inventário de resíduos até políticas públicas.',
       details: 'Conheça os Eixos',
       axis: 'EIXO',
       sdgs: 'ODS Relacionados:',
       activities: 'Atividades Desenvolvidas',
-      mindmapHint: 'Clique em um eixo para abrir suas atividades e, em seguida, em uma atividade para ver os itens.',
+      mindmapHint: 'Escopo, competências, projetos e infraestrutura de cada eixo.',
+      detailsEyebrow: 'Detalhamento',
+      sdgsTitle: 'ODS relacionados',
+      axesNav: 'Eixos temáticos',
+      readMore: 'Ler mais',
+      readLess: 'Ler menos',
+      showAll: 'Ver todos os',
+      showLess: 'Mostrar menos',
       allAxes: 'Todos os eixos',
       noDetails: 'Detalhamento em preparação para este eixo.',
-      infraTitle: 'Infraestrutura Laboratorial',
-      infraSubtitle: 'Laboratórios e plantas piloto que sustentam os eixos, do TRL de bancada ao pré-industrial.',
-      trl: 'TRL',
-      axesLabel: 'Eixos',
+      overview: {
+        eyebrow: 'Estrutura Temática',
+        title: 'Eixos de Atuação do CP2b',
+        subtitle: 'Integração científica e tecnológica para a valorização de resíduos e o desenvolvimento sustentável.',
+        axis: 'EIXO',
+        coordination: 'Coordenação',
+        methane: 'metano',
+        vacancy: 'Vaga temporariamente em aberto',
+        hubCaption: 'Centro Paulista de Estudos em Biogás e Bioprodutos',
+        details: 'Ver detalhes',
+        hint: 'Clique em um eixo para ver escopo, competências e projetos.',
+      },
     },
     en: {
-      tag: 'Research Structure',
-      subtitle: 'CP2b\'s activities are organized into eight integrated thematic axes, covering from waste inventory to public policies.',
       details: 'Discover the Axes',
       axis: 'AXIS',
       sdgs: 'Related SDGs:',
       activities: 'Activities',
-      mindmapHint: 'Click an axis to open its activities, then an activity to see the items.',
+      mindmapHint: 'Scope, competencies, projects and infrastructure for each axis.',
+      detailsEyebrow: 'In detail',
+      sdgsTitle: 'Related SDGs',
+      axesNav: 'Thematic axes',
+      readMore: 'Read more',
+      readLess: 'Read less',
+      showAll: 'See all',
+      showLess: 'Show less',
       allAxes: 'All axes',
       noDetails: 'Detailed breakdown in preparation for this axis.',
-      infraTitle: 'Laboratory Infrastructure',
-      infraSubtitle: 'Laboratories and pilot plants underpinning the axes, from bench-scale to pre-industrial TRL.',
-      trl: 'TRL',
-      axesLabel: 'Axes',
+      overview: {
+        eyebrow: 'Thematic Structure',
+        title: 'CP2b Thematic Axes',
+        subtitle: 'Scientific and technological integration for waste valorization and sustainable development.',
+        axis: 'AXIS',
+        coordination: 'Coordination',
+        methane: 'methane',
+        vacancy: 'Position temporarily open',
+        hubCaption: 'São Paulo Center for Biogas and Bioproducts Studies',
+        details: 'See details',
+        hint: 'Click an axis to see its scope, competencies and projects.',
+      },
     }
   }[language];
 
@@ -94,61 +123,34 @@ const Research = () => {
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-    <PageHero eyebrow={t.axes} title={labels.tag} subtitle={labels.subtitle} />
-    <Container className="py-4 py-md-5">
+    {/* O cabeçalho da página é o da figura dos eixos: antes ele se repetia
+        no topo do infográfico, empurrando os eixos para baixo. */}
+    <PageHero
+      eyebrow={labels.overview.eyebrow}
+      title={labels.overview.title}
+      subtitle={labels.overview.subtitle}
+      className="page-hero--overlap"
+    />
+    <Container className="pb-4 pb-md-5">
 
-      <div className="border-top border-dark pt-3 pt-md-5">
-        <h3 className="fw-bold mb-1">{labels.details}</h3>
-        <p className="text-muted mb-3 mb-md-4">{labels.mindmapHint}</p>
-        <AxisMindMap
+      {/* Primeira coisa da página: a figura integrativa dos oito eixos, com
+          coordenação e vice. Ela sobe sobre o hero e cada card leva ao mapa
+          mental logo abaixo, já com o eixo aberto. */}
+      <AxisConstellation axes={axes} labels={labels.overview} targetId="explorar-eixos" />
+
+      <section id="explorar-eixos" className="research-explore" aria-labelledby="explorar-eixos-title">
+        <header className="research-explore__head">
+          <span className="eyebrow">{labels.detailsEyebrow}</span>
+          <h2 id="explorar-eixos-title">{labels.details}</h2>
+          <p>{labels.mindmapHint}</p>
+        </header>
+        <AxisExplorer
           axes={axes}
           detailsById={axisDetails}
           language={language}
           labels={labels}
         />
-      </div>
-
-      {laboratories.length > 0 && (
-        <div className="border-top border-dark pt-3 pt-md-5 mt-4 mt-md-5">
-          <h3 className="fw-bold mb-1">{labels.infraTitle}</h3>
-          <p className="text-muted mb-3 mb-md-4">{labels.infraSubtitle}</p>
-          <Row className="g-3 g-md-4">
-            {laboratories.map((lab) => (
-              <Col xs={12} sm={6} lg={4} key={lab.name}>
-                <Card className="border-0 shadow-sm h-100">
-                  <Card.Body className="p-3 p-md-4 d-flex flex-column">
-                    <span className="mono-label text-success mb-1">{lab.acronym}</span>
-                    <h5 className="fw-bold mb-2 mobile-compact-title">{lab.name}</h5>
-                    <p className="text-muted small mb-2">{[lab.institution, lab.lead].filter(Boolean).join(' · ')}</p>
-                    {lab.axes && lab.axes.length > 0 && (
-                      <p className="text-muted small mb-3">
-                        {labels.axesLabel}: {lab.axes.join(', ')}
-                      </p>
-                    )}
-                    {/* O trlSuggested vem de campo livre de planilha: às vezes
-                        é um rótulo ("TRL 2 e TRL 4"), às vezes uma frase
-                        inteira, como a do CP2b Lab, com 100 caracteres. A
-                        frase dentro de um <span class="badge"> estourava o
-                        card. Rótulo curto continua badge; texto longo vira
-                        parágrafo, que é o que ele já é. */}
-                    {lab.trlSuggested && (
-                      isShortTrl(lab.trlSuggested) ? (
-                        <span className="badge bg-light text-dark border align-self-start mt-auto">
-                          {labels.trl}: {lab.trlSuggested}
-                        </span>
-                      ) : (
-                        <p className="text-muted small mb-0 mt-auto">
-                          <span className="fw-semibold">{labels.trl}:</span> {lab.trlSuggested}
-                        </p>
-                      )
-                    )}
-                  </Card.Body>
-                </Card>
-              </Col>
-            ))}
-          </Row>
-        </div>
-      )}
+      </section>
     </Container>
     </motion.div>
     </>

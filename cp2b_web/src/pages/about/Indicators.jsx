@@ -7,6 +7,7 @@ import { pageSeo } from '../../data/content';
 import { kpiDimensions, kpiVision2035, kpiPrinciples, kpiIndicatorCount } from '../../data/generated/kpiFramework';
 import SeoHead from '../../components/SeoHead';
 import PageHero from '../../components/PageHero';
+import AboutSubnav from '../../components/AboutSubnav';
 import './Indicators.css';
 
 const labels = {
@@ -74,6 +75,7 @@ const Indicators = () => {
 
       <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <Container className="indicators-page py-4 py-md-5">
+          <AboutSubnav />
           <section className="indicators-overview" aria-labelledby="indicators-overview-title">
             <div className="indicators-overview__copy">
               <span className="indicators-eyebrow">{t.overviewEyebrow}</span>

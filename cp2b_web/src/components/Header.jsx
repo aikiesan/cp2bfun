@@ -271,7 +271,14 @@ const Header = () => {
               </NavDropdown>
 
               <Nav.Link as={Link} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
-              <Nav.Link as={Link} to="/solucoes" className="fw-semibold px-2">{t.solutions}</Nav.Link>
+              <Nav.Link as={Link} to="/solucoes" className="fw-semibold px-2">
+                {/* O rótulo completo não cabe na barra horizontal entre 1200 e
+                    1399px sem quebrar o menu em duas linhas; ali fica a forma
+                    curta. No menu recolhido (< 1200px) e acima de 1400px, o
+                    completo. Só um dos dois fica visível por vez. */}
+                <span className="d-xl-none d-xxl-inline">{t.solutions}</span>
+                <span className="d-none d-xl-inline d-xxl-none">{t.solutionsShort}</span>
+              </Nav.Link>
               <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
               {/* O Fórum de 2026 já aconteceu: cronograma e registro saíram,
                   sobrou só a retrospectiva — dropdown de um item vira link. */}

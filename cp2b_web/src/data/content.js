@@ -32,7 +32,7 @@ export const menuLabels = {
       newsletter: 'Newsletter',
     },
     team: 'Equipe',
-    publications: 'Publicações Científicas',
+    publications: 'Publicações',
     projects: 'Projetos',
     microscopio: 'Microscópio',
     media: 'Mídia',
@@ -41,7 +41,8 @@ export const menuLabels = {
     accessibility: 'Acessibilidade',
     search: 'Buscar',
     axes: 'Eixos',
-    solutions: 'Soluções',
+    solutions: 'Infraestrutura e Soluções',
+    solutionsShort: 'Soluções',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'Sobre o Evento',
     events: 'Eventos',
@@ -75,7 +76,7 @@ export const menuLabels = {
       newsletter: 'Newsletter',
     },
     team: 'Team',
-    publications: 'Scientific Publications',
+    publications: 'Publications',
     projects: 'Projects',
     microscopio: 'Microscópio',
     media: 'Media',
@@ -84,7 +85,8 @@ export const menuLabels = {
     accessibility: 'Accessibility',
     search: 'Search',
     axes: 'Axes',
-    solutions: 'Solutions',
+    solutions: 'Infrastructure & Solutions',
+    solutionsShort: 'Solutions',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'About the Event',
     events: 'Events',
@@ -660,7 +662,7 @@ export const researchAxes = {
   pt: [
     {
       id: '1',
-      title: 'Eixo 1 – Inventário de Resíduos e Mapeamento Tecnológico',
+      title: 'Eixo 1 – Inventário de Resíduos e Mapeamento de Tecnologias',
       coordinator: 'Profº Drº Rubens Augusto Camargo Lamparelli, Drº Lucas Nakamura Cerejo',
       coordinators: [
         { name: 'Profº Drº Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/team/rubens-augusto-camargo-lamparelli.webp' },
@@ -724,7 +726,7 @@ export const researchAxes = {
     },
     {
       id: '6',
-      title: 'Eixo 6 – Educação e Capacitação',
+      title: 'Eixo 6 – Educação e Capacitação para o Desenvolvimento Sustentável',
       coordinator: 'Profª Drª Renata Piacentini Rodriguez, Profª Drª Bruna de Souza Moraes',
       coordinators: [
         { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/team/renata-piacentini-rodriguez.webp' },
@@ -828,7 +830,7 @@ export const researchAxes = {
     },
     {
       id: '6',
-      title: 'Axis 6 – Education and Training',
+      title: 'Axis 6 – Education and Training for Sustainable Development',
       coordinator: 'Prof. Dr. Renata Piacentini Rodriguez, Prof. Dr. Bruna de Souza Moraes',
       coordinators: [
         { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/team/renata-piacentini-rodriguez.webp' },
@@ -1351,12 +1353,12 @@ export const pageSeo = {
   },
   solucoes: {
     pt: {
-      title: 'Soluções para o seu negócio',
-      description: 'Serviços técnicos, P&D cooperativo, licenciamento de tecnologia e capacitação em biogás e bioprodutos. Infraestrutura laboratorial do CP2b da bancada à planta piloto (TRL 2 a 6).',
+      title: 'Infraestrutura e Soluções',
+      description: 'Laboratórios do CP2b da bancada à planta piloto (TRL 2 a 6), serviços técnicos, P&D cooperativo, licenciamento de tecnologia e capacitação em biogás e bioprodutos.',
     },
     en: {
-      title: 'Solutions for your business',
-      description: 'Technical services, cooperative R&D, technology licensing and training in biogas and bioproducts. CP2b laboratory infrastructure from bench to pilot plant (TRL 2 to 6).',
+      title: 'Infrastructure and Solutions',
+      description: 'CP2b laboratories from bench to pilot plant (TRL 2 to 6), technical services, cooperative R&D, technology licensing and training in biogas and bioproducts.',
     },
   },
   contact: {

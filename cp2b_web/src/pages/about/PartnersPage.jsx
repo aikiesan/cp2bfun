@@ -8,6 +8,7 @@ import { pageSeo } from '../../data/content';
 import { getPartnerLogo } from '../../data/partnerLogos';
 import SeoHead from '../../components/SeoHead';
 import PageHero from '../../components/PageHero';
+import AboutSubnav from '../../components/AboutSubnav';
 
 /**
  * Extracts monogram initials from a partner name.
@@ -293,6 +294,7 @@ const PartnersPage = () => {
         transition={{ duration: 0.5 }}
       >
         <Container className="py-4 py-md-5">
+          <AboutSubnav />
           {/* Headquarters */}
           {hostPartner && (
             <Row className="mb-4 mb-md-5">
