@@ -7,6 +7,8 @@ import { useLocation } from 'react-router-dom';
 import { publications as staticPublications, pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
+import { PublicationsSummary, PublicationsAnalysis } from '../components/PublicationsSummary';
+import WordCloud from '../components/WordCloud';
 
 const filterStaticPubs = (pubs, f) => {
   return (pubs || []).filter(pub => {
@@ -82,14 +84,6 @@ const Publications = () => {
     conference: language === 'pt' ? 'Conferência' : 'Conference'
   };
 
-  if (loading) {
-    return (
-      <Container className="py-5 text-center">
-        <Spinner animation="border" />
-      </Container>
-    );
-  }
-
   const sortedYears = Object.keys(groupedByYear).sort((a, b) => b - a);
 
   return (
@@ -97,13 +91,21 @@ const Publications = () => {
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <PageHero
+      className="page-hero--overlap"
       eyebrow={language === 'pt' ? 'Produção Científica' : 'Scientific Output'}
       title={language === 'pt' ? 'Publicações' : 'Publications'}
       subtitle={language === 'pt'
         ? 'Artigos, relatórios e estudos técnicos produzidos pela rede de pesquisa do CP2b.'
         : 'Articles, reports and technical studies produced by the CP2b research network.'}
     />
-    <Container className="py-4 py-md-5">
+    <Container className="pb-4 pb-md-5">
+      {/* Síntese do Ano 1 (painel sobre o hero), a análise completa recolhida
+          e a nuvem de palavras. */}
+      <PublicationsSummary language={language} />
+      <PublicationsAnalysis language={language} />
+      <WordCloud language={language} />
+
+      <h2 className="publications-list-title">{language === 'pt' ? 'Todas as publicações' : 'All publications'}</h2>
 
       {/* Filters */}
       <Card className="mb-4">
@@ -152,8 +154,16 @@ const Publications = () => {
         </Card.Body>
       </Card>
 
+      {/* Carregando: só a lista espera — o topo da página continua na tela
+          enquanto os filtros buscam. */}
+      {loading && (
+        <div className="py-5 text-center" role="status" aria-live="polite">
+          <Spinner animation="border" />
+        </div>
+      )}
+
       {/* Publications grouped by year */}
-      {sortedYears.map(year => (
+      {!loading && sortedYears.map(year => (
         <div key={year} className="mb-4 mb-md-5">
           <h2 className="mb-3">{year}</h2>
           {groupedByYear[year].map(pub => {
@@ -213,7 +223,7 @@ const Publications = () => {
         </div>
       ))}
 
-      {publications.length === 0 && (
+      {!loading && publications.length === 0 && (
         <p className="text-center text-muted">
           {language === 'pt' ? 'Nenhuma publicação encontrada' : 'No publications found'}
         </p>
