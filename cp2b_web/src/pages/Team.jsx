@@ -14,6 +14,8 @@ import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import Avatar from '../components/Avatar';
 import ResearcherModal from '../components/ResearcherModal';
+import TeamProfile from '../components/TeamProfile';
+import { computeTeamProfile } from '../utils/teamProfile';
 
 // The API still stores people under the old ranks; the page no longer
 // renders them as ranks, so this is only used to walk the response.
@@ -160,10 +162,17 @@ const Team = () => {
     loadTeam();
   }, [language]);
 
+  // A lista de pessoas da página, já sem ex-integrantes. Dela saem os cartões
+  // (agrupados por eixo) e o perfil da equipe no topo — os dois sempre batem.
+  const members = useMemo(
+    () => (apiMembers || flattenStatic(staticTeamMembers, language))
+      .filter((member) => !removedTeamMemberKeys.has(nameKey(member.name))),
+    [apiMembers, language]
+  );
+  const teamProfile = useMemo(() => computeTeamProfile(members), [members]);
+
   // Group horizontally by Eixo, not by rank — see utils/teamGroups.
   const allGroups = useMemo(() => {
-    const members = (apiMembers || flattenStatic(staticTeamMembers, language))
-      .filter((member) => !removedTeamMemberKeys.has(nameKey(member.name)));
     return groupTeamByAxis(members, language).map((group) => ({
       ...group,
       members: group.members.map((m) => ({
@@ -171,7 +180,7 @@ const Team = () => {
         photo: m.photo || getTeamPhoto(m.name) || null,
       })),
     }));
-  }, [apiMembers, language]);
+  }, [members, language]);
 
   // Counts per category
   const categoryCounts = useMemo(() => {
@@ -215,6 +224,7 @@ const Team = () => {
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <PageHero
+          className="page-hero--overlap"
           eyebrow={t.team}
           title={language === 'pt' ? 'Quem Faz o CP2b' : 'Our Team'}
           subtitle={
@@ -224,7 +234,10 @@ const Team = () => {
           }
         />
 
-        <Container className="py-5">
+        <Container className="pb-5">
+          {/* Perfil da equipe (painel sobre o hero), calculado do cadastro. */}
+          <TeamProfile profile={teamProfile} language={language} />
+
           {/* Controls: Search and Category Chips */}
           <div className="mb-5">
             <Row className="g-3 align-items-center mb-4">
