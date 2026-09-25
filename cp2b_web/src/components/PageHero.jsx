@@ -4,8 +4,8 @@ import { Container } from 'react-bootstrap';
  * Editorial page header band used across inner pages.
  * Renders the petrol gradient hero with an eyebrow label, title and subtitle.
  */
-const PageHero = ({ eyebrow, title, subtitle, children }) => (
-  <div className="page-hero">
+const PageHero = ({ eyebrow, title, subtitle, children, className }) => (
+  <div className={className ? `page-hero ${className}` : 'page-hero'}>
     <Container>
       {eyebrow && <span className="eyebrow">{eyebrow}</span>}
       <h1>{title}</h1>

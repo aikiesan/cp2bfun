@@ -63,7 +63,7 @@ ON CONFLICT (page_key) DO NOTHING;
 
 -- Research axes
 INSERT INTO research_axes (axis_number, title_pt, title_en, coordinator, content_pt, content_en, sdgs) VALUES
-(1, 'Eixo 1 – Inventário de Resíduos e Mapeamento Tecnológico', 'Axis 1 – Waste Inventory and Technology Mapping', 'Profº Drº Rubens Augusto Camargo Lamparelli',
+(1, 'Eixo 1 – Inventário de Resíduos e Mapeamento de Tecnologias', 'Axis 1 – Waste Inventory and Technology Mapping', 'Profº Drº Rubens Augusto Camargo Lamparelli',
  'O Eixo 1 busca ir além dos levantamentos tradicionais de potencial de biomassa. A proposta é trabalhar com dados mais detalhados e precisos, que permitam enxergar de perto quem produz resíduos, onde estão localizados e como se relacionam com as infraestruturas ao redor.\nUsando técnicas de georreferenciamento, o Eixo 1 pretende mapear as cadeias agroindustriais e identificar oportunidades de aproveitamento desses resíduos, seja dentro da própria cadeia produtiva ou conectando diferentes setores.\nA ideia é criar uma plataforma digital acessível que funcione como ponte entre quem gera resíduos e quem pode transformá-los em novos produtos.\nEste eixo se alinha aos Objetivos de Desenvolvimento Sustentável: 7, 11, 13 e 15.',
  'Axis 1 seeks to go beyond traditional biomass potential surveys. The proposal is to work with more detailed and precise data, allowing for a closer look at who produces waste, where they are located, and how they relate to the surrounding infrastructure.\nUsing georeferencing techniques, Axis 1 aims to map agro-industrial chains and identify opportunities for waste recovery, whether within the same production chain or by connecting different sectors.\nThe idea is to create an accessible digital platform that functions as a bridge between those who generate waste and those who can transform it into new products.\nThis axis aligns with Sustainable Development Goals: 7, 11, 13, and 15.',
  ARRAY[7, 11, 13, 15]),
@@ -88,7 +88,7 @@ INSERT INTO research_axes (axis_number, title_pt, title_en, coordinator, content
  'Axis 5 dives into the biorefinery concept. Vinasse is a prime focus, containing high-value organic acids.\nThe focus is on biohitane (a combination of hydrogen and methane).\nThis axis contributes to Sustainable Development Goals: 7, 9, and 17.',
  ARRAY[7, 9, 17]),
 
-(6, 'Eixo 6 – Educação e Capacitação', 'Axis 6 – Education and Training', 'Profª Drª Renata Piacentini Rodriguez (Coord.), Profª Drª Bruna de Souza Moraes (Adj.)',
+(6, 'Eixo 6 – Educação e Capacitação para o Desenvolvimento Sustentável', 'Axis 6 – Education and Training for Sustainable Development', 'Profª Drª Renata Piacentini Rodriguez (Coord.), Profª Drª Bruna de Souza Moraes (Adj.)',
  'O Eixo 6 é dedicado à formação de pessoas. O CP2b vai atuar como centro de capacitação profissional oferecendo cursos.\nNo desenvolvimento social, atuará na educação socioambiental de comunidades periféricas (ex: Comunidade Capadócia).\nODS: 1, 4, 5, 10, 12, 13 e 16.',
  'Axis 6 is dedicated to human resources training. CP2b will act as a professional training center offering courses.\nIn social development, it will work on socio-environmental education for peripheral communities (e.g., Capadócia Community).\nSDGs: 1, 4, 5, 10, 12, 13, and 16.',
  ARRAY[1, 4, 5, 10, 12, 13, 16]),

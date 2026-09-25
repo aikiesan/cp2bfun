@@ -101,6 +101,15 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   margin-bottom: 0.75rem;
 }
 
+/* Hero que recebe um painel por cima (/eixos, /solucoes): espaço extra para a
+   sobreposição não cobrir o subtítulo. No celular não há sobreposição — o
+   painel vira seção comum — e o hero volta ao padrão. */
+.page-hero.page-hero--overlap { padding-bottom: calc(clamp(3.5rem, 2.5rem + 4vw, 6rem) + 3.5rem); }
+
+@media (max-width: 575.98px) {
+  .page-hero.page-hero--overlap { padding-bottom: clamp(2rem, 1.5rem + 2vw, 5rem); }
+}
+
 /* ---------- Links & buttons ---------- */
 .arrow-link {
   display: inline-flex;
@@ -1014,14 +1023,6 @@ main#main-content,
     height: 56px !important;
   }
 
-  .about-subnav-rail,
-  .solucoes-filter-rail {
-    flex-wrap: nowrap !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
-    max-width: 100%;
-  }
 }
 
 @media (min-width: 992px) {
@@ -1042,9 +1043,7 @@ main#main-content,
   }
 }
 
-.category-chips-rail::-webkit-scrollbar,
-.about-subnav-rail::-webkit-scrollbar,
-.solucoes-filter-rail::-webkit-scrollbar {
+.category-chips-rail::-webkit-scrollbar {
   display: none;
 }
 

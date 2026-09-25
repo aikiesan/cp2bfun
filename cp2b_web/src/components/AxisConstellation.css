@@ -1,0 +1,456 @@
+/* Figura integrativa dos eixos — três colunas (eixos 1–4, núcleo CH4, eixos
+   5–8) ligadas por fios SVG medidos a partir da posição real dos cards.
+   Abaixo de 1200px vira lista de cards, com o núcleo no topo.
+
+   Linguagem visual: traço fino e tipografia, como numa prancha científica —
+   sem gradientes nem volumes. A cor forte fica reservada ao estado ativo. */
+
+.axo {
+  --axo-ink: var(--cp2b-verde-escuro);
+  --axo-line: color-mix(in srgb, var(--cp2b-verde) 45%, white);
+  --axo-hair: color-mix(in srgb, var(--cp2b-verde-escuro) 14%, white);
+  --axo-node: var(--cp2b-ambar);
+
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(-4.5rem, -3rem - 2vw, -2.5rem);
+  padding: clamp(1.75rem, 1rem + 3vw, 3.5rem) clamp(1rem, 0.5rem + 2.5vw, 3rem);
+  background:
+    radial-gradient(36rem 26rem at 50% 58%, color-mix(in srgb, var(--cp2b-lima) 7%, transparent), transparent 70%),
+    radial-gradient(circle, color-mix(in srgb, var(--cp2b-verde-escuro) 7%, transparent) 1px, transparent 1.4px) 0 0 / 22px 22px,
+    var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 24px 60px -30px rgb(30 62 76 / .3), var(--shadow-sm);
+  overflow: hidden;
+}
+
+/* Filete de marca no topo do painel. */
+.axo::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cp2b-verde-escuro), var(--cp2b-verde) 45%, var(--cp2b-lima));
+}
+
+.axo__hint {
+  margin: clamp(1.5rem, 1rem + 1.5vw, 2.5rem) 0 0;
+  text-align: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.axo__hint i { color: var(--cp2b-verde); margin-right: 0.25rem; }
+
+/* ---------- grade ---------- */
+.axo__grid {
+  position: relative;
+  display: grid;
+  gap: 1rem;
+}
+
+.axo__wires {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* ---------- card ---------- */
+/* Cada card carrega a cor do seu eixo em --axis (utils/axisTheme): ícone,
+   filete lateral, rótulo e estado ativo. Compacto: título + nomes numa linha
+   corrida, e o "Ver detalhes" divide a linha do rótulo, sem somar altura. */
+.axo-card {
+  --axis: var(--axo-ink);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+  min-width: 0;
+  padding: 0.8rem 0.95rem 0.85rem 0.85rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-left: 3px solid var(--axis);
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / .03);
+  color: var(--text-primary);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.axo-card:hover,
+.axo-card:focus-visible,
+.axo-card.is-active {
+  color: var(--text-primary);
+  background: color-mix(in srgb, var(--axis) 4%, white);
+  border-color: color-mix(in srgb, var(--axis) 45%, white);
+  border-left-color: var(--axis);
+  box-shadow: 0 14px 30px -18px color-mix(in srgb, var(--axis) 60%, transparent);
+}
+
+.axo-card:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring), 0 14px 30px -18px color-mix(in srgb, var(--axis) 60%, transparent);
+}
+
+.axo-card__icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-top: 0.1rem;
+  border-radius: 0.6rem;
+  background: color-mix(in srgb, var(--axis) 10%, white);
+  color: var(--axis);
+  font-size: 1.15rem;
+}
+
+.axo-card:hover .axo-card__icon,
+.axo-card:focus-visible .axo-card__icon,
+.axo-card.is-active .axo-card__icon { background: var(--axis); color: #fff; }
+
+.axo-card__body { flex: 1; min-width: 0; }
+
+.axo-card__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.15rem;
+}
+
+.axo-card__kicker {
+  font-family: var(--font-sans);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--axis);
+}
+
+.axo-card__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--axis);
+  white-space: nowrap;
+}
+
+.axo-card__cta i { font-size: 0.75rem; }
+
+.axo-card:hover .axo-card__cta,
+.axo-card:focus-visible .axo-card__cta,
+.axo-card.is-active .axo-card__cta { background: var(--axis); color: #fff; }
+
+.axo-card__title {
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--axo-ink);
+  margin: 0 0 0.25rem;
+  text-wrap: balance;
+}
+
+/* Coordenadores com o mesmo peso, numa linha corrida separada por ponto médio. */
+.axo-card__people {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: var(--text-secondary);
+}
+
+.axo-card__people li { display: inline; }
+.axo-card__people li + li::before { content: ' · '; color: var(--gray-400); font-style: normal; }
+.axo-card__people .is-vacant { color: var(--gray-500); font-style: italic; }
+
+/* ---------- núcleo ---------- */
+.axo-hub {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.axo-hub__art { width: min(100%, 15rem); aspect-ratio: 1; }
+.axo-hub__svg { display: block; width: 100%; height: 100%; overflow: visible; }
+
+.axo-hub__disc { fill: color-mix(in srgb, var(--bg-surface) 88%, transparent); }
+
+.axo-hub__ticks line {
+  stroke: color-mix(in srgb, var(--cp2b-verde) 38%, white);
+  stroke-width: 1;
+}
+
+.axo-hub__ticks line.is-major {
+  stroke: color-mix(in srgb, var(--cp2b-verde-escuro) 55%, white);
+  stroke-width: 1.25;
+}
+
+.axo-hub__orbit {
+  fill: none;
+  stroke: color-mix(in srgb, var(--cp2b-verde) 40%, white);
+  stroke-width: 1;
+}
+
+.axo-hub__inner {
+  fill: none;
+  stroke: var(--axo-hair);
+  stroke-width: 1;
+}
+
+.axo-hub__bond {
+  stroke: var(--axo-ink);
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.axo-hub__wedge { fill: var(--axo-ink); }
+
+.axo-hub__hash line {
+  stroke: var(--axo-ink);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+}
+
+.axo-hub__atom {
+  font-family: var(--font-sans);
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.axo-hub__atom--c { font-size: 32px; font-weight: 400; fill: var(--axo-ink); }
+.axo-hub__atom--h { font-size: 20px; font-weight: 300; fill: var(--cp2b-verde); }
+
+.axo-hub__svg.is-lit .axo-hub__orbit { stroke: var(--cp2b-verde); }
+.axo-hub__svg.is-lit .axo-hub__ticks line.is-major { stroke: var(--cp2b-verde); }
+
+.axo-hub__formula {
+  display: block;
+  margin-top: 0.9rem;
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cp2b-verde);
+}
+
+.axo-hub__formula sub { font-size: 0.8em; bottom: -0.2em; }
+
+.axo-hub__logo {
+  width: 9.5rem;
+  height: auto;
+  margin-top: 0.6rem;
+}
+
+.axo-hub__caption {
+  display: block;
+  max-width: 13rem;
+  margin: 0.35rem auto 0;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+/* ---------- fios ---------- */
+.axo-wire__path,
+.axo-wire__flow {
+  fill: none;
+  stroke-linecap: round;
+}
+
+.axo-wire__path { stroke: color-mix(in srgb, var(--axis, var(--cp2b-verde)) 40%, white); stroke-width: 1.25; }
+
+.axo-wire__flow {
+  stroke: var(--axis, var(--cp2b-verde));
+  stroke-width: 1.75;
+  stroke-dasharray: 5 9;
+  opacity: 0;
+}
+
+.axo-wire__node {
+  fill: var(--bg-surface);
+  stroke: var(--axis, var(--axo-node));
+  stroke-width: 1.75;
+}
+
+.axo-wire__end { fill: var(--axis, var(--cp2b-verde)); }
+
+.axo__grid.has-active .axo-wire:not(.is-active) { opacity: 0.3; }
+.axo-wire.is-active .axo-wire__flow { opacity: 1; }
+.axo-wire.is-active .axo-wire__node { fill: var(--axis, var(--axo-node)); }
+
+/* ---------- desktop: diagrama em três colunas ---------- */
+@media (min-width: 1200px) {
+  .axo__grid {
+    grid-template-columns: minmax(0, 1fr) clamp(14rem, 18vw, 17rem) minmax(0, 1fr);
+    grid-template-rows: repeat(4, auto);
+    column-gap: clamp(3rem, 5vw, 5rem);
+    row-gap: 0.7rem;
+    align-items: center;
+  }
+
+  /* A marca fica fora do fluxo: assim o centro da molécula coincide com o
+     centro da grade e os fios dos dois lados saem simétricos. */
+  .axo-hub { position: relative; grid-column: 2; grid-row: 1 / -1; }
+  .axo-hub__brand { position: absolute; top: 100%; left: 50%; translate: -50% 0; width: 100%; }
+  .axo-card--l { grid-column: 1; grid-row: var(--row); }
+  .axo-card--r { grid-column: 3; grid-row: var(--row); }
+}
+
+/* ---------- tablet: núcleo no topo, cards em duas colunas ---------- */
+@media (max-width: 1199.98px) {
+  .axo__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .axo-hub { grid-column: 1 / -1; margin-bottom: 0.5rem; }
+  .axo-hub__art { width: 11rem; }
+  .axo-hub__logo { width: 8rem; }
+}
+
+/* ---------- mobile: lista sequencial ligada por uma espinha ---------- */
+@media (max-width: 575.98px) {
+  /* No celular a figura deixa de ser um painel sobre o hero: vira uma seção
+     comum da página, com o mesmo cabeçalho à esquerda de "Conheça os Eixos",
+     em vez de uma caixa dentro da página com título centralizado. */
+  .axo {
+    margin-top: 1.75rem;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .axo::before { display: none; }
+  .axo__hint { text-align: left; }
+
+  .axo__grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.5rem;
+    padding-left: 1.1rem;
+  }
+
+  /* Núcleo e marca lado a lado: metade da altura do empilhado. */
+  .axo-hub {
+    flex-direction: row;
+    justify-content: center;
+    gap: 1rem;
+    margin: 0 0 0.25rem -1.1rem;
+    text-align: left;
+  }
+
+  .axo-hub__art { width: 7.5rem; flex-shrink: 0; }
+  .axo-hub__brand { min-width: 0; }
+  .axo-hub__formula { margin-top: 0; }
+  .axo-hub__logo { width: 7.5rem; margin-top: 0.45rem; }
+  .axo-hub__caption { margin: 0.3rem 0 0; font-size: 0.68rem; }
+
+  /* Espinha vertical que liga os eixos em sequência: cada card desenha o
+     seu trecho (mais o vão até o anterior), do meio do primeiro ao meio do
+     último. O hub é <div>, então :first/last-of-type pegam só os cards. */
+  .axo-card::after {
+    content: '';
+    position: absolute;
+    left: calc(-1.1rem + 0.3rem);
+    top: -0.5rem;
+    bottom: 0;
+    width: 1px;
+    background: var(--axo-line);
+  }
+
+  .axo-card:first-of-type::after { top: 50%; }
+  .axo-card:last-of-type::after { bottom: 50%; }
+
+  .axo-card { padding: 0.7rem 0.8rem 0.75rem 0.75rem; gap: 0.7rem; }
+  .axo-card__icon { width: 2.2rem; height: 2.2rem; font-size: 1rem; }
+  .axo-card__title { font-size: 0.9rem; }
+
+  .axo-card::before {
+    content: '';
+    position: absolute;
+    left: calc(-1.1rem + 0.3rem - 4px);
+    top: 50%;
+    width: 9px;
+    height: 9px;
+    translate: 0 -50%;
+    border-radius: 50%;
+    background: var(--bg-surface);
+    border: 1.5px solid var(--axis);
+    z-index: 1;
+  }
+
+}
+
+/* ---------- movimento ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  .axo-card {
+    transition: box-shadow var(--duration-base) var(--ease-standard),
+      border-color var(--duration-base) var(--ease-standard),
+      background var(--duration-base) var(--ease-standard);
+  }
+  .axo-card__icon,
+  .axo-card__cta { transition: background var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard); }
+  .axo-wire { transition: opacity var(--duration-base) var(--ease-standard); }
+  .axo-wire__node { transition: fill var(--duration-base) var(--ease-standard); }
+  .axo-wire.is-active .axo-wire__flow { animation: axo-flow 1.1s linear infinite; }
+}
+
+@keyframes axo-flow { to { stroke-dashoffset: -14; } }
+
+/* Alvo do clique nos cards: desconta o header fixo ao rolar até os detalhes. */
+.research-explore { scroll-margin-top: 6rem; }
+
+/* ---------- variante compacta (página Sobre) ----------
+   Só os títulos dos eixos e o logo do CP2b no centro: cards de uma linha de
+   rótulo + título, anel menor, sem sobreposição ao hero. */
+.axo--compact {
+  margin-top: 0;
+  padding: clamp(1.25rem, 0.75rem + 2vw, 2.25rem);
+}
+
+.axo--compact .axo-card { align-items: center; padding: 0.6rem 0.8rem 0.6rem 0.7rem; gap: 0.7rem; }
+.axo--compact .axo-card__icon { width: 2.15rem; height: 2.15rem; margin-top: 0; font-size: 1rem; }
+.axo--compact .axo-card__top { margin-bottom: 0.05rem; }
+.axo--compact .axo-card__title { font-size: 0.88rem; margin: 0; }
+.axo--compact .axo-card__cta { padding: 0.15rem 0.35rem; }
+
+@media (min-width: 1200px) {
+  .axo--compact .axo__grid {
+    grid-template-columns: minmax(0, 1fr) 12rem minmax(0, 1fr);
+    column-gap: 3.25rem;
+    row-gap: 0.55rem;
+  }
+
+  .axo--compact .axo-hub__art { width: 12rem; }
+}
+
+@media (max-width: 1199.98px) {
+  .axo--compact .axo-hub__art { width: 9rem; }
+}
+
+/* Celular: grade de 2 colunas, sem a espinha da versão completa. */
+@media (max-width: 575.98px) {
+  .axo--compact .axo__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; padding-left: 0; }
+  .axo--compact .axo-hub { margin: 0 0 0.25rem; }
+  .axo--compact .axo-hub__art { width: 8rem; }
+  .axo--compact .axo-card::before,
+  .axo--compact .axo-card::after { display: none; }
+  .axo--compact .axo-card { align-items: flex-start; padding: 0.55rem 0.6rem; gap: 0.5rem; }
+  .axo--compact .axo-card__icon { width: 1.8rem; height: 1.8rem; font-size: 0.85rem; }
+  .axo--compact .axo-card__cta { display: none; }
+  .axo--compact .axo-card__title { font-size: 0.78rem; }
+}
