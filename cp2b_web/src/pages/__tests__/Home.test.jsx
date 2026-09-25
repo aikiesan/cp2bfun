@@ -189,7 +189,7 @@ describe('Home — institutional layer', () => {
       String(researchAxes.pt.length),
       String(people.length),
       String(institutions.size),
-      String(laboratories.length),
+      String(laboratories.filter((l) => l.group === 'bioprocessos').length),
       String(technicalServices.length),
     ]);
 
@@ -232,7 +232,7 @@ describe('Home — institutional layer', () => {
     );
     expect(metrics).toEqual([
       String(technicalServices.length),
-      String(laboratories.length),
+      String(laboratories.filter((l) => l.group === 'bioprocessos').length),
       homeContent.pt.solutions.trlValue,
     ]);
     expect(container.querySelector('.home-lab-card')).toBeNull();

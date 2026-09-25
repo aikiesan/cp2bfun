@@ -4,6 +4,11 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { timelineData, homeContent, researchAxes, teamMembers } from '../data/content';
 import { laboratories } from '../data/generated/laboratories';
+
+// "Laboratórios centrais" são os de bioprocessos (os que têm faixa de TRL e
+// serviços técnicos). LESP e LABSOS, do Eixo 8, também estão na planilha,
+// mas são núcleos de ciências sociais aplicadas e não entram nessa conta.
+const coreLaboratories = laboratories.filter((l) => l.group === 'bioprocessos');
 import { technicalServices } from '../data/generated/services';
 import { useLanguage } from '../context/LanguageContext';
 import api, { fetchFeaturedContent, fetchFeaturedVideos } from '../services/api';
@@ -55,7 +60,7 @@ const Home = () => {
       { key: 'axes', value: researchAxes.pt.length, label: t.stats.axes },
       { key: 'researchers', value: people.length, label: t.stats.researchers },
       { key: 'institutions', value: institutions.size, label: t.stats.institutions },
-      { key: 'laboratories', value: laboratories.length, label: t.stats.laboratories },
+      { key: 'laboratories', value: coreLaboratories.length, label: t.stats.laboratories },
       { key: 'services', value: technicalServices.length, label: t.stats.services },
     ];
   }, [t]);
@@ -318,7 +323,7 @@ const Home = () => {
                     <dd className="home-solutions-metric-label">{t.solutions.servicesLabel}</dd>
                   </div>
                   <div className="home-solutions-metric">
-                    <dt className="home-solutions-metric-value">{laboratories.length}</dt>
+                    <dt className="home-solutions-metric-value">{coreLaboratories.length}</dt>
                     <dd className="home-solutions-metric-label">{t.solutions.labsLabel}</dd>
                   </div>
                   <div className="home-solutions-metric">

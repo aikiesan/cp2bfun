@@ -119,11 +119,15 @@ describe('Milestone M1 Content and Data Synchronization', () => {
       expect(luciana.direction).toBe(false);
     });
 
-    it('includes 3 laboratories and 15 technical services', () => {
-      expect(laboratories).toHaveLength(3);
-      expect(laboratories.map(l => l.acronym)).toEqual(
-        expect.arrayContaining(['CEMARA (UNIFAL)', 'CP2b Lab', 'PPBIOEN'])
-      );
+    it('includes the 5 laboratories (3 bioprocess, 2 public policy) and 15 technical services', () => {
+      // Aba 'Laboratórios' da planilha atualizada: os 3 laboratórios centrais
+      // de bioprocessos mais LESP e LABSOS (Eixo 8). A linha de observação
+      // 'EIXO 1 | NÃO SE APLICA' não vira laboratório.
+      expect(laboratories).toHaveLength(5);
+      const byGroup = (g) => laboratories.filter(l => l.group === g).map(l => l.acronym);
+      expect(byGroup('bioprocessos')).toEqual(['CEMARA (UNIFAL)', 'CP2b Lab', 'PPBIOEN']);
+      expect(byGroup('sociedade')).toEqual(['LESP', 'LABSOS']);
+      expect(laboratories.some(l => /^eixo/i.test(l.acronym))).toBe(false);
       expect(technicalServices).toHaveLength(15);
       technicalServices.forEach(service => {
         expect(service.pt.title).toBeTruthy();
