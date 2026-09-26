@@ -340,12 +340,15 @@ const About = () => {
               <source src="/assets/cp2b-institucional.mp4" type="video/mp4" />
             </video>
           </div>
+          {/* Selo no canto superior: embaixo ele cobria o botão de play e o
+              início da linha do tempo dos controles nativos do vídeo. */}
           <div
-            className="position-absolute bottom-0 start-0 bg-white p-2 p-sm-3 border-top border-end shadow-sm"
+            className="position-absolute top-0 start-0 bg-white p-2 p-sm-3 border-bottom border-end shadow-sm"
             style={{
               maxWidth: '300px',
-              borderTopRightRadius: 'var(--radius-lg, 16px)',
+              borderBottomRightRadius: 'var(--radius-lg, 16px)',
               zIndex: 2,
+              pointerEvents: 'none',
             }}
           >
             <span className="mono-label mb-0 text-success fw-bold">

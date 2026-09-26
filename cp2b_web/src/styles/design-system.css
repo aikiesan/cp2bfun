@@ -726,11 +726,13 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
 }
 
 .home-axis-title {
+  min-width: 0;
   margin: 0;
   font-size: var(--text-sm);
   font-weight: var(--weight-semibold);
   line-height: var(--leading-snug);
   color: var(--cp2b-dark);
+  overflow-wrap: break-word;
 }
 
 
@@ -860,6 +862,25 @@ main#main-content,
   height: 200px;
 }
 
+/* ---------- Parceiros ---------- */
+.partner-card-name { font-size: var(--text-base); }
+
+/* No celular os cards vão em duas colunas de ~140px: a 16px, "Desenvolvimento"
+   não cabia e quebrava no meio ("Desenvolviment / o"). Menor, e com hifenização
+   quando ainda faltar espaço. */
+@media (max-width: 575.98px) {
+  .partner-card-name { font-size: 0.85rem; hyphens: auto; }
+}
+
+/* ---------- Publicações ---------- */
+/* Título ao lado do selo do tipo, numa linha flex: sem min-width: 0 ele não
+   encolhe abaixo da palavra mais longa, e as citações que ainda trazem a URL
+   no título ("https://www.sciencedirect.com/…") vazavam do card, cortadas. */
+.publication-title {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 /* ---------- Responsive Mobile Compaction (Milestone 3) ---------- */
 @media (max-width: 767.98px) {
   .section-head {
@@ -903,8 +924,10 @@ main#main-content,
     grid-column: 1 / -1;
   }
 
+  /* minmax(0, …): com 1fr puro a coluna não encolhe abaixo da palavra mais
+     longa ("Socioeconômica,") e a da direita passava da tela. */
   .home-axis-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-2);
   }
 
@@ -1068,6 +1091,16 @@ main#main-content,
 }
 
 @media (max-width: 575.98px) {
+  /* Celular: uma coluna, e cada eixo volta a caber numa ou duas linhas — em
+     duas colunas os títulos longos chegavam a cinco linhas espremidas. */
+  .home-axis-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .home-axis-title {
+    font-size: var(--text-sm);
+  }
+
   .team-member-card {
     padding: 0.65rem !important;
   }
@@ -1093,7 +1126,20 @@ main#main-content,
     font-size: 0.7rem !important;
   }
 
+  /* Na coluna centralizada, o bloco de texto encolhia até a largura da linha
+     sem quebra (o text-truncate da instituição) e passava dos dois lados do
+     card, cortado: "rson Targino da Silva Fe". Esticado, fica na largura do
+     card; a instituição quebra em até duas linhas, com reticências. */
+  .team-member-inner > .flex-grow-1 {
+    align-self: stretch;
+  }
+
   .team-member-inst {
     font-size: 0.68rem !important;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 }

@@ -57,6 +57,7 @@ const content = {
           description:
             'Programas de formação técnica e executiva customizados para empresas, cooperativas e órgãos públicos sobre biogás, bioprodutos e sustentabilidade.',
           badge: 'Formação',
+          link: { to: '/capacitacao', label: 'Conheça os cursos' },
         },
       ],
     },
@@ -136,6 +137,7 @@ const content = {
           description:
             'Customized technical and executive educational programs for enterprises, cooperatives, and public agencies on biogas and circular bioeconomy.',
           badge: 'Education',
+          link: { to: '/capacitacao', label: 'See the courses' },
         },
       ],
     },
@@ -212,7 +214,7 @@ const Solucoes = () => {
 
           {/* Section 3: Technical Services with TRL Ranges */}
           <section id="servicos" ref={servicesRef} className="solucoes-services mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top">
-            <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-4 gap-3">
+            <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end mb-4 gap-3">
               <div>
                 <span className="mono-label text-success d-block mb-1">{t.servicesSection.tag}</span>
                 <h2 className="fw-bold fs-2 mb-2">{t.servicesSection.title}</h2>
@@ -237,8 +239,8 @@ const Solucoes = () => {
                   >
                     {f.short ? (
                       <>
-                        <span className="d-none d-sm-inline">{f.label}</span>
-                        <span className="d-sm-none">{f.short}</span>
+                        <span className="d-none d-md-inline">{f.label}</span>
+                        <span className="d-md-none">{f.short}</span>
                       </>
                     ) : f.label}
                   </button>
@@ -259,10 +261,14 @@ const Solucoes = () => {
             </div>
 
             <Row className="g-2 g-sm-3 g-md-4">
+              {/* Uma coluna no celular: em duas, a descrição corria em ~120px
+                  e os selos ("Transferência de Tecnologia") eram cortados na
+                  borda do card. O quinto card fecha a grade na largura toda até
+                  o xl, em vez de deixar meia linha vazia. */}
               {t.modalitiesSection.items.map((mod, idx) => (
-                <Col key={idx} xs={6} sm={6} md={6} lg={idx === 4 ? 12 : 6} xl={idx === 4 ? 4 : 4}>
+                <Col key={idx} xs={12} sm={idx === 4 ? 12 : 6} xl={4}>
                   <Card
-                    className="h-100 p-2 p-sm-3 p-md-4 border-0 shadow-sm hover-lift"
+                    className="h-100 p-3 p-md-4 border-0 shadow-sm hover-lift"
                     style={{
                       borderRadius: 'var(--radius-lg, 16px)',
                       background: 'var(--bg-surface, #ffffff)',
@@ -295,6 +301,11 @@ const Solucoes = () => {
                     <p className="text-muted small mb-0 solution-modality-copy" style={{ lineHeight: 1.5 }}>
                       {mod.description}
                     </p>
+                    {mod.link && (
+                      <Link to={mod.link.to} className="arrow-link small mt-2 mt-md-3">
+                        {mod.link.label} <i className="bi bi-arrow-right" aria-hidden="true" />
+                      </Link>
+                    )}
                   </Card>
                 </Col>
               ))}

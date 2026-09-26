@@ -161,6 +161,8 @@
   color: var(--axo-ink);
   margin: 0 0 0.25rem;
   text-wrap: balance;
+  /* Rede de segurança: palavra que não couber quebra, em vez de vazar. */
+  overflow-wrap: break-word;
 }
 
 /* Coordenadores com o mesmo peso, numa linha corrida separada por ponto médio. */
@@ -442,15 +444,17 @@
   .axo--compact .axo-hub__art { width: 9rem; }
 }
 
-/* Celular: grade de 2 colunas, sem a espinha da versão completa. */
+/* Celular: uma coluna, sem a espinha da versão completa. Em duas colunas o
+   título ficava com ~60px a 320px de largura — uma palavra por linha, e
+   "Socioeconômica" ou "Desenvolvimento" vazavam pela borda do card. */
 @media (max-width: 575.98px) {
-  .axo--compact .axo__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; padding-left: 0; }
+  .axo--compact .axo__grid { grid-template-columns: minmax(0, 1fr); gap: 0.5rem; padding-left: 0; }
   .axo--compact .axo-hub { margin: 0 0 0.25rem; }
   .axo--compact .axo-hub__art { width: 8rem; }
   .axo--compact .axo-card::before,
   .axo--compact .axo-card::after { display: none; }
-  .axo--compact .axo-card { align-items: flex-start; padding: 0.55rem 0.6rem; gap: 0.5rem; }
-  .axo--compact .axo-card__icon { width: 1.8rem; height: 1.8rem; font-size: 0.85rem; }
+  .axo--compact .axo-card { padding: 0.6rem 0.8rem 0.6rem 0.7rem; gap: 0.7rem; }
+  .axo--compact .axo-card__icon { width: 2rem; height: 2rem; font-size: 0.95rem; }
   .axo--compact .axo-card__cta { display: none; }
-  .axo--compact .axo-card__title { font-size: 0.78rem; }
+  .axo--compact .axo-card__title { font-size: 0.86rem; }
 }

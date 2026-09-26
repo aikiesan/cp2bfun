@@ -82,6 +82,7 @@
   line-height: 1.28;
   color: var(--svc-ink);
   text-wrap: balance;
+  overflow-wrap: break-word;
 }
 
 .svc__more {
@@ -117,7 +118,7 @@
   .svc__art { aspect-ratio: 1; padding: 0.5rem; }
   .svc__art--icon i { width: 3.4rem; height: 3.4rem; font-size: 1.4rem; }
   .svc__body { padding: 0.65rem 0.7rem 0.75rem; }
-  .svc__meta { font-size: 0.56rem; letter-spacing: 0.08em; }
+  .svc__meta { font-size: 0.625rem; letter-spacing: 0.06em; }
   .svc__title { font-size: 0.82rem; margin-bottom: 0.45rem; }
   .svc__more { padding: 0.25rem 0.55rem; font-size: 0.7rem; }
   /* Aberto, o card ocupa a linha toda em formato horizontal: ilustração
@@ -160,7 +161,10 @@
 
 .svc-filter__btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
 
-@media (max-width: 767.98px) {
+/* Até o lg o filtro fica sob o título, na largura toda: ao lado dele, no
+   tablet, as colunas encolhiam abaixo do rótulo e "CEMARA", "CP2b Lab" e
+   "PPBIOEN" vazavam dos botões. */
+@media (max-width: 991.98px) {
   .svc-filter { grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; }
   .svc-filter__btn { padding: 0.5rem 0.25rem; font-size: 0.78rem; overflow: hidden; text-overflow: ellipsis; }
 }

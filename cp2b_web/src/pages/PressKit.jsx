@@ -100,22 +100,26 @@ const PressKit = () => {
                       download
                       className="d-flex align-items-center gap-3 p-3 border rounded text-decoration-none h-100 press-kit-logo"
                     >
-                      {/* Fundo xadrez claro: metade dos arquivos é negativa ou
-                          transparente e sumiria sobre branco puro. */}
+                      {/* Fundo xadrez: claro para os logos coloridos e escuro
+                          (petróleo) para os de letreiro branco, que sumiam
+                          sobre o claro. Mais largo que alto porque o logo é
+                          horizontal: num quadrado de 56px ele ficava com 17px
+                          de altura. */}
                       <span
                         className="d-inline-flex align-items-center justify-content-center flex-shrink-0 rounded"
                         style={{
-                          width: 56,
+                          width: 88,
                           height: 56,
-                          background:
-                            'repeating-conic-gradient(#f1f3f5 0% 25%, #ffffff 0% 50%) 50% / 12px 12px',
+                          background: logo.dark
+                            ? 'repeating-conic-gradient(#1E3E4C 0% 25%, #24495A 0% 50%) 50% / 12px 12px'
+                            : 'repeating-conic-gradient(#f1f3f5 0% 25%, #ffffff 0% 50%) 50% / 12px 12px',
                         }}
                       >
                         <img
                           src={logo.file}
                           alt=""
                           loading="lazy"
-                          style={{ maxWidth: 44, maxHeight: 44 }}
+                          style={{ maxWidth: 76, maxHeight: 44 }}
                         />
                       </span>
                       <span className="flex-grow-1">

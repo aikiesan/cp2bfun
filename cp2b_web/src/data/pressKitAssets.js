@@ -19,6 +19,8 @@ export const pressKitLogos = [
   },
   {
     file: '/assets/logos/cp2b-logo-gradient-alt.svg',
+    // Letreiro branco: a prévia precisa de fundo escuro para aparecer.
+    dark: true,
     name: 'Logo principal — degradê alternativo',
     name_en: 'Primary logo — alternate gradient',
     usage: 'Variação do degradê para composições específicas.',
@@ -40,6 +42,7 @@ export const pressKitLogos = [
   },
   {
     file: '/assets/logos/cp2b-logo-negative-white.svg',
+    dark: true,
     name: 'Logo negativo — branco',
     name_en: 'Negative logo — white',
     usage: 'Sobre fundo escuro ou fotografia.',

@@ -312,7 +312,7 @@
   .pubs-summary__head { gap: 1rem; }
   .pubs-total { width: 5.75rem; height: 5.75rem; }
   .pubs-total__num { font-size: 2.1rem; }
-  .pubs-total__lbl { font-size: 0.52rem; letter-spacing: 0.08em; }
+  .pubs-total__lbl { font-size: 0.625rem; letter-spacing: 0.06em; }
 
   .pubs-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.5rem; }
   .pubs-metric { padding: 0.85rem 0.6rem 0.9rem; }

@@ -349,26 +349,28 @@ const AxisExplorer = ({ axes, detailsById, language, labels }) => {
           )}
         </div>
 
-        {/* ---------- anterior / próximo ---------- */}
+        {/* ---------- anterior / próximo ----------
+            No primeiro e no último eixo só há um lado: ele ocupa a largura
+            toda, em vez de deixar meia faixa vazia e o título cortado. */}
         <nav className="axx-pager" aria-label={labels.axesNav}>
           {prev ? (
-            <button type="button" className="axx-pager__btn" onClick={() => goTo(prev.id)}>
+            <button type="button" className={`axx-pager__btn${next ? '' : ' axx-pager__btn--solo'}`} onClick={() => goTo(prev.id)}>
               <i className="bi bi-arrow-left" aria-hidden="true" />
               <span className="axx-pager__txt">
                 <span className="axx-pager__kicker">{labels.axis} {pad(prev.id)}</span>
                 <span className="axx-pager__title">{cleanTitle(prev.title)}</span>
               </span>
             </button>
-          ) : <span />}
+          ) : null}
           {next ? (
-            <button type="button" className="axx-pager__btn axx-pager__btn--next" onClick={() => goTo(next.id)}>
+            <button type="button" className={`axx-pager__btn axx-pager__btn--next${prev ? '' : ' axx-pager__btn--solo'}`} onClick={() => goTo(next.id)}>
               <span className="axx-pager__txt">
                 <span className="axx-pager__kicker">{labels.axis} {pad(next.id)}</span>
                 <span className="axx-pager__title">{cleanTitle(next.title)}</span>
               </span>
               <i className="bi bi-arrow-right" aria-hidden="true" />
             </button>
-          ) : <span />}
+          ) : null}
         </nav>
       </div>
     </div>

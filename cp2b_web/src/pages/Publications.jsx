@@ -174,7 +174,7 @@ const Publications = () => {
               <Card key={pub.id} className="mb-3">
                 <Card.Body>
                   <div className="d-flex justify-content-between align-items-start mb-2 gap-2">
-                    <h5 className="mb-1 mobile-compact-title">{title}</h5>
+                    <h5 className="mb-1 mobile-compact-title publication-title">{title}</h5>
                     <Badge bg="secondary" className="flex-shrink-0">{typeLabels[pub.publication_type]}</Badge>
                   </div>
                   <p className="text-muted mb-2"><strong>{pub.authors}</strong></p>
