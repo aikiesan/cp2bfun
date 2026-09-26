@@ -19,9 +19,9 @@ const News = () => {
 
   const labels = {
     pt: {
-      title: 'Agencia CP2b de Noticias',
+      title: 'Agência CP2b de Notícias',
       readMore: 'Leia mais',
-      latest: 'Ultimas noticias'
+      latest: 'Últimas notícias'
     },
     en: {
       title: 'CP2b News Agency',

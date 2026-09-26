@@ -20,7 +20,7 @@ const Contact = () => {
     pt: {
       tag: 'FALE CONOSCO',
       title: 'Entre em Contato',
-      address: 'Endereco',
+      address: 'Endereço',
       direct: 'Contatos Diretos',
       general: 'Geral',
       coordination: 'Coordenação',

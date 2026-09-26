@@ -9,9 +9,9 @@ const NotFound = () => {
   const labels = {
     pt: {
       title: '404',
-      message: 'Pagina nao encontrada',
-      description: 'A pagina que voce procura nao existe ou foi movida.',
-      backHome: 'Voltar ao Inicio',
+      message: 'Página não encontrada',
+      description: 'A página que você procura não existe ou foi movida.',
+      backHome: 'Voltar ao Início',
     },
     en: {
       title: '404',
