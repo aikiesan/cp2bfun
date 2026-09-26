@@ -37,6 +37,17 @@ jobs:
       - name: Build
         run: npm run build
 
+      # Sitemap, títulos, descrições, canonical, Open Graph e JSON-LD de cada
+      # página pré-renderizada do build.
+      - name: SEO audit
+        run: npm run seo:audit
+
+      - name: Backend tests
+        working-directory: cp2b_web/backend
+        run: |
+          npm ci
+          npm test
+
   e2e:
     runs-on: ubuntu-latest
 

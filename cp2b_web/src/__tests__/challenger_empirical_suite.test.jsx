@@ -236,6 +236,7 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
         distDir: tmpDir,
         siteUrl: 'https://cp2b.unicamp.br',
         apiUrl: '',
+        allowFallback: true,
         log: (msg) => logs.push(msg),
       });
 
@@ -280,6 +281,7 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
         distDir: tmpDir,
         siteUrl: 'https://cp2b.unicamp.br',
         apiUrl: 'http://127.0.0.1:59999', // Closed port / unreachable
+        allowFallback: true,
         log: (msg) => logs.push(msg),
       });
 
@@ -326,14 +328,18 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
         distDir: tmpDir,
         siteUrl: 'https://cp2b.unicamp.br',
         apiUrl: 'https://api.mock.test',
+        allowFallback: true,
         log: (msg) => logs.push(msg),
       });
 
+      // Erro, 404, JSON inválido e objeto no lugar de lista caem nas amostras.
+      // A lista vazia de /opportunities é resposta válida: zero páginas.
       expect(result.prerenderedStatic).toBe(23);
-      expect(result.prerenderedDynamic).toBe(14);
-      expect(result.sitemapUrlsCount).toBe(37);
+      expect(result.prerenderedDynamic).toBe(12);
+      expect(result.sitemapUrlsCount).toBe(35);
       expect(logs.some((l) => l.includes('using static fallback for /noticias'))).toBe(true);
       expect(logs.some((l) => l.includes('using static fallback for /eventos'))).toBe(true);
+      expect(logs.some((l) => l.includes('fetched 0 dynamic items from /opportunities'))).toBe(true);
     });
 
     it('throws a descriptive error when dist/index.html is missing', async () => {

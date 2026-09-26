@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { mkdtemp, rm, writeFile, readFile } from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
@@ -333,6 +333,7 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
         distDir: tmpDir,
         siteUrl: BASE_URL,
         apiUrl: '',
+        allowFallback: true,
         log: (msg) => logs.push(msg),
       });
 
@@ -375,6 +376,57 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
       const eventHtml = await readFile(path.join(tmpDir, 'eventos/workshop-anual-2025/index.html'), 'utf8');
       expect(eventHtml).toContain('"Event"');
       expect(eventHtml).toContain('I Workshop Anual do CP2b');
+    });
+
+    // As amostras de content.js têm slugs que não existem no banco. Num build
+    // de produção sem API elas iam para o sitemap como páginas "não
+    // encontradas" — melhor deixar as seções dinâmicas de fora e avisar.
+    it('leaves dynamic pages out of the sitemap when the API is down and fallback is off', async () => {
+      const logs = [];
+      const result = await generateSeo({
+        distDir: tmpDir,
+        siteUrl: BASE_URL,
+        apiUrl: 'http://127.0.0.1:59999',
+        log: (msg) => logs.push(msg),
+      });
+
+      expect(result.prerenderedStatic).toBe(23);
+      expect(result.prerenderedDynamic).toBe(0);
+      expect(result.sitemapUrlsCount).toBe(23);
+      expect(logs.some((l) => l.includes('AVISO') && l.includes('/noticias'))).toBe(true);
+      const sitemap = await readFile(path.join(tmpDir, 'sitemap.xml'), 'utf8');
+      expect(sitemap).not.toContain('/noticias/');
+      expect(sitemap).toContain(`<loc>${BASE_URL}/capacitacao</loc>`);
+    });
+
+    it('puts the items the API returns in the sitemap, and never the samples', async () => {
+      const fetchMock = vi.fn(async (url) => ({
+        ok: true,
+        json: async () => (url.endsWith('/news')
+          ? [{ slug: 'noticia-real', title_pt: 'Notícia real', description_pt: 'Resumo da notícia real.', updated_at: '2026-09-20T10:00:00Z' }]
+          : []),
+      }));
+      vi.stubGlobal('fetch', fetchMock);
+      try {
+        const result = await generateSeo({
+          distDir: tmpDir,
+          siteUrl: BASE_URL,
+          apiUrl: 'https://api.mock.test',
+          allowFallback: true,
+          log: () => {},
+        });
+
+        expect(result.prerenderedDynamic).toBe(1);
+        const sitemap = await readFile(path.join(tmpDir, 'sitemap.xml'), 'utf8');
+        expect(sitemap).toContain(`<loc>${BASE_URL}/noticias/noticia-real</loc>`);
+        expect(sitemap).toContain('<lastmod>2026-09-20</lastmod>');
+        expect(sitemap).not.toContain('cau-2025');
+        const shell = await readFile(path.join(tmpDir, 'noticias', 'noticia-real', 'index.html'), 'utf8');
+        expect(shell).toContain('"NewsArticle"');
+        expect(shell).toContain(`<link rel="canonical" href="${BASE_URL}/noticias/noticia-real" />`);
+      } finally {
+        vi.unstubAllGlobals();
+      }
     });
   });
 });
