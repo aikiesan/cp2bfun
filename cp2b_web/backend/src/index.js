@@ -29,12 +29,16 @@ import pageSettingsRoutes from './routes/pageSettings.js';
 import settingsRoutes from './routes/settings.js';
 import authRoutes from './routes/auth.js';
 import { adminGate, adminLocked, authEnabled, PUBLIC_WRITES } from './middleware/auth.js';
+import { applyTrustProxy } from './middleware/trustProxy.js';
 import { initializeDatabase } from './db/init.js';
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// O IP do visitante chega pelo X-Forwarded-For do Apache (ver trustProxy.js).
+applyTrustProxy(app);
 
 // Middleware
 app.use(helmet({
