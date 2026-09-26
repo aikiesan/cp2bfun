@@ -27,8 +27,10 @@ import { teamByAxis } from '../data/generated/teamByAxis';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const ROOT_DIR = path.resolve(__dirname, '../../..');
-const WEB_DIR = path.resolve(ROOT_DIR, 'cp2b_web');
+// Relativo a este arquivo, não à raiz do repositório: o serviço `test` do
+// docker-compose monta só o cp2b_web em /app, e lá "../../../cp2b_web" não
+// existe. Mesmo cálculo do tier4_real_world_scenarios.
+const WEB_DIR = path.resolve(__dirname, '../..');
 
 // ── 1. Missão, Visão e Valores ───────────────────────────────────────────────
 describe('Tier 1 — Missão, Visão e Valores', () => {
