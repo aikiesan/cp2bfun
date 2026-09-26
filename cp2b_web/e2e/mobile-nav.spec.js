@@ -34,4 +34,13 @@ test.describe('mobile navigation', () => {
     await expect(page).toHaveURL(/\/equipe$/);
     await expect(page.locator('#basic-navbar-nav')).not.toHaveClass(/show/);
   });
+
+  test('the Sobre dropdown reaches Cursos e Capacitação', async ({ page }) => {
+    await page.locator('.navbar-toggler').click();
+    await page.locator('#nav-dropdown-about').click();
+    await page.locator('#basic-navbar-nav').getByRole('link', { name: /Cursos e Capacitação|Courses and Training/ }).click();
+    await expect(page).toHaveURL(/\/capacitacao$/);
+    await expect(page.locator('#basic-navbar-nav')).not.toHaveClass(/show/);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Cursos e Capacitação|Courses and Training/);
+  });
 });

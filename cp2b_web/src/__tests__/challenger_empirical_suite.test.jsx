@@ -239,17 +239,17 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
         log: (msg) => logs.push(msg),
       });
 
-      expect(result.prerenderedStatic).toBe(22);
+      expect(result.prerenderedStatic).toBe(23);
       expect(result.prerenderedDynamic).toBe(14);
-      expect(result.sitemapUrlsCount).toBe(36);
+      expect(result.sitemapUrlsCount).toBe(37);
 
-      // Verify sitemap.xml exists and has 36 URLs
+      // Verify sitemap.xml exists and has 37 URLs
       const sitemap = await readFile(path.join(tmpDir, 'sitemap.xml'), 'utf8');
       expect(sitemap).toContain('<?xml version="1.0" encoding="UTF-8"?>');
       expect(sitemap).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
       
       const locMatches = sitemap.match(/<loc>/g);
-      expect(locMatches).toHaveLength(36);
+      expect(locMatches).toHaveLength(37);
 
       // Verify root index.html has ResearchOrganization JSON-LD
       const rootHtml = await readFile(path.join(tmpDir, 'index.html'), 'utf8');
@@ -283,9 +283,9 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
         log: (msg) => logs.push(msg),
       });
 
-      expect(result.prerenderedStatic).toBe(22);
+      expect(result.prerenderedStatic).toBe(23);
       expect(result.prerenderedDynamic).toBe(14);
-      expect(result.sitemapUrlsCount).toBe(36);
+      expect(result.sitemapUrlsCount).toBe(37);
       expect(logs.some((l) => l.includes('using static fallback'))).toBe(true);
     });
 
@@ -329,9 +329,9 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
         log: (msg) => logs.push(msg),
       });
 
-      expect(result.prerenderedStatic).toBe(22);
+      expect(result.prerenderedStatic).toBe(23);
       expect(result.prerenderedDynamic).toBe(14);
-      expect(result.sitemapUrlsCount).toBe(36);
+      expect(result.sitemapUrlsCount).toBe(37);
       expect(logs.some((l) => l.includes('using static fallback for /noticias'))).toBe(true);
       expect(logs.some((l) => l.includes('using static fallback for /eventos'))).toBe(true);
     });
@@ -475,7 +475,7 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
       });
     });
 
-    it('validates sitemap XML conformance for all 36 project URLs', () => {
+    it('validates sitemap XML conformance for all 37 project URLs', () => {
       const fallbackNews = getNewsFallback();
       const fallbackProjects = getProjectsFallback();
       const fallbackEvents = getEventsFallback();
@@ -498,11 +498,11 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
       ];
 
       const allUrls = [...staticUrls, ...dynamicUrls];
-      expect(allUrls).toHaveLength(36);
+      expect(allUrls).toHaveLength(37);
 
       const xml = generateSitemapXml(allUrls);
       expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
-      expect(xml.split('<url>')).toHaveLength(37); // 1 header + 36 <url> elements
+      expect(xml.split('<url>')).toHaveLength(38); // 1 header + 37 <url> elements
 
       // Validate every loc starts with https://cp2b.unicamp.br
       allUrls.forEach((u) => {

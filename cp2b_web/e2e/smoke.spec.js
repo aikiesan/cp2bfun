@@ -6,6 +6,8 @@ const routes = [
   ['/sobre', /.+/],
   ['/eixos', /.+/],
   ['/equipe', /.+/],
+  ['/solucoes', /.+/],
+  ['/capacitacao', /.+/],
   ['/noticias', /Notícias|News Agency|Agencia/i],
   ['/publicacoes', /Publica|Publications/i],
   ['/oportunidades', /.+/],
