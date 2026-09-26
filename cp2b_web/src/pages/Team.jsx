@@ -403,7 +403,7 @@ const Team = () => {
                             className="team-avatar"
                           />
                           <div style={{ minWidth: 0 }} className="flex-grow-1">
-                            <h6
+                            <h4
                               className="fw-bold mb-1 team-member-name"
                               title={member.name}
                               style={{
@@ -414,7 +414,7 @@ const Team = () => {
                               }}
                             >
                               {member.name}
-                            </h6>
+                            </h4>
                             {/* Duas formas de anunciar a coordenação, porque há
                                 dois casos. Quando o próprio cargo já diz
                                 ("Coordenador do Eixo 1"), ele vira a pílula.

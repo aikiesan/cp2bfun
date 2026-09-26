@@ -69,7 +69,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--cp2b-verde);
+  color: var(--cp2b-verde-escuro);
 }
 
 .svc__meta span { color: var(--gray-400); margin: 0 0.1rem; }

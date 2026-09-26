@@ -112,7 +112,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--cp2b-verde);
+  color: var(--cp2b-verde-escuro);
 }
 
 .tprof-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
@@ -151,7 +151,7 @@
 
 .tprof-bars__track span { display: block; height: 100%; border-radius: inherit; background: var(--bar); }
 
-.tprof-chart__note { margin: 0.75rem 0 0; font-size: 0.72rem; line-height: 1.4; color: var(--gray-500); }
+.tprof-chart__note { margin: 0.75rem 0 0; font-size: 0.72rem; line-height: 1.4; color: var(--text-secondary); }
 
 @media (max-width: 1199.98px) {
   .tprof-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }

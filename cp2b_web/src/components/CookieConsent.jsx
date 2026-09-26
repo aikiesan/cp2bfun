@@ -96,7 +96,7 @@ const CookieConsent = () => {
             >
               {t.privacyLink}
             </a>
-            <p className="mb-0 mt-1" style={{ fontSize: '0.7rem', color: '#999' }}>
+            <p className="mb-0 mt-1" style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.72)' }}>
               <i className="bi bi-info-circle me-1" />
               {t.lgpdNote}
             </p>

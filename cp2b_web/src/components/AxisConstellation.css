@@ -177,7 +177,7 @@
 
 .axo-card__people li { display: inline; }
 .axo-card__people li + li::before { content: ' · '; color: var(--gray-400); font-style: normal; }
-.axo-card__people .is-vacant { color: var(--gray-500); font-style: italic; }
+.axo-card__people .is-vacant { color: var(--gray-600); font-style: italic; }
 
 /* ---------- núcleo ---------- */
 .axo-hub {

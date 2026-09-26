@@ -113,7 +113,7 @@ const Publications = () => {
         <Card.Body>
           <Row>
             <Col md={3}>
-              <Form.Group>
+              <Form.Group controlId="pub-filter-year">
                 <Form.Label>{language === 'pt' ? 'Ano' : 'Year'}</Form.Label>
                 <Form.Select
                   value={filters.year}
@@ -127,7 +127,7 @@ const Publications = () => {
               </Form.Group>
             </Col>
             <Col md={3}>
-              <Form.Group>
+              <Form.Group controlId="pub-filter-type">
                 <Form.Label>{language === 'pt' ? 'Tipo' : 'Type'}</Form.Label>
                 <Form.Select
                   value={filters.type}
@@ -175,7 +175,7 @@ const Publications = () => {
               <Card key={pub.id} className="mb-3">
                 <Card.Body>
                   <div className="d-flex justify-content-between align-items-start mb-2 gap-2">
-                    <h5 className="mb-1 mobile-compact-title publication-title">{title}</h5>
+                    <h3 className="h5 mb-1 mobile-compact-title publication-title">{title}</h3>
                     <Badge bg="secondary" className="flex-shrink-0">{typeLabels[pub.publication_type]}</Badge>
                   </div>
                   <p className="text-muted mb-2"><strong>{pub.authors}</strong></p>

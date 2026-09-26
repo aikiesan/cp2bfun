@@ -60,7 +60,8 @@
   line-height: 1;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
-  color: var(--gray-400);
+  /* Número grande (24px) pede 3:1; o cinza-400 dava 1,8:1. */
+  color: color-mix(in srgb, var(--gray-600) 75%, white);
 }
 
 .axx-tab__label {

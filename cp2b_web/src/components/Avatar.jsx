@@ -23,7 +23,7 @@ const AXIS_COLORS = [
   '#e07a2c', '#c9a635', '#4a8fc4', '#a6455c',
 ];
 
-const Avatar = ({ photo, name = '', axisId, size = 96, className = '', style = {} }) => {
+const Avatar = ({ photo, name = '', alt, axisId, size = 96, className = '', style = {} }) => {
   const [imgError, setImgError] = useState(false);
   const initials = getInitials(name);
   const fontSize = Math.max(12, Math.round(size * 0.36));
@@ -32,7 +32,7 @@ const Avatar = ({ photo, name = '', axisId, size = 96, className = '', style = {
     return (
       <img
         src={photo}
-        alt={name}
+        alt={alt ?? name}
         onError={() => setImgError(true)}
         className={className}
         style={{
