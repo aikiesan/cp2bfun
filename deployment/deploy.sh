@@ -126,6 +126,8 @@ npm install --production=false
 
 # Build production bundle
 print_info "Creating production build..."
+# Sitemap e páginas pré-renderizadas com os itens reais da API (ver deploy.sh da raiz).
+export SEO_API_URL="${SEO_API_URL:-http://localhost:3001/api}"
 npm run build
 
 # Copy build to web root

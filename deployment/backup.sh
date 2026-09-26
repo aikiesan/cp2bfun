@@ -4,6 +4,8 @@
 # Creates backups of database and uploaded files
 
 set -e  # Exit on error
+set -o pipefail  # pg_dump falhando no meio do pipe tambem interrompe o backup
+umask 077        # dumps e copias do .env legiveis so pelo dono: tem dado pessoal
 
 # Color codes
 RED='\033[0;31m'
@@ -31,7 +33,9 @@ BACKUP_DIR="/var/www/cp2b/backups"
 # gerava backups do sistema errado.
 DB_NAME="cp2b_db"
 DB_USER="cp2b_user"
-UPLOAD_DIR="/var/www/cp2b/backend/uploads"
+# Layout atual: o backend roda de dentro do repositorio (ver deploy.sh).
+BACKEND_DIR="${BACKEND_DIR:-/var/www/cp2b/repo/cp2b_web/backend}"
+UPLOAD_DIR="${UPLOAD_DIR:-$BACKEND_DIR/uploads}"
 TIMESTAMP=$(date +%Y%m%d_%H%M%S)
 RETENTION_DAYS=7
 
@@ -80,7 +84,7 @@ fi
 # 3. Backup .env file (without exposing secrets in logs)
 print_info "Backing up configuration..."
 
-ENV_FILE="/var/www/cp2b/backend/.env"
+ENV_FILE="$BACKEND_DIR/.env"
 if [ -f "$ENV_FILE" ]; then
     ENV_BACKUP_FILE="$BACKUP_DIR/env_$TIMESTAMP.backup"
     cp "$ENV_FILE" "$ENV_BACKUP_FILE"
@@ -114,8 +118,8 @@ Configuration:
 
 Restore Instructions:
   Database: gunzip -c database_$TIMESTAMP.sql.gz | sudo -u postgres psql $DB_NAME
-  Uploads: tar -xzf uploads_$TIMESTAMP.tar.gz -C /var/www/cp2b/backend/
-  Config: cp env_$TIMESTAMP.backup /var/www/cp2b/backend/.env
+  Uploads: tar -xzf uploads_$TIMESTAMP.tar.gz -C $BACKEND_DIR/
+  Config: cp env_$TIMESTAMP.backup $BACKEND_DIR/.env
 
 EOF
 

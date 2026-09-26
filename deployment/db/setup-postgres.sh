@@ -29,8 +29,9 @@ print_error() {
 }
 
 # Configuration
-DB_NAME="cp2b"
-DB_USER="cp2b"
+# Mesmos nomes do backup.sh. "cp2b" e o banco do PILAR-2b nesta VM.
+DB_NAME="cp2b_db"
+DB_USER="cp2b_user"
 DB_PASSWORD=""
 REPO_DIR="/var/www/cp2b/repo"
 SCHEMA_FILE="$REPO_DIR/cp2b_web/backend/src/db/schema.sql"
