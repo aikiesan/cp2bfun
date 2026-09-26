@@ -6,6 +6,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import api from '../services/api';
+import { safeHref } from '../utils/safeUrl';
 
 const Events = () => {
   const { language } = useLanguage();
@@ -189,7 +190,7 @@ const Events = () => {
                 <Button
                   variant="primary"
                   size="sm"
-                  href={event.registration_url}
+                  href={safeHref(event.registration_url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="mt-3 w-100"

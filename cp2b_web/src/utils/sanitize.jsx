@@ -1,5 +1,27 @@
 import DOMPurify from 'dompurify';
 
+// A lista de tags abaixo aceita iframe (para os vídeos que o editor insere) e o
+// ALLOWED_URI_REGEXP aceita data:. Sem estes ganchos, passava qualquer iframe e
+// qualquer data: URI, em link inclusive. Iframe só dos players conhecidos;
+// data: só como imagem.
+const IFRAME_SRC = /^https:\/\/(www\.youtube(-nocookie)?\.com\/embed\/|player\.vimeo\.com\/video\/|open\.spotify\.com\/embed\/)/i;
+let hooksInstalled = false;
+const installHooks = () => {
+  if (hooksInstalled) return;
+  hooksInstalled = true;
+  DOMPurify.addHook('uponSanitizeAttribute', (node, data) => {
+    const value = String(data.attrValue || '').trim();
+    if (node.nodeName === 'IFRAME' && data.attrName === 'src' && !IFRAME_SRC.test(value)) data.keepAttr = false;
+    if ((data.attrName === 'src' || data.attrName === 'href') && /^data:/i.test(value)
+      && !(node.nodeName === 'IMG' && data.attrName === 'src' && /^data:image\/(png|jpe?g|gif|webp);/i.test(value))) {
+      data.keepAttr = false;
+    }
+  });
+  DOMPurify.addHook('afterSanitizeAttributes', (node) => {
+    if (node.nodeName === 'IFRAME' && !node.getAttribute('src')) node.remove();
+  });
+};
+
 /**
  * Sanitizes HTML content to prevent XSS attacks
  * Allows safe HTML tags while blocking malicious scripts
@@ -47,7 +69,7 @@ export const sanitizeHtml = (html) => {
     ALLOW_UNKNOWN_PROTOCOLS: false,
   };
 
-  // Additional check for YouTube iframes
+  installHooks();
   const cleanHtml = DOMPurify.sanitize(html, config);
 
   return cleanHtml;

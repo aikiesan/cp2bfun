@@ -9,6 +9,7 @@ import { getPartnerLogo } from '../../data/partnerLogos';
 import SeoHead from '../../components/SeoHead';
 import PageHero from '../../components/PageHero';
 import AboutSubnav from '../../components/AboutSubnav';
+import { safeHref } from '../../utils/safeUrl';
 
 /**
  * Extracts monogram initials from a partner name.
@@ -116,7 +117,7 @@ const PartnerCard = ({ partner, language }) => {
   if (partner.website) {
     return (
       <a
-        href={partner.website}
+        href={safeHref(partner.website)}
         target="_blank"
         rel="noopener noreferrer"
         className="text-decoration-none h-100 d-block"
@@ -201,7 +202,7 @@ const HeadquartersCard = ({ partner, language, label }) => {
             {partner.website && (
               <div className="mt-3">
                 <a
-                  href={partner.website}
+                  href={safeHref(partner.website)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-outline-success btn-sm"

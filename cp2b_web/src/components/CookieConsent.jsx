@@ -51,8 +51,10 @@ const CookieConsent = () => {
     const payload = { consent, timestamp: new Date().toISOString() };
     if (consent === 'all' && email.trim()) {
       try {
+        // O e-mail vai só para a inscrição; guardá-lo também no navegador
+        // (junto do consentimento) não servia para nada e ficava exposto a
+        // qualquer script da mesma origem.
         await api.post('/newsletter/subscribe', { email: email.trim() });
-        payload.email = email.trim();
         setSubscribed(true);
       } catch (_) {
         // newsletter signup is optional — don't block consent save

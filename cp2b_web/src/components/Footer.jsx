@@ -4,6 +4,7 @@ import { FaSpotify, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp } from 'rea
 import { useLanguage } from '../context/LanguageContext';
 import useSiteSettings from '../hooks/useSiteSettings';
 import NewsletterSignup from './NewsletterSignup';
+import { safeHref } from '../utils/safeUrl';
 
 const Footer = () => {
   const { language } = useLanguage();
@@ -144,7 +145,7 @@ const Footer = () => {
             <h6>{labels.connect}</h6>
             <div className="footer-social d-flex gap-2">
               {socials.map((s) => (
-                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+                <a key={s.label} href={safeHref(s.href)} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
                   {s.icon}
                 </a>
               ))}

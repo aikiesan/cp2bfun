@@ -9,6 +9,7 @@ import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import { PublicationsSummary, PublicationsAnalysis } from '../components/PublicationsSummary';
 import WordCloud from '../components/WordCloud';
+import { safeHref } from '../utils/safeUrl';
 
 const filterStaticPubs = (pubs, f) => {
   return (pubs || []).filter(pub => {
@@ -197,7 +198,7 @@ const Publications = () => {
                     )}
                     {pub.url && (
                       <a
-                        href={pub.url}
+                        href={safeHref(pub.url)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn btn-sm btn-outline-primary"
@@ -207,7 +208,7 @@ const Publications = () => {
                     )}
                     {pub.pdf_url && (
                       <a
-                        href={pub.pdf_url}
+                        href={safeHref(pub.pdf_url)}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="btn btn-sm btn-outline-danger"

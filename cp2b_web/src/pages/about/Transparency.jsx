@@ -9,6 +9,7 @@ import { pageSeo } from '../../data/content';
 import SeoHead from '../../components/SeoHead';
 import PageHero from '../../components/PageHero';
 import AboutSubnav from '../../components/AboutSubnav';
+import { safeHref } from '../../utils/safeUrl';
 
 const Transparency = () => {
   const { language } = useLanguage();
@@ -77,7 +78,7 @@ const Transparency = () => {
                 </p>
                 <Button
                   variant="outline-success"
-                  href={content.sections.fapesp.link}
+                  href={safeHref(content.sections.fapesp.link)}
                   target="_blank"
                   size="sm"
                 >
@@ -109,7 +110,7 @@ const Transparency = () => {
                           <p className="text-muted small mb-3">{report.description}</p>
                         )}
                         {report.link && (
-                          <Button variant="outline-success" href={report.link} target="_blank" size="sm">
+                          <Button variant="outline-success" href={safeHref(report.link)} target="_blank" size="sm">
                             {language === 'pt' ? 'Ver processo FAPESP' : 'View FAPESP process'}
                           </Button>
                         )}
