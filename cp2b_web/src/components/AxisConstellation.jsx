@@ -6,9 +6,9 @@ import { cleanName, isVacancy } from '../utils/personName';
 import './AxisConstellation.css';
 
 // Figura integrativa dos oito eixos: eixos 1–4 à esquerda, 5–8 à direita e,
-// no centro, a molécula de metano (CH4) com a identidade do CP2b. Substitui a
-// imagem estática de referência — o texto fica indexável, legível por leitor
-// de tela e se reorganiza em lista no mobile.
+// no centro, o logo do CP2b num anel de instrumento. Substitui a imagem
+// estática de referência — o texto fica indexável, legível por leitor de tela
+// e se reorganiza em lista no mobile.
 //
 // Os nomes vêm dos próprios dados dos eixos (API do painel, com content.js de
 // fallback): quando a coordenação mudar, basta editar o eixo, sem regravar
@@ -41,57 +41,12 @@ const useIsDesktop = () => {
   return isDesktop;
 };
 
-// ---------- núcleo: CH4 ----------
-// Fórmula estrutural em traço fino, como numa ilustração científica: duas
-// ligações no plano (traço simples), uma para fora (cunha cheia) e uma para
-// dentro (cunha tracejada) — a notação da geometria tetraédrica do metano.
-// Em volta, um anel com marcações de instrumento, onde chegam os fios.
-const C = { x: 120, y: 114 };
-const BOND_FROM = 15;
-const BOND_TO = 49;
-const H_AT = 61;
-const BONDS = [
-  { kind: 'plain', dx: -0.82, dy: -0.57 },
-  { kind: 'plain', dx: 0.82, dy: -0.57 },
-  { kind: 'hash', dx: -0.5, dy: 0.866 },
-  { kind: 'wedge', dx: 0.5, dy: 0.866 },
-];
-const at = (b, r) => [C.x + b.dx * r, C.y + b.dy * r];
-
-const Bond = ({ b }) => {
-  const [x1, y1] = at(b, BOND_FROM);
-  const [x2, y2] = at(b, BOND_TO);
-  if (b.kind === 'plain') return <line className="axo-hub__bond" x1={x1} y1={y1} x2={x2} y2={y2} />;
-  // perpendicular unitária à ligação
-  const px = -b.dy;
-  const py = b.dx;
-  if (b.kind === 'wedge') {
-    const w = 5;
-    return (
-      <polygon
-        className="axo-hub__wedge"
-        points={`${x1},${y1} ${x2 + px * w},${y2 + py * w} ${x2 - px * w},${y2 - py * w}`}
-      />
-    );
-  }
-  const n = 7;
-  return (
-    <g className="axo-hub__hash">
-      {Array.from({ length: n }, (_, i) => {
-        const t = (i + 1) / n;
-        const cx = x1 + (x2 - x1) * t;
-        const cy = y1 + (y2 - y1) * t;
-        const h = 0.6 + 4.6 * t;
-        return <line key={i} x1={cx + px * h} y1={cy + py * h} x2={cx - px * h} y2={cy - py * h} />;
-      })}
-    </g>
-  );
-};
-
+// ---------- núcleo ----------
 const TICKS = Array.from({ length: 72 }, (_, i) => i * 5);
 
-// Variante compacta (página Sobre): o logo do CP2b no centro do anel, no
-// lugar da molécula.
+// O logo do CP2b no centro de um anel com marcações de instrumento, onde
+// chegam os fios. Antes era a fórmula estrutural do metano; o logo diz de
+// quem é a figura sem precisar de legenda.
 const LogoHub = ({ lit }) => (
   <svg className={`axo-hub__svg${lit ? ' is-lit' : ''}`} viewBox={`0 0 ${HUB} ${HUB}`} aria-hidden="true">
     <circle className="axo-hub__disc" cx="120" cy="120" r={ORBIT_R} />
@@ -114,37 +69,6 @@ const LogoHub = ({ lit }) => (
     <circle className="axo-hub__orbit" cx="120" cy="120" r={ORBIT_R} />
     <circle className="axo-hub__inner" cx="120" cy="120" r="84" />
     <image href="/assets/logos/cp2b-logo-gradient.svg" x="44" y="91" width="152" height="58" />
-  </svg>
-);
-
-const MethaneHub = ({ lit }) => (
-  <svg className={`axo-hub__svg${lit ? ' is-lit' : ''}`} viewBox={`0 0 ${HUB} ${HUB}`} aria-hidden="true">
-    <circle className="axo-hub__disc" cx="120" cy="120" r={ORBIT_R} />
-    <g className="axo-hub__ticks">
-      {TICKS.map((deg) => {
-        const t = (deg * Math.PI) / 180;
-        const inner = deg % 30 === 0 ? ORBIT_R - 9 : ORBIT_R - 4;
-        return (
-          <line
-            key={deg}
-            className={deg % 30 === 0 ? 'is-major' : undefined}
-            x1={120 + Math.cos(t) * inner}
-            y1={120 + Math.sin(t) * inner}
-            x2={120 + Math.cos(t) * ORBIT_R}
-            y2={120 + Math.sin(t) * ORBIT_R}
-          />
-        );
-      })}
-    </g>
-    <circle className="axo-hub__orbit" cx="120" cy="120" r={ORBIT_R} />
-    <circle className="axo-hub__inner" cx="120" cy="120" r="84" />
-
-    {BONDS.map((b) => <Bond key={b.kind + b.dx} b={b} />)}
-    {BONDS.map((b) => {
-      const [x, y] = at(b, H_AT);
-      return <text key={b.kind + b.dx} className="axo-hub__atom axo-hub__atom--h" x={x} y={y}>H</text>;
-    })}
-    <text className="axo-hub__atom axo-hub__atom--c" x={C.x} y={C.y}>C</text>
   </svg>
 );
 
@@ -306,18 +230,12 @@ const AxisConstellation = ({ axes, labels, targetId, compact = false }) => {
 
         <div className="axo-hub">
           <div className="axo-hub__art" ref={hubRef}>
-            {compact ? <LogoHub lit={active !== null} /> : <MethaneHub lit={active !== null} />}
+            <LogoHub lit={active !== null} />
           </div>
+          {/* O nome por extenso fica fora do anel: no tamanho do núcleo, a
+              linha miúda do próprio logo não se lê. */}
           {!compact && (
           <div className="axo-hub__brand">
-            <span className="axo-hub__formula" aria-hidden="true">CH<sub>4</sub> · {labels.methane}</span>
-            <img
-              className="axo-hub__logo"
-              src="/assets/logos/cp2b-logo-gradient.svg"
-              alt="CP2b"
-              width="168"
-              height="64"
-            />
             <span className="axo-hub__caption">{labels.hubCaption}</span>
           </div>
           )}
