@@ -214,56 +214,15 @@
   stroke-width: 1;
 }
 
-.axo-hub__bond {
-  stroke: var(--axo-ink);
-  stroke-width: 2;
-  stroke-linecap: round;
-}
-
-.axo-hub__wedge { fill: var(--axo-ink); }
-
-.axo-hub__hash line {
-  stroke: var(--axo-ink);
-  stroke-width: 1.5;
-  stroke-linecap: round;
-}
-
-.axo-hub__atom {
-  font-family: var(--font-sans);
-  text-anchor: middle;
-  dominant-baseline: central;
-}
-
-.axo-hub__atom--c { font-size: 32px; font-weight: 400; fill: var(--axo-ink); }
-.axo-hub__atom--h { font-size: 20px; font-weight: 300; fill: var(--cp2b-verde); }
-
 .axo-hub__svg.is-lit .axo-hub__orbit { stroke: var(--cp2b-verde); }
 .axo-hub__svg.is-lit .axo-hub__ticks line.is-major { stroke: var(--cp2b-verde); }
-
-.axo-hub__formula {
-  display: block;
-  margin-top: 0.9rem;
-  font-family: var(--font-sans);
-  font-size: 0.66rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--cp2b-verde);
-}
-
-.axo-hub__formula sub { font-size: 0.8em; bottom: -0.2em; }
-
-.axo-hub__logo {
-  width: 9.5rem;
-  height: auto;
-  margin-top: 0.6rem;
-}
 
 .axo-hub__caption {
   display: block;
   max-width: 13rem;
-  margin: 0.35rem auto 0;
-  font-size: 0.72rem;
+  margin: 0.75rem auto 0;
+  font-size: 0.74rem;
+  font-weight: 600;
   line-height: 1.35;
   color: var(--text-secondary);
 }
@@ -306,7 +265,7 @@
     align-items: center;
   }
 
-  /* A marca fica fora do fluxo: assim o centro da molécula coincide com o
+  /* A legenda fica fora do fluxo: assim o centro do anel coincide com o
      centro da grade e os fios dos dois lados saem simétricos. */
   .axo-hub { position: relative; grid-column: 2; grid-row: 1 / -1; }
   .axo-hub__brand { position: absolute; top: 100%; left: 50%; translate: -50% 0; width: 100%; }
@@ -319,7 +278,6 @@
   .axo__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .axo-hub { grid-column: 1 / -1; margin-bottom: 0.5rem; }
   .axo-hub__art { width: 11rem; }
-  .axo-hub__logo { width: 8rem; }
 }
 
 /* ---------- mobile: lista sequencial ligada por uma espinha ---------- */
@@ -346,7 +304,7 @@
     padding-left: 1.1rem;
   }
 
-  /* Núcleo e marca lado a lado: metade da altura do empilhado. */
+  /* Núcleo e legenda lado a lado: metade da altura do empilhado. */
   .axo-hub {
     flex-direction: row;
     justify-content: center;
@@ -357,9 +315,7 @@
 
   .axo-hub__art { width: 7.5rem; flex-shrink: 0; }
   .axo-hub__brand { min-width: 0; }
-  .axo-hub__formula { margin-top: 0; }
-  .axo-hub__logo { width: 7.5rem; margin-top: 0.45rem; }
-  .axo-hub__caption { margin: 0.3rem 0 0; font-size: 0.68rem; }
+  .axo-hub__caption { max-width: 11rem; margin: 0; font-size: 0.78rem; }
 
   /* Espinha vertical que liga os eixos em sequência: cada card desenha o
      seu trecho (mais o vão até o anterior), do meio do primeiro ao meio do

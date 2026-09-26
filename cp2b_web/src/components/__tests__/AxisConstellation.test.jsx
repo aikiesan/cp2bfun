@@ -4,7 +4,7 @@ import AxisConstellation from '../AxisConstellation';
 
 const labels = {
   eyebrow: 'Estrutura Temática', title: 'Eixos de Atuação do CP2b', subtitle: '',
-  axis: 'EIXO', coordination: 'Coordenação', methane: 'metano',
+  axis: 'EIXO', coordination: 'Coordenação',
   vacancy: 'Vaga temporariamente em aberto', hubCaption: '', hint: '',
 };
 
