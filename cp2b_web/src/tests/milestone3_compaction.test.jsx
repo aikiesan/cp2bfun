@@ -139,10 +139,16 @@ describe('Milestone 3 — Public Pages & Card Grids Compaction', () => {
     expect(container.querySelector('.cp2b-timeline-wrapper')).toBeInTheDocument();
   });
 
-  it('renders Solucoes page with compact 2-column mobile modalities and services', () => {
+  it('renders Solucoes page with one-column mobile modalities and services', () => {
     const { container } = renderWithProviders(<Solucoes />);
-    const modalityCols = container.querySelectorAll('.row.g-2.g-sm-3.g-md-4 .col-6');
-    expect(modalityCols.length).toBeGreaterThanOrEqual(4);
+    // Modalidades: uma coluna no celular (em duas os selos eram cortados),
+    // duas a partir do sm, e o quinto card na largura toda até o xl.
+    const modalityCols = [...container.querySelectorAll('.row.g-2.g-sm-3.g-md-4 > .col-12')]
+      .filter((col) => col.querySelector('.solution-modality-icon'));
+    expect(modalityCols).toHaveLength(5);
+    expect(modalityCols.filter((col) => col.classList.contains('col-sm-6'))).toHaveLength(4);
+    expect(modalityCols[4]).toHaveClass('col-sm-12');
+    expect(modalityCols.some((col) => col.classList.contains('col-6'))).toBe(false);
     // Filtro de laboratórios: controle segmentado de 4 botões que divide a
     // largura (sem rolagem lateral), no lugar do trilho de pills que rolava.
     const filter = container.querySelector('.svc-filter');

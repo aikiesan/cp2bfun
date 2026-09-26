@@ -472,7 +472,7 @@
   .lab-trl__line--nums .lab-trl__label { display: none; }
   .lab-trl__phase { padding: 0.4rem 0.45rem; }
   .lab-trl__phase-name { display: none; }
-  .lab-trl__phase-range { font-size: 0.56rem; letter-spacing: 0.06em; }
+  .lab-trl__phase-range { font-size: 0.625rem; letter-spacing: 0.06em; }
   .lab-trl__row .lab-trl__label { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.7rem 0 0; }
   .lab-trl__row .lab-trl__track { padding: 0.4rem 0 0.7rem; }
   .lab-trl__bar { height: 1.5rem; margin: 0 2px; }
@@ -496,8 +496,16 @@
 
   .lab-aside__acr { font-size: 1.7rem; }
   .lab-seg__btn { font-size: 0.76rem; padding: 0.5rem 0.25rem; }
+
   .lab-levels li { grid-template-columns: 3rem minmax(0, 1fr); gap: 0.75rem; }
   .lab-levels__num { font-size: 1.7rem; }
+}
+
+/* Até ~420px as três abas não cabem inteiras numa linha: "Competência"
+   virava "Competê…" e "Papel estratégico", "Papel estr…". O rótulo passa a
+   quebrar em duas linhas, sem reticências. */
+@media (max-width: 419.98px) {
+  .lab-seg__btn { white-space: normal; text-overflow: clip; line-height: 1.2; font-size: 0.72rem; padding: 0.45rem 0.15rem; }
 }
 
 @media (prefers-reduced-motion: no-preference) {

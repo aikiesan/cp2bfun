@@ -74,6 +74,7 @@ import Manutencao from './pages/Manutencao';
 const About = lazy(() => import('./pages/About'));
 const Research = lazy(() => import('./pages/Research'));
 const Solucoes = lazy(() => import('./pages/Solucoes'));
+const Capacitacao = lazy(() => import('./pages/Capacitacao'));
 const Team = lazy(() => import('./pages/Team'));
 const News = lazy(() => import('./pages/News'));
 const NewsDetail = lazy(() => import('./pages/NewsDetail'));
@@ -196,6 +197,7 @@ function App() {
                     <Route path="/sobre/parceiros" element={<GuardedRoute pageKey="parceiros" element={<PartnersPage />} />} />
                     <Route path="/eixos" element={<GuardedRoute pageKey="eixos" element={<Research />} />} />
                     <Route path="/solucoes" element={<GuardedRoute pageKey="solucoes" element={<Solucoes />} />} />
+                    <Route path="/capacitacao" element={<GuardedRoute pageKey="capacitacao" element={<Capacitacao />} />} />
                     <Route path="/equipe" element={<GuardedRoute pageKey="equipe" element={<Team />} />} />
                     <Route path="/noticias" element={<GuardedRoute pageKey="noticias" element={<News />} />} />
                     <Route path="/noticias/:slug" element={<GuardedRoute pageKey="noticias" element={<NewsDetail />} />} />

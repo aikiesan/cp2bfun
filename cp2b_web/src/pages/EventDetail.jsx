@@ -166,7 +166,7 @@ const EventDetail = () => {
       </div>
 
       <Container className="py-5">
-        <Row className="g-5">
+        <Row className="g-4 g-lg-5">
           <Col lg={8}>
             {event.image && (
               <img

@@ -9,6 +9,11 @@ import './ServiceGallery.css';
 // de forma quando as imagens chegarem.
 const shortLab = (acronym) => String(acronym || '').replace(/\s*\(.*?\)\s*/g, '').trim();
 
+// "Catalisadores/Inóculos" não tem onde quebrar e estourava o card de duas
+// colunas no celular; o <wbr> depois da barra dá a quebra sem hífen.
+const breakAfterSlash = (text) =>
+  text.split('/').flatMap((part, i) => (i === 0 ? [part] : ['/', <wbr key={i} />, part]));
+
 const ServiceCard = ({ service, language, labels }) => {
   const [open, setOpen] = useState(false);
   const item = service[language] || service.pt;
@@ -25,7 +30,7 @@ const ServiceCard = ({ service, language, labels }) => {
         <span className="svc__meta">
           {shortLab(service.labAcronym)} <span aria-hidden="true">·</span> {service.trl}
         </span>
-        <h3 className="svc__title">{formatFormulas(item.title)}</h3>
+        <h3 className="svc__title">{breakAfterSlash(formatFormulas(item.title))}</h3>
         <button
           type="button"
           className="svc__more"

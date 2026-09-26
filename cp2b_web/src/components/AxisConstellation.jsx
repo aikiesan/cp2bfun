@@ -2,6 +2,7 @@ import { useState, useEffect, useLayoutEffect, useRef, useCallback } from 'react
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { motion, useReducedMotion } from 'framer-motion';
 import { axisTheme } from '../utils/axisTheme';
+import { cleanName, isVacancy } from '../utils/personName';
 import './AxisConstellation.css';
 
 // Figura integrativa dos oito eixos: eixos 1–4 à esquerda, 5–8 à direita e,
@@ -23,12 +24,7 @@ const ORBIT_R = 108;
 // Abertura angular entre os quatro fios de cada lado.
 const WIRE_SPREAD_DEG = 17;
 
-const HONORIFICS = /^(?:(?:Prof|Dr)[ºªa]?\.?\s+)+/i;
-const cleanName = (name) => String(name || '').replace(HONORIFICS, '').trim();
-// O painel grava a vaga como texto no campo do nome ("Vaga temporariamente em
-// aberto"); tratá-la como pessoa a mostraria em destaque, como um nome.
-const VACANCY = /^\s*(vaga|position)\b.*\b(aberto|aberta|open)\b/i;
-const personName = (person) => (person && !VACANCY.test(person.name) ? cleanName(person.name) : null);
+const personName = (person) => (person && !isVacancy(person.name) ? cleanName(person.name) : null);
 const cleanTitle = (title) => String(title || '').split('–')[1]?.trim() || title;
 
 const useIsDesktop = () => {

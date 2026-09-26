@@ -10,7 +10,7 @@ const Header = () => {
   const t = menuLabels[language];
   const location = useLocation();
 
-  const isAboutActive = ['/sobre', '/oportunidades', '/eventos'].some(
+  const isAboutActive = ['/sobre', '/oportunidades', '/eventos', '/capacitacao'].some(
     (p) => location.pathname.startsWith(p)
   );
   const isNewsActive = ['/noticias', '/microscopio', '/entrevistas', '/galeria', '/press-kit', '/podcast', '/boletins', '/newsletter'].some(
@@ -232,6 +232,9 @@ const Header = () => {
                 </NavDropdown.Item>
                 <NavDropdown.Item as={NavLink} to="/eventos">
                   {t.aboutSubmenu.events}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/capacitacao">
+                  {t.aboutSubmenu.training}
                 </NavDropdown.Item>
               </NavDropdown>
 

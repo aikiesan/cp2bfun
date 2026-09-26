@@ -64,7 +64,7 @@ const Newsletter = () => {
                 <Card.Body className="p-3 p-md-4">
                   {/* Mesmo formulário do rodapé — uma única implementação de
                       cadastro, para não haver dois caminhos divergindo. */}
-                  <NewsletterSignup />
+                  <NewsletterSignup tone="light" />
                 </Card.Body>
               </Card>
 

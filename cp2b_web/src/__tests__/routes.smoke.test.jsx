@@ -29,6 +29,7 @@ import Home from '../pages/Home';
 import About from '../pages/About';
 import Research from '../pages/Research';
 import Solucoes from '../pages/Solucoes';
+import Capacitacao from '../pages/Capacitacao';
 import Team from '../pages/Team';
 import News from '../pages/News';
 import Contact from '../pages/Contact';
@@ -53,6 +54,7 @@ describe('Public pages smoke tests', () => {
     ['About (/sobre)', About],
     ['Research (/eixos)', Research],
     ['Solucoes (/solucoes)', Solucoes],
+    ['Capacitacao (/capacitacao)', Capacitacao],
     ['Team (/equipe)', Team],
     ['News (/noticias)', News],
     ['Contact (/contato)', Contact],

@@ -92,8 +92,8 @@ const PartnerCard = ({ partner, language }) => {
           )}
         </div>
         <h6
-          className="fw-bold mb-2 flex-grow-1"
-          style={{ color: 'var(--text-primary)', fontSize: 'var(--text-base)' }}
+          className="fw-bold mb-2 flex-grow-1 partner-card-name"
+          style={{ color: 'var(--text-primary)' }}
         >
           {name}
         </h6>

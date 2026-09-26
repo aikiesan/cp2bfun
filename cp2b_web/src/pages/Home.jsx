@@ -284,7 +284,7 @@ const Home = () => {
           entirely, since their competency text belongs on /solucoes. */}
       <section className="section bg-light-gray">
         <Container>
-          <Row className="g-5 align-items-start">
+          <Row className="g-4 g-lg-5 align-items-start">
             <Col lg={7}>
               <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
                 <div>

@@ -374,6 +374,8 @@ button.axx-row__head:focus-visible { outline: none; box-shadow: var(--focus-ring
   border-left: 1px solid var(--axx-hair);
 }
 
+.axx-pager__btn--solo { grid-column: 1 / -1; border-left: none; }
+
 .axx-pager__btn > i { flex-shrink: 0; font-size: 1.05rem; color: var(--axis, var(--cp2b-verde)); }
 .axx-pager__txt { min-width: 0; }
 

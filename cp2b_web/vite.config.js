@@ -130,7 +130,17 @@ export default defineConfig({
           '**/assets/pages/**',
         ],
         navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/api\//, /^\/pilar2b/, /^\/arqueia/],
+        navigateFallbackDenylist: [
+          /^\/api\//,
+          /^\/pilar2b/,
+          /^\/arqueia/,
+          // Arquivos (o template de cursos em .docx, os boletins em PDF, o
+          // sitemap.xml): aberto direto — link compartilhado, nova aba —, o
+          // fallback respondia com o index.html e a SPA mostrava o 404 no
+          // lugar do arquivo. As rotas da SPA não têm extensão; uma que
+          // tivesse só deixaria de abrir offline — a rede também a serve.
+          /\/[^/?]+\.[^/]+$/,
+        ],
         cleanupOutdatedCaches: true,
         // Imagens ficam fora do precache: os logos da marca em @8x somavam
         // ~10 MB, baixados em segundo plano por todo visitante que instalava

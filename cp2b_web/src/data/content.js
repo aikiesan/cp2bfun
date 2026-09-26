@@ -17,7 +17,8 @@ export const menuLabels = {
       transparency: 'Transparência',
       partners: 'Parceiros',
       opportunities: 'Oportunidades',
-      events: 'Eventos'
+      events: 'Eventos',
+      training: 'Cursos e Capacitação'
     },
     opportunities: 'Oportunidades',
     news: 'Comunicação',
@@ -59,7 +60,8 @@ export const menuLabels = {
       transparency: 'Transparency',
       partners: 'Partners',
       opportunities: 'Opportunities',
-      events: 'Events'
+      events: 'Events',
+      training: 'Courses and Training'
     },
     opportunities: 'Opportunities',
     news: 'Communication',
@@ -1359,6 +1361,16 @@ export const pageSeo = {
     en: {
       title: 'Infrastructure and Solutions',
       description: 'CP2b laboratories from bench to pilot plant (TRL 2 to 6), technical services, cooperative R&D, technology licensing and training in biogas and bioproducts.',
+    },
+  },
+  capacitacao: {
+    pt: {
+      title: 'Cursos e Capacitação',
+      description: 'Cursos de extensão e capacitação do CP2b em biogás, biometano e bioprodutos: conheça o curso-modelo de 16 horas e baixe o template para propor um curso.',
+    },
+    en: {
+      title: 'Courses and Training',
+      description: 'CP2b extension and training courses on biogas, biomethane and bioproducts: see the 16-hour model course and download the template to propose a course.',
     },
   },
   contact: {
