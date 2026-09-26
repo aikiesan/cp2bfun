@@ -34,10 +34,11 @@ const storage = multer.diskStorage({
   }
 });
 
+// Extensão e tipo conferidos por inteiro: sem as âncoras, "foto.xpngx" ou um
+// tipo qualquer que contivesse "png" passavam.
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|gif|webp/;
-  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = allowedTypes.test(file.mimetype);
+  const extname = /^\.(jpe?g|png|gif|webp)$/.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = /^image\/(jpeg|png|gif|webp)$/.test(file.mimetype);
 
   if (extname && mimetype) {
     return cb(null, true);
@@ -90,8 +91,8 @@ router.post('/news-image', newsImageUpload.single('image'), (req, res) => {
 
 // Upload press kit file (PDF, ZIP, PPTX, etc.)
 const pressKitFileFilter = (req, file, cb) => {
-  const allowedTypes = /pdf|zip|pptx|ppt|docx|doc/;
-  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
+  // Sem âncoras, .docm e .pptm (com macros) passavam por conter "doc" e "ppt".
+  const extname = /^\.(pdf|zip|pptx?|docx?)$/.test(path.extname(file.originalname).toLowerCase());
   if (extname) return cb(null, true);
   cb(new Error('Only document files are allowed (PDF, ZIP, PPTX, DOCX)'));
 };
@@ -120,6 +121,11 @@ router.post('/file', pressKitUpload.single('file'), (req, res) => {
 // Delete image
 router.delete('/image/:filename', (req, res) => {
   const { filename } = req.params;
+  // Só um nome de arquivo, nunca um caminho: "..%2F..%2Farquivo" chegava
+  // decodificado e apagava fora de uploads/.
+  if (path.basename(filename) !== filename || filename.startsWith('.')) {
+    return res.status(400).json({ error: 'Invalid filename' });
+  }
   const filepath = path.join(uploadsDir, filename);
 
   if (!fs.existsSync(filepath)) {

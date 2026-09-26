@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import pool from '../db/connection.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -17,7 +18,7 @@ router.get('/', async (req, res) => {
 });
 
 // Admin: get all items (including inactive)
-router.get('/all', async (req, res) => {
+router.get('/all', requireAdmin, async (req, res) => {
   try {
     const { rows } = await pool.query(
       `SELECT * FROM press_kit_items ORDER BY sort_order ASC, created_at ASC`

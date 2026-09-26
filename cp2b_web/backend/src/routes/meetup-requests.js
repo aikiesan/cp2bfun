@@ -2,6 +2,7 @@ import { Router } from 'express';
 import { randomUUID } from 'crypto';
 import pool from '../db/connection.js';
 import { sendMeetupInvitation, sendMeetupConfirmation } from '../services/email.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -144,10 +145,10 @@ router.get('/confirm', async (req, res) => {
 });
 
 // GET /api/meetup-requests/my?email=XXX — get all meetups for a participant
-router.get('/my', async (req, res) => {
+router.get('/my', requireAdmin, async (req, res) => {
   const { email } = req.query;
 
-  if (!email) {
+  if (typeof email !== 'string' || !email) {
     return res.status(400).json({ error: 'E-mail obrigatório.' });
   }
 
@@ -185,7 +186,7 @@ router.get('/my', async (req, res) => {
 });
 
 // GET /api/meetup-requests/all  (admin — returns all)
-router.get('/all', async (req, res) => {
+router.get('/all', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(`
       SELECT mr.*,

@@ -28,7 +28,7 @@ import boletinsRoutes from './routes/boletins.js';
 import pageSettingsRoutes from './routes/pageSettings.js';
 import settingsRoutes from './routes/settings.js';
 import authRoutes from './routes/auth.js';
-import { adminGate, authEnabled, PUBLIC_WRITES } from './middleware/auth.js';
+import { adminGate, adminLocked, authEnabled, PUBLIC_WRITES } from './middleware/auth.js';
 import { initializeDatabase } from './db/init.js';
 
 dotenv.config();
@@ -71,7 +71,9 @@ app.use('/api', (req, res, next) => {
 // Authentication: login/status are public; everything after passes the gate.
 app.use('/api/auth', authRoutes);
 app.use('/api', adminGate);
-if (!authEnabled()) {
+if (adminLocked()) {
+  console.error('⛔ ADMIN_PASSWORD is not set and NODE_ENV=production — the admin API is locked until it is set.');
+} else if (!authEnabled()) {
   console.warn('⚠️  ADMIN_PASSWORD is not set — the admin API is unprotected. Set it in production.');
 }
 
@@ -110,6 +112,14 @@ app.get('/api/health', (req, res) => {
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
+});
+
+// O Express 4 não repassa ao handler de erro a promessa rejeitada de uma
+// rota async. Uma rejeição fora do try (um número no lugar de texto no corpo,
+// por exemplo) virava rejeição não tratada, e o Node encerrava o processo:
+// uma requisição anônima derrubava a API. Registra e segue.
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled promise rejection:', reason);
 });
 
 // Server startup with automated database migration

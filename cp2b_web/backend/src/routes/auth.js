@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { authEnabled, createToken, verifyPassword } from '../middleware/auth.js';
+import { adminLocked, authEnabled, createToken, verifyPassword } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -20,8 +20,9 @@ const recordFailure = (ip) => {
 };
 
 // Whether the admin UI must show a login screen
+// (trancado em produção sem senha também pede login: o painel não abre)
 router.get('/status', (req, res) => {
-  res.json({ required: authEnabled() });
+  res.json({ required: authEnabled() || adminLocked() });
 });
 
 router.post('/login', (req, res) => {

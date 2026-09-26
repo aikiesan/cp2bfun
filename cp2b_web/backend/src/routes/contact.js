@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import pool from '../db/connection.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -32,7 +33,7 @@ router.post('/', async (req, res) => {
 });
 
 // Get all messages (admin)
-router.get('/', async (req, res) => {
+router.get('/', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(
       'SELECT * FROM contact_messages ORDER BY created_at DESC'
