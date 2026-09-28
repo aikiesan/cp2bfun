@@ -19,12 +19,12 @@ const News = () => {
 
   const labels = {
     pt: {
-      title: 'Agência CP2b de Notícias',
+      title: 'Notícias',
       readMore: 'Leia mais',
       latest: 'Últimas notícias'
     },
     en: {
-      title: 'CP2b News Agency',
+      title: 'News',
       readMore: 'Read more',
       latest: 'Latest news'
     }

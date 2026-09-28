@@ -67,7 +67,7 @@ describe('News', () => {
     renderWithProviders(<News />);
 
     await waitFor(() => {
-      expect(screen.getByText('Agência CP2b de Notícias')).toBeInTheDocument();
+      expect(screen.getByText('Notícias')).toBeInTheDocument();
     });
   });
 
