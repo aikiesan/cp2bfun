@@ -13,7 +13,14 @@ body {
   background-color: var(--cp2b-light-gray);
   color: var(--cp2b-black);
   -webkit-font-smoothing: antialiased;
+  /* clip, not hidden. With html already overflow-x: hidden, "hidden" here
+     made <body> a scroll container of its own, one that never scrolls, and
+     every position: sticky inside it stopped sticking (the pinned stage of
+     the biogas chain on /eixos, the admin sidebar). clip cuts the same
+     horizontal overflow without creating a scroll container. Browsers
+     without clip (Safari < 16) drop the second line and keep hidden. */
   overflow-x: hidden;
+  overflow-x: clip;
 }
 
 h1, h2, h3, h4, h5, h6 {

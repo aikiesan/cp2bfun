@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Container } from 'react-bootstrap';
 import { motion } from 'framer-motion';
-import { researchAxes } from '../data/content';
+import { researchAxes, wasteToEnergyFlow } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchAxes } from '../services/api';
 import { useLocation } from 'react-router-dom';
@@ -10,6 +10,8 @@ import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import AxisExplorer from '../components/AxisExplorer';
 import AxisConstellation from '../components/AxisConstellation';
+import WasteToEnergy from '../components/WasteToEnergy';
+import { stripAxisPrefix } from '../utils/teamGroups';
 import { axisDetails } from '../data/generated/axisDetails';
 
 const transformApiAxes = (apiAxes, lang) =>
@@ -42,10 +44,13 @@ const Research = () => {
   const seo = pageSeo.research[language] || pageSeo.research.pt;
   const [apiAxes, setApiAxes] = useState(null);
 
-  // Links como /eixos?eixo=3#explorar-eixos (das fichas de laboratório)
-  // abrem direto no detalhamento. Adiado um quadro: o ScrollToTop do App
-  // roda depois deste efeito e levaria a página de volta ao topo.
-  const { hash } = useLocation();
+  // Links como /eixos?eixo=3#explorar-eixos (das fichas de laboratório e
+  // dos chips da cadeia do biogás, nesta mesma página) abrem direto no
+  // detalhamento. Adiado um quadro: o ScrollToTop do App roda depois deste
+  // efeito e levaria a página de volta ao topo. A chave da navegação entra
+  // nas dependências porque, de um chip para outro, o hash não muda: sem
+  // ela o segundo clique trocaria o eixo sem rolar até ele.
+  const { hash, key: locationKey } = useLocation();
   useEffect(() => {
     if (hash !== '#explorar-eixos') return undefined;
     const id = requestAnimationFrame(() => {
@@ -53,7 +58,7 @@ const Research = () => {
       if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start' });
     });
     return () => cancelAnimationFrame(id);
-  }, [hash]);
+  }, [hash, locationKey]);
 
   useEffect(() => {
     fetchAxes().then((data) => {
@@ -62,6 +67,10 @@ const Research = () => {
   }, []);
 
   const axes = apiAxes ? transformApiAxes(apiAxes, language) : researchAxes[language];
+  // Os chips da cadeia do biogás levam o nome de cada eixo sem o prefixo
+  // "Eixo N – ", que o chip já mostra à parte.
+  const axisNames = Object.fromEntries(axes.map((axis) => [axis.id, stripAxisPrefix(axis.title)]));
+  const flow = wasteToEnergyFlow[language] || wasteToEnergyFlow.pt;
 
   const labels = {
     pt: {
@@ -132,13 +141,19 @@ const Research = () => {
       subtitle={labels.overview.subtitle}
       className="page-hero--overlap"
     />
-    <Container className="pb-4 pb-md-5">
-
+    <Container>
       {/* Primeira coisa da página: a figura integrativa dos oito eixos, com
           coordenação e vice. Ela sobe sobre o hero e cada card leva ao mapa
           mental logo abaixo, já com o eixo aberto. */}
       <AxisConstellation axes={axes} labels={labels.overview} targetId="explorar-eixos" />
+    </Container>
 
+    {/* Faixa escura de largura total, fora do Container: a cadeia do biogás
+        em cinco etapas, e os eixos que trabalham em cada uma. Cada chip abre
+        o eixo no detalhamento logo abaixo. */}
+    <WasteToEnergy copy={flow} axisNames={axisNames} />
+
+    <Container className="pb-4 pb-md-5">
       <section id="explorar-eixos" className="research-explore" aria-labelledby="explorar-eixos-title">
         <header className="research-explore__head">
           <span className="eyebrow">{labels.detailsEyebrow}</span>

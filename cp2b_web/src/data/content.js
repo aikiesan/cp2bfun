@@ -1518,3 +1518,105 @@ export const homeContent = {
     },
   },
 };
+
+// Faixa "Do resíduo à energia" em /eixos: as cinco etapas da cadeia do
+// biogás e os eixos que trabalham em cada uma. `axes` são ids de researchAxes;
+// o nome de cada eixo vem de lá (Research.jsx), não é repetido aqui.
+export const wasteToEnergyFlow = {
+  pt: {
+    eyebrow: 'A cadeia do biogás',
+    title: 'Do resíduo à energia',
+    subtitle: 'Cinco etapas, e os eixos de pesquisa do CP2b que trabalham em cada uma delas.',
+    axisLabel: 'Eixo',
+    steps: [
+      {
+        key: 'mapear',
+        kicker: 'Mapear',
+        title: 'Onde está o resíduo',
+        text: 'Vinhaça, dejetos da pecuária, restos de alimentos e lodo de esgoto: o inventário georreferenciado do CP2b mostra quanto resíduo o Estado de São Paulo gera e onde ele está.',
+        image: '/assets/services/cp2b-lab-biomassa.webp',
+        axes: [1],
+      },
+      {
+        key: 'converter',
+        kicker: 'Converter',
+        title: 'Digestão anaeróbia',
+        text: 'Em biorreatores de bancada e em escala piloto, consórcios de microrganismos decompõem a matéria orgânica sem oxigênio e liberam biogás.',
+        image: '/assets/services/ppbioen-estabilizacao.webp',
+        axes: [2, 3],
+      },
+      {
+        key: 'energizar',
+        kicker: 'Energizar',
+        title: 'Biogás vira biometano e eletricidade',
+        text: 'Purificado, o biogás vira biometano, que substitui o diesel em frotas e o gás natural na rede, ou alimenta motores que geram eletricidade e calor.',
+        image: '/assets/services/ppbioen-biogas.webp',
+        axes: [3],
+      },
+      {
+        key: 'valorizar',
+        kicker: 'Valorizar',
+        title: 'Nada se perde',
+        text: 'O digestato volta ao campo como biofertilizante, e as correntes do processo dão origem a ácidos orgânicos e outros bioprodutos de maior valor.',
+        image: '/assets/services/cemara-vias.webp',
+        axes: [5],
+      },
+      {
+        key: 'escalar',
+        kicker: 'Escalar',
+        title: 'Da bancada ao território',
+        text: 'Avaliação de impactos, formação de pessoas, comunicação e políticas públicas levam cada resultado até quem decide e quem opera.',
+        image: '/assets/services/ppbioen-scaleup.webp',
+        axes: [4, 6, 7, 8],
+      },
+    ],
+  },
+  en: {
+    eyebrow: 'The biogas chain',
+    title: 'From waste to energy',
+    subtitle: 'Five stages, and the CP2b research axes working on each of them.',
+    axisLabel: 'Axis',
+    steps: [
+      {
+        key: 'mapear',
+        kicker: 'Map',
+        title: 'Where the waste is',
+        text: 'Vinasse, livestock manure, food scraps and sewage sludge: the CP2b georeferenced inventory shows how much waste São Paulo State generates and where it is.',
+        image: '/assets/services/cp2b-lab-biomassa.webp',
+        axes: [1],
+      },
+      {
+        key: 'converter',
+        kicker: 'Convert',
+        title: 'Anaerobic digestion',
+        text: 'In bench-scale and pilot bioreactors, microbial consortia break down organic matter without oxygen and release biogas.',
+        image: '/assets/services/ppbioen-estabilizacao.webp',
+        axes: [2, 3],
+      },
+      {
+        key: 'energizar',
+        kicker: 'Energize',
+        title: 'Biogas becomes biomethane and power',
+        text: 'Once upgraded, biogas becomes biomethane that replaces diesel in fleets and natural gas in the grid, or it fuels engines that generate electricity and heat.',
+        image: '/assets/services/ppbioen-biogas.webp',
+        axes: [3],
+      },
+      {
+        key: 'valorizar',
+        kicker: 'Add value',
+        title: 'Nothing goes to waste',
+        text: 'Digestate returns to the field as biofertilizer, and process streams yield organic acids and other higher-value bioproducts.',
+        image: '/assets/services/cemara-vias.webp',
+        axes: [5],
+      },
+      {
+        key: 'escalar',
+        kicker: 'Scale',
+        title: 'From bench to territory',
+        text: 'Impact assessment, training, science communication and public policy carry every result to the people who decide and the people who operate.',
+        image: '/assets/services/ppbioen-scaleup.webp',
+        axes: [4, 6, 7, 8],
+      },
+    ],
+  },
+};
