@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Container } from 'react-bootstrap';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../../context/LanguageContext';
 import { pageSeo } from '../../data/content';
@@ -8,6 +8,8 @@ import { kpiDimensions, kpiVision2035, kpiPrinciples, kpiIndicatorCount } from '
 import SeoHead from '../../components/SeoHead';
 import PageHero from '../../components/PageHero';
 import AboutSubnav from '../../components/AboutSubnav';
+import CountUp from '../../components/CountUp';
+import useScrollReveal from '../../hooks/useScrollReveal';
 import './Indicators.css';
 
 const labels = {
@@ -67,6 +69,12 @@ const Indicators = () => {
   const selectedDimension = kpiDimensions.find((dimension) => dimension.id === selectedDimensionId) || kpiDimensions[0];
   const selectedLabel = selectedDimension[language] || selectedDimension.pt;
   const selectedMeta = dimensionMeta[selectedDimension.id];
+  const reduceMotion = useReducedMotion();
+  // Blocks that play once as they scroll into view (see Indicators.css).
+  const journeyRef = useRef(null);
+  const visionRef = useRef(null);
+  const journeyReveal = useScrollReveal(journeyRef);
+  const visionReveal = useScrollReveal(visionRef);
 
   return (
     <>
@@ -83,15 +91,16 @@ const Indicators = () => {
               <p>{t.overviewLead}</p>
             </div>
             <div className="indicators-stats" aria-label={t.overviewEyebrow}>
-              <div className="indicators-stat"><strong>7</strong><span>{t.dimensionsStat}</span></div>
-              <div className="indicators-stat"><strong>{kpiIndicatorCount}</strong><span>{t.indicatorsStat}</span></div>
+              <div className="indicators-stat"><strong><CountUp value={kpiDimensions.length} /></strong><span>{t.dimensionsStat}</span></div>
+              <div className="indicators-stat"><strong><CountUp value={kpiIndicatorCount} delay={0.15} /></strong><span>{t.indicatorsStat}</span></div>
               <div className="indicators-stat indicators-stat--year"><strong>2035</strong><span>{t.horizonStat}</span></div>
             </div>
           </section>
 
-          <section className="indicators-journey" aria-label={t.overviewTitle}>
+          <section ref={journeyRef} className="indicators-journey" aria-label={t.overviewTitle} data-reveal={journeyReveal}>
+            <span className="indicators-journey__pulse" aria-hidden="true" />
             {t.journey.map((step, index) => (
-              <article className="indicators-journey__step" key={step.title}>
+              <article className="indicators-journey__step" key={step.title} style={{ '--i': index }}>
                 <div className="indicators-journey__number">0{index + 1}</div>
                 <div className="indicators-journey__icon" aria-hidden="true"><i className={`bi ${step.icon}`} /></div>
                 <div><h3>{step.title}</h3><p>{step.text}</p></div>
@@ -99,19 +108,19 @@ const Indicators = () => {
             ))}
           </section>
 
-          <section className="indicators-vision" aria-labelledby="indicators-vision-title">
+          <section ref={visionRef} className="indicators-vision" aria-labelledby="indicators-vision-title" data-reveal={visionReveal}>
             <div className="indicators-section-heading">
               <span className="indicators-eyebrow">{t.visionEyebrow}</span>
               <h2 id="indicators-vision-title">{t.visionTitle}</h2>
             </div>
             <div className="indicators-vision__grid">
               {kpiVision2035[language].map((item, index) => (
-                <article className="indicators-vision__card" key={item}><i className={`bi ${visionIcons[index]}`} aria-hidden="true" /><p>{item}</p></article>
+                <article className="indicators-vision__card" key={item} style={{ '--i': index }}><i className={`bi ${visionIcons[index]}`} aria-hidden="true" /><p>{item}</p></article>
               ))}
             </div>
             <div className="indicators-principles">
               <strong>{t.principles}</strong>
-              <div>{kpiPrinciples[language].map((principle) => <span key={principle}>{principle}</span>)}</div>
+              <div>{kpiPrinciples[language].map((principle, index) => <span key={principle} style={{ '--i': index }}>{principle}</span>)}</div>
             </div>
           </section>
 
@@ -136,26 +145,34 @@ const Indicators = () => {
                     onClick={() => setSelectedDimensionId(dimension.id)}>
                     <span className="indicators-dimension-nav__icon" aria-hidden="true"><i className={`bi ${meta.icon}`} /></span>
                     <span className="indicators-dimension-nav__text"><small>{t.dimension} {index + 1}</small><strong>{shortTitle}</strong></span>
+                    {active && (
+                      <motion.span layoutId="indicators-dimension-bar" className="indicators-dimension-nav__bar" aria-hidden="true"
+                        animate={{ backgroundColor: dimension.color }}
+                        transition={reduceMotion ? { duration: 0 } : { type: 'spring', stiffness: 420, damping: 36 }} />
+                    )}
                   </button>
                 );
               })}
             </div>
 
             <motion.div key={selectedDimension.id} className="indicators-dimension-panel"
-              style={{ '--dimension-color': selectedDimension.color }} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
+              style={{ '--dimension-color': selectedDimension.color }} initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>
               <header className="indicators-dimension-panel__header">
                 <div className="indicators-dimension-panel__icon" aria-hidden="true"><i className={`bi ${selectedMeta.icon}`} /></div>
                 <div><span>{t.selectedHint}</span><h3>{selectedLabel.title}</h3><p>{selectedMeta[language] || selectedMeta.pt}</p></div>
-                <div className="indicators-dimension-panel__count"><strong>{selectedDimension.indicators.length}</strong><span>{t.indicatorsLabel}</span></div>
+                <div className="indicators-dimension-panel__count"><strong><CountUp key={selectedDimension.id} value={selectedDimension.indicators.length} duration={0.8} /></strong><span>{t.indicatorsLabel}</span></div>
               </header>
               <div className="indicators-list">
-                {selectedDimension.indicators.map((indicator) => {
+                {selectedDimension.indicators.map((indicator, index) => {
                   const indicatorLabel = indicator[language] || indicator.pt;
                   return (
-                    <article className="indicators-list__item" key={indicator.code}>
+                    // The signals of the chosen dimension arrive one after another.
+                    <motion.article className="indicators-list__item" key={indicator.code}
+                      initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.35, delay: Math.min(index, 8) * 0.045 }}>
                       <span className="indicators-list__code">{indicator.code}</span>
                       <div><h4>{indicatorLabel.name}</h4><p><span>{t.observes}:</span> {indicatorLabel.measures}</p></div>
-                    </article>
+                    </motion.article>
                   );
                 })}
               </div>

@@ -1,4 +1,6 @@
+import { useRef } from 'react';
 import { topWords, topExpressions, wordCloudSource } from '../data/wordCloud';
+import useScrollReveal from '../hooks/useScrollReveal';
 import './WordCloud.css';
 
 // Nuvem de palavras do CP2b: as palavras mais frequentes em tamanho
@@ -42,8 +44,12 @@ const WordCloud = ({ language }) => {
   const t = LABELS[language] || LABELS.pt;
   const ranked = topWords.map((w, rank) => ({ ...w, rank }));
   const maxExpr = Math.max(...topExpressions.map((e) => e.n));
+  // Ao aparecer, as palavras surgem da mais frequente para a menos
+  // frequente e as barras das expressões crescem (ver o CSS).
+  const ref = useRef(null);
+  const reveal = useScrollReveal(ref, { amount: 0.2 });
   return (
-    <section className="wcloud" aria-labelledby="wcloud-title">
+    <section ref={ref} className="wcloud" aria-labelledby="wcloud-title" data-reveal={reveal}>
       <header className="wcloud__head">
         <span className="eyebrow">{t.eyebrow}</span>
         <h2 id="wcloud-title">{t.title}</h2>
@@ -60,7 +66,7 @@ const WordCloud = ({ language }) => {
                 <li
                   key={w.pt}
                   className={`wcloud__word ${toneOf(w.rank)}`}
-                  style={{ '--size': sizeOf(w.n).toFixed(2) }}
+                  style={{ '--size': sizeOf(w.n).toFixed(2), '--rank': w.rank }}
                   tabIndex={0}
                   data-count={w.n}
                   title={`${term}: ${w.n} ${t.occurrences}`}
@@ -76,8 +82,8 @@ const WordCloud = ({ language }) => {
         <div className="wcloud__expr-wrap">
           <h3 className="wcloud__label">{t.expressions}</h3>
           <ol className="wcloud__expr">
-            {topExpressions.map((e) => (
-              <li key={e.pt}>
+            {topExpressions.map((e, index) => (
+              <li key={e.pt} style={{ '--i': index }}>
                 <span className="wcloud__expr-term">{e[language] || e.pt}</span>
                 <span className="wcloud__expr-bar" aria-hidden="true">
                   <span style={{ width: `${(e.n / maxExpr) * 100}%` }} />

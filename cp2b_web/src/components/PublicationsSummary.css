@@ -326,3 +326,43 @@
   .pubs-sdgs li { font-size: 0.78rem; }
   .pubs-pillars { font-size: 0.72rem; line-height: 1.7; }
 }
+
+/* ---------- Movimento de entrada ----------
+   data-reveal vem do useScrollReveal: "armed" segura a pose inicial e
+   "shown" roda os keyframes uma vez. Os keyframes preenchem só para trás
+   (backwards): terminada a entrada, valem as regras normais e o hover.
+   Sem layout ou com movimento reduzido o atributo nem aparece. */
+
+.pubs-summary[data-reveal="armed"] .pubs-metric,
+.pubs-summary[data-reveal="armed"] .pubs-sdgs li { opacity: 0; }
+.pubs-summary[data-reveal="armed"] .pubs-ring__bar { stroke-dashoffset: var(--len); }
+
+.pubs-summary[data-reveal="shown"] .pubs-metric {
+  animation: pubs-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.05s + var(--i, 0) * 0.1s);
+}
+
+/* Cada anel se desenha do zero até a sua fração, junto com a contagem. */
+.pubs-summary[data-reveal="shown"] .pubs-ring__bar {
+  animation: pubs-ring-draw 1.3s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.2s + var(--i, 0) * 0.12s);
+}
+
+.pubs-summary[data-reveal="shown"] .pubs-sdgs li {
+  animation: pubs-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation-delay: calc(0.9s + var(--i, 0) * 0.1s);
+}
+
+@keyframes pubs-rise { from { opacity: 0; transform: translateY(16px); } }
+@keyframes pubs-ring-draw { from { stroke-dashoffset: var(--len); } }
+@keyframes pubs-pop { from { opacity: 0; transform: scale(0.85); } }
+
+/* Reação ao ponteiro: o card sobe e o anel engrossa. */
+@media (prefers-reduced-motion: no-preference) {
+  .pubs-metric { transition: transform var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard); }
+  .pubs-metric:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+  .pubs-ring__bar { transition: stroke-width var(--duration-base) var(--ease-standard); }
+  .pubs-metric:hover .pubs-ring__bar { stroke-width: 9; }
+  .pubs-sdgs img { transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .pubs-sdgs li:hover img { transform: rotate(-6deg) scale(1.08); }
+}
