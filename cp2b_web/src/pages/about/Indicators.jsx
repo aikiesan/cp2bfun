@@ -20,6 +20,8 @@ const labels = {
     overviewTitle: 'Da pesquisa ao impacto real',
     overviewLead: 'Os indicadores ajudam o CP2b a transformar objetivos institucionais em evidências claras. Eles não são uma nota ou um ranking: mostram o que observamos para aprender, decidir e evoluir.',
     dimensionsStat: 'dimensões conectadas', indicatorsStat: 'indicadores observados', horizonStat: 'horizonte estratégico',
+    // Fonte dos números do painel (ver o cabeçalho de data/generated/kpiFramework.js).
+    source: 'Fonte: Sistema de Indicadores e Pesos do CP2b, do planejamento estratégico (ago/2026). É a estrutura de acompanhamento; ainda não traz valores apurados.',
     journey: [
       { title: 'Acompanhamos', text: 'Reunimos evidências sobre pesquisa, tecnologia, pessoas e território.', icon: 'bi-eye' },
       { title: 'Compreendemos', text: 'Analisamos avanços, desafios e conexões entre as sete dimensões.', icon: 'bi-diagram-3' },
@@ -36,6 +38,7 @@ const labels = {
     overviewEyebrow: 'Our monitoring model', overviewTitle: 'From research to real-world impact',
     overviewLead: 'The indicators help CP2b turn institutional goals into clear evidence. They are not a score or ranking: they show what we observe so that we can learn, decide and evolve.',
     dimensionsStat: 'connected dimensions', indicatorsStat: 'indicators observed', horizonStat: 'strategic horizon',
+    source: 'Source: CP2b Indicators and Weights System, from the strategic plan (Aug 2026). It is the monitoring framework; it does not yet include measured values.',
     journey: [
       { title: 'We observe', text: 'We gather evidence about research, technology, people and territories.', icon: 'bi-eye' },
       { title: 'We understand', text: 'We analyze progress, challenges and connections across seven dimensions.', icon: 'bi-diagram-3' },
@@ -89,6 +92,7 @@ const Indicators = () => {
               <span className="indicators-eyebrow">{t.overviewEyebrow}</span>
               <h2 id="indicators-overview-title">{t.overviewTitle}</h2>
               <p>{t.overviewLead}</p>
+              <p className="indicators-source">{t.source}</p>
             </div>
             <div className="indicators-stats" aria-label={t.overviewEyebrow}>
               <div className="indicators-stat"><strong><CountUp value={kpiDimensions.length} /></strong><span>{t.dimensionsStat}</span></div>

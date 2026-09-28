@@ -16,6 +16,8 @@ const LABELS = {
     publications: 'publicações',
     of: 'de',
     sdgs: 'ODS em destaque',
+    // Origem das contagens: ver o cabeçalho de data/publicationsYear1.js.
+    source: 'Fonte: planilha de publicações do Ano 1 (2025), recontada artigo por artigo.',
   },
   en: {
     eyebrow: 'Year 1 · 2025',
@@ -24,6 +26,7 @@ const LABELS = {
     publications: 'publications',
     of: 'of',
     sdgs: 'Highlighted SDGs',
+    source: 'Source: Year 1 (2025) publications spreadsheet, recounted article by article.',
   },
 };
 
@@ -106,6 +109,8 @@ export const PublicationsSummary = ({ language }) => {
           <span key={p} className="pubs-pillars__item">{i > 0 && <span className="pubs-pillars__dot" aria-hidden="true">·</span>}{p}</span>
         ))}
       </p>
+
+      <p className="pubs-source">{t.source}</p>
     </section>
   );
 };
