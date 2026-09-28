@@ -15,7 +15,7 @@ const axes = [
     title: 'Eixo 5 – Inovação em Bioprodutos na Cadeia do Biogás',
     coordinators: [
       { name: 'Profª Drª Rachel Biancalana Costa', role: 'Coord.' },
-      { name: 'Vaga temporariamente em aberto', role: 'Adj.' },
+      { name: 'Vaga temporariamente em aberto', role: 'Coord.' },
     ],
   },
   {
@@ -23,7 +23,7 @@ const axes = [
     title: 'Eixo 8 – Políticas Públicas e Inovação Regulatória',
     coordinators: [
       { name: 'Profª Drª Natalia Molina Cetrulo', role: 'Coord.' },
-      { name: 'Drª Thais Aparecida Dibbern', role: 'Adj.' },
+      { name: 'Drª Thais Aparecida Dibbern', role: 'Coord.' },
     ],
   },
 ];

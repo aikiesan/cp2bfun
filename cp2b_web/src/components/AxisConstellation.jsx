@@ -12,8 +12,9 @@ import './AxisConstellation.css';
 //
 // Os nomes vêm dos próprios dados dos eixos (API do painel, com content.js de
 // fallback): quando a coordenação mudar, basta editar o eixo, sem regravar
-// imagem. O primeiro nome é a coordenação e o segundo a vice-coordenação; se
-// só houver um, a vice aparece como vaga em aberto.
+// imagem. Os dois nomes coordenam em pé de igualdade (ANEXO 11, que extinguiu
+// o cargo de adjunto): a ordem só decide quem aparece primeiro. Se só houver
+// um, o segundo lugar aparece como vaga em aberto.
 //
 // Os fios são SVG medidos a partir da posição real dos cards, para
 // acompanhar quebras de linha e redimensionamento.

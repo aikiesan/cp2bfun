@@ -18,8 +18,11 @@ const transformApiAxes = (apiAxes, lang) =>
     if (row.coordinator) {
       coordinators.push({ name: row.coordinator, role: 'Coord.', photo: row.coordinator_image || null });
     }
+    // 'Coord.' nos dois: o ANEXO 11 (migration 039) extinguiu o cargo de
+    // Coordenador Adjunto, e `sub_coordinator` guarda o segundo coordenador em
+    // pé de igualdade — o nome da coluna é só herança do esquema.
     if (row.sub_coordinator) {
-      coordinators.push({ name: row.sub_coordinator, role: 'Adj.', photo: row.sub_coordinator_image || null });
+      coordinators.push({ name: row.sub_coordinator, role: 'Coord.', photo: row.sub_coordinator_image || null });
     }
     return {
       id: String(row.axis_number),

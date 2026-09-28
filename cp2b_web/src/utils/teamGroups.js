@@ -106,8 +106,10 @@ export function isCoordinator(member) {
 /**
  * Eixo -> nomes de quem coordena, na ordem em que researchAxes os lista.
  *
- * Essa ordem não é alfabética nem acidental: é a hierarquia da coordenação, e
- * a página precisa respeitá-la (Eixo 1 abre com Rubens, não com Lucas). Os
+ * Essa ordem não é alfabética nem acidental, mas também não é hierarquia: os
+ * coordenadores de um eixo estão em pé de igualdade (ANEXO 11). É a ordem em
+ * que a coordenação é listada oficialmente, e a página a segue para que o
+ * mesmo eixo apareça igual em /eixos e em /equipe (Eixo 1 abre com Rubens). Os
  * nomes vêm com títulos — "Profº Drº Rubens..." — e nameKey os descarta, que é
  * o que permite casar com o registro da pessoa na lista da equipe.
  */
