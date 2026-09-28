@@ -1,0 +1,125 @@
+/* ============================================================
+   PAGE HERO — motion layer for the inner-page title band
+   The band itself (gradient, padding, type) stays in
+   design-system.css; this file only adds the arrival and the
+   pointer-reactive light on top of it. Tokens only.
+   ============================================================ */
+
+.page-hero-inner {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- Ambient: two colour fields and a light ---------- */
+
+.page-hero-ambient {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  animation: page-hero-fade 1.6s ease-out both;
+}
+
+.page-hero-field {
+  position: absolute;
+  border-radius: 50%;
+  will-change: transform;
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* The two fields drift against the pointer, at different depths. */
+.page-hero-field--a {
+  width: 42rem;
+  height: 42rem;
+  top: -22rem;
+  right: -12rem;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--cp2b-lima) 24%, transparent), transparent);
+  transform: translate3d(calc(var(--hero-fx, 0) * -48px), calc(var(--hero-fy, 0) * -32px), 0);
+}
+
+.page-hero-field--b {
+  width: 36rem;
+  height: 36rem;
+  bottom: -24rem;
+  left: -10rem;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--cp2b-verde) 32%, transparent), transparent);
+  transform: translate3d(calc(var(--hero-fx, 0) * 36px), calc(var(--hero-fy, 0) * 24px), 0);
+}
+
+/* The light rests where the band's own highlight is, and trails the
+   pointer while it is over the band. */
+.page-hero-glow {
+  position: absolute;
+  left: var(--hero-x, 82%);
+  top: var(--hero-y, 18%);
+  width: 30rem;
+  height: 30rem;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--cp2b-branco) 15%, transparent), transparent);
+  opacity: 0.45;
+  transition: left 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    top 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 0.5s ease;
+}
+
+.page-hero[data-pointer] .page-hero-glow {
+  opacity: 1;
+}
+
+/* ---------- Arrival: rule, title, subtitle ---------- */
+
+.page-hero .eyebrow {
+  animation: page-hero-fade 0.6s ease-out both;
+}
+
+.page-hero .eyebrow::before {
+  transform-origin: left center;
+  animation: page-hero-draw 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+/* The title rises while a mask opens upward over it. It fills backwards
+   only: once it lands no clip-path is left on the heading, so accents and
+   descenders ("Í", "ç", "p") are never cut. */
+.page-hero h1 {
+  animation: page-hero-title 1s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
+}
+
+.page-hero .page-hero-sub {
+  animation: page-hero-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
+}
+
+@keyframes page-hero-title {
+  from { opacity: 0; transform: translateY(0.45em); clip-path: inset(0 0 100% 0); }
+  to { opacity: 1; transform: none; clip-path: inset(-20% -2% -30% -2%); }
+}
+
+@keyframes page-hero-draw {
+  from { transform: scaleX(0); }
+  to { transform: none; }
+}
+
+@keyframes page-hero-fade {
+  from { opacity: 0; }
+}
+
+@keyframes page-hero-fade-up {
+  from { opacity: 0; transform: translateY(12px); }
+}
+
+/* Reduced motion: no arrival at all, not even the staggered delays that
+   the global rule in design-system.css leaves in place. */
+@media (prefers-reduced-motion: reduce) {
+  .page-hero-ambient,
+  .page-hero .eyebrow,
+  .page-hero .eyebrow::before,
+  .page-hero h1,
+  .page-hero .page-hero-sub {
+    animation: none;
+  }
+
+  .page-hero-field,
+  .page-hero-glow {
+    transition: none;
+  }
+}

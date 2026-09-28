@@ -150,3 +150,42 @@
   .wcloud__word { transition: color var(--duration-fast) var(--ease-standard); }
   .wcloud__word::after { transition: opacity var(--duration-fast) var(--ease-standard); }
 }
+
+/* ---------- Movimento de entrada ----------
+   Mesmo esquema do resumo de publicações (useScrollReveal + keyframes que
+   preenchem só para trás): as palavras surgem da mais frequente para a
+   menos frequente e as barras das expressões crescem da esquerda. */
+
+.wcloud[data-reveal="armed"] .wcloud__word,
+.wcloud[data-reveal="armed"] .wcloud__expr-bar span { opacity: 0; }
+
+.wcloud[data-reveal="shown"] .wcloud__word {
+  animation: wc-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.1s + min(var(--rank, 0), 30) * 0.035s);
+}
+
+.wcloud__expr-bar span { transform-origin: left center; }
+.wcloud[data-reveal="shown"] .wcloud__expr-bar span {
+  animation: wc-grow 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.3s + var(--i, 0) * 0.07s);
+}
+
+@keyframes wc-in { from { opacity: 0; transform: translateY(10px) scale(0.92); } }
+@keyframes wc-grow { from { transform: scaleX(0); } }
+
+/* Reação ao ponteiro e ao teclado: apontar para uma palavra apaga as outras,
+   para ela se destacar junto com a contagem. */
+.wcloud__cloud:has(.wcloud__word:hover) .wcloud__word:not(:hover),
+.wcloud__cloud:has(.wcloud__word:focus-visible) .wcloud__word:not(:focus-visible) { opacity: 0.35; }
+
+.wcloud__expr li:hover .wcloud__expr-term { color: var(--cp2b-verde-escuro); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .wcloud__word {
+    transition: color var(--duration-fast) var(--ease-standard),
+      opacity var(--duration-slow) var(--ease-standard),
+      transform var(--duration-slow) var(--ease-standard);
+  }
+  .wcloud__word:hover,
+  .wcloud__word:focus-visible { transform: scale(1.06); }
+}
