@@ -18,7 +18,11 @@
     "test:docker": "docker-compose run --rm test",
     "test:docker:coverage": "docker-compose run --rm test-coverage",
     "test:docker:watch": "docker-compose run --rm test-watch",
-    "smoke": "playwright test --project=prod-smoke"
+    "smoke": "playwright test --project=prod-smoke",
+    "seo:audit": "node scripts/seo-audit.mjs",
+    "homolog": "node scripts/homolog.mjs up",
+    "homolog:down": "node scripts/homolog.mjs down",
+    "lighthouse": "node scripts/lighthouse.mjs"
   },
   "dependencies": {
     "@hello-pangea/dnd": "^16.6.0",

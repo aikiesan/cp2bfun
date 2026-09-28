@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import pool from '../db/connection.js';
 import { sendWelcomeEmail } from '../services/email.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -11,8 +12,12 @@ function countWords(str) {
 
 // POST /api/participants — register a new participant
 router.post('/', async (req, res) => {
-  const { name, affiliation, email, mini_bio, photo_url, keywords, abstract } = req.body;
+  const { name, affiliation, email, mini_bio, photo_url, keywords, abstract } = req.body || {};
 
+  const texts = [name, affiliation, email, mini_bio, photo_url, abstract];
+  if (texts.some((v) => v != null && typeof v !== 'string') || (keywords != null && typeof keywords !== 'string' && !Array.isArray(keywords))) {
+    return res.status(400).json({ error: 'Dados inválidos.' });
+  }
   if (!name?.trim() || !affiliation?.trim() || !email?.trim()) {
     return res.status(400).json({ error: 'Nome, afiliação e e-mail são obrigatórios.' });
   }
@@ -54,9 +59,9 @@ router.post('/', async (req, res) => {
 });
 
 // GET /api/participants/search?q=query — search by name or email
-router.get('/search', async (req, res) => {
+router.get('/search', requireAdmin, async (req, res) => {
   const { q } = req.query;
-  if (!q || q.trim().length < 2) {
+  if (typeof q !== 'string' || q.trim().length < 2) {
     return res.status(400).json({ error: 'Busca deve ter ao menos 2 caracteres.' });
   }
 
@@ -77,7 +82,7 @@ router.get('/search', async (req, res) => {
 });
 
 // GET /api/participants — list all (admin / meetup invite)
-router.get('/', async (req, res) => {
+router.get('/', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, name, affiliation, email, mini_bio, photo_url, keywords, abstract, created_at

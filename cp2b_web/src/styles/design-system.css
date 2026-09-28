@@ -28,7 +28,9 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--cp2b-green-500);
+  /* Verde-escuro no texto (8,6:1 sobre o claro); o verde claro da marca, com
+     3:1, não passa o AA em texto pequeno e fica só no filete. */
+  color: var(--cp2b-green-700);
 }
 
 .eyebrow::before {
@@ -41,6 +43,10 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
 .eyebrow--light {
   color: var(--cp2b-lime-500);
 }
+
+/* O text-success do Bootstrap (#198754) dá 4,3:1 sobre o cinza-claro: abaixo
+   do AA em texto pequeno. Nos rótulos de seção, o verde-escuro da marca. */
+.mono-label.text-success { color: var(--cp2b-verde-escuro) !important; }
 
 .mono-label {
   font-family: var(--font-mono);

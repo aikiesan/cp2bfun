@@ -52,21 +52,30 @@ export function verifyPassword(candidate) {
 // Visitor-facing endpoints that must accept writes without a login.
 // Exported so the rate limiter (index.js) can throttle exactly this same
 // set — the only /api routes writable by an unauthenticated visitor.
+//
+// As inscrições do Fórum de 2026 (participantes, pedidos e cancelamento de
+// meetup, foto do participante) saíram daqui junto com as páginas: o site não
+// as usa mais, e abertas elas permitiam cancelar meetups alheios pelo id e
+// subir arquivos sem login.
 export const PUBLIC_WRITES = [
-  { method: 'POST', pattern: /^\/contact\/?$/ },
-  { method: 'POST', pattern: /^\/newsletter\/subscribe\/?$/ },
-  { method: 'POST', pattern: /^\/participants\/?$/ },
-  { method: 'POST', pattern: /^\/meetup-requests\/?$/ },
-  { method: 'PUT', pattern: /^\/meetup-requests\/[^/]+\/cancel\/?$/ },
-  { method: 'POST', pattern: /^\/upload\/image\/?$/ }, // participant photo on public registration
+  { method: 'POST', pattern: /^\/contact\/?$/i },
+  { method: 'POST', pattern: /^\/newsletter\/subscribe\/?$/i },
 ];
 
-// Read endpoints that expose personal data and must require a login.
+// Read endpoints that expose personal data or unpublished drafts and must
+// require a login.
+//
+// Sem diferenciar maiúsculas: o Express casa rotas assim, e com a lista
+// sensível a caixa /api/Contact passava pelo portão e entregava as mensagens.
+// Cada uma dessas rotas também exige login na própria definição
+// (requireAdmin), para não depender só desta lista.
 const ADMIN_READS = [
-  /^\/newsletter\/subscribers/,
-  /^\/contact\/?$/,
-  /^\/participants\/?$/,
-  /^\/meetup-requests\/all/,
+  /^\/newsletter\/subscribers/i,
+  /^\/contact\/?$/i,
+  /^\/participants(\/|$)/i,
+  /^\/meetup-requests\/(all|my)/i,
+  /^\/(boletins|podcast|press-kit)\/all/i,
+  /^\/videos\/?$/i,
 ];
 
 const hasValidToken = (req) => {
@@ -75,11 +84,18 @@ const hasValidToken = (req) => {
   return token !== null && verifyToken(token);
 };
 
+// Sem ADMIN_PASSWORD o painel fica aberto, o que só serve em desenvolvimento.
+// Em produção (NODE_ENV=production) ele fica trancado: um .env incompleto não
+// pode deixar o site editável por qualquer um.
+export const adminLocked = () => !authEnabled() && process.env.NODE_ENV === 'production';
+
+const locked = (res) => res.status(503).json({ error: 'Admin locked: ADMIN_PASSWORD is not configured' });
+
 /**
  * Gate mounted on /api. Auth routes themselves are mounted before this.
  */
 export function adminGate(req, res, next) {
-  if (!authEnabled()) return next();
+  if (!authEnabled() && !adminLocked()) return next();
 
   const path = req.path;
   const readMethod = req.method === 'GET' || req.method === 'HEAD' || req.method === 'OPTIONS';
@@ -89,6 +105,16 @@ export function adminGate(req, res, next) {
     return next();
   }
 
+  if (adminLocked()) return locked(res);
   if (hasValidToken(req)) return next();
+  return res.status(401).json({ error: 'Authentication required' });
+}
+
+/**
+ * Para montar na própria rota: exige login sem depender de lista de caminhos.
+ */
+export function requireAdmin(req, res, next) {
+  if (adminLocked()) return locked(res);
+  if (!authEnabled() || hasValidToken(req)) return next();
   return res.status(401).json({ error: 'Authentication required' });
 }

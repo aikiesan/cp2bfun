@@ -7,6 +7,7 @@ import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import { pressKitLogos, pressKitDocuments, brandColors, brandTypography } from '../data/pressKitAssets';
 import api from '../services/api';
+import { safeHref } from '../utils/safeUrl';
 
 // Não há mais lista estática de itens: os antigos "Logotipos", "Fotos
 // Institucionais" e "Apresentação CP2b" apontavam para file_url '#' e viravam
@@ -239,7 +240,7 @@ const PressKit = () => {
                       <Button
                         variant="outline-success"
                         className="w-100 px-3 py-3 d-flex flex-column align-items-center gap-2"
-                        href={item.file_url}
+                        href={safeHref(item.file_url)}
                         target="_blank"
                         rel="noopener noreferrer"
                         download

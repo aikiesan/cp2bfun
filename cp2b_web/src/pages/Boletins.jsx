@@ -7,6 +7,7 @@ import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import { fetchBoletins } from '../services/api';
+import { safeHref } from '../utils/safeUrl';
 
 const Boletins = () => {
   const { language } = useLanguage();
@@ -146,7 +147,7 @@ const Boletins = () => {
                               da linha terminem alinhados mesmo com títulos de
                               alturas diferentes. */}
                           <a
-                            href={b.pdf_url}
+                            href={safeHref(b.pdf_url)}
                             className="btn btn-outline-success btn-sm mt-auto"
                             target="_blank"
                             rel="noopener noreferrer"

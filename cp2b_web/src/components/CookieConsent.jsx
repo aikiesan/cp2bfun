@@ -51,8 +51,10 @@ const CookieConsent = () => {
     const payload = { consent, timestamp: new Date().toISOString() };
     if (consent === 'all' && email.trim()) {
       try {
+        // O e-mail vai só para a inscrição; guardá-lo também no navegador
+        // (junto do consentimento) não servia para nada e ficava exposto a
+        // qualquer script da mesma origem.
         await api.post('/newsletter/subscribe', { email: email.trim() });
-        payload.email = email.trim();
         setSubscribed(true);
       } catch (_) {
         // newsletter signup is optional — don't block consent save
@@ -94,7 +96,7 @@ const CookieConsent = () => {
             >
               {t.privacyLink}
             </a>
-            <p className="mb-0 mt-1" style={{ fontSize: '0.7rem', color: '#999' }}>
+            <p className="mb-0 mt-1" style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.72)' }}>
               <i className="bi bi-info-circle me-1" />
               {t.lgpdNote}
             </p>

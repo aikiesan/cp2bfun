@@ -235,7 +235,8 @@ const Capacitacao = () => {
                 <ul className="cap-contact__people">
                   {coordinators.map((p) => (
                     <li key={p.name}>
-                      <Avatar photo={p.photo} name={cleanName(p.name)} axisId="6" size={48} />
+                      {/* O nome vem logo ao lado: a foto é decorativa (alt vazio). */}
+                      <Avatar photo={p.photo} name={cleanName(p.name)} alt="" axisId="6" size={48} />
                       <span>{cleanName(p.name)}</span>
                     </li>
                   ))}

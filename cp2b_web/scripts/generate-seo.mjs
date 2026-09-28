@@ -5,14 +5,19 @@
  *    route-specific <title>, meta description, canonical, Open Graph tags,
  *    and Schema.org JSON-LD structured data graphs before </head>, so crawlers
  *    and social scrapers get complete metadata without executing JS.
- * 2. Generates dist/sitemap.xml containing all 21+ static routes AND dynamic slugs,
- *    falling back to static content data (src/data/content.js) when the API is offline.
- * 3. Prerenders HTML shells for dynamic slugs (news, events, opportunities, interviews, microscópio).
+ * 2. Generates dist/sitemap.xml containing all static routes AND the dynamic
+ *    slugs (news, events, opportunities, interviews, microscópio) read from the API.
+ * 3. Prerenders HTML shells for those dynamic slugs.
  *
  * Env:
- *   SITE_URL     canonical origin (default https://cp2b.unicamp.br)
- *   SEO_API_URL  API origin for dynamic slugs (falls back to VITE_API_URL);
- *                falls back to static dataset when unreachable.
+ *   SITE_URL            canonical origin (default https://cp2b.unicamp.br)
+ *   SEO_API_URL         API origin for dynamic slugs (falls back to VITE_API_URL).
+ *                       On the VM, deploy.sh points it at http://localhost:3001/api.
+ *   SEO_ALLOW_FALLBACK  "1" swaps an unreachable API for the sample items in
+ *                       src/data/content.js. Only for tests and offline builds:
+ *                       the sample slugs do not exist in the database, and in
+ *                       production they went into the sitemap as "not found"
+ *                       pages while the real articles were left out.
  */
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
@@ -316,7 +321,10 @@ export function serializeJsonLd(jsonLd) {
   } else {
     payload = jsonLd;
   }
-  return `    <script type="application/ld+json">\n${JSON.stringify(payload, null, 2).replace(/^/gm, '    ')}\n    </script>\n`;
+  // "<" vira <: um título vindo do banco com "</script>" fecharia a tag no
+  // HTML pré-renderizado. Continua JSON válido, com o mesmo conteúdo.
+  const json = JSON.stringify(payload, null, 2).replace(/</g, '\\u003c');
+  return `    <script type="application/ld+json">\n${json.replace(/^/gm, '    ')}\n    </script>\n`;
 }
 
 export function renderHead(template, {
@@ -560,6 +568,7 @@ export async function generateSeo({
   distDir = DEFAULT_DIST,
   siteUrl = DEFAULT_SITE_URL,
   apiUrl = DEFAULT_API_URL,
+  allowFallback = process.env.SEO_ALLOW_FALLBACK === '1',
   log = console.log,
 } = {}) {
   const templatePath = path.join(distDir, 'index.html');
@@ -632,12 +641,18 @@ export async function generateSeo({
   let dynamicShellsCount = 0;
 
   for (const { endpoint, prefix, priority, changefreq, type, getFallback } of dynamicSources) {
+    // Uma lista vazia é resposta válida (hoje /api/events devolve []): vira
+    // zero páginas, não amostras. Só a API fora do ar cai nas amostras, e só
+    // com allowFallback; sem ele a seção fica de fora do sitemap.
     let items = await fetchJson(apiUrl, endpoint);
-    if (!Array.isArray(items) || items.length === 0) {
+    if (Array.isArray(items)) {
+      log(`generate-seo: fetched ${items.length} dynamic items from ${endpoint}`);
+    } else if (allowFallback) {
       items = getFallback();
       log(`generate-seo: using static fallback for ${prefix} (${items.length} items)`);
     } else {
-      log(`generate-seo: fetched ${items.length} dynamic items from ${endpoint}`);
+      items = [];
+      log(`generate-seo: AVISO: ${apiUrl ? `API indisponível em ${apiUrl}${endpoint}` : 'SEO_API_URL não definido'}; ${prefix} fica fora do sitemap`);
     }
 
     for (const item of items) {
@@ -706,563 +721,6 @@ export async function generateSeo({
     prerenderedDynamic: dynamicShellsCount,
     sitemapUrlsCount: sitemapUrls.length,
   };
-}
-
-export async function ensureTestFile() {
-  const testPath = path.resolve(__dirname, '../src/__tests__/seoSitemapPrerender.test.js');
-  const testContent = `import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { mkdtemp, rm, writeFile, readFile } from 'node:fs/promises';
-import os from 'node:os';
-import path from 'node:path';
-import {
-  ROUTES,
-  escapeHtml,
-  escapeXml,
-  buildOrganizationJsonLd,
-  buildResearchProjectJsonLd,
-  buildBreadcrumbJsonLd,
-  buildNewsArticleJsonLd,
-  buildEventJsonLd,
-  serializeJsonLd,
-  renderHead,
-  getNewsFallback,
-  getProjectsFallback,
-  getEventsFallback,
-  getMicroscopioFallback,
-  getOpportunitiesFallback,
-  generateSitemapXml,
-  generateSeo,
-} from '../../scripts/generate-seo.mjs';
-
-describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
-  const BASE_URL = 'https://cp2b.unicamp.br';
-
-  const SAMPLE_TEMPLATE = '<!doctype html>\\n' +
-    '<html lang="pt-br">\\n' +
-    '  <head>\\n' +
-    '    <meta charset="UTF-8" />\\n' +
-    '    <title>CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos</title>\\n' +
-    '    <meta name="description" content="Initial description" />\\n' +
-    '    <meta property="og:type" content="website" />\\n' +
-    '    <meta property="og:site_name" content="CP2b" />\\n' +
-    '    <meta property="og:title" content="Initial OG Title" />\\n' +
-    '    <meta property="og:description" content="Initial OG Desc" />\\n' +
-    '    <meta property="og:image" content="/assets/logos/cp2b-logo-og.png" />\\n' +
-    '    <meta name="twitter:card" content="summary_large_image" />\\n' +
-    '    <meta name="twitter:title" content="Initial Twitter Title" />\\n' +
-    '    <meta name="twitter:description" content="Initial Twitter Desc" />\\n' +
-    '    <meta name="twitter:image" content="/assets/logos/cp2b-logo-og.png" />\\n' +
-    '  </head>\\n' +
-    '  <body>\\n' +
-    '    <div id="root"></div>\\n' +
-    '  </body>\\n' +
-    '</html>';
-
-  describe('1. Schema.org JSON-LD Structured Data Builders', () => {
-    it('builds valid ResearchOrganization Schema.org JSON-LD', () => {
-      const org = buildOrganizationJsonLd(BASE_URL);
-      expect(org['@context']).toBe('https://schema.org');
-      expect(org['@type']).toBe('ResearchOrganization');
-      expect(org.name).toContain('CP2b');
-      expect(org.url).toBe(BASE_URL);
-      expect(org.logo).toContain('cp2b-logo-og.png');
-      expect(org.parentOrganization['@type']).toBe('CollegeOrUniversity');
-      expect(org.parentOrganization.alternateName).toBe('UNICAMP');
-      expect(org.address['@type']).toBe('PostalAddress');
-      expect(org.address.addressLocality).toBe('Campinas');
-      expect(Array.isArray(org.sameAs)).toBe(true);
-      expect(org.sameAs.some((s) => s.includes('instagram.com'))).toBe(true);
-      expect(org.knowsAbout).toContain('biogás');
-    });
-
-    it('builds valid ResearchProject Schema.org JSON-LD with 8 thematic axes', () => {
-      const project = buildResearchProjectJsonLd(BASE_URL);
-      expect(project['@context']).toBe('https://schema.org');
-      expect(project['@type']).toBe('ResearchProject');
-      expect(project.name).toContain('CP2b');
-      expect(project.funder.name).toContain('FAPESP');
-      expect(project.parentOrganization.alternateName).toBe('UNICAMP');
-      expect(Array.isArray(project.subProjects)).toBe(true);
-      expect(project.subProjects.length).toBe(8);
-
-      const subAxes = project.subProjects.map((p) => p.name);
-      expect(subAxes.some((t) => t.includes('Inventário'))).toBe(true);
-      expect(subAxes.some((t) => t.includes('Ciência e Tecnologia'))).toBe(true);
-      expect(subAxes.some((t) => t.includes('Engenharia de Processos'))).toBe(true);
-      expect(subAxes.some((t) => t.includes('Avaliação Integrada'))).toBe(true);
-      expect(subAxes.some((t) => t.includes('Inovação em Bioprodutos'))).toBe(true);
-      expect(subAxes.some((t) => t.includes('Educação e Capacitação'))).toBe(true);
-      expect(subAxes.some((t) => t.includes('Difusão Científica'))).toBe(true);
-      expect(subAxes.some((t) => t.includes('Políticas Públicas'))).toBe(true);
-    });
-
-    it('builds valid BreadcrumbList Schema.org JSON-LD for hierarchical routes', () => {
-      expect(buildBreadcrumbJsonLd('/', null, BASE_URL)).toBeNull();
-
-      const sobreBreadcrumb = buildBreadcrumbJsonLd('/sobre', 'Sobre o CP2b', BASE_URL);
-      expect(sobreBreadcrumb['@type']).toBe('BreadcrumbList');
-      expect(sobreBreadcrumb.itemListElement).toHaveLength(2);
-      expect(sobreBreadcrumb.itemListElement[0]).toEqual({
-        '@type': 'ListItem',
-        position: 1,
-        name: 'Início',
-        item: \`\${BASE_URL}/\`,
-      });
-      expect(sobreBreadcrumb.itemListElement[1]).toEqual({
-        '@type': 'ListItem',
-        position: 2,
-        name: 'Sobre o CP2b',
-        item: \`\${BASE_URL}/sobre\`,
-      });
-
-      const nestedBreadcrumb = buildBreadcrumbJsonLd(
-        '/sobre/governanca',
-        'Governança',
-        BASE_URL
-      );
-      expect(nestedBreadcrumb.itemListElement).toHaveLength(3);
-      expect(nestedBreadcrumb.itemListElement[2].name).toBe('Governança');
-      expect(nestedBreadcrumb.itemListElement[2].item).toBe(\`\${BASE_URL}/sobre/governanca\`);
-
-      const dynamicBreadcrumb = buildBreadcrumbJsonLd(
-        '/noticias/cau-2025',
-        'Visita CAU 2025',
-        BASE_URL
-      );
-      expect(dynamicBreadcrumb.itemListElement).toHaveLength(3);
-      expect(dynamicBreadcrumb.itemListElement[1].name).toBe('Notícias');
-      expect(dynamicBreadcrumb.itemListElement[2].name).toBe('Visita CAU 2025');
-    });
-
-    it('builds valid NewsArticle Schema.org JSON-LD for news and opinion articles', () => {
-      const articleItem = {
-        slug: 'cau-2025',
-        title: 'Delegação da CAU visita CP2b',
-        description: 'Cooperação acadêmica internacional com a China Agricultural University.',
-        image: '/assets/cau-capa.jpg',
-        published_at: '2025-07-29',
-        updated_at: '2025-07-30',
-        author: 'CP2b Comunicação',
-      };
-      const newsLd = buildNewsArticleJsonLd(articleItem, '/noticias/cau-2025', BASE_URL);
-      expect(newsLd['@context']).toBe('https://schema.org');
-      expect(newsLd['@type']).toBe('NewsArticle');
-      expect(newsLd.headline).toBe('Delegação da CAU visita CP2b');
-      expect(newsLd.description).toContain('Cooperação acadêmica internacional');
-      expect(newsLd.image).toBe(\`\${BASE_URL}/assets/cau-capa.jpg\`);
-      expect(newsLd.datePublished).toBe('2025-07-29');
-      expect(newsLd.author.name).toBe('CP2b Comunicação');
-      expect(newsLd.publisher.name).toContain('CP2b');
-      expect(newsLd.mainEntityOfPage['@id']).toBe(\`\${BASE_URL}/noticias/cau-2025\`);
-    });
-
-    it('builds valid Event Schema.org JSON-LD for events', () => {
-      const eventItem = {
-        slug: 'workshop-anual-2025',
-        title: 'I Workshop Anual do CP2b',
-        description: 'Avanços dos 8 eixos temáticos e assinatura do Regimento Interno.',
-        start_date: '2025-12-02T09:00:00',
-        end_date: '2025-12-02T18:00:00',
-        location: 'Auditório NIPE / UNICAMP',
-        location_type: 'in-person',
-        image: '/assets/workshop.jpg',
-        organizer: 'CP2b',
-      };
-      const eventLd = buildEventJsonLd(eventItem, '/eventos/workshop-anual-2025', BASE_URL);
-      expect(eventLd['@context']).toBe('https://schema.org');
-      expect(eventLd['@type']).toBe('Event');
-      expect(eventLd.name).toBe('I Workshop Anual do CP2b');
-      expect(eventLd.startDate).toBe('2025-12-02T09:00:00');
-      expect(eventLd.location.name).toBe('Auditório NIPE / UNICAMP');
-      expect(eventLd.eventAttendanceMode).toBe('https://schema.org/OfflineEventAttendanceMode');
-      expect(eventLd.organizer.name).toBe('CP2b');
-    });
-
-    it('serializes single objects and multiple items via @graph cleanly', () => {
-      const single = buildOrganizationJsonLd(BASE_URL);
-      const serializedSingle = serializeJsonLd(single);
-      expect(serializedSingle).toContain('<script type="application/ld+json">');
-      expect(serializedSingle).toContain('"@type": "ResearchOrganization"');
-      const parsedSingle = JSON.parse(
-        serializedSingle.replace(/<script[^>]*>|<\\/script>/g, '')
-      );
-      expect(parsedSingle['@type']).toBe('ResearchOrganization');
-
-      const multi = [
-        buildOrganizationJsonLd(BASE_URL),
-        buildBreadcrumbJsonLd('/sobre', 'Sobre', BASE_URL),
-      ];
-      const serializedMulti = serializeJsonLd(multi);
-      expect(serializedMulti).toContain('"@graph"');
-      const parsedMulti = JSON.parse(
-        serializedMulti.replace(/<script[^>]*>|<\\/script>/g, '')
-      );
-      expect(parsedMulti['@graph']).toHaveLength(2);
-      expect(parsedMulti['@graph'][0]['@type']).toBe('ResearchOrganization');
-      expect(parsedMulti['@graph'][1]['@type']).toBe('BreadcrumbList');
-    });
-  });
-
-  describe('2. Head & Metadata Rendering (renderHead)', () => {
-    it('replaces title, meta description, OG tags, Twitter cards, and injects canonical and JSON-LD', () => {
-      const jsonLd = buildOrganizationJsonLd(BASE_URL);
-      const rendered = renderHead(SAMPLE_TEMPLATE, {
-        title: 'Sobre o CP2b',
-        description: 'Página institucional do centro.',
-        url: \`\${BASE_URL}/sobre\`,
-        image: '/assets/sobre-og.jpg',
-        type: 'website',
-        jsonLd,
-        injectCanonical: true,
-        siteUrl: BASE_URL,
-      });
-
-      expect(rendered).toContain('<title>Sobre o CP2b</title>');
-      expect(rendered).toContain('<meta name="description" content="Página institucional do centro." />');
-      expect(rendered).toContain('<meta property="og:title" content="Sobre o CP2b" />');
-      expect(rendered).toContain('<meta property="og:description" content="Página institucional do centro." />');
-      expect(rendered).toContain(\`<meta property="og:image" content="\${BASE_URL}/assets/sobre-og.jpg" />\`);
-      expect(rendered).toContain(\`<link rel="canonical" href="\${BASE_URL}/sobre" />\`);
-      expect(rendered).toContain(\`<meta property="og:url" content="\${BASE_URL}/sobre" />\`);
-      expect(rendered).toContain('<meta name="twitter:card" content="summary_large_image" />');
-      expect(rendered).toContain('<meta name="twitter:title" content="Sobre o CP2b" />');
-      expect(rendered).toContain('<meta name="twitter:description" content="Página institucional do centro." />');
-      expect(rendered).toContain(\`<meta name="twitter:image" content="\${BASE_URL}/assets/sobre-og.jpg" />\`);
-      expect(rendered).toContain('<script type="application/ld+json">');
-      expect(rendered).toContain('"ResearchOrganization"');
-    });
-
-    it('escapes XML/HTML characters properly in head tags', () => {
-      expect(escapeHtml('CP2b & Biogás <SP> "2026"')).toBe('CP2b &amp; Biogás &lt;SP&gt; &quot;2026&quot;');
-      expect(escapeXml('A & B')).toBe('A &amp; B');
-
-      const rendered = renderHead(SAMPLE_TEMPLATE, {
-        title: 'Pesquisa & Desenvolvimento <Biogás>',
-        description: 'Uso de resíduos "orgânicos" & biometano',
-        url: \`\${BASE_URL}/pesquisa\`,
-        siteUrl: BASE_URL,
-      });
-      expect(rendered).toContain('Pesquisa &amp; Desenvolvimento &lt;Biogás&gt; | CP2b');
-      expect(rendered).toContain('Uso de resíduos &quot;orgânicos&quot; &amp; biometano');
-    });
-  });
-
-  describe('3. Offline Static Fallbacks', () => {
-    it('returns valid fallback items for news, projects, events, microscopio, and opportunities', () => {
-      const news = getNewsFallback();
-      expect(Array.isArray(news)).toBe(true);
-      expect(news.length).toBeGreaterThanOrEqual(4);
-      expect(news.some((n) => n.slug === 'cau-2025')).toBe(true);
-      expect(news.some((n) => n.slug === 'metaninho-mascote')).toBe(true);
-
-      const projects = getProjectsFallback();
-      expect(Array.isArray(projects)).toBe(true);
-      expect(projects.length).toBeGreaterThanOrEqual(4);
-      expect(projects.some((p) => p.slug === 'living-lab-ofmsw')).toBe(true);
-      expect(projects.some((p) => p.slug === 'cooperativa-agroindustrial')).toBe(true);
-
-      const events = getEventsFallback();
-      expect(Array.isArray(events)).toBe(true);
-      expect(events.length).toBeGreaterThanOrEqual(2);
-      expect(events.some((e) => e.slug === 'workshop-anual-2025')).toBe(true);
-
-      const microscopio = getMicroscopioFallback();
-      expect(Array.isArray(microscopio)).toBe(true);
-      expect(microscopio.length).toBeGreaterThanOrEqual(2);
-
-      const opportunities = getOpportunitiesFallback();
-      expect(Array.isArray(opportunities)).toBe(true);
-      expect(opportunities.length).toBeGreaterThanOrEqual(2);
-    });
-
-    it('defines all 22 core static routes in the ROUTES table', () => {
-      const expectedRoutes = [
-        '/',
-        '/sobre',
-        '/sobre/governanca',
-        '/sobre/indicadores',
-        '/sobre/transparencia',
-        '/sobre/parceiros',
-        '/eixos',
-        '/solucoes',
-        '/equipe',
-        '/noticias',
-        '/oportunidades',
-        '/publicacoes',
-        '/microscopio',
-        '/eventos',
-        '/galeria',
-        '/entrevistas',
-        '/press-kit',
-        '/podcast',
-        '/boletins',
-        '/newsletter',
-        '/forum-paulista',
-        '/contato',
-      ];
-      expect(Object.keys(ROUTES).sort()).toEqual(expectedRoutes.sort());
-      expect(Object.keys(ROUTES).length).toBe(22);
-    });
-  });
-
-  describe('4. Sitemap XML Generation', () => {
-    it('generates valid sitemap.xml with loc, lastmod, changefreq, and priority', () => {
-      const urls = [
-        { loc: \`\${BASE_URL}/\`, lastmod: '2026-08-23', changefreq: 'weekly', priority: '1.0' },
-        { loc: \`\${BASE_URL}/sobre\`, lastmod: '2026-08-23', changefreq: 'monthly', priority: '0.9' },
-        { loc: \`\${BASE_URL}/noticias/cau-2025\`, lastmod: '2025-07-29', changefreq: 'weekly', priority: '0.7' },
-      ];
-      const xml = generateSitemapXml(urls);
-      expect(xml).toContain('<?xml version="1.0" encoding="UTF-8"?>');
-      expect(xml).toContain('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">');
-      expect(xml).toContain(\`<loc>\${BASE_URL}/</loc>\`);
-      expect(xml).toContain('<lastmod>2026-08-23</lastmod>');
-      expect(xml).toContain('<changefreq>weekly</changefreq>');
-      expect(xml).toContain('<priority>1.0</priority>');
-      expect(xml).toContain(\`<loc>\${BASE_URL}/noticias/cau-2025</loc>\`);
-      expect(xml).toContain('</urlset>');
-    });
-  });
-
-  describe('5. Full SEO Pipeline Execution (generateSeo)', () => {
-    let tmpDir;
-
-    beforeEach(async () => {
-      tmpDir = await mkdtemp(path.join(os.tmpdir(), 'cp2b-seo-test-'));
-      await writeFile(path.join(tmpDir, 'index.html'), SAMPLE_TEMPLATE, 'utf8');
-    });
-
-    afterEach(async () => {
-      if (tmpDir) {
-        await rm(tmpDir, { recursive: true, force: true });
-      }
-    });
-
-    it('prerenders 22 static shells + dynamic shells and writes complete sitemap.xml in offline fallback mode', async () => {
-      const logs = [];
-      const result = await generateSeo({
-        distDir: tmpDir,
-        siteUrl: BASE_URL,
-        apiUrl: '',
-        log: (msg) => logs.push(msg),
-      });
-
-      expect(result.prerenderedStatic).toBe(22);
-      expect(result.prerenderedDynamic).toBeGreaterThanOrEqual(14);
-      expect(result.sitemapUrlsCount).toBeGreaterThanOrEqual(35);
-
-      // Verify sitemap.xml
-      const sitemap = await readFile(path.join(tmpDir, 'sitemap.xml'), 'utf8');
-      expect(sitemap).toContain(\`<loc>\${BASE_URL}/</loc>\`);
-      expect(sitemap).toContain(\`<loc>\${BASE_URL}/sobre</loc>\`);
-      expect(sitemap).toContain(\`<loc>\${BASE_URL}/eixos</loc>\`);
-      expect(sitemap).toContain(\`<loc>\${BASE_URL}/noticias/cau-2025</loc>\`);
-      expect(sitemap).toContain(\`<loc>\${BASE_URL}/entrevistas/living-lab-ofmsw</loc>\`);
-      expect(sitemap).toContain(\`<loc>\${BASE_URL}/eventos/workshop-anual-2025</loc>\`);
-
-      // Verify root index.html has ResearchOrganization JSON-LD
-      const rootHtml = await readFile(path.join(tmpDir, 'index.html'), 'utf8');
-      expect(rootHtml).toContain('<script type="application/ld+json">');
-      expect(rootHtml).toContain('"ResearchOrganization"');
-      expect(rootHtml).toContain(\`<link rel="canonical" href="\${BASE_URL}/" />\`);
-
-      // Verify /sobre/index.html has ResearchOrganization and BreadcrumbList
-      const sobreHtml = await readFile(path.join(tmpDir, 'sobre/index.html'), 'utf8');
-      expect(sobreHtml).toContain('"ResearchOrganization"');
-      expect(sobreHtml).toContain('"BreadcrumbList"');
-      expect(sobreHtml).toContain(\`<link rel="canonical" href="\${BASE_URL}/sobre" />\`);
-
-      // Verify /eixos/index.html has ResearchProject with 8 axes
-      const eixosHtml = await readFile(path.join(tmpDir, 'eixos/index.html'), 'utf8');
-      expect(eixosHtml).toContain('"ResearchProject"');
-      expect(eixosHtml).toContain('"subProjects"');
-
-      // Verify /noticias/cau-2025/index.html has NewsArticle
-      const newsHtml = await readFile(path.join(tmpDir, 'noticias/cau-2025/index.html'), 'utf8');
-      expect(newsHtml).toContain('"NewsArticle"');
-      expect(newsHtml).toContain('Delegação da China Agricultural University');
-
-      // Verify /eventos/workshop-anual-2025/index.html has Event
-      const eventHtml = await readFile(path.join(tmpDir, 'eventos/workshop-anual-2025/index.html'), 'utf8');
-      expect(eventHtml).toContain('"Event"');
-      expect(eventHtml).toContain('I Workshop Anual do CP2b');
-    });
-  });
-});
-`;
-  await writeFile(testPath, testContent, 'utf8');
-}
-
-export async function writeWorkerMetadata() {
-  const agentDir = path.resolve(__dirname, '../../.agents/worker_m3');
-  await mkdir(agentDir, { recursive: true });
-
-  const briefing = `# BRIEFING — 2026-08-23T22:17:00Z
-
-## Mission
-Deliver Milestone M3: Google SEO, Schema.org JSON-LD, Sitemap & Meta Tags for CP2B Web Platform.
-
-## 🔒 My Identity
-- Archetype: teamwork_preview_worker
-- Roles: implementer, qa, specialist
-- Working directory: A:\\cp2b_fun\\.agents\\worker_m3\\
-- Original parent: 32990573-12c8-4554-bd75-9c52d456457b
-- Milestone: M3 (Google SEO, Schema.org JSON-LD, Sitemap & Meta Tags)
-
-## 🔒 Key Constraints
-- Genuine implementation only, no mock/facade/hardcoded tests.
-- Maintain minimal changes and verify thoroughly with lint, test:run, and build.
-- Follow PROJECT.md layout and communication protocols.
-- Write handoff.md in A:\\cp2b_fun\\.agents\\worker_m3\\handoff.md and report to parent via send_message.
-
-## Current Parent
-- Conversation ID: 32990573-12c8-4554-bd75-9c52d456457b
-- Updated: 2026-08-23T22:17:00Z
-
-## Task Summary
-- **What to build**: Comprehensive SEO pipeline in \`generate-seo.mjs\` including Schema.org JSON-LD graphs (Organization/ResearchOrganization, ResearchProject for 8 axes, BreadcrumbList, NewsArticle, Event), offline static content fallback from \`src/data/content.js\`, XML sitemap generation for all 21+ static + dynamic routes (35 URLs), prerendered HTML shells with OG/Twitter/Canonical tags, and test suite \`src/__tests__/seoSitemapPrerender.test.js\`.
-- **Success criteria**: All static and dynamic routes prerendered with valid meta tags and Schema.org JSON-LD, valid XML sitemap generated, unit/integration tests passing (32 test files, 309 tests), lint passing (0 warnings/errors), build passing.
-- **Interface contracts**: PROJECT.md, generate-seo.mjs, content.js.
-- **Code layout**: cp2b_web/scripts/generate-seo.mjs, cp2b_web/src/__tests__/seoSitemapPrerender.test.js.
-
-## Change Tracker
-- **Files modified**:
-  - \`cp2b_web/scripts/generate-seo.mjs\`: Added Schema.org JSON-LD generators (ResearchOrganization, ResearchProject with 8 axes, BreadcrumbList, NewsArticle, Event), offline fallbacks, dynamic shell prerendering, XML sitemap generation.
-  - \`cp2b_web/src/__tests__/seoSitemapPrerender.test.js\`: Added comprehensive 12-test suite covering JSON-LD builders, head rendering, static fallbacks, sitemap XML, and full pipeline execution.
-- **Build status**: PASS (Exit code 0, 32 test files passed, 309 tests passed, 0 lint warnings)
-- **Pending issues**: None
-
-## Quality Status
-- **Build/test result**: 32 test files, 309 tests passing (100% green)
-- **Lint status**: 0 errors, 0 warnings
-- **Tests added/modified**: \`src/__tests__/seoSitemapPrerender.test.js\` (12 tests)
-
-## Loaded Skills
-- None
-
-## Key Decisions Made
-- Used \`@graph\` array format when injecting multiple top-level JSON-LD schemas on a single page (e.g. Organization/ResearchProject + BreadcrumbList) for clean Google Rich Results parsing.
-- Prerendered both 21 static routes and 14 dynamic routes (35 total HTML shells in dist/) with complete canonical, OG, Twitter, and Schema.org meta tags.
-
-## Artifact Index
-- A:\\cp2b_fun\\.agents\\worker_m3\\DISPATCH.md
-- A:\\cp2b_fun\\.agents\\worker_m3\\BRIEFING.md
-- A:\\cp2b_fun\\.agents\\worker_m3\\progress.md
-- A:\\cp2b_fun\\.agents\\worker_m3\\handoff.md
-`;
-
-  const progress = `# Progress — Worker M3
-
-- Last visited: 2026-08-23T22:17:00Z
-- Status: Completed all M3 deliverables (Schema.org JSON-LD, Sitemap & offline fallbacks, dynamic shells, test suite). All tests and lint pass 100%.
-`;
-
-  const handoff = `# Handoff Report — Milestone M3: Google SEO, Schema.org JSON-LD, Sitemap & Meta Tags
-
-## 1. Observation
-
-### 1.1 Schema.org JSON-LD Structured Data Implementation
-- Enhanced \`A:/cp2b_fun/cp2b_web/scripts/generate-seo.mjs\` with modular, schema-compliant JSON-LD structured data generators:
-  - **\`buildOrganizationJsonLd\`**: Injects \`ResearchOrganization\` Schema.org graph into \`/\` and \`/sobre\`, including UNICAMP as parentOrganization, address in Campinas-SP, contact info, social channels, and topical keywords (\`knowsAbout\`).
-  - **\`buildResearchProjectJsonLd\`**: Injects \`ResearchProject\` Schema.org graph into \`/eixos\`, documenting CP2B and its 8 thematic axes (Eixo 1 to Eixo 8) funded by FAPESP.
-  - **\`buildBreadcrumbJsonLd\`**: Injects \`BreadcrumbList\` Schema.org graph for all hierarchical sub-routes (\`/sobre/*\`, \`/noticias/*\`, \`/eventos/*\`, \`/oportunidades/*\`, \`/entrevistas/*\`, \`/microscopio/*\`, etc.), building structured \`ListItem\` position arrays.
-  - **\`buildNewsArticleJsonLd\`**: Injects \`NewsArticle\` Schema.org graph into \`/noticias/:slug\` and \`/microscopio/:slug\` with headline, description, author, publisher, image, and publication timestamps.
-  - **\`buildEventJsonLd\`**: Injects \`Event\` Schema.org graph into \`/eventos/:slug\` with name, description, startDate, endDate, location, eventAttendanceMode, and organizer.
-
-### 1.2 Sitemap Generation & Offline Static Fallback
-- Configured dynamic sources in \`generate-seo.mjs\` (\`/news\`, \`/microscopio\`, \`/opportunities\`, \`/projects\`, \`/events\`) with offline fallbacks:
-  - When \`SEO_API_URL\` or \`VITE_API_URL\` is unreachable during offline/CI builds, falls back to static items from \`src/data/content.js\` (\`newsItems\`, \`projectsItems\`, plus static events, microscópio, and opportunities).
-  - \`dist/sitemap.xml\` is generated with all 21 static routes + 14 dynamic slugs (35 total URLs), properly XML-escaped with \`<loc>\`, \`<lastmod>\`, \`<changefreq>\`, and \`<priority>\`.
-  - Prerendered HTML shells are generated in \`dist/\` for all 21 static routes and 14 dynamic slugs (e.g. \`dist/noticias/cau-2025/index.html\`, \`dist/eventos/workshop-anual-2025/index.html\`, etc.).
-
-### 1.3 Open Graph, Twitter Cards & Canonical URLs
-- Verified that all static and dynamic HTML shells contain:
-  - \`<link rel="canonical" href="..." />\`
-  - \`<meta property="og:url" content="..." />\`
-  - \`<meta property="og:title" content="..." />\`
-  - \`<meta property="og:description" content="..." />\`
-  - \`<meta property="og:image" content="..." />\`
-  - \`<meta property="og:type" content="..." />\` (\`website\` or \`article\`)
-  - \`<meta name="twitter:card" content="summary_large_image" />\`
-  - \`<meta name="twitter:title" content="..." />\`
-  - \`<meta name="twitter:description" content="..." />\`
-  - \`<meta name="twitter:image" content="..." />\`
-
-### 1.4 Automated Test Suite
-- Created \`A:/cp2b_fun/cp2b_web/src/__tests__/seoSitemapPrerender.test.js\` with 12 comprehensive unit and integration tests covering:
-  - Organization, ResearchProject (8 axes), BreadcrumbList, NewsArticle, and Event JSON-LD builders.
-  - JSON-LD serialization into \`<script type="application/ld+json">\` (@graph format).
-  - HTML head tag replacement, canonical and meta tag injections, entity escaping.
-  - Offline static dataset fallbacks for news, projects, events, microscopio, opportunities.
-  - Full SEO pipeline generation against simulated build environments.
-
----
-
-## 2. Logic Chain
-
-1. **Search Engine Discovery & Rich Snippets**:
-   - Modern search engine crawlers (Googlebot, Bingbot) and social platform scrapers evaluate initial server-delivered HTML before JavaScript execution.
-   - Injecting complete Schema.org JSON-LD graphs directly into prerendered HTML shells before \`</head>\` enables rich result cards in Google search (ResearchOrganization knowledge panels, Breadcrumb trails, Article snippets, Event listings).
-2. **Build Resilience**:
-   - Static datasets in \`src/data/content.js\` provide reliable fallbacks during offline builds, ensuring CI pipelines produce complete sitemaps and prerendered shells without relying on active network connections or running API servers.
-3. **Standards & Escaping Compliance**:
-   - Complete HTML and XML entity escaping prevents malformed XML tags in \`sitemap.xml\` and ensures valid HTML attributes in meta tags.
-
----
-
-## 3. Caveats
-
-- **SPA Fallback vs Prerendered Shells**: \`dist/index.html\` serves both as the prerendered homepage shell and the fallback entry for SPA routes. \`ResearchOrganization\` JSON-LD is injected into \`dist/index.html\`, while client-side \`react-helmet-async\` continues to manage dynamic titles during SPA page transitions.
-
----
-
-## 4. Conclusion
-
-Milestone M3 (Google SEO, Schema.org JSON-LD, Sitemap & Meta Tags) is 100% complete and fully verified:
-- Schema.org structured data (\`ResearchOrganization\`, \`ResearchProject\` with 8 thematic axes, \`BreadcrumbList\`, \`NewsArticle\`, \`Event\`) injected into prerendered HTML shells.
-- Offline static fallback and complete XML sitemap with 35 URLs generated.
-- All 32 test files and 309 tests passing in Vitest.
-- ESLint checks passing with 0 warnings/errors.
-- Production build (\`npm run build\`) executing flawlessly.
-
----
-
-## 5. Verification Method
-
-To independently verify all deliverables:
-1. Run linting:
-   \`\`\`bash
-   cd A:/cp2b_fun/cp2b_web
-   npm.cmd run lint
-   \`\`\`
-   *Result: Exit code 0, 0 errors, 0 warnings.*
-
-2. Run test suite:
-   \`\`\`bash
-   cd A:/cp2b_fun/cp2b_web
-   npm.cmd run test:run
-   \`\`\`
-   *Result: 32 test files passed, 309 tests passed.*
-
-3. Run build and SEO postbuild:
-   \`\`\`bash
-   cd A:/cp2b_fun/cp2b_web
-   npm.cmd run build
-   \`\`\`
-   *Result: Exit code 0, 21 static routes and 14 dynamic shells prerendered, dist/sitemap.xml generated with 35 URLs.*
-
-4. Inspect output files:
-   - \`dist/sitemap.xml\`
-   - \`dist/index.html\`
-   - \`dist/sobre/index.html\`
-   - \`dist/eixos/index.html\`
-   - \`dist/noticias/cau-2025/index.html\`
-   - \`dist/eventos/workshop-anual-2025/index.html\`
-`;
-
-  await writeFile(path.join(agentDir, 'BRIEFING.md'), briefing, 'utf8');
-  await writeFile(path.join(agentDir, 'progress.md'), progress, 'utf8');
-  await writeFile(path.join(agentDir, 'handoff.md'), handoff, 'utf8');
 }
 
 const isDirectRun = process.argv[1] && (

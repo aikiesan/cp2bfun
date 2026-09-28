@@ -9,6 +9,8 @@ import { getPartnerLogo } from '../../data/partnerLogos';
 import SeoHead from '../../components/SeoHead';
 import PageHero from '../../components/PageHero';
 import AboutSubnav from '../../components/AboutSubnav';
+import { emDefesoEleitoral } from '../../utils/defeso';
+import { safeHref } from '../../utils/safeUrl';
 
 /**
  * Extracts monogram initials from a partner name.
@@ -116,7 +118,7 @@ const PartnerCard = ({ partner, language }) => {
   if (partner.website) {
     return (
       <a
-        href={partner.website}
+        href={safeHref(partner.website)}
         target="_blank"
         rel="noopener noreferrer"
         className="text-decoration-none h-100 d-block"
@@ -201,7 +203,7 @@ const HeadquartersCard = ({ partner, language, label }) => {
             {partner.website && (
               <div className="mt-3">
                 <a
-                  href={partner.website}
+                  href={safeHref(partner.website)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="btn btn-outline-success btn-sm"
@@ -308,8 +310,9 @@ const PartnersPage = () => {
             </Row>
           )}
 
-          {/* Public Institutions (controlled by defeso eleitoral in backend) */}
-          {partners.public && partners.public.length > 0 && (
+          {/* Órgãos públicos: fora do ar durante o defeso eleitoral, mesmo que o
+              cadastro ainda os traga ativos (ver utils/defeso). */}
+          {!emDefesoEleitoral() && partners.public && partners.public.length > 0 && (
             <Row className="mb-4 mb-md-5">
               <Col md={12}>
                 <h3 className="fw-bold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>

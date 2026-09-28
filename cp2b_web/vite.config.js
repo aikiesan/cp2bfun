@@ -194,7 +194,11 @@ export default defineConfig({
             },
           },
           {
-            urlPattern: /\/api\/.*/i,
+            // Só o que o visitante lê. Requisição com Authorization é do
+            // painel (mensagens, inscritos, participantes): guardada no Cache
+            // Storage, ficava no navegador de quem usou o painel, inclusive
+            // num computador compartilhado.
+            urlPattern: ({ url, request }) => url.pathname.startsWith('/api/') && !request.headers.has('authorization'),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'api-cache',

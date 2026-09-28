@@ -70,7 +70,7 @@ const NewsletterSignup = ({ tone = 'dark' }) => {
 
   return (
     <div>
-      <h5 className="mb-2 text-uppercase fw-bold text-success">{t.title}</h5>
+      <h2 className="h5 mb-2 text-uppercase fw-bold text-success">{t.title}</h2>
       <p className="mb-3" style={{ fontSize: '0.85rem', color: light ? 'var(--text-secondary)' : '#ccc' }}>{t.subtitle}</p>
 
       {status === 'success' && (

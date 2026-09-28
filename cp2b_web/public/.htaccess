@@ -18,6 +18,11 @@
 # The fix: serve /sobre directly from /sobre/index.html and never redirect.
 # This also matches the canonical the prerenderer emits (no trailing slash).
 
+<IfModule mod_mime.c>
+    # O manifesto do PWA; nem todo mime.types do Apache conhece a extensão.
+    AddType application/manifest+json .webmanifest
+</IfModule>
+
 <IfModule mod_dir.c>
     # Stop mod_dir from redirecting /sobre -> /sobre/ (the source of the bad 301).
     DirectorySlash Off
@@ -82,4 +87,30 @@
     # contra um Apache 2.4 real com este mesmo .htaccess). THE_REQUEST guarda
     # a linha de requisição original e não é afetado pelo rewrite.
     Header always set X-Robots-Tag "noindex, follow" "expr=%{THE_REQUEST} =~ m#^[A-Z]+ /(outros|manutencao|confirmar-meetup)/?[ ?]#"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Cache.
+    #
+    # O que o Vite gera leva o hash do conteúdo no nome (index-DqSY18wp.js):
+    # nunca muda sob a mesma URL, então pode ficar um ano no navegador.
+    <FilesMatch "-[A-Za-z0-9_-]{8}\.(js|css)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # HTML, service worker e manifesto sempre revalidam. Sem isso o navegador
+    # reaproveitava o HTML antigo por heurística e, depois de um deploy, pedia
+    # arquivos JS que o build novo já apagou: a página quebrava até recarregar.
+    <FilesMatch "(\.html|^sw\.js|\.webmanifest)$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+
+    # Segurança: só o que não muda o comportamento da SPA. A política de
+    # conteúdo (CSP) fica para depois, testada primeiro em modo report-only.
+    # Vale só para os arquivos da SPA; /api, /pilar2b e /arqueia passam pelo
+    # proxy do vhost e não leem este .htaccess.
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
 </IfModule>

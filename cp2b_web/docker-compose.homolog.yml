@@ -1,0 +1,16 @@
+# Homologação local: o build de produção (dist/) servido por Apache com as
+# mesmas regras da VM — o .htaccess do build, /api e /uploads no backend.
+# Sobe junto com os serviços do docker-compose.yml, na mesma rede.
+#
+#   npm run homolog         build com a API local e Apache em http://localhost:8080
+#   npm run homolog:down    derruba só o Apache de homologação
+services:
+  homolog:
+    image: httpd:2.4-alpine
+    ports:
+      - "${HOMOLOG_PORT:-8080}:80"
+    volumes:
+      - ./dist:/usr/local/apache2/htdocs:ro
+      - ./homolog/httpd.conf:/usr/local/apache2/conf/httpd.conf:ro
+    depends_on:
+      - backend

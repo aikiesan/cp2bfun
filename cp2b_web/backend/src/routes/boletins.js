@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import pool from '../db/connection.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -21,7 +22,7 @@ router.get('/', async (req, res) => {
 });
 
 // Admin: inclui os inativos.
-router.get('/all', async (req, res) => {
+router.get('/all', requireAdmin, async (req, res) => {
   try {
     const { rows } = await pool.query(`SELECT * FROM boletins ${ORDER_BY}`);
     res.json(rows);

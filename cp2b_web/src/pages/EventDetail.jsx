@@ -6,6 +6,7 @@ import { fetchEventBySlug, fetchGallery } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 import SeoHead from '../components/SeoHead';
 import NotFound from './NotFound';
+import { safeHref } from '../utils/safeUrl';
 
 const EventDetail = () => {
   const { slug } = useParams();
@@ -263,7 +264,7 @@ const EventDetail = () => {
               {isUpcoming && event.registration_url && (
                 <Button
                   variant="primary"
-                  href={event.registration_url}
+                  href={safeHref(event.registration_url)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-100 mt-2"
