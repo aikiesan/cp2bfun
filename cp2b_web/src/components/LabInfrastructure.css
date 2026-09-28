@@ -444,6 +444,10 @@
 #laboratorios,
 #servicos { scroll-margin-top: 6rem; }
 
+/* O catálogo recebe o foco quando um botão "Ver os N serviços" leva até ele;
+   é destino de navegação, não controle, e dispensa o contorno. */
+#servicos:focus { outline: none; }
+
 /* ---------- tablet ---------- */
 @media (max-width: 991.98px) {
   .lab-panel { grid-template-columns: minmax(0, 1fr); }
@@ -521,3 +525,44 @@
       box-shadow var(--duration-base) var(--ease-standard);
   }
 }
+
+/* ---------- Movimento de entrada da régua ----------
+   Mesmo esquema de /publicacoes e /sobre/indicadores: data-reveal vem do
+   useScrollReveal, "armed" segura a pose inicial e "shown" roda os keyframes
+   uma vez. Eles preenchem só para trás (backwards): terminada a entrada,
+   valem as regras normais e o hover das linhas. Sem layout ou com movimento
+   reduzido o atributo nem aparece e a régua já está pronta.
+   Ordem: as fases e os números surgem, cada barra cresce da própria ponta
+   esquerda até ocupar a sua faixa, um laboratório depois do outro, e o
+   marcador de foco aparece por último, com um pequeno salto. */
+
+.lab-trl__bar { transform-origin: left center; }
+
+.lab-map[data-reveal="armed"] .lab-trl__phase,
+.lab-map[data-reveal="armed"] .lab-trl__line--nums,
+.lab-map[data-reveal="armed"] .lab-trl__bar,
+.lab-map[data-reveal="armed"] .lab-trl__focus { opacity: 0; }
+
+.lab-map[data-reveal="shown"] .lab-trl__phase {
+  animation: lab-fade 0.6s ease-out backwards;
+  animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+.lab-map[data-reveal="shown"] .lab-trl__line--nums { animation: lab-fade 0.6s ease-out 0.2s backwards; }
+
+/* --i vem da linha do laboratório e é herdado pela barra e pelo marcador. */
+.lab-map[data-reveal="shown"] .lab-trl__bar {
+  animation: lab-grow 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.35s + var(--i, 0) * 0.22s);
+}
+
+/* O marcador se centra com "translate"; o salto usa "transform", que se
+   soma a ele sem tirá-lo do lugar. */
+.lab-map[data-reveal="shown"] .lab-trl__focus {
+  animation: lab-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation-delay: calc(1.05s + var(--i, 0) * 0.22s);
+}
+
+@keyframes lab-fade { from { opacity: 0; } }
+@keyframes lab-grow { from { transform: scaleX(0); } }
+@keyframes lab-pop { from { opacity: 0; transform: scale(0.3); } }

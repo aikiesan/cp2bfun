@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { researchAxes } from '../data/content';
 import { laboratories } from '../data/generated/laboratories';
 import { technicalServices } from '../data/generated/services';
+import useScrollReveal from '../hooks/useScrollReveal';
 import './LabInfrastructure.css';
 
 // Infraestrutura laboratorial do CP2b, na página Infraestrutura e Soluções.
@@ -83,6 +84,15 @@ const axisTitle = (lang, id) => {
 };
 const servicesOf = (lab) => technicalServices.filter((s) => s.labAcronym === lab.acronym);
 
+// Faixas de TRL: um nível está na faixa de um laboratório quando cai entre o
+// mínimo e o máximo dela. As três fases têm três níveis cada (1–3, 4–6, 7–9).
+// A régua, o medidor da ficha e o seletor "Qual é o seu desafio?" de
+// /solucoes (TrlMatcher) usam estas mesmas contas, para nunca divergirem.
+const inTrlRange = (n, trl) => n >= trl.min && n <= trl.max;
+const phasesOf = (labels) => labels.phases.map((name, i) => ({ name, from: i * 3 + 1, to: i * 3 + 3 }));
+const trlPhases = (language) => phasesOf(LABELS[language] || LABELS.pt);
+const labsAtTrl = (n) => bioLabs.filter((l) => inTrlRange(n, l.trl));
+
 const scrollToEl = (el, smooth) => {
   if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start', behavior: smooth ? 'smooth' : 'auto' });
 };
@@ -93,10 +103,10 @@ const TrlRuler = ({ labels, onPick, activeSlug }) => (
     <div className="lab-trl__line lab-trl__line--head" aria-hidden="true">
       <span className="lab-trl__label" />
       <span className="lab-trl__track lab-trl__track--phases">
-        {labels.phases.map((p, i) => (
-          <span key={p} className="lab-trl__phase" style={{ gridColumn: `${i * 3 + 1} / span 3` }}>
-            <span className="lab-trl__phase-range">TRL {i * 3 + 1}–{i * 3 + 3}</span>
-            <span className="lab-trl__phase-name">{p}</span>
+        {phasesOf(labels).map((p, i) => (
+          <span key={p.name} className="lab-trl__phase" style={{ gridColumn: `${p.from} / ${p.to + 1}`, '--i': i }}>
+            <span className="lab-trl__phase-range">TRL {p.from}–{p.to}</span>
+            <span className="lab-trl__phase-name">{p.name}</span>
           </span>
         ))}
       </span>
@@ -108,7 +118,7 @@ const TrlRuler = ({ labels, onPick, activeSlug }) => (
       </span>
     </div>
 
-    {bioLabs.map((lab) => {
+    {bioLabs.map((lab, index) => {
       const { min, max, focus } = lab.trl;
       const span = max - min + 1;
       return (
@@ -116,6 +126,7 @@ const TrlRuler = ({ labels, onPick, activeSlug }) => (
           key={lab.slug}
           type="button"
           className={`lab-trl__line lab-trl__row${activeSlug === lab.slug ? ' is-active' : ''}`}
+          style={{ '--i': index }}
           onClick={() => onPick(lab.slug)}
           aria-label={`${shortAcronym(lab.acronym)}: TRL ${min}–${max}, ${labels.focus} TRL ${focus}`}
         >
@@ -145,7 +156,7 @@ const TrlMeter = ({ trl, labels }) => (
     <div className="lab-meter__cells" aria-hidden="true">
       {Array.from({ length: 9 }, (_, i) => {
         const n = i + 1;
-        const on = n >= trl.min && n <= trl.max;
+        const on = inTrlRange(n, trl);
         return <span key={n} className={`lab-meter__cell${on ? ' is-on' : ''}${n === trl.focus ? ' is-focus' : ''}`}>{n}</span>;
       })}
     </div>
@@ -326,6 +337,11 @@ const LabInfrastructure = ({ language, onShowServices }) => {
   const activeSlug = bioLabs.some((l) => l.slug === urlLab) ? urlLab : bioLabs[0]?.slug;
 
   const dossierRef = useRef(null);
+  // Na primeira vez que a régua aparece, as fases surgem, cada barra cresce
+  // da sua ponta esquerda até ocupar a faixa, um laboratório depois do outro,
+  // e o marcador de foco aparece por último (ver LabInfrastructure.css).
+  const mapRef = useRef(null);
+  const mapReveal = useScrollReveal(mapRef);
 
   const select = useCallback((slug, tab) => {
     const next = new URLSearchParams(searchParams);
@@ -353,7 +369,7 @@ const LabInfrastructure = ({ language, onShowServices }) => {
   return (
     <>
       {/* ---------- régua de maturidade: painel sobre o hero ---------- */}
-      <section className="lab-map" aria-labelledby="lab-map-title">
+      <section ref={mapRef} className="lab-map" aria-labelledby="lab-map-title" data-reveal={mapReveal}>
         <header className="lab-head">
           <span className="eyebrow">{labels.mapEyebrow}</span>
           <h2 id="lab-map-title">{labels.mapTitle}</h2>
@@ -382,5 +398,10 @@ const LabInfrastructure = ({ language, onShowServices }) => {
     </>
   );
 };
+
+// Para o seletor de TRL de /solucoes (TrlMatcher): mesmos laboratórios,
+// mesmas faixas, mesmos nomes de fase e os mesmos chips de eixo desta página.
+// eslint-disable-next-line react-refresh/only-export-components
+export { AxisChips, labsAtTrl, trlPhases, shortAcronym };
 
 export default LabInfrastructure;
