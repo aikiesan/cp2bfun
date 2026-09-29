@@ -150,6 +150,7 @@ const Research = () => {
       eyebrow={labels.overview.eyebrow}
       title={labels.overview.title}
       subtitle={labels.overview.subtitle}
+      photo={{ src: '/assets/fotos/eixos-auditorio.webp', width: 700, height: 500 }}
       className="page-hero--overlap"
     />
     <Container>

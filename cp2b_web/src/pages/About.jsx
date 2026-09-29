@@ -120,7 +120,7 @@ const About = () => {
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       
       {/* 1. Page Hero */}
-      <PageHero eyebrow={labels.tag} title={tTitle}>
+      <PageHero eyebrow={labels.tag} title={tTitle} photo={{ src: '/assets/fotos/sobre-reuniao.webp', width: 700, height: 500 }}>
         <p className="page-hero-sub mb-1">
           <strong>{labels.process}:</strong> {details.number}
         </p>

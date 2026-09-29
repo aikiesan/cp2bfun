@@ -82,7 +82,9 @@ describe('Header', () => {
     const pilar = screen.getByRole('link', { name: 'PILAR-2b' });
     const arqueia = screen.getByRole('link', { name: 'Arqueia' });
 
-    expect(arqueia.style.background).not.toBe('');
-    expect(arqueia.style.background).not.toBe(pilar.style.background);
+    // Cada pill tem a sua cor chapada da marca (design-system.css).
+    expect(pilar).toHaveClass('header-pill', 'header-pill--pilar');
+    expect(arqueia).toHaveClass('header-pill', 'header-pill--arqueia');
+    expect(arqueia).not.toHaveClass('header-pill--pilar');
   });
 });

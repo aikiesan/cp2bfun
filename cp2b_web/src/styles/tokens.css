@@ -43,17 +43,39 @@
   --gray-800: #28292A;
   --gray-900: #202124;
 
-  /* Semantic aliases (light mode only) */
-  --bg-page: var(--gray-50);
+  /* ---------- Papel (identidade "educa CP2B") ----------
+     O site é montado como a mesa de colagem dos vídeos educativos do CP2b:
+     papel claro de fundo, papel kraft nas faixas, fita crepe e uma sombra
+     curta e dura, de papel recortado sobre a mesa, no lugar da sombra
+     difusa que "flutua". Tons tirados de educa_cp2b/lib/colagem. */
+  --paper: #FBF8F0;
+  --paper-kraft: #F3EAD8;
+  --paper-line: #E6DCC6;
+  --paper-ink: #1B2A33;
+  --paper-tape: rgb(240 219 164 / .85);
+  --paper-shadow: 2px 3px 0 rgb(59 42 28 / .12);
+  --paper-shadow-lift: 3px 5px 0 rgb(59 42 28 / .16);
+  /* Borda rasgada (um trecho de 520 × 16 px que se repete) e a fibra do
+     papel kraft, ambas em SVG embutido: nenhum arquivo a mais para baixar. */
+  --torn-edge: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='16' viewBox='0 0 520 16' preserveAspectRatio='none'%3E%3Cpath d='M0 0H520V9L509 11L498 8L488 12L476 9L466 13L455 10L443 12L432 8L421 11L411 9L399 13L388 10L377 12L365 8L355 11L343 9L332 13L321 10L310 12L298 9L288 11L277 8L265 12L254 10L243 13L232 9L221 11L209 8L198 12L187 10L176 13L164 9L153 11L143 8L131 12L120 10L109 13L98 9L87 11L75 8L64 12L53 10L42 13L31 9L20 11L9 8L0 9Z'/%3E%3C/svg%3E");
+  --paper-grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .26 0 0 0 0 .13 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+
+  /* Semantic aliases (light mode only). Os neutros deixam o cinza frio do
+     Material pelos tons de papel; o texto secundário é um cinza quente
+     (6,8:1 sobre o papel, 6,1:1 sobre o kraft). */
+  --bg-page: var(--paper);
   --bg-surface: var(--cp2b-branco);
   --bg-surface-raised: var(--cp2b-branco);
-  --bg-surface-muted: var(--gray-50);
-  --text-primary: var(--gray-900);
-  --text-secondary: #616161;
-  --text-disabled: #9E9E9E;
+  --bg-surface-muted: var(--paper);
+  --text-primary: var(--paper-ink);
+  --text-secondary: #5A5850;
+  --text-disabled: #9E9A8E;
   --text-on-brand: var(--cp2b-branco);
-  --border-default: #E2E8F0;
-  --border-divider: #EEEEEE;
+  --border-default: var(--paper-line);
+  --border-divider: #EDE5D3;
+  /* Os cinzas do Bootstrap que aparecem em .bg-light e .border seguem o papel. */
+  --bs-light-rgb: 251, 248, 240;
+  --bs-border-color: var(--paper-line);
   --focus-ring: 0 0 0 3px rgba(182, 224, 59, .4);
   --brand-primary: var(--cp2b-verde-escuro);
   --brand-primary-hover: #1B5E20;
@@ -66,6 +88,9 @@
   --font-sans: 'Neulis Sans', 'Verdana', system-ui, sans-serif;
   --font-display: 'Neulis Neue', 'Neulis Sans', 'Verdana', system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* Letra à mão dos vídeos educativos, só em etiquetas curtas (nunca em
+     títulos nem em texto corrido, que seguem em Neulis). */
+  --font-hand: 'Caveat', 'Neulis Sans', cursive;
   --text-xs: .75rem;
   --text-sm: .875rem;
   --text-base: 1rem;
@@ -122,10 +147,10 @@
      Legacy aliases — keep the rest of the cascade (index.css,
      design-system.css, and inline JS styles) working unmodified.
      ================================================================ */
-  --cp2b-black: var(--gray-900);
+  --cp2b-black: var(--text-primary);
   --cp2b-dark: var(--cp2b-azul-petroleo);
   --cp2b-white: var(--cp2b-branco);
-  --cp2b-light-gray: var(--gray-50);
+  --cp2b-light-gray: var(--bg-page);
   --cp2b-border: var(--border-default);
   --cp2b-green: var(--cp2b-verde);
   --cp2b-lime: var(--cp2b-lima);
@@ -147,7 +172,7 @@
   --cp2b-lime-500: var(--cp2b-lima);
   --cp2b-ink: var(--gray-900);
   --cp2b-ink-soft: var(--text-secondary);
-  --cp2b-paper: var(--gray-50);
+  --cp2b-paper: var(--paper);
 
   /* Site-specific fluid type scale — not part of Pilar-2b's static
      scale, kept as-is for responsive hero/section headings. */

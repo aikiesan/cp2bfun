@@ -77,34 +77,69 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   font-size: 1.05rem;
 }
 
-/* ---------- Page hero band (inner pages) ---------- */
+/* ---------- Page hero band (inner pages) ----------
+   Uma tira de papel kraft rasgada na borda de baixo, como as estações de
+   papel dos vídeos educativos do CP2b. O papel mora em ::before (kraft com
+   uma fibra bem leve) e, atrás dele, ::after é a fibra branca que aparece
+   ao longo do rasgo: as duas camadas usam o mesmo recorte, deslocado, então
+   o branco surge só aqui e ali, como num papel rasgado de verdade. O
+   conteúdo não é recortado — só as camadas de fundo. */
 .page-hero {
   position: relative;
+  isolation: isolate;
   overflow: hidden;
-  background:
-    radial-gradient(80rem 30rem at 110% -20%, color-mix(in srgb, var(--cp2b-lime) 14%, transparent), transparent 55%),
-    linear-gradient(130deg, var(--cp2b-petrol-900) 0%, var(--cp2b-petrol-700) 55%, var(--cp2b-verde-escuro) 100%);
-  color: #fff;
-  padding: clamp(3.5rem, 2.5rem + 4vw, 6rem) 0;
+  color: var(--paper-ink);
+  padding: clamp(3.5rem, 2.5rem + 4vw, 6rem) 0 calc(clamp(3.5rem, 2.5rem + 4vw, 6rem) + 0.75rem);
+}
+
+.page-hero::before,
+.page-hero::after {
+  content: '';
+  position: absolute;
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 15px) no-repeat,
+    var(--torn-edge) var(--tear-shift, 0) 100% / 520px 16px repeat-x;
+  mask:
+    linear-gradient(#000 0 0) top / 100% calc(100% - 15px) no-repeat,
+    var(--torn-edge) var(--tear-shift, 0) 100% / 520px 16px repeat-x;
+}
+
+.page-hero::before {
+  inset: 0 0 5px;
+  z-index: -1;
+  background: var(--paper-grain), var(--paper-kraft);
+}
+
+.page-hero::after {
+  --tear-shift: 173px;
+  inset: 0;
+  z-index: -2;
+  background: var(--cp2b-branco);
 }
 
 .page-hero h1 {
   font-size: var(--fs-display-1);
-  font-weight: 700;
-  color: #fff;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  color: var(--paper-ink);
   margin-bottom: 0.5rem;
 }
 
 .page-hero .page-hero-sub {
   max-width: 44rem;
-  color: rgba(255, 255, 255, 0.82);
+  /* 7,7:1 sobre o kraft. */
+  color: #4A4841;
   font-size: 1.08rem;
   margin-bottom: 0;
 }
 
+.page-hero .page-hero-sub strong {
+  color: var(--paper-ink);
+}
+
 .page-hero .eyebrow {
-  color: var(--cp2b-lime-500);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.9rem;
 }
 
 /* Hero que recebe um painel por cima (/eixos, /solucoes): espaço extra para a
@@ -504,22 +539,38 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   color: #fff;
 }
 
-/* ---------- Footer ---------- */
+/* ---------- Footer ----------
+   Petróleo chapado, sem o brilho radial, e a mesma borda rasgada da faixa
+   de título, agora em cima: o rodapé é outra folha, escura, sob a página.
+   Os títulos das colunas são etiquetas escritas à mão. */
 .site-footer {
-  background:
-    radial-gradient(60rem 24rem at -10% 120%, color-mix(in srgb, var(--cp2b-green) 25%, transparent), transparent 60%),
-    var(--cp2b-petrol-900);
+  background: var(--cp2b-petrol-900);
   color: rgba(255, 255, 255, 0.85);
 }
 
+.site-footer::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -15px;
+  height: 16px;
+  background: var(--cp2b-petrol-900);
+  transform: scaleY(-1);
+  pointer-events: none;
+  -webkit-mask: var(--torn-edge) 0 0 / 520px 16px repeat-x;
+  mask: var(--torn-edge) 0 0 / 520px 16px repeat-x;
+}
+
 .site-footer h6 {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  line-height: 1.1;
+  letter-spacing: 0;
+  text-transform: none;
   color: var(--cp2b-lime-500);
-  margin-bottom: 1.1rem;
+  margin-bottom: 1rem;
 }
 
 .site-footer .footer-links {
@@ -1148,4 +1199,143 @@ main#main-content,
     white-space: normal;
     overflow-wrap: anywhere;
   }
+}
+
+/* ============================================================
+   PAPEL — páginas internas
+   A identidade dos vídeos educativos do CP2b (papel, fita crepe, letra à
+   mão), contida: vale só dentro de main[data-page="inner"] (ver PageMain em
+   App.jsx). A Home herda apenas a base comum — cores, fontes, botões,
+   cabeçalho e rodapé — e mantém suas seções como estão.
+   ============================================================ */
+
+/* Etiqueta de seção: um papelzinho branco escrito à mão, preso por um
+   pedaço de fita crepe, no lugar do rótulo mono em caixa-alta com filete. */
+main[data-page="inner"] .eyebrow {
+  position: relative;
+  display: inline-block;
+  padding: 0.05rem 0.85rem 0.15rem;
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--paper-ink);
+  background: var(--cp2b-branco);
+  box-shadow: var(--paper-shadow);
+  transform: rotate(-2deg);
+}
+
+main[data-page="inner"] .eyebrow::before {
+  position: absolute;
+  left: -0.7rem;
+  top: -0.45rem;
+  width: 2.6rem;
+  height: 0.95rem;
+  background: var(--paper-tape);
+  transform: rotate(-28deg);
+}
+
+/* Rótulos menores: a mesma letra à mão, sem o papel. */
+main[data-page="inner"] .mono-label {
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+main[data-page="inner"] .card-meta {
+  font-family: var(--font-sans);
+  letter-spacing: 0.01em;
+  text-transform: none;
+}
+
+/* Cartões: folhas de papel sobre a mesa. Canto pequeno de papel cortado e
+   uma sombra curta e dura; ao passar o mouse a folha só se levanta um
+   pouco da mesa, sem o brilho lima nem a sombra difusa. */
+main[data-page="inner"] .card,
+main[data-page="inner"] .card-editorial {
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--paper-shadow);
+}
+
+main[data-page="inner"] .card:hover,
+main[data-page="inner"] .card-editorial:hover {
+  transform: translate(-1px, -2px);
+  box-shadow: var(--paper-shadow-lift);
+  border-color: var(--paper-line);
+}
+
+main[data-page="inner"] .shadow-sm,
+main[data-page="inner"] .shadow {
+  box-shadow: var(--paper-shadow) !important;
+}
+
+main[data-page="inner"] .shadow-lg {
+  box-shadow: var(--paper-shadow-lift) !important;
+}
+
+main[data-page="inner"] .rounded-4 {
+  border-radius: var(--radius-md) !important;
+}
+
+/* ---------- Pills do cabeçalho (PILAR-2b, Arqueia) ----------
+   Cor chapada da marca, uma para cada, no lugar dos gradientes. */
+.header-pill {
+  color: #fff;
+  border: none;
+  letter-spacing: 0.5px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.header-pill--pilar { background: var(--cp2b-verde-escuro); }
+.header-pill--arqueia { background: var(--cp2b-azul-petroleo); }
+
+.header-pill:hover,
+.header-pill:focus-visible {
+  color: #fff;
+  box-shadow: var(--paper-shadow-lift);
+  transform: translateY(-1px);
+}
+
+.header-pill--pilar:hover { background: var(--brand-primary-hover); }
+.header-pill--arqueia:hover { background: color-mix(in srgb, var(--cp2b-azul-petroleo) 85%, black); }
+
+/* ---------- Alto contraste ----------
+   Papel, fita, fibra e recortes saem; fica texto claro sobre preto. */
+body.high-contrast .page-hero::before,
+body.high-contrast .page-hero::after,
+body.high-contrast .site-footer::before,
+body.high-contrast main[data-page="inner"] .eyebrow::before {
+  display: none;
+}
+
+body.high-contrast .page-hero,
+body.high-contrast .page-hero h1,
+body.high-contrast .page-hero .page-hero-sub,
+body.high-contrast .page-hero .page-hero-sub strong {
+  background: #000;
+  color: #fff;
+}
+
+body.high-contrast main[data-page="inner"] .eyebrow {
+  background: #000;
+  color: #fff;
+  border: 1px solid #fff;
+  box-shadow: none;
+}
+
+body.high-contrast main[data-page="inner"] .mono-label {
+  color: #fff !important;
+}
+
+body.high-contrast main[data-page="inner"] .card,
+body.high-contrast main[data-page="inner"] .card-editorial {
+  box-shadow: none;
+  border-color: #fff;
 }
