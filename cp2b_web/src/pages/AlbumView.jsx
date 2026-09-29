@@ -4,6 +4,7 @@ import { useParams, useLocation, Link } from 'react-router-dom';
 import { fetchGallery } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 import SeoHead from '../components/SeoHead';
+import Metaninho from '../components/Metaninho';
 
 const AlbumView = () => {
   const { albumId } = useParams();
@@ -65,7 +66,12 @@ const AlbumView = () => {
   }
 
   if (!albumInfo) {
-    return <Container className="py-5 text-center text-muted">{labels.notFound}</Container>;
+    return (
+      <Container className="py-5 text-center text-muted">
+        <Metaninho pose="surpreso" size={130} className="d-block mx-auto mb-3" />
+        {labels.notFound}
+      </Container>
+    );
   }
 
   const albumDate = albumInfo.date

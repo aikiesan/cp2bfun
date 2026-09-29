@@ -19,6 +19,7 @@ import ListPresence from '../components/ListPresence';
 import { computeTeamProfile } from '../utils/teamProfile';
 import { useUrlChoice, useUrlText } from '../hooks/useUrlFilters';
 import useListMotion, { listItemMotion } from '../hooks/useListMotion';
+import Metaninho from '../components/Metaninho';
 
 // The API still stores people under the old ranks; the page no longer
 // renders them as ranks, so this is only used to walk the response.
@@ -530,7 +531,7 @@ const Team = () => {
                   className="text-center py-5 text-muted"
                   {...listItemMotion(animateList, { layoutDependency: layoutKey })}
                 >
-                  <i className="bi bi-people fs-1 d-block mb-3 text-secondary" />
+                  <Metaninho pose="curioso" size={130} className="d-block mx-auto mb-3" />
                   <h5>
                     {language === 'pt'
                       ? 'Nenhum membro encontrado com os filtros selecionados.'

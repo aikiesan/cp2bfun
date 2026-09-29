@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Form, Button, InputGroup, Alert } from 'react-bootstrap';
 import { useLanguage } from '../context/LanguageContext';
 import api from '../services/api';
+import Metaninho from './Metaninho';
 
 const labels = {
   pt: {
@@ -74,8 +75,9 @@ const NewsletterSignup = ({ tone = 'dark' }) => {
       <p className="mb-3" style={{ fontSize: '0.85rem', color: light ? 'var(--text-secondary)' : '#ccc' }}>{t.subtitle}</p>
 
       {status === 'success' && (
-        <Alert variant="success" className="py-2 px-3" style={{ fontSize: '0.85rem' }}>
-          <i className="bi bi-check-circle me-2"></i>{t.success}
+        <Alert variant="success" className="py-2 px-3 d-flex align-items-center gap-2" style={{ fontSize: '0.85rem' }}>
+          <Metaninho pose="feliz" size={48} />
+          <span>{t.success}</span>
         </Alert>
       )}
       {status === 'error' && (

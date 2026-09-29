@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
+import Metaninho from '../components/Metaninho';
 
 const STATIC_DESCRIPTIONS = {
   pt: 'Um espaço para artigos de opinião e reflexões dos pesquisadores do CP2b.',
@@ -77,7 +78,7 @@ const Microscopio = () => {
         ) : items.length === 0 ? (
           <Row className="justify-content-center text-center">
             <Col lg={6}>
-              <i className="bi bi-binoculars text-success mobile-empty-icon" style={{ fontSize: '4rem', opacity: 0.5 }}></i>
+              <Metaninho pose="curioso" size={140} />
               <p className="lead text-muted mt-3">{labels.empty}</p>
             </Col>
           </Row>

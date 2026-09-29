@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
+import Metaninho from '../components/Metaninho';
 
 const Opportunities = () => {
   const { language } = useLanguage();
@@ -60,7 +61,7 @@ const Opportunities = () => {
         ) : items.length === 0 ? (
           <Row className="justify-content-center text-center">
             <Col lg={6}>
-              <i className="bi bi-briefcase text-success mobile-empty-icon" style={{ fontSize: '4rem', opacity: 0.5 }}></i>
+              <Metaninho pose="tranquilo" size={140} />
               <p className="lead text-muted mt-3">{labels.empty}</p>
             </Col>
           </Row>

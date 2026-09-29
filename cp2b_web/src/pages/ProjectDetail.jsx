@@ -6,6 +6,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { fetchProjectArticle, fetchProjects } from '../services/api';
 import ArticleLayout from '../components/ArticleLayout';
 import SeoHead from '../components/SeoHead';
+import Metaninho from '../components/Metaninho';
 
 const ProjectsDetail = () => {
   const DOMAIN = 'https://cp2b.unicamp.br';
@@ -105,6 +106,7 @@ const ProjectsDetail = () => {
   if (!article) {
     return (
       <Container className="py-5 text-center">
+        <Metaninho pose="surpreso" size={140} className="d-block mx-auto mb-3" />
         <h2>{labels.notFound}</h2>
         <Button as={Link} to="/entrevistas" variant="primary" className="mt-3">
           {labels.backBtn}

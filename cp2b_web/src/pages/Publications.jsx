@@ -13,6 +13,7 @@ import ListPresence from '../components/ListPresence';
 import { safeHref } from '../utils/safeUrl';
 import { useUrlChoice, useUrlText } from '../hooks/useUrlFilters';
 import useListMotion, { listItemMotion } from '../hooks/useListMotion';
+import Metaninho from '../components/Metaninho';
 
 // Filtros no link, para compartilhar a busca: ?ano=&tipo=&busca=. Valor fora
 // do esperado é ignorado e o filtro volta a "Todos". O ano só precisa ter
@@ -322,6 +323,7 @@ const Publications = () => {
                 className="text-center text-muted"
                 {...listItemMotion(animateList, { layoutDependency: publications })}
               >
+                <Metaninho pose="curioso" size={130} className="d-block mx-auto mb-3" />
                 {language === 'pt' ? 'Nenhuma publicação encontrada' : 'No publications found'}
               </motion.p>
             )}

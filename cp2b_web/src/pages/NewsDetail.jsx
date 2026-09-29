@@ -6,6 +6,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { fetchNewsArticle, fetchNews } from '../services/api';
 import ArticleLayout from '../components/ArticleLayout';
 import SeoHead from '../components/SeoHead';
+import Metaninho from '../components/Metaninho';
 
 const NewsDetail = () => {
   const DOMAIN = 'https://cp2b.unicamp.br';
@@ -103,6 +104,7 @@ const NewsDetail = () => {
   if (!article) {
     return (
       <Container className="py-5 text-center">
+        <Metaninho pose="surpreso" size={140} className="d-block mx-auto mb-3" />
         <h2>{labels.notFound}</h2>
         <Button as={Link} to="/noticias" variant="primary" className="mt-3">
           {labels.backBtn}

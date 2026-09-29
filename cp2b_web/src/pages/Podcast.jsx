@@ -7,6 +7,7 @@ import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import api from '../services/api';
+import Metaninho from '../components/Metaninho';
 
 // Extract Spotify episode ID from various URL formats
 const getSpotifyEmbedUrl = (url) => {
@@ -85,7 +86,7 @@ const Podcast = () => {
           ) : episodes.length === 0 ? (
             <Row className="justify-content-center">
               <Col lg={7} className="text-center text-muted py-4 py-md-5">
-                <i className="bi bi-mic-mute" style={{ fontSize: '3rem', opacity: 0.3 }}></i>
+                <Metaninho pose="tranquilo" size={130} />
                 <p className="mt-3">{labels.empty}</p>
               </Col>
             </Row>

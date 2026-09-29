@@ -1,13 +1,21 @@
 import { Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { FaSpotify, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
 import useSiteSettings from '../hooks/useSiteSettings';
 import NewsletterSignup from './NewsletterSignup';
 import { safeHref } from '../utils/safeUrl';
+import useScrollReveal from '../hooks/useScrollReveal';
+import Metaninho from './Metaninho';
 
 const Footer = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  // Nas páginas internas o Metaninho espia por cima da borda rasgada do
+  // rodapé e sobe quando o rodapé entra na tela (a Home fica como está).
+  const peekRef = useRef(null);
+  const peek = useScrollReveal(peekRef, { amount: 0.5 });
   const { contact, social, footer: footerSettings } = useSiteSettings();
 
   const labels = {
@@ -79,6 +87,11 @@ const Footer = () => {
 
   return (
     <footer className="site-footer pt-5 mt-5">
+      {pathname !== '/' && (
+        <span ref={peekRef} className="footer-metaninho" data-reveal={peek} aria-hidden="true">
+          <Metaninho pose="feliz" size={124} />
+        </span>
+      )}
       <Container>
         <Row className="pb-4 mb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
           <Col md={12}>
