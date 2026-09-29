@@ -51,6 +51,9 @@
   --paper: #FBF8F0;
   --paper-kraft: #F3EAD8;
   --paper-line: #E6DCC6;
+  /* Preenchimento leve sobre o papel (controles segmentados, citações, faixas
+     de fase): o lugar do cinza --gray-100, que destoava do papel. */
+  --paper-soft: #F3ECDD;
   --paper-ink: #1B2A33;
   --paper-tape: rgb(240 219 164 / .85);
   --paper-shadow: 2px 3px 0 rgb(59 42 28 / .12);

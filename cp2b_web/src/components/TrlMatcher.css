@@ -51,7 +51,7 @@
 }
 
 .trl-match__phase:nth-child(2) { background: color-mix(in srgb, var(--cp2b-verde) 12%, var(--cp2b-branco)); }
-.trl-match__phase:nth-child(3) { background: var(--gray-100); }
+.trl-match__phase:nth-child(3) { background: var(--paper-soft); }
 
 .trl-match__phase-range {
   display: block;
