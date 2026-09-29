@@ -1402,8 +1402,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 .article-fapesp-category {
   font-size: 0.75rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.01em;
   margin-bottom: 0.5rem;
   margin-top: 0;
   font-family: var(--font-main);
@@ -1484,7 +1483,7 @@ body.high-contrast .navbar .dropdown-item:hover {
   display: block;
   font-size: 0.8rem;
   color: #555;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   margin: 0.5rem 0;
 }
 
@@ -1492,8 +1491,7 @@ body.high-contrast .navbar .dropdown-item:hover {
   display: block;
   font-size: 0.75rem;
   color: #777;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.01em;
   margin: 0.5rem 0;
 }
 
@@ -1572,8 +1570,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 .article-fapesp-sources-label {
   font-size: 0.75rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.01em;
   color: #888;
   margin-bottom: 0.75rem;
 }
@@ -1616,8 +1613,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 .article-related-heading {
   font-size: 0.8rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.01em;
   color: #888;
   margin-bottom: 1.5rem;
   border-bottom: 2px solid var(--cp2b-border);
@@ -1667,10 +1663,9 @@ body.high-contrast .navbar .dropdown-item:hover {
 }
 
 .article-related-category {
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.01em;
   display: block;
   margin-bottom: 0.35rem;
   font-family: var(--font-main);
@@ -1691,7 +1686,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 .article-related-date {
   font-size: 0.75rem;
   color: #888;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 
 /* ---- Responsive: Tablet (768–1024px) — hide sidebar & spacer ---- */

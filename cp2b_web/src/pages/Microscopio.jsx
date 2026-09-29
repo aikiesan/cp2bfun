@@ -24,13 +24,13 @@ const Microscopio = () => {
 
   const labels = {
     pt: {
-      tag: 'MICROSCÓPIO DE IDEIAS',
+      tag: 'Microscópio de Ideias',
       title: 'Microscópio de Ideias',
       empty: 'Nenhum artigo disponível no momento.',
       readMore: 'Saiba mais',
     },
     en: {
-      tag: 'MICROSCÓPIO DE IDEIAS',
+      tag: 'Microscópio de Ideias',
       title: 'Microscópio de Ideias',
       empty: 'No articles available at the moment.',
       readMore: 'Read more',
@@ -110,7 +110,7 @@ const Microscopio = () => {
                     </Card.Text>
                     <div className="d-flex justify-content-between align-items-center mt-3">
                       {item.date_display && (
-                        <small className="text-muted" style={{ fontFamily: 'var(--font-mono)' }}>
+                        <small className="text-muted">
                           {item.date_display}
                         </small>
                       )}

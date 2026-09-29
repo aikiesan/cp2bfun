@@ -63,9 +63,9 @@
   padding: clamp(1.25rem, 0.75rem + 2.5vw, 2.5rem);
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-2xl);
-  box-shadow: 0 24px 60px -30px rgb(30 62 76 / .3), var(--shadow-sm);
-  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--paper-shadow);
+  overflow: visible;
   scroll-margin-top: 6rem;
 }
 
@@ -165,8 +165,7 @@
     margin-top: 0.2rem;
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+    letter-spacing: 0.01em;
     color: var(--cap-axis);
   }
 }
@@ -191,11 +190,10 @@
 .cap-contact__kicker {
   display: block;
   margin: 0 0 0.3rem;
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0;
   color: var(--cap-axis);
 }
 
@@ -248,10 +246,11 @@
 .cap-modules__list li::before {
   content: counter(cap-module, decimal-leading-zero);
   flex-shrink: 0;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-size: 0.78rem;
   font-weight: 700;
   color: var(--cap-axis);
+  font-variant-numeric: tabular-nums;
 }
 
 .cap-modules__note { margin: 0.75rem 0 0; font-size: 0.85rem; color: var(--text-secondary); }
@@ -381,7 +380,8 @@
   border-radius: 50%;
   background: var(--brand-primary);
   color: #fff;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
   font-weight: 700;
 }
 
@@ -494,11 +494,12 @@
 .cap-outline__num {
   flex-shrink: 0;
   min-width: 1.75rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-display);
   font-size: 0.95rem;
   font-weight: 700;
   line-height: 1.5;
   color: var(--cap-axis);
+  font-variant-numeric: tabular-nums;
 }
 
 .cap-outline__body { min-width: 0; }
@@ -577,7 +578,7 @@
 .cap-contact__email {
   display: block;
   margin-top: 0.6rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.85rem;
   color: rgb(255 255 255 / .7);
   overflow-wrap: anywhere;

@@ -33,6 +33,7 @@ const Capacitacao = () => {
         eyebrow={t.hero.eyebrow}
         title={t.hero.title}
         subtitle={t.hero.subtitle}
+        photo={{ src: '/assets/fotos/capacitacao-auditorio.webp', width: 700, height: 500 }}
         className="page-hero--overlap"
       >
         <div className="cap-hero__actions">

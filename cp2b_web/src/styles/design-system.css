@@ -322,9 +322,9 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   display: flex;
   align-items: center;
   gap: 1rem;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.75rem;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.01em;
   color: rgba(255, 255, 255, 0.85);
 }
 
@@ -379,10 +379,10 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
 
 /* Lightbox */
 .lightbox-counter {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   color: rgba(255, 255, 255, 0.85);
   font-size: 0.85rem;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.01em;
 }
 
 /* ---------- Events ---------- */
@@ -618,6 +618,18 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   font-size: 0.8rem;
   color: rgba(255, 255, 255, 0.55);
 }
+
+/* ---------- Newsletter ----------
+   O título é uma etiqueta à mão, como os das colunas do rodapé. */
+.newsletter-signup__title {
+  font-family: var(--font-hand);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--cp2b-lima);
+}
+
+.newsletter-signup__title--light { color: var(--cp2b-verde-escuro); }
 
 /* ---------- Newsletter band ---------- */
 .newsletter-band {
@@ -1245,6 +1257,14 @@ main[data-page="inner"] .mono-label {
   line-height: 1.15;
   letter-spacing: 0;
   text-transform: none;
+}
+
+/* Rótulo de campo de formulário é função, não enfeite: fica em Neulis. */
+main[data-page="inner"] label.mono-label {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.4;
 }
 
 main[data-page="inner"] .card-meta {

@@ -24,16 +24,16 @@ describe('Contact', () => {
   it('renders the contact form', () => {
     renderWithProviders(<Contact />);
     expect(screen.getByText('Entre em Contato')).toBeInTheDocument();
-    expect(screen.getByText('NOME')).toBeInTheDocument();
-    expect(screen.getByText('E-MAIL')).toBeInTheDocument();
-    expect(screen.getByText('MENSAGEM')).toBeInTheDocument();
+    expect(screen.getByText('Nome')).toBeInTheDocument();
+    expect(screen.getByText('E-mail')).toBeInTheDocument();
+    expect(screen.getByText('Mensagem')).toBeInTheDocument();
   });
 
   it('shows validation error for empty fields', async () => {
     const user = userEvent.setup();
     renderWithProviders(<Contact />);
 
-    await user.click(screen.getByText('ENVIAR MENSAGEM'));
+    await user.click(screen.getByText('Enviar mensagem'));
     expect(screen.getByText('Preencha todos os campos.')).toBeInTheDocument();
   });
 
@@ -48,7 +48,7 @@ describe('Contact', () => {
     await user.type(nameInput, 'Test User');
     await user.type(emailInput, 'invalid-email');
     await user.type(messageInput, 'Test message');
-    await user.click(screen.getByText('ENVIAR MENSAGEM'));
+    await user.click(screen.getByText('Enviar mensagem'));
 
     expect(screen.getByText('E-mail invalido.')).toBeInTheDocument();
   });
@@ -65,7 +65,7 @@ describe('Contact', () => {
     await user.type(nameInput, 'Test User');
     await user.type(emailInput, 'test@example.com');
     await user.type(messageInput, 'Test message');
-    await user.click(screen.getByText('ENVIAR MENSAGEM'));
+    await user.click(screen.getByText('Enviar mensagem'));
 
     await waitFor(() => {
       expect(screen.getByText('Mensagem enviada com sucesso!')).toBeInTheDocument();
@@ -84,7 +84,7 @@ describe('Contact', () => {
     await user.type(nameInput, 'Test User');
     await user.type(emailInput, 'test@example.com');
     await user.type(messageInput, 'Test message');
-    await user.click(screen.getByText('ENVIAR MENSAGEM'));
+    await user.click(screen.getByText('Enviar mensagem'));
 
     await waitFor(() => {
       expect(screen.getByText('Erro ao enviar mensagem. Tente novamente.')).toBeInTheDocument();

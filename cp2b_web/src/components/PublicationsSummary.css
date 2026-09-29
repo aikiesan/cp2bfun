@@ -18,17 +18,23 @@
     radial-gradient(circle, color-mix(in srgb, var(--cp2b-verde-escuro) 7%, transparent) 1px, transparent 1.4px) 0 0 / 22px 22px,
     var(--bg-surface);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-2xl);
-  box-shadow: 0 24px 60px -30px rgb(30 62 76 / .3), var(--shadow-sm);
-  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--paper-shadow);
+  overflow: visible;
 }
 
+/* Um pedaço de fita crepe prende o painel à página (no lugar do filete). */
 .pubs-summary::before {
   content: '';
   position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  background: linear-gradient(90deg, var(--cp2b-verde-escuro), var(--cp2b-verde) 45%, var(--cp2b-lima));
+  top: -0.7rem;
+  left: 50%;
+  z-index: 1;
+  width: 7rem;
+  height: 1.4rem;
+  background: var(--paper-tape);
+  transform: translateX(-50%) rotate(-2deg);
+  pointer-events: none;
 }
 
 .pubs-summary__head {
@@ -41,11 +47,12 @@
 
 .pubs-summary__eyebrow {
   display: block;
-  font-size: 0.64rem;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--cp2b-verde);
+  letter-spacing: 0;
+  color: var(--cp2b-verde-escuro);
+  line-height: 1.1;
 }
 
 .pubs-summary__title {
@@ -84,11 +91,10 @@
 
 .pubs-total__lbl {
   margin-top: 0.15rem;
-  font-size: 0.62rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--cp2b-verde);
+  letter-spacing: 0.01em;
+  color: var(--cp2b-verde-escuro);
 }
 
 /* ---------- métricas ---------- */
@@ -180,11 +186,12 @@
 }
 
 .pubs-sdgs__lbl {
-  font-size: 0.64rem;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--cp2b-verde);
+  letter-spacing: 0;
+  color: var(--cp2b-verde-escuro);
+  line-height: 1.1;
 }
 
 .pubs-sdgs ul { display: flex; flex-wrap: wrap; gap: 0.6rem 1.25rem; list-style: none; margin: 0; padding: 0; }

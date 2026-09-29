@@ -20,7 +20,7 @@ const content = {
         'O CP2b conecta ciência de ponta às necessidades do mercado, oferecendo infraestrutura laboratorial da bancada à escala piloto (TRL 2 a 6), serviços especializados e modelos flexíveis de cooperação tecnológica.',
     },
     modalitiesSection: {
-      tag: 'MODELOS DE COOPERAÇÃO',
+      tag: 'Modelos de cooperação',
       title: 'Modalidades de Parceria',
       subtitle: 'Estruturas contratuais e modelos de cooperação adaptados à maturidade e necessidade de cada parceiro.',
       items: [
@@ -63,7 +63,7 @@ const content = {
       ],
     },
     servicesSection: {
-      tag: 'CAPACIDADES ANALÍTICAS',
+      tag: 'Capacidades analíticas',
       title: 'Serviços Técnicos Especializados',
       subtitle: '15 capacidades analíticas e operacionais distribuídas nos 3 laboratórios centrais do CP2b.',
       allLabs: 'Todos os Laboratórios',
@@ -105,7 +105,7 @@ const content = {
       contact: 'Fale com o CP2b',
     },
     funnelSection: {
-      tag: 'PASSO A PASSO',
+      tag: 'Passo a passo',
       title: 'Por Onde Começar',
       subtitle: 'O fluxo ágil para transformar uma demanda tecnológica em um projeto concreto com o CP2b.',
       steps: [
@@ -131,7 +131,7 @@ const content = {
         'CP2b connects cutting-edge science to market demands, providing laboratory infrastructure from bench to pilot scale (TRL 2 to 6), specialized technical services, and flexible technological cooperation models.',
     },
     modalitiesSection: {
-      tag: 'COOPERATION MODELS',
+      tag: 'Cooperation models',
       title: 'Partnership Modalities',
       subtitle: 'Contractual frameworks tailored to the maturity and requirements of each partner.',
       items: [
@@ -174,7 +174,7 @@ const content = {
       ],
     },
     servicesSection: {
-      tag: 'ANALYTICAL CAPABILITIES',
+      tag: 'Analytical capabilities',
       title: 'Specialized Technical Services',
       subtitle: '15 analytical and operational capabilities available across CP2b core laboratories.',
       allLabs: 'All Laboratories',
@@ -216,7 +216,7 @@ const content = {
       contact: 'Talk to CP2b',
     },
     funnelSection: {
-      tag: 'STEP BY STEP',
+      tag: 'Step by step',
       title: 'How to Get Started',
       subtitle: 'A streamlined pathway to turn a technological need into an active collaborative project with CP2b.',
       steps: [

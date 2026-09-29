@@ -75,7 +75,7 @@ const News = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
-      <PageHero eyebrow={language === 'pt' ? 'Comunicação' : 'Communication'} title={labels.title} />
+      <PageHero eyebrow={language === 'pt' ? 'Comunicação' : 'Communication'} title={labels.title} photo={{ src: '/assets/fotos/noticias-forum.webp', width: 700, height: 500 }} />
       <Container className="py-4 py-md-5">
 
       {/* Featured News - FAPESP Style */}
@@ -93,7 +93,7 @@ const News = () => {
             </h2>
             <p className="text-muted mb-3 mb-md-4">{featured.description}</p>
             <div className="mt-auto d-flex justify-content-between align-items-center">
-              <span className="small text-muted" style={{ fontFamily: 'var(--font-mono)' }}>{featured.date}</span>
+              <span className="small text-muted">{featured.date}</span>
               <Link to={featured.link} className="fw-bold text-primary text-decoration-none">{labels.readMore} +</Link>
             </div>
           </Col>
@@ -115,7 +115,7 @@ const News = () => {
                   <Link to={item.link} className="text-decoration-none text-dark hover-blue">{item.title}</Link>
                 </Card.Title>
                 <div className="d-flex justify-content-between align-items-center mt-3">
-                   <span className="x-small text-muted" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{item.date}</span>
+                   <span className="x-small text-muted" style={{ fontSize: '0.75rem' }}>{item.date}</span>
                 </div>
               </Card.Body>
             </Card>

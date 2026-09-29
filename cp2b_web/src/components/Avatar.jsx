@@ -68,7 +68,7 @@ const Avatar = ({ photo, name = '', alt, axisId, size = 96, className = '', styl
         justifyContent: 'center',
         fontSize: isAxisBadge ? `${Math.round(size * 0.44)}px` : `${fontSize}px`,
         fontWeight: 700,
-        fontFamily: isAxisBadge ? 'var(--font-heading, var(--font-sans))' : 'var(--font-mono, monospace)',
+        fontFamily: isAxisBadge ? 'var(--font-heading, var(--font-sans))' : 'var(--font-sans)',
         flexShrink: 0,
         letterSpacing: isAxisBadge ? '-0.5px' : '0.5px',
         userSelect: 'none',

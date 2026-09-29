@@ -18,7 +18,7 @@ const Contact = () => {
 
   const labels = {
     pt: {
-      tag: 'FALE CONOSCO',
+      tag: 'Fale conosco',
       title: 'Entre em Contato',
       address: 'Endereço',
       direct: 'Contatos Diretos',
@@ -26,10 +26,10 @@ const Contact = () => {
       coordination: 'Coordenação',
       phone: 'Telefone',
       sendMsg: 'Envie uma mensagem',
-      formName: 'NOME',
-      formEmail: 'E-MAIL',
-      formMsg: 'MENSAGEM',
-      formBtn: 'ENVIAR MENSAGEM',
+      formName: 'Nome',
+      formEmail: 'E-mail',
+      formMsg: 'Mensagem',
+      formBtn: 'Enviar mensagem',
       sending: 'Enviando...',
       successMsg: 'Mensagem enviada com sucesso!',
       errorMsg: 'Erro ao enviar mensagem. Tente novamente.',
@@ -37,7 +37,7 @@ const Contact = () => {
       invalidEmail: 'E-mail invalido.',
     },
     en: {
-      tag: 'GET IN TOUCH',
+      tag: 'Get in touch',
       title: 'Contact Us',
       address: 'Address',
       direct: 'Direct Contacts',
@@ -45,10 +45,10 @@ const Contact = () => {
       coordination: 'Coordination',
       phone: 'Phone',
       sendMsg: 'Send a message',
-      formName: 'NAME',
-      formEmail: 'E-MAIL',
-      formMsg: 'MESSAGE',
-      formBtn: 'SEND MESSAGE',
+      formName: 'Name',
+      formEmail: 'E-mail',
+      formMsg: 'Message',
+      formBtn: 'Send message',
       sending: 'Sending...',
       successMsg: 'Message sent successfully!',
       errorMsg: 'Failed to send message. Please try again.',
@@ -92,7 +92,7 @@ const Contact = () => {
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-    <PageHero eyebrow={labels.tag} title={labels.title} />
+    <PageHero eyebrow={labels.tag} title={labels.title} photo={{ src: '/assets/fotos/contato-banner.webp', width: 700, height: 500 }} />
     <Container className="py-4 py-md-5">
 
       <Row className="justify-content-center g-4 g-lg-5">
@@ -140,7 +140,7 @@ const Contact = () => {
 
             <Form noValidate onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
-                <Form.Label htmlFor = "name" className="mono-label text-muted">{labels.formName}</Form.Label>
+                <Form.Label htmlFor = "name" className="small fw-semibold text-secondary">{labels.formName}</Form.Label>
                 <Form.Control
                   type="text"
                   name="name"
@@ -153,7 +153,7 @@ const Contact = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label htmlFor = "email" className="mono-label text-muted">{labels.formEmail}</Form.Label>
+                <Form.Label htmlFor = "email" className="small fw-semibold text-secondary">{labels.formEmail}</Form.Label>
                 <Form.Control
                   type="email"
                   name="email"
@@ -166,7 +166,7 @@ const Contact = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-4">
-                <Form.Label htmlFor = "message"className="mono-label text-muted">{labels.formMsg}</Form.Label>
+                <Form.Label htmlFor = "message"className="small fw-semibold text-secondary">{labels.formMsg}</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={5}
