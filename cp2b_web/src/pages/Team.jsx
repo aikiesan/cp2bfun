@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { Container, Row, Col, Card, Form, InputGroup } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
@@ -15,7 +15,10 @@ import PageHero from '../components/PageHero';
 import Avatar from '../components/Avatar';
 import ResearcherModal from '../components/ResearcherModal';
 import TeamProfile from '../components/TeamProfile';
+import ListPresence from '../components/ListPresence';
 import { computeTeamProfile } from '../utils/teamProfile';
+import { useUrlChoice, useUrlText } from '../hooks/useUrlFilters';
+import useListMotion, { listItemMotion } from '../hooks/useListMotion';
 
 // The API still stores people under the old ranks; the page no longer
 // renders them as ranks, so this is only used to walk the response.
@@ -123,8 +126,9 @@ const Team = () => {
   const t = menuLabels[language];
 
   const [apiMembers, setApiMembers] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [searchQuery, setSearchQuery] = useState('');
+  // A busca vive no link (?busca=), para poder ser compartilhada. A categoria
+  // também, mais abaixo: ela só pode ser validada depois dos grupos montados.
+  const [searchQuery, setSearchQuery] = useUrlText('busca');
   // One modal for the whole page, holding whichever person was clicked.
   const [selectedMember, setSelectedMember] = useState(null);
 
@@ -173,14 +177,33 @@ const Team = () => {
 
   // Group horizontally by Eixo, not by rank — see utils/teamGroups.
   const allGroups = useMemo(() => {
-    return groupTeamByAxis(members, language).map((group) => ({
-      ...group,
-      members: group.members.map((m) => ({
-        ...m,
-        photo: m.photo || getTeamPhoto(m.name) || null,
-      })),
-    }));
+    return groupTeamByAxis(members, language).map((group) => {
+      // Chave estável entre filtragens. Com o índice na chave, cada busca
+      // trocava a chave dos cartões seguintes, que remontavam em vez de
+      // deslizar até o novo lugar. O sufixo só aparece se um nome se repetir
+      // dentro do mesmo grupo.
+      const seen = new Map();
+      return {
+        ...group,
+        members: group.members.map((m) => {
+          const repeat = seen.get(m.name) || 0;
+          seen.set(m.name, repeat + 1);
+          return {
+            ...m,
+            photo: m.photo || getTeamPhoto(m.name) || null,
+            cardKey: `${group.category}-${m.name}${repeat ? `-${repeat}` : ''}`,
+          };
+        }),
+      };
+    });
   }, [members, language]);
+
+  // ?categoria= aceita só os grupos que a página de fato mostra; qualquer
+  // outro valor (link antigo, digitado errado) abre em "Todos".
+  const [selectedCategory, setSelectedCategory] = useUrlChoice('categoria', {
+    fallback: 'all',
+    isValid: (value) => allGroups.some((group) => group.category === value),
+  });
 
   // Counts per category
   const categoryCounts = useMemo(() => {
@@ -218,6 +241,17 @@ const Team = () => {
   const totalFilteredCount = useMemo(() => {
     return filteredGroups.reduce((acc, g) => acc + g.members.length, 0);
   }, [filteredGroups]);
+
+  // Ao filtrar, grupos e cartões deslizam para o novo lugar e os que saem
+  // somem aos poucos (hooks/useListMotion). Só a troca de filtro dispara a
+  // medição: carregar a API, trocar de idioma ou abrir um perfil não mexem
+  // nos cartões. A chegada da API troca a fonte da lista (estática → API) e
+  // remonta a fronteira de presença (resetKey): a lista nova entra em
+  // repouso, como a primeira, sem animar a diferença entre as duas.
+  const listRef = useRef(null);
+  const animateList = useListMotion(listRef);
+  const layoutKey = `${selectedCategory}|${searchQuery.trim().toLowerCase()}`;
+  const listSource = apiMembers ? 'api' : 'static';
 
   return (
     <>
@@ -272,7 +306,9 @@ const Team = () => {
                 </InputGroup>
               </Col>
               <Col md={6} lg={7} className="text-md-end text-muted small">
-                <span className="mono-label">
+                {/* A contagem acompanha o filtro: anunciada ao leitor de tela,
+                    já que os cartões mudam fora do campo em foco. */}
+                <span className="mono-label" aria-live="polite">
                   {language === 'pt'
                     ? `${totalFilteredCount} ${totalFilteredCount === 1 ? 'pesquisador' : 'pesquisadores'}`
                     : `${totalFilteredCount} ${totalFilteredCount === 1 ? 'researcher' : 'researchers'}`}
@@ -303,6 +339,7 @@ const Team = () => {
                   transition: 'all 0.2s ease',
                   borderColor: selectedCategory === 'all' ? 'transparent' : 'var(--gray-300)',
                 }}
+                aria-pressed={selectedCategory === 'all'}
                 onClick={() => setSelectedCategory('all')}
               >
                 <span>{language === 'pt' ? 'Todos' : 'All'}</span>
@@ -335,6 +372,7 @@ const Team = () => {
                       transition: 'all 0.2s ease',
                       borderColor: isSelected ? 'transparent' : 'var(--gray-300)',
                     }}
+                    aria-pressed={isSelected}
                     onClick={() => setSelectedCategory(cat.category)}
                   >
                     <span>{label}</span>
@@ -353,143 +391,164 @@ const Team = () => {
           </div>
 
           {/* Members by Group */}
-          {filteredGroups.length > 0 ? (
-            filteredGroups.map((group) => (
-              <section key={group.category} className="mb-4 mb-md-5">
-                <div className="d-flex align-items-baseline justify-content-between border-bottom pb-2 mb-3 mb-md-4">
-                  <h3
-                    className="fw-bold mb-0 text-uppercase fs-6"
-                    style={{ letterSpacing: '1px', color: 'var(--text-primary)' }}
-                  >
-                    {group.title}
-                  </h3>
-                  <span className="mono-label text-muted small">
-                    {group.members.length}{' '}
-                    {language === 'pt'
-                      ? group.members.length === 1 ? 'membro' : 'membros'
-                      : group.members.length === 1 ? 'member' : 'members'}
-                  </span>
-                </div>
+          <div ref={listRef} className="list-motion">
+            <ListPresence animate={animateList} resetKey={listSource}>
+              {filteredGroups.map((group, groupIndex) => (
+                <motion.section
+                  key={group.category}
+                  className="mb-4 mb-md-5"
+                  {...listItemMotion(animateList, { index: groupIndex, layoutDependency: layoutKey })}
+                >
+                  <div className="d-flex align-items-baseline justify-content-between border-bottom pb-2 mb-3 mb-md-4">
+                    <h3
+                      className="fw-bold mb-0 text-uppercase fs-6"
+                      style={{ letterSpacing: '1px', color: 'var(--text-primary)' }}
+                    >
+                      {group.title}
+                    </h3>
+                    <span className="mono-label text-muted small">
+                      {group.members.length}{' '}
+                      {language === 'pt'
+                        ? group.members.length === 1 ? 'membro' : 'membros'
+                        : group.members.length === 1 ? 'member' : 'members'}
+                    </span>
+                  </div>
 
-                {group.blurb && (
-                  <p className="text-muted small mb-3" style={{ maxWidth: '62ch' }}>
-                    {group.blurb}
-                  </p>
-                )}
+                  {group.blurb && (
+                    <p className="text-muted small mb-3" style={{ maxWidth: '62ch' }}>
+                      {group.blurb}
+                    </p>
+                  )}
 
-                <Row className="g-2 g-sm-3 g-md-4">
-                  {group.members.map((member, idx) => (
-                    <Col key={`${group.category}-${member.name}-${idx}`} xs={6} sm={6} lg={4} xl={3}>
-                      <Card
-                        className="h-100 p-2 p-sm-3 border-0 shadow-sm hover-lift team-member-card"
-                        style={{
-                          borderRadius: 'var(--radius-lg, 16px)',
-                          background: 'var(--bg-surface, #ffffff)',
-                          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                        }}
-                      >
-                        {/* The card used to be a dead end. It now opens the
-                            person's profile, so it has to be a real button. */}
-                        <button
-                          type="button"
-                          aria-haspopup="dialog"
-                          onClick={() => setSelectedMember(member)}
-                          className="d-flex align-items-center gap-2 gap-sm-3 team-member-inner team-member-trigger"
+                  <Row className="g-2 g-sm-3 g-md-4 list-motion">
+                    <ListPresence animate={animateList}>
+                      {group.members.map((member, idx) => (
+                        <Col
+                          as={motion.div}
+                          key={member.cardKey}
+                          xs={6}
+                          sm={6}
+                          lg={4}
+                          xl={3}
+                          {...listItemMotion(animateList, { index: idx, layoutDependency: layoutKey })}
                         >
-                          <Avatar
-                            photo={member.photo}
-                            name={member.name}
-                            size={64}
-                            className="team-avatar"
-                          />
-                          <div style={{ minWidth: 0 }} className="flex-grow-1">
-                            <h4
-                              className="fw-bold mb-1 team-member-name"
-                              title={member.name}
-                              style={{
-                                color: 'var(--text-primary, #222)',
-                                fontSize: '0.92rem',
-                                lineHeight: 1.25,
-                                wordBreak: 'break-word',
-                              }}
+                          <Card
+                            className="h-100 p-2 p-sm-3 border-0 shadow-sm hover-lift team-member-card"
+                            style={{
+                              borderRadius: 'var(--radius-lg, 16px)',
+                              background: 'var(--bg-surface, #ffffff)',
+                              transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                            }}
+                          >
+                            {/* The card used to be a dead end. It now opens the
+                                person's profile, so it has to be a real button. */}
+                            <button
+                              type="button"
+                              aria-haspopup="dialog"
+                              onClick={() => setSelectedMember(member)}
+                              className="d-flex align-items-center gap-2 gap-sm-3 team-member-inner team-member-trigger"
                             >
-                              {member.name}
-                            </h4>
-                            {/* Duas formas de anunciar a coordenação, porque há
-                                dois casos. Quando o próprio cargo já diz
-                                ("Coordenador do Eixo 1"), ele vira a pílula.
-                                Quando não diz — Bruna e Renata, cujo cargo é
-                                "Diretora" e "Vice-diretora" mas que coordenam
-                                os eixos 6 e 7 —, o cargo fica como está e uma
-                                pílula a mais nomeia a coordenação.
+                              <Avatar
+                                photo={member.photo}
+                                name={member.name}
+                                size={64}
+                                className="team-avatar"
+                              />
+                              <div style={{ minWidth: 0 }} className="flex-grow-1">
+                                <h4
+                                  className="fw-bold mb-1 team-member-name"
+                                  title={member.name}
+                                  style={{
+                                    color: 'var(--text-primary, #222)',
+                                    fontSize: '0.92rem',
+                                    lineHeight: 1.25,
+                                    wordBreak: 'break-word',
+                                  }}
+                                >
+                                  {member.name}
+                                </h4>
+                                {/* Duas formas de anunciar a coordenação, porque há
+                                    dois casos. Quando o próprio cargo já diz
+                                    ("Coordenador do Eixo 1"), ele vira a pílula.
+                                    Quando não diz — Bruna e Renata, cujo cargo é
+                                    "Diretora" e "Vice-diretora" mas que coordenam
+                                    os eixos 6 e 7 —, o cargo fica como está e uma
+                                    pílula a mais nomeia a coordenação.
 
-                                O destaque é só visual de propósito: o texto diz
-                                o que a pílula significa, então a informação não
-                                depende da cor nem da borda para ser entendida
-                                (WCAG 1.4.1). Sem cor nova — a mesma
-                                var(--brand-primary) que o cargo já usava. */}
-                            {member.coordinatesAxis && !isCoordinator(member) && (
-                              <div
-                                className="small fw-semibold mb-1 team-member-role--coordinator"
-                                style={{ ...coordinatorPillStyle, color: 'var(--brand-primary, #00573A)' }}
-                              >
-                                {(COORDINATION_LABEL[language] || COORDINATION_LABEL.pt)(
-                                  member.coordinatesAxis
+                                    O destaque é só visual de propósito: o texto diz
+                                    o que a pílula significa, então a informação não
+                                    depende da cor nem da borda para ser entendida
+                                    (WCAG 1.4.1). Sem cor nova — a mesma
+                                    var(--brand-primary) que o cargo já usava. */}
+                                {member.coordinatesAxis && !isCoordinator(member) && (
+                                  <div
+                                    className="small fw-semibold mb-1 team-member-role--coordinator"
+                                    style={{ ...coordinatorPillStyle, color: 'var(--brand-primary, #00573A)' }}
+                                  >
+                                    {(COORDINATION_LABEL[language] || COORDINATION_LABEL.pt)(
+                                      member.coordinatesAxis
+                                    )}
+                                  </div>
                                 )}
+                                <div
+                                  className={`small fw-semibold mb-1 team-member-role${
+                                    member.coordinatesAxis && isCoordinator(member)
+                                      ? ' team-member-role--coordinator'
+                                      : ''
+                                  }`}
+                                  style={{
+                                    color: 'var(--brand-primary, #00573A)',
+                                    fontSize: '0.75rem',
+                                    lineHeight: 1.25,
+                                    ...(member.coordinatesAxis && isCoordinator(member)
+                                      ? coordinatorPillStyle
+                                      : null),
+                                  }}
+                                >
+                                  {member.role}
+                                </div>
+                                <div
+                                  className="text-muted small text-truncate team-member-inst"
+                                  title={member.institution}
+                                  style={{ fontSize: '0.75rem' }}
+                                >
+                                  {member.institution}
+                                </div>
                               </div>
-                            )}
-                            <div
-                              className={`small fw-semibold mb-1 team-member-role${
-                                member.coordinatesAxis && isCoordinator(member)
-                                  ? ' team-member-role--coordinator'
-                                  : ''
-                              }`}
-                              style={{
-                                color: 'var(--brand-primary, #00573A)',
-                                fontSize: '0.75rem',
-                                lineHeight: 1.25,
-                                ...(member.coordinatesAxis && isCoordinator(member)
-                                  ? coordinatorPillStyle
-                                  : null),
-                              }}
-                            >
-                              {member.role}
-                            </div>
-                            <div
-                              className="text-muted small text-truncate team-member-inst"
-                              title={member.institution}
-                              style={{ fontSize: '0.75rem' }}
-                            >
-                              {member.institution}
-                            </div>
-                          </div>
-                        </button>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
-              </section>
-            ))
-          ) : (
-            <div className="text-center py-5 text-muted">
-              <i className="bi bi-people fs-1 d-block mb-3 text-secondary" />
-              <h5>
-                {language === 'pt'
-                  ? 'Nenhum membro encontrado com os filtros selecionados.'
-                  : 'No team members found matching the selected filters.'}
-              </h5>
-              <button
-                type="button"
-                className="btn btn-outline-success btn-sm mt-3 rounded-pill px-4"
-                onClick={() => {
-                  setSelectedCategory('all');
-                  setSearchQuery('');
-                }}
-              >
-                {language === 'pt' ? 'Limpar filtros' : 'Reset filters'}
-              </button>
-            </div>
-          )}
+                            </button>
+                          </Card>
+                        </Col>
+                      ))}
+                    </ListPresence>
+                  </Row>
+                </motion.section>
+              ))}
+              {filteredGroups.length === 0 && (
+                <motion.div
+                  key="empty"
+                  className="text-center py-5 text-muted"
+                  {...listItemMotion(animateList, { layoutDependency: layoutKey })}
+                >
+                  <i className="bi bi-people fs-1 d-block mb-3 text-secondary" />
+                  <h5>
+                    {language === 'pt'
+                      ? 'Nenhum membro encontrado com os filtros selecionados.'
+                      : 'No team members found matching the selected filters.'}
+                  </h5>
+                  <button
+                    type="button"
+                    className="btn btn-outline-success btn-sm mt-3 rounded-pill px-4"
+                    onClick={() => {
+                      setSelectedCategory('all');
+                      setSearchQuery('');
+                    }}
+                  >
+                    {language === 'pt' ? 'Limpar filtros' : 'Reset filters'}
+                  </button>
+                </motion.div>
+              )}
+            </ListPresence>
+          </div>
         </Container>
       </motion.div>
 

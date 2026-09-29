@@ -1,9 +1,12 @@
+import { useRef, useState } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { FaArrowLeft, FaWhatsapp, FaTelegramPlane, FaLinkedinIn } from 'react-icons/fa';
 import { getCategoryColor } from '../utils/categoryColor';
 import { SafeHtml } from '../utils/sanitize.jsx';
 import RelatedPosts from './RelatedPosts';
+import ReadingProgress from './ReadingProgress';
+import './ArticleLayout.css';
 
 const ArticleLayout = ({
   article,
@@ -12,6 +15,11 @@ const ArticleLayout = ({
   backLabel,
   language,
 }) => {
+  // The reading column (title to share buttons) that the progress bar follows,
+  // and the photo whose load starts the opening zoom (see ArticleLayout.css).
+  const articleRef = useRef(null);
+  const [loadedHero, setLoadedHero] = useState(null);
+
   if (!article) return null;
 
   const { title, description, content, image, imagePosition, badge, badgeColor, date, author, imageCaption, tags } = article;
@@ -54,7 +62,7 @@ const ArticleLayout = ({
 
   return (
     <article className="article-fapesp-page py-5">
-      <Container style={{ maxWidth: '980px' }}>
+      <Container ref={articleRef} style={{ maxWidth: '980px' }}>
 
         {/* 1. Category tag */}
         {badge && (
@@ -74,12 +82,18 @@ const ArticleLayout = ({
         {/* 4. Hero image + optional caption */}
         {image && (
           <figure className="article-fapesp-figure">
-            <img
-              src={image}
-              alt={title}
-              className="article-fapesp-hero"
-              style={imagePosition ? { objectPosition: imagePosition } : undefined}
-            />
+            {/* The frame crops the photo while it zooms, so the box keeps its size.
+                A failed load also releases the starting pose. */}
+            <div className="article-hero-frame" data-loaded={loadedHero === image ? '' : undefined}>
+              <img
+                src={image}
+                alt={title}
+                className="article-fapesp-hero"
+                style={imagePosition ? { objectPosition: imagePosition } : undefined}
+                onLoad={() => setLoadedHero(image)}
+                onError={() => setLoadedHero(image)}
+              />
+            </div>
             {imageCaption && (
               <figcaption className="article-fapesp-caption">{imageCaption}</figcaption>
             )}
@@ -191,6 +205,10 @@ const ArticleLayout = ({
 
       {/* 8. Related posts (full-width section) */}
       <RelatedPosts posts={relatedPosts} language={language} />
+
+      {/* 9. Reading progress bar, portalled to <body>. Rendered after the
+          article so its ref is already attached when the bar starts tracking. */}
+      <ReadingProgress target={articleRef} />
 
     </article>
   );

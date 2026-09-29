@@ -13,6 +13,14 @@ describe('Publicações do Ano 1', () => {
     expect(document.querySelector('.pubs-total__num').textContent).toBe('25');
   });
 
+  it('says where the counts come from, in both languages', () => {
+    const { unmount } = renderWithProviders(<PublicationsSummary language="pt" />);
+    expect(screen.getByText(/Fonte: planilha de publicações do Ano 1 \(2025\)/)).toBeInTheDocument();
+    unmount();
+    renderWithProviders(<PublicationsSummary language="en" />);
+    expect(screen.getByText(/Source: Year 1 \(2025\) publications spreadsheet/)).toBeInTheDocument();
+  });
+
   it('only claims a target was exceeded when the count actually meets it', () => {
     publicationsYear1.metrics.filter((m) => m.goal).forEach((m) => {
       expect((m.count / publicationsYear1.total) * 100).toBeGreaterThanOrEqual(m.goal);

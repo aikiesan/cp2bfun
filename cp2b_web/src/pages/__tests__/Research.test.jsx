@@ -1,8 +1,9 @@
-import { describe, it, expect } from 'vitest';
-import { screen } from '@testing-library/react';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../test/utils';
 import Research from '../Research';
+import { wasteToEnergyFlow } from '../../data/content';
 
 describe('Research', () => {
   it('renders the research structure heading', () => {
@@ -96,5 +97,110 @@ describe('Research', () => {
     renderWithProviders(<Research />);
     expect(screen.queryByText('Infraestrutura Laboratorial')).toBeNull();
     expect(screen.queryByText('Planta Piloto para Bioenergia')).toBeNull();
+  });
+
+  describe('biogas chain band', () => {
+    const flow = wasteToEnergyFlow.pt;
+
+    afterEach(() => {
+      // The chip clicks below navigate; the other tests expect a clean URL.
+      window.history.replaceState(null, '', '/');
+      delete Element.prototype.scrollIntoView;
+      localStorage.clear();
+      vi.restoreAllMocks();
+    });
+
+    it('sits between the axis figure and the axis details, as a full-width band', () => {
+      renderWithProviders(<Research />);
+      const figure = document.querySelector('.axo');
+      const band = document.querySelector('section.w2e');
+      const details = document.getElementById('explorar-eixos');
+
+      expect(screen.getByRole('heading', { level: 2, name: flow.title })).toBeInTheDocument();
+      expect(figure.compareDocumentPosition(band) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(band.compareDocumentPosition(details) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      // Out of the page Container, so the dark band spans the whole width.
+      expect(band.parentElement.closest('.container')).toBeNull();
+    });
+
+    it('points every axis chip at /eixos?eixo=N#explorar-eixos, named from the page axes', () => {
+      renderWithProviders(<Research />);
+      const steps = document.querySelectorAll('.w2e-step');
+      expect(steps).toHaveLength(flow.steps.length);
+
+      steps.forEach((step, i) => {
+        const chips = within(step).getAllByRole('link');
+        expect(chips.map((chip) => chip.getAttribute('href'))).toEqual(
+          flow.steps[i].axes.map((id) => `/eixos?eixo=${id}#explorar-eixos`)
+        );
+      });
+      // Axis 5's chip: the title the axis figure shows, "Eixo 5 –" dropped.
+      const chip = within(steps[3]).getByRole('link');
+      expect(chip).toHaveTextContent('Eixo 5 Inovação em Bioprodutos na Cadeia do Biogás');
+    });
+
+    it('names the chips in English on the English page', () => {
+      localStorage.setItem('cp2b_lang', 'en');
+      renderWithProviders(<Research />);
+      const chip = within(document.querySelectorAll('.w2e-step')[3]).getByRole('link');
+      expect(chip).toHaveTextContent(/^Axis 5 \S/);
+      expect(chip.textContent).not.toMatch(/–/);
+    });
+
+    it('opens the chosen axis in the details, and scrolls there on every chip', async () => {
+      const scrollIntoView = vi.fn();
+      Element.prototype.scrollIntoView = scrollIntoView;
+      const user = userEvent.setup();
+      renderWithProviders(<Research />);
+      const steps = document.querySelectorAll('.w2e-step');
+
+      await user.click(within(steps[3]).getByRole('link'));
+      expect(document.querySelector('.axx-tab.is-active')).toHaveTextContent('Inovação em Bioprodutos na Cadeia do Biogás');
+      await waitFor(() => expect(scrollIntoView).toHaveBeenCalledTimes(1));
+      expect(scrollIntoView.mock.contexts[0]).toBe(document.getElementById('explorar-eixos'));
+
+      // Same hash as before: the second chip must still bring the details up.
+      await user.click(within(steps[1]).getAllByRole('link')[1]);
+      expect(document.querySelector('.axx-tab.is-active')).toHaveTextContent('Engenharia de Processos e Bioprocessos');
+      await waitFor(() => expect(scrollIntoView).toHaveBeenCalledTimes(2));
+    });
+
+    it('moves the keyboard focus to the opened axis tab, without scrolling again', async () => {
+      Element.prototype.scrollIntoView = vi.fn();
+      const focus = vi.spyOn(HTMLElement.prototype, 'focus');
+      const user = userEvent.setup();
+      renderWithProviders(<Research />);
+      const steps = document.querySelectorAll('.w2e-step');
+
+      const chip = within(steps[3]).getByRole('link');
+      act(() => chip.focus());
+      await user.keyboard('{Enter}');
+
+      // Focus leaves the chip in the dark band and lands on the tab that
+      // names what opened, so the next Tab goes on into its panel.
+      const tab = document.querySelector('.axx-tab.is-active');
+      await waitFor(() => expect(document.activeElement).toBe(tab));
+      expect(tab).toHaveAttribute('role', 'tab');
+      expect(tab).toHaveAttribute('aria-selected', 'true');
+      expect(tab).toHaveAccessibleName(/Inovação em Bioprodutos na Cadeia do Biogás/);
+      expect(focus.mock.contexts.at(-1)).toBe(tab);
+      expect(focus.mock.calls.at(-1)[0]).toEqual({ preventScroll: true });
+    });
+
+    it('replaces the history entry on each chip, like the figure and the axis tabs', async () => {
+      Element.prototype.scrollIntoView = vi.fn();
+      const user = userEvent.setup();
+      renderWithProviders(<Research />);
+      const steps = document.querySelectorAll('.w2e-step');
+      const historyLength = window.history.length;
+
+      await user.click(within(steps[3]).getByRole('link'));
+      await user.click(within(steps[1]).getAllByRole('link')[1]);
+      await user.click(within(steps[4]).getAllByRole('link')[0]);
+
+      expect(window.location.search).toBe('?eixo=4');
+      expect(window.location.hash).toBe('#explorar-eixos');
+      expect(window.history.length).toBe(historyLength);
+    });
   });
 });

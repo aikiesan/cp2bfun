@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Container, Row, Col, Badge, Spinner, Button } from 'react-bootstrap';
 import { useParams, useLocation, Link } from 'react-router-dom';
 import DOMPurify from 'dompurify';
@@ -6,7 +6,72 @@ import { fetchEventBySlug, fetchGallery } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 import SeoHead from '../components/SeoHead';
 import NotFound from './NotFound';
+import CountUp from '../components/CountUp';
+import useScrollReveal from '../hooks/useScrollReveal';
 import { safeHref } from '../utils/safeUrl';
+import { getEventCountdown } from '../utils/eventCountdown';
+import './EventDetail.css';
+
+// Programação do evento, num componente próprio para que os hooks de entrada
+// montem junto com a lista (no corpo da página montariam com o spinner e nunca
+// a veriam). As linhas entram em sequência na primeira vez em que a lista
+// aparece (ver EventDetail.css). A entrada dispara assim que a borda de cima
+// aparece ('some'), qualquer que seja o tamanho da lista: uma fração dela
+// (20%, por exemplo) pode nunca caber na janela, seja por serem muitos itens,
+// seja por zoom alto (400% deixa a janela com 320x256), e a programação
+// ficaria presa escondida.
+const EventSchedule = ({ items, title, language }) => {
+  const listRef = useRef(null);
+  const reveal = useScrollReveal(listRef, { amount: 'some' });
+
+  return (
+    <section className="mb-5">
+      <h2 className="h4 fw-bold mb-4">{title}</h2>
+      <div ref={listRef} className="d-flex flex-column gap-3 event-schedule" data-reveal={reveal}>
+        {items.map((item, i) => (
+          <div
+            key={i}
+            className="d-flex gap-3 p-3 bg-white rounded-4 shadow-sm event-schedule__item"
+            // A partir da 9ª linha o atraso para de crescer: lista longa não espera.
+            style={{ '--i': Math.min(i, 8) }}
+          >
+            <div
+              className="fw-bold flex-shrink-0 text-center event-schedule__time"
+              style={{ fontFamily: 'var(--font-mono)', color: 'var(--cp2b-petrol)', minWidth: '5rem' }}
+            >
+              {item.time}
+            </div>
+            <div>
+              <div className="fw-bold">
+                {language === 'pt' ? item.title_pt : (item.title_en || item.title_pt)}
+              </div>
+              {item.speaker && <div className="text-muted small">{item.speaker}</div>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+// Selo da contagem regressiva, logo abaixo da data. O número de dias entra
+// contando (CountUp); os demais estados são só texto. A contagem parte de 2,
+// o menor número que o texto no plural ("Faltam N dias") admite: partindo de
+// 0, o selo passaria por "Faltam 0 dias" e "Faltam 1 dias".
+const EventCountdown = ({ countdown, labels }) => (
+  <span className={`event-countdown event-countdown--${countdown.kind}`}>
+    <i className={`bi ${countdown.kind === 'days' || countdown.kind === 'tomorrow' ? 'bi-hourglass-split' : 'bi-calendar-event'}`} aria-hidden="true" />
+    {countdown.kind === 'days' ? (
+      <span style={{ '--digits': String(countdown.days).length }}>
+        {labels.daysBefore}
+        <CountUp value={countdown.days} from={2} duration={1.2} className="event-countdown__num" />
+        {labels.daysAfter}
+      </span>
+    ) : (
+      <span>{labels[countdown.kind]}</span>
+    )}
+  </span>
+);
 
 const EventDetail = () => {
   const { slug } = useParams();
@@ -29,6 +94,7 @@ const EventDetail = () => {
       photos: 'fotos',
       photo: 'foto',
       statusLabels: { upcoming: 'Em breve', ongoing: 'Acontecendo agora', completed: 'Realizado', cancelled: 'Cancelado' },
+      countdown: { daysBefore: 'Faltam ', daysAfter: ' dias', tomorrow: 'É amanhã', today: 'É hoje', ongoing: 'Acontecendo agora' },
     },
     en: {
       back: 'Events',
@@ -42,6 +108,7 @@ const EventDetail = () => {
       photos: 'photos',
       photo: 'photo',
       statusLabels: { upcoming: 'Upcoming', ongoing: 'Happening now', completed: 'Completed', cancelled: 'Cancelled' },
+      countdown: { daysBefore: '', daysAfter: ' days to go', tomorrow: "It's tomorrow", today: "It's today", ongoing: 'Happening now' },
     },
   }[language];
 
@@ -105,6 +172,11 @@ const EventDetail = () => {
   const multiDay = startDate.toDateString() !== endDate.toDateString();
   const isUpcoming = endDate >= new Date() && event.status !== 'cancelled';
   const schedule = Array.isArray(event.schedule) ? event.schedule : [];
+  // Contagem por dia de calendário local (ver utils/eventCountdown.js). Evento
+  // cancelado, ou já dado como realizado no painel, não ganha contagem.
+  const countdown = event.status === 'cancelled' || event.status === 'completed'
+    ? null
+    : getEventCountdown(event.start_date, event.end_date || event.start_date, new Date());
 
   const formatDate = (d) =>
     d.toLocaleDateString(locale, { day: '2-digit', month: 'long', year: 'numeric' });
@@ -189,27 +261,7 @@ const EventDetail = () => {
             )}
 
             {schedule.length > 0 && (
-              <section className="mb-5">
-                <h2 className="h4 fw-bold mb-4">{labels.schedule}</h2>
-                <div className="d-flex flex-column gap-3">
-                  {schedule.map((item, i) => (
-                    <div key={i} className="d-flex gap-3 p-3 bg-white rounded-4 shadow-sm">
-                      <div
-                        className="fw-bold flex-shrink-0 text-center"
-                        style={{ fontFamily: 'var(--font-mono)', color: 'var(--cp2b-petrol)', minWidth: '5rem' }}
-                      >
-                        {item.time}
-                      </div>
-                      <div>
-                        <div className="fw-bold">
-                          {language === 'pt' ? item.title_pt : (item.title_en || item.title_pt)}
-                        </div>
-                        {item.speaker && <div className="text-muted small">{item.speaker}</div>}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </section>
+              <EventSchedule items={schedule} title={labels.schedule} language={language} />
             )}
 
             {albums.length > 0 && (
@@ -238,12 +290,15 @@ const EventDetail = () => {
           </Col>
 
           <Col lg={4}>
+            {/* O sticky só passou a prender com o overflow-x: clip do body
+                (index.css): antes o body virava contêiner de rolagem. */}
             <div className="bg-white rounded-4 shadow-sm p-4 position-sticky" style={{ top: '110px' }}>
               <dl className="mb-0">
                 <dt className="card-meta mb-1">{labels.date}</dt>
                 <dd className="fw-semibold mb-3">
                   {formatDate(startDate)}
                   {multiDay && <> — {formatDate(endDate)}</>}
+                  {countdown && <EventCountdown countdown={countdown} labels={labels.countdown} />}
                 </dd>
 
                 {event.location && (

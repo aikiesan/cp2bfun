@@ -1,0 +1,31 @@
+/* Holder of an animated list (see ListPresence.jsx).
+
+   AnimatePresence lifts a leaving item out of the flow with position:
+   absolute at its offsetTop/offsetLeft, which count from the offset parent.
+   Making the holder that parent keeps the item exactly where it stood, even
+   while an ancestor is still transformed by the page's entrance. */
+.list-motion {
+  position: relative;
+}
+
+/* offsetTop is measured to the border box, but `top` places the margin box:
+   a Bootstrap column (margin-top = vertical gutter) would drop by one gutter
+   as it fades out. `is-leaving` comes from ListPresence (useIsPresent), not
+   from Framer's own data-motion-pop-id: Framer never removes that attribute,
+   so an item that came back before its fade was over kept the rule and sat
+   one gutter higher than its row. */
+.list-motion > .is-leaving {
+  margin-top: 0 !important;
+}
+
+/* With motion, the current list stays on screen while the next one loads
+   (so the items can glide from one to the other) and dims a little: that is
+   the busy sign. Only on the outer holder, which is not a Framer element: a
+   CSS transition on opacity would fight Framer's own. */
+.list-motion[aria-busy] {
+  transition: opacity var(--duration-base) var(--ease-standard);
+}
+
+.list-motion[aria-busy='true'] {
+  opacity: 0.6;
+}

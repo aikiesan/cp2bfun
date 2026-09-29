@@ -4,6 +4,9 @@
 
 .svc-grid {
   --svc-ink: var(--cp2b-verde-escuro);
+  /* Referência de posição para o card que sai na troca de filtro: o
+     AnimatePresence (popLayout) o fixa no lugar enquanto ele esmaece. */
+  position: relative;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 14.5rem), 1fr));
   gap: 1rem;
@@ -169,7 +172,72 @@
   .svc-filter__btn { padding: 0.5rem 0.25rem; font-size: 0.78rem; overflow: hidden; text-overflow: ellipsis; }
 }
 
+/* ---------- filtro de TRL ativo (vindo de "Qual é o seu desafio?") ---------- */
+.svc-trl {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem 0.65rem;
+  margin: 0 0 1rem;
+  padding: 0.45rem 0.45rem 0.45rem 0.9rem;
+  background: color-mix(in srgb, var(--cp2b-verde) 8%, white);
+  border: 1px solid color-mix(in srgb, var(--cp2b-verde) 35%, white);
+  border-radius: var(--radius-full);
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+}
+
+.svc-trl__label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--cp2b-verde-escuro);
+}
+
+.svc-trl__level { color: var(--cp2b-verde-escuro); }
+
+.svc-trl__clear {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: auto;
+  padding: 0.3rem 0.75rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--cp2b-verde-escuro);
+  border-radius: var(--radius-full);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--cp2b-verde-escuro);
+  cursor: pointer;
+}
+
+.svc-trl__clear i { font-size: 0.65rem; }
+.svc-trl__clear:hover { background: var(--cp2b-verde-escuro); color: #fff; }
+/* O anel do site (lima translúcido) some sobre o verde-claro da faixa: vem
+   com um contorno escuro, como os botões de nível do seletor de TRL. */
+.svc-trl__clear:focus-visible {
+  outline: 2px solid var(--cp2b-verde-escuro);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
+}
+
+.svc-empty {
+  margin: 0;
+  padding: 1.5rem 1rem;
+  text-align: center;
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-xl);
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 575.98px) {
+  .svc-trl { border-radius: var(--radius-lg); }
+}
+
 @media (prefers-reduced-motion: no-preference) {
+  .svc-trl__clear { transition: background var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard); }
   .svc-filter__btn { transition: background var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard); }
   .svc,
   .svc__more { transition: border-color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard); }

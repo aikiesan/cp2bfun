@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Container, Row, Col, Card, Button, Badge } from 'react-bootstrap';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { pageSeo } from '../data/content';
@@ -9,6 +9,7 @@ import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import LabInfrastructure from '../components/LabInfrastructure';
 import ServiceGallery from '../components/ServiceGallery';
+import TrlMatcher from '../components/TrlMatcher';
 
 const content = {
   pt: {
@@ -71,6 +72,37 @@ const content = {
       details: 'Como funciona',
       hideDetails: 'Fechar',
       trlLabel: 'Maturidade Tecnológica',
+      trlFilter: 'Filtro de maturidade',
+      trlShowing: (n, total) => `${n} de ${total} serviços`,
+      clearTrl: 'Limpar',
+      clearTrlLabel: (level) => `Limpar o filtro TRL ${level}`,
+      noMatch: 'Nenhum serviço técnico deste laboratório cobre o nível de TRL escolhido.',
+    },
+    matcherSection: {
+      eyebrow: 'Da demanda ao parceiro',
+      title: 'Qual é o seu desafio?',
+      subtitle: 'Escolha o nível de maturidade tecnológica (TRL) em que está a sua demanda ou tecnologia e veja quais laboratórios, eixos e serviços do CP2b atuam nele.',
+      pickerLabel: 'Em que nível de maturidade (TRL) está a sua demanda?',
+      hint: 'Escolha um nível de 1 a 9 para ver os laboratórios e serviços correspondentes.',
+      labsTitle: 'Laboratórios centrais nesta faixa',
+      noLabs: 'Nenhum laboratório central do CP2b atua nesta faixa hoje.',
+      lead: 'Responsável',
+      axes: 'Eixos',
+      axisShort: 'Eixo',
+      focus: 'foco',
+      focusHere: 'Foco do laboratório',
+      servicesTitle: 'Serviços técnicos',
+      servicesCover: (n) => (n === 1 ? 'serviço técnico do catálogo cobre este nível' : 'serviços técnicos do catálogo cobrem este nível'),
+      noServices: 'Nenhum serviço técnico do catálogo cobre este nível.',
+      showServices: (n) => (n === 1 ? 'Ver o serviço' : `Ver os ${n} serviços`),
+      // Resumo que o leitor de tela anuncia a cada troca de nível.
+      liveSummary: (level, phase, nLabs, nServices) => {
+        const labs = nLabs === 0 ? 'nenhum laboratório' : `${nLabs} ${nLabs === 1 ? 'laboratório' : 'laboratórios'}`;
+        const services = nServices === 0 ? 'nenhum serviço' : `${nServices} ${nServices === 1 ? 'serviço' : 'serviços'}`;
+        return `TRL ${level} · ${phase}: ${labs}, ${services}`;
+      },
+      contactLead: 'Quer levar a sua demanda adiante?',
+      contact: 'Fale com o CP2b',
     },
     funnelSection: {
       tag: 'PASSO A PASSO',
@@ -151,6 +183,37 @@ const content = {
       details: 'How it works',
       hideDetails: 'Close',
       trlLabel: 'Technological Maturity',
+      trlFilter: 'Readiness filter',
+      trlShowing: (n, total) => `${n} of ${total} services`,
+      clearTrl: 'Clear',
+      clearTrlLabel: (level) => `Clear the TRL ${level} filter`,
+      noMatch: 'No technical service from this laboratory covers the chosen TRL.',
+    },
+    matcherSection: {
+      eyebrow: 'From challenge to partner',
+      title: 'What is your challenge?',
+      subtitle: 'Choose the technology readiness level (TRL) of your challenge or technology and see which CP2b laboratories, axes and services work at it.',
+      pickerLabel: 'What readiness level (TRL) is your challenge at?',
+      hint: 'Choose a level from 1 to 9 to see the matching laboratories and services.',
+      labsTitle: 'Core laboratories at this level',
+      noLabs: 'No CP2b core laboratory works at this level today.',
+      lead: 'Lead',
+      axes: 'Axes',
+      axisShort: 'Axis',
+      focus: 'focus',
+      focusHere: 'Laboratory focus',
+      servicesTitle: 'Technical services',
+      servicesCover: (n) => (n === 1 ? 'catalog service covers this level' : 'catalog services cover this level'),
+      noServices: 'No technical service in the catalog covers this level.',
+      showServices: (n) => (n === 1 ? 'See the service' : `See the ${n} services`),
+      // Summary a screen reader announces on each change of level.
+      liveSummary: (level, phase, nLabs, nServices) => {
+        const labs = nLabs === 0 ? 'no laboratories' : `${nLabs} ${nLabs === 1 ? 'laboratory' : 'laboratories'}`;
+        const services = nServices === 0 ? 'no services' : `${nServices} ${nServices === 1 ? 'service' : 'services'}`;
+        return `TRL ${level} · ${phase}: ${labs}, ${services}`;
+      },
+      contactLead: 'Ready to take your challenge further?',
+      contact: 'Talk to CP2b',
     },
     funnelSection: {
       tag: 'STEP BY STEP',
@@ -173,6 +236,11 @@ const content = {
   },
 };
 
+// Um serviço cobre um nível de TRL quando o nível cai na sua faixa. A mesma
+// regra conta os serviços no seletor e filtra o catálogo.
+const coversTrl = (service, level) => service.trlMin <= level && level <= service.trlMax;
+const countServicesAtTrl = (level) => technicalServices.filter((s) => coversTrl(s, level)).length;
+
 const Solucoes = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
@@ -180,17 +248,43 @@ const Solucoes = () => {
   const seo = pageSeo.solucoes[language] || pageSeo.solucoes.pt;
 
   const [activeLabFilter, setActiveLabFilter] = useState('all');
+  // Filtro por nível de TRL (null = todos), aplicado pelo seletor "Qual é o
+  // seu desafio?". Soma-se ao filtro por laboratório.
+  const [trlFilter, setTrlFilter] = useState(null);
+  const reduceMotion = useReducedMotion();
 
-  // O painel dos laboratórios não repete os serviços: leva ao catálogo
-  // abaixo, já filtrado pelo laboratório escolhido.
+  // O painel dos laboratórios e o seletor de TRL não repetem os serviços:
+  // levam ao catálogo abaixo, já filtrado. Cada botão promete um número
+  // ("Ver os 5 serviços"), então aplica só o seu filtro e limpa o outro,
+  // para o catálogo mostrar exatamente aquilo.
   const servicesRef = useRef(null);
+  const scrollToServices = () => {
+    const el = servicesRef.current;
+    if (!el) return;
+    if (el.scrollIntoView) el.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
+    // O foco do teclado vai junto: o próximo Tab segue no catálogo, em vez
+    // de voltar ao botão que ficou lá em cima.
+    el.focus({ preventScroll: true });
+  };
   const showServices = (labKey) => {
     setActiveLabFilter(labKey);
-    const el = servicesRef.current;
-    if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    setTrlFilter(null);
+    scrollToServices();
+  };
+  const showServicesAtTrl = (level) => {
+    setTrlFilter(level);
+    setActiveLabFilter('all');
+    scrollToServices();
+  };
+  // O botão "Limpar" some com o filtro; o foco passa ao catálogo para não se
+  // perder no fim da página.
+  const clearTrlFilter = () => {
+    setTrlFilter(null);
+    if (servicesRef.current) servicesRef.current.focus({ preventScroll: true });
   };
 
   const filteredServices = technicalServices.filter((s) => {
+    if (trlFilter !== null && !coversTrl(s, trlFilter)) return false;
     if (activeLabFilter === 'all') return true;
     return s.labAcronym.includes(activeLabFilter) || s.labName === activeLabFilter;
   });
@@ -206,18 +300,36 @@ const Solucoes = () => {
         className="page-hero--overlap"
       />
 
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+      {/* Com movimento reduzido a página só esmaece, sem subir. */}
+      <motion.div initial={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <Container className="pb-4 pb-md-5">
           {/* Infraestrutura laboratorial: régua de TRL (sobre o hero), painel
               dos laboratórios de bioprocessos e laboratórios do Eixo 8. */}
           <LabInfrastructure language={language} onShowServices={showServices} />
 
-          {/* Section 3: Technical Services with TRL Ranges */}
-          <section id="servicos" ref={servicesRef} className="solucoes-services mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top">
+          {/* Seletor por maturidade: da demanda ao laboratório, ao eixo, aos
+              serviços e ao contato. */}
+          <TrlMatcher
+            language={language}
+            labels={t.matcherSection}
+            countServices={countServicesAtTrl}
+            onShowServices={showServicesAtTrl}
+          />
+
+          {/* Section 3: Technical Services with TRL Ranges. Recebe o foco dos
+              botões que levam ao catálogo; o nome (aria-labelledby) é o que o
+              leitor de tela anuncia ao chegar, em vez de só "seção". */}
+          <section
+            id="servicos"
+            ref={servicesRef}
+            tabIndex={-1}
+            aria-labelledby="servicos-title"
+            className="solucoes-services mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top"
+          >
             <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end mb-4 gap-3">
               <div>
                 <span className="mono-label text-success d-block mb-1">{t.servicesSection.tag}</span>
-                <h2 className="fw-bold fs-2 mb-2">{t.servicesSection.title}</h2>
+                <h2 id="servicos-title" className="fw-bold fs-2 mb-2">{t.servicesSection.title}</h2>
                 <p className="text-muted small mb-0">{t.servicesSection.subtitle}</p>
               </div>
 
@@ -248,8 +360,36 @@ const Solucoes = () => {
               </div>
             </div>
 
-            {/* Galeria: ilustração + título + TRL; a descrição abre sob demanda. */}
-            <ServiceGallery services={filteredServices} language={language} labels={t.servicesSection} />
+            {/* Filtro de TRL ativo: diz o que está valendo e como desfazê-lo.
+                A região fica sempre no DOM (vazia sem filtro) para o leitor de
+                tela anunciar a troca. */}
+            <div className="svc-trl-status" aria-live="polite">
+              {trlFilter !== null && (
+                <p className="svc-trl">
+                  <span className="svc-trl__label">{t.servicesSection.trlFilter}</span>
+                  <strong className="svc-trl__level">TRL {trlFilter}</strong>
+                  <span className="svc-trl__count">{t.servicesSection.trlShowing(filteredServices.length, technicalServices.length)}</span>
+                  <button
+                    type="button"
+                    className="svc-trl__clear"
+                    aria-label={t.servicesSection.clearTrlLabel(trlFilter)}
+                    onClick={clearTrlFilter}
+                  >
+                    {t.servicesSection.clearTrl} <i className="bi bi-x-lg" aria-hidden="true" />
+                  </button>
+                </p>
+              )}
+            </div>
+
+            {/* Galeria: ilustração + título + TRL; a descrição abre sob demanda.
+                Sem serviço na combinação, a galeria mostra a mensagem de vazio
+                (emptyText) depois que os cards acabam de sair. */}
+            <ServiceGallery
+              services={filteredServices}
+              language={language}
+              labels={t.servicesSection}
+              emptyText={t.servicesSection.noMatch}
+            />
           </section>
 
           {/* Section 2: 5 Partnership Modalities */}

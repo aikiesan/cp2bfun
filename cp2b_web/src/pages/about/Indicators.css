@@ -145,3 +145,14 @@
   .indicators-journey__step:hover .indicators-journey__icon,
   .indicators-list__item:hover .indicators-list__code { transform: none; }
 }
+
+/* Source line under the overview lead: where the panel's numbers come from
+   (the Manus benchmark flagged "metric without source"). Smaller and quieter
+   than the lead it follows. */
+.indicators-overview__copy > p.indicators-source {
+  max-width: 40rem;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}
