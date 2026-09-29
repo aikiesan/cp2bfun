@@ -8,6 +8,7 @@ import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import { fetchBoletins } from '../services/api';
 import { safeHref } from '../utils/safeUrl';
+import Metaninho from '../components/Metaninho';
 
 const Boletins = () => {
   const { language } = useLanguage();
@@ -88,7 +89,7 @@ const Boletins = () => {
           ) : boletins.length === 0 ? (
             <Row className="justify-content-center">
               <Col lg={7} className="text-center text-muted py-4 py-md-5">
-                <i className="bi bi-journal-text" style={{ fontSize: '3rem', opacity: 0.3 }}></i>
+                <Metaninho pose="tranquilo" size={130} />
                 <p className="mt-3">{labels.empty}</p>
               </Col>
             </Row>

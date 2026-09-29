@@ -2,6 +2,7 @@ import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import SeoHead from '../components/SeoHead';
+import Metaninho from '../components/Metaninho';
 
 const content = {
   pt: {
@@ -30,7 +31,7 @@ const Manutencao = () => {
       <SeoHead title={t.title} description={t.subtitle} language={language} noIndex />
     <Container className="py-5 text-center" style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
       <div className="mb-4">
-        <i className="bi bi-tools" style={{ fontSize: '4rem', color: '#6c757d' }}></i>
+        <Metaninho pose="tranquilo" size={160} />
       </div>
       <h1 className="fw-bold mb-3">{t.title}</h1>
       <p className="text-muted fs-5 mb-2">{t.subtitle}</p>

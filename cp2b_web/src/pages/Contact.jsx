@@ -7,6 +7,7 @@ import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
+import Metaninho from '../components/Metaninho';
 
 const Contact = () => {
   const { language } = useLanguage();
@@ -129,7 +130,10 @@ const Contact = () => {
 
             {status.success && (
               <Alert variant="success" dismissible onClose={() => setStatus({ ...status, success: false })}>
-                {labels.successMsg}
+                <div className="d-flex align-items-center gap-3">
+                  <Metaninho pose="feliz" size={72} />
+                  <span>{labels.successMsg}</span>
+                </div>
               </Alert>
             )}
             {status.error && (

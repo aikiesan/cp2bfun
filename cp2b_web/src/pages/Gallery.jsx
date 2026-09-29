@@ -6,6 +6,7 @@ import { fetchGallery } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+import Metaninho from '../components/Metaninho';
 
 const Gallery = () => {
   const navigate = useNavigate();
@@ -100,7 +101,7 @@ const Gallery = () => {
           </div>
         ) : albumsByYear.length === 0 ? (
           <div className="text-center text-muted py-5">
-            <i className="bi bi-camera-fill" style={{ fontSize: '3rem' }}></i>
+            <Metaninho pose="tranquilo" size={130} />
             <p className="mt-3">{labels.empty}</p>
           </div>
         ) : (

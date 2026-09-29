@@ -8,6 +8,7 @@ import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import api from '../services/api';
 import { safeHref } from '../utils/safeUrl';
+import Metaninho from '../components/Metaninho';
 
 const Events = () => {
   const { language } = useLanguage();
@@ -237,7 +238,10 @@ const Events = () => {
                 <Row>{upcomingEvents.map(renderEventCard)}</Row>
               ) : (
                 <Card className="bg-light border-0">
-                  <Card.Body className="text-center text-muted py-5">{labels.none}</Card.Body>
+                  <Card.Body className="text-center text-muted py-5">
+                    <Metaninho pose="tranquilo" size={120} className="d-block mx-auto mb-3" />
+                    {labels.none}
+                  </Card.Body>
                 </Card>
               )}
             </section>
