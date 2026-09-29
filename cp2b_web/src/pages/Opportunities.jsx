@@ -93,7 +93,7 @@ const Opportunities = () => {
                     </Card.Text>
                     <div className="d-flex justify-content-between align-items-center mt-3">
                       {item.date_display && (
-                        <small className="text-muted" style={{ fontFamily: 'var(--font-mono)' }}>
+                        <small className="text-muted">
                           {item.date_display}
                         </small>
                       )}

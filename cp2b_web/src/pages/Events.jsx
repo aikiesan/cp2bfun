@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col, Badge, Spinner, Button, Collapse, Card } from 'react-bootstrap';
+import PageHero from '../components/PageHero';
 import { motion } from 'framer-motion';
 import { useLocation, Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -215,13 +216,12 @@ const Events = () => {
         jsonLd={eventsJsonLd}
       />
 
-      <div className="page-hero">
-        <Container>
-          <span className="eyebrow">{labels.eyebrow}</span>
-          <h1>{labels.title}</h1>
-          <p className="page-hero-sub">{labels.subtitle}</p>
-        </Container>
-      </div>
+      <PageHero
+        eyebrow={labels.eyebrow}
+        title={labels.title}
+        subtitle={labels.subtitle}
+        photo={{ src: '/assets/fotos/eventos-mascote.webp', width: 700, height: 500 }}
+      />
 
       <Container className="py-4 py-md-5">
         {loading ? (

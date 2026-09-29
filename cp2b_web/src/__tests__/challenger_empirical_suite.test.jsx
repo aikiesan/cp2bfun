@@ -64,7 +64,7 @@ describe('Challenger 2 — Empirical Stress Testing Suite', () => {
           expect(screen.getByText(/Nossa Visão|Our Vision/i)).toBeInTheDocument();
           
           // Verify Values exist (5 values)
-          const valueCards = container.querySelectorAll('.card-editorial');
+          const valueCards = container.querySelectorAll('.about-values .about-sheet');
           expect(valueCards.length).toBeGreaterThanOrEqual(2);
 
           // Navegação da seção Sobre: controle segmentado de 5 links, sem rolagem

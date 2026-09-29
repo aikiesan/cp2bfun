@@ -137,16 +137,16 @@ export const forumData = {
 
 export const missionVisionValues = {
   pt: {
-    sectionTag: 'DIRETRIZES ESTRATÉGICAS',
+    sectionTag: 'Diretrizes estratégicas',
     sectionTitle: 'Missão, Visão e Valores',
     sectionSubtitle: 'Os princípios fundamentais que orientam a excelência científica, a governança e o impacto socioambiental do CP2b.',
     mission: {
-      tag: 'MISSÃO',
+      tag: 'Missão',
       title: 'Nossa Missão',
       text: '“Desenvolver pesquisas, tecnologias e soluções inovadoras em biogás, com motivação industrial, ambiental e social, promovendo o aproveitamento inteligente de resíduos e contribuindo para um desenvolvimento sustentável, inclusivo e equitativo”.'
     },
     vision: {
-      tag: 'VISÃO',
+      tag: 'Visão',
       title: 'Nossa Visão',
       text: '“Ser referência nacional e internacional na gestão eficiente e sustentável de resíduos urbanos e agropecuários, transformando o estado de São Paulo em vitrine de soluções inteligentes em biogás e de desenvolvimento sustentável, inclusivo e equitativo. Para isso, o CP2B busca criar novos conhecimentos e competências, com base em ciência de ponta, que possam apoiar o desenvolvimento de soluções aplicáveis de biogás no estado de SP (ESP), articulando ações conjuntas e complementares nas esferas industrial, política, social e ambiental”.'
     },
@@ -186,16 +186,16 @@ export const missionVisionValues = {
     ]
   },
   en: {
-    sectionTag: 'STRATEGIC GUIDELINES',
+    sectionTag: 'Strategic guidelines',
     sectionTitle: 'Mission, Vision and Values',
     sectionSubtitle: 'The core principles guiding CP2b scientific excellence, governance and socio-environmental impact.',
     mission: {
-      tag: 'MISSION',
+      tag: 'Mission',
       title: 'Our Mission',
       text: '“Develop research, technologies, and innovative biogas solutions with industrial, environmental, and social motivation, promoting the smart use of waste and contributing to sustainable, inclusive and equitable development.”'
     },
     vision: {
-      tag: 'VISION',
+      tag: 'Vision',
       title: 'Our Vision',
       text: '“To be a national and international reference in the efficient and sustainable management of urban and agricultural waste, transforming the State of São Paulo into a showcase of smart biogas solutions and of sustainable, inclusive and equitable development. To achieve this, CP2B seeks to create new knowledge and competencies, based on cutting-edge science, that can support the development of applicable biogas solutions in the State of São Paulo (ESP), coordinating joint and complementary actions across industrial, political, social, and environmental spheres.”'
     },

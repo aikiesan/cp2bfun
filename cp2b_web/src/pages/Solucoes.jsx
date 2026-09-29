@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Container, Row, Col, Card, Button, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -20,7 +20,7 @@ const content = {
         'O CP2b conecta ciência de ponta às necessidades do mercado, oferecendo infraestrutura laboratorial da bancada à escala piloto (TRL 2 a 6), serviços especializados e modelos flexíveis de cooperação tecnológica.',
     },
     modalitiesSection: {
-      tag: 'MODELOS DE COOPERAÇÃO',
+      tag: 'Modelos de cooperação',
       title: 'Modalidades de Parceria',
       subtitle: 'Estruturas contratuais e modelos de cooperação adaptados à maturidade e necessidade de cada parceiro.',
       items: [
@@ -63,7 +63,7 @@ const content = {
       ],
     },
     servicesSection: {
-      tag: 'CAPACIDADES ANALÍTICAS',
+      tag: 'Capacidades analíticas',
       title: 'Serviços Técnicos Especializados',
       subtitle: '15 capacidades analíticas e operacionais distribuídas nos 3 laboratórios centrais do CP2b.',
       allLabs: 'Todos os Laboratórios',
@@ -105,7 +105,7 @@ const content = {
       contact: 'Fale com o CP2b',
     },
     funnelSection: {
-      tag: 'PASSO A PASSO',
+      tag: 'Passo a passo',
       title: 'Por Onde Começar',
       subtitle: 'O fluxo ágil para transformar uma demanda tecnológica em um projeto concreto com o CP2b.',
       steps: [
@@ -131,7 +131,7 @@ const content = {
         'CP2b connects cutting-edge science to market demands, providing laboratory infrastructure from bench to pilot scale (TRL 2 to 6), specialized technical services, and flexible technological cooperation models.',
     },
     modalitiesSection: {
-      tag: 'COOPERATION MODELS',
+      tag: 'Cooperation models',
       title: 'Partnership Modalities',
       subtitle: 'Contractual frameworks tailored to the maturity and requirements of each partner.',
       items: [
@@ -174,7 +174,7 @@ const content = {
       ],
     },
     servicesSection: {
-      tag: 'ANALYTICAL CAPABILITIES',
+      tag: 'Analytical capabilities',
       title: 'Specialized Technical Services',
       subtitle: '15 analytical and operational capabilities available across CP2b core laboratories.',
       allLabs: 'All Laboratories',
@@ -216,7 +216,7 @@ const content = {
       contact: 'Talk to CP2b',
     },
     funnelSection: {
-      tag: 'STEP BY STEP',
+      tag: 'Step by step',
       title: 'How to Get Started',
       subtitle: 'A streamlined pathway to turn a technological need into an active collaborative project with CP2b.',
       steps: [
@@ -297,6 +297,7 @@ const Solucoes = () => {
         eyebrow={t.hero.eyebrow}
         title={t.hero.title}
         subtitle={t.hero.subtitle}
+        photo={{ src: '/assets/fotos/solucoes-nipe.webp', width: 700, height: 500 }}
         className="page-hero--overlap"
       />
 
@@ -415,25 +416,8 @@ const Solucoes = () => {
                     }}
                   >
                     <div className="d-flex align-items-center justify-content-between mb-2 mb-md-3">
-                      <div
-                        className="rounded-circle d-flex align-items-center justify-content-center solution-modality-icon"
-                        style={{
-                          width: 48,
-                          height: 48,
-                          background: 'linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%)',
-                          color: 'var(--cp2b-verde-escuro)',
-                          fontSize: '1.4rem',
-                        }}
-                      >
-                        <i className={`bi ${mod.icon}`} />
-                      </div>
-                      <Badge
-                        bg="light"
-                        className="text-dark border px-2 py-1 solution-modality-badge"
-                        style={{ fontSize: '0.72rem', fontWeight: 600 }}
-                      >
-                        {mod.badge}
-                      </Badge>
+                      <i className={`bi ${mod.icon} solution-modality-icon`} aria-hidden="true" />
+                      <span className="solution-modality-badge">{mod.badge}</span>
                     </div>
                     <h3 className="fw-bold mb-1 mb-md-2 fs-5 mobile-compact-title" style={{ color: 'var(--text-primary)' }}>
                       {mod.title}
@@ -471,18 +455,7 @@ const Solucoes = () => {
                     }}
                   >
                     <div className="d-flex align-items-center gap-3 mb-3">
-                      <span
-                        className="mono-label fw-bold d-inline-flex align-items-center justify-content-center rounded-circle solution-step-number"
-                        style={{
-                          width: 36,
-                          height: 36,
-                          background: 'var(--brand-primary)',
-                          color: '#ffffff',
-                          fontSize: '0.9rem',
-                        }}
-                      >
-                        {st.number}
-                      </span>
+                      <span className="solution-step-number">{st.number}</span>
                       <h4 className="fw-bold fs-6 mb-0" style={{ color: 'var(--text-primary)' }}>
                         {st.title}
                       </h4>

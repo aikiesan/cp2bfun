@@ -23,3 +23,8 @@
 @font-face { font-family: 'Neulis Neue'; src: url('/assets/fonts/Neulis_Neue_Bold.woff2') format('woff2'), url('/assets/fonts/Neulis_Neue_Bold.otf') format('opentype'); font-weight: 700; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Neulis Neue'; src: url('/assets/fonts/Neulis_Neue_Black.woff2') format('woff2'), url('/assets/fonts/Neulis_Neue_Black.otf') format('opentype'); font-weight: 900; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Neulis Neue'; src: url('/assets/fonts/Neulis_Neue_Black_Italic.woff2') format('woff2'), url('/assets/fonts/Neulis_Neue_Black_Italic.otf') format('opentype'); font-weight: 900; font-style: italic; font-display: swap; }
+
+/* Caveat (SIL OFL 1.1, public/assets/fonts/OFL-Caveat.txt): a letra à mão dos
+   vídeos educativos do CP2b, usada só nas etiquetas. Recortada para latim e
+   português (74 KB em woff2, eixo de peso 400–700 inteiro). */
+@font-face { font-family: 'Caveat'; src: url('/assets/fonts/Caveat-Variable.woff2') format('woff2'); font-weight: 400 700; font-style: normal; font-display: swap; }

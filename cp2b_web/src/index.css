@@ -29,14 +29,14 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--cp2b-dark);
 }
 
-/* Modern One UI / DeepESG Overrides */
+/* Botões: pílula de cor chapada, sem sombra difusa (identidade de papel). */
 .btn {
-  border-radius: var(--cp2b-radius-sm) !important;
+  border-radius: var(--radius-full) !important;
   font-weight: 600;
   text-transform: none; /* Removed uppercase for friendlier feel */
   padding: 12px 28px;
   border: none;
-  box-shadow: var(--shadow-sm);
+  box-shadow: none;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
@@ -45,14 +45,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--cp2b-petrol) 0%, var(--cp2b-green) 100%);
+  background: var(--brand-primary);
   color: var(--cp2b-white);
 }
 
 /* Pilar-2b hover convention: solid buttons darken one step — no opacity fade. */
 .btn-primary:hover {
-  box-shadow: var(--shadow-md);
-  filter: brightness(0.92);
+  background: var(--brand-primary-hover);
+  box-shadow: var(--paper-shadow-lift);
 }
 
 .btn-outline-primary {
@@ -83,12 +83,10 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--cp2b-lime);
 }
 
-/* Navbar Modernization */
+/* Cabeçalho: papel chapado com um fio, no lugar do vidro fosco. */
 .navbar {
-  background: rgba(255, 255, 255, 0.75) !important;
-  backdrop-filter: blur(15px);
-  -webkit-backdrop-filter: blur(15px);
-  border-bottom: 1px solid rgba(0,0,0,0.05);
+  background: var(--paper) !important;
+  border-bottom: 1px solid var(--paper-line);
   padding-top: 1.2rem;
   padding-bottom: 1.2rem;
 }
@@ -482,10 +480,8 @@ body.high-contrast .admin-sidebar small {
   z-index: 1030;
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;
-  background: rgba(255, 255, 255, 0.95) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08) !important;
+  background: var(--paper) !important;
+  box-shadow: 0 1px 0 var(--paper-line), var(--paper-shadow) !important;
 }
 
 /* Logo shrink transition */
@@ -640,9 +636,8 @@ body.high-contrast .social-sidebar-item {
 }
 
 .btn-glow:hover {
-  box-shadow: 0 0 20px color-mix(in srgb, var(--cp2b-green) 40%, transparent),
-              0 0 40px color-mix(in srgb, var(--cp2b-green) 20%, transparent);
-  transform: translateY(-2px);
+  box-shadow: var(--paper-shadow-lift);
+  transform: translateY(-1px);
 }
 
 /* Interactive Card Enhancements */
@@ -1407,8 +1402,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 .article-fapesp-category {
   font-size: 0.75rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.01em;
   margin-bottom: 0.5rem;
   margin-top: 0;
   font-family: var(--font-main);
@@ -1489,7 +1483,7 @@ body.high-contrast .navbar .dropdown-item:hover {
   display: block;
   font-size: 0.8rem;
   color: #555;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   margin: 0.5rem 0;
 }
 
@@ -1497,8 +1491,7 @@ body.high-contrast .navbar .dropdown-item:hover {
   display: block;
   font-size: 0.75rem;
   color: #777;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.01em;
   margin: 0.5rem 0;
 }
 
@@ -1577,8 +1570,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 .article-fapesp-sources-label {
   font-size: 0.75rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.01em;
   color: #888;
   margin-bottom: 0.75rem;
 }
@@ -1621,8 +1613,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 .article-related-heading {
   font-size: 0.8rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.01em;
   color: #888;
   margin-bottom: 1.5rem;
   border-bottom: 2px solid var(--cp2b-border);
@@ -1672,10 +1663,9 @@ body.high-contrast .navbar .dropdown-item:hover {
 }
 
 .article-related-category {
-  font-size: 0.7rem;
+  font-size: 0.78rem;
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
+  letter-spacing: 0.01em;
   display: block;
   margin-bottom: 0.35rem;
   font-family: var(--font-main);
@@ -1696,7 +1686,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 .article-related-date {
   font-size: 0.75rem;
   color: #888;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
 }
 
 /* ---- Responsive: Tablet (768–1024px) — hide sidebar & spacer ---- */

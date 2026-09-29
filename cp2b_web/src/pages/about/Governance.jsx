@@ -64,7 +64,7 @@ const Governance = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
-      <PageHero eyebrow="CP2b" title={content.title} subtitle={content.description} />
+      <PageHero eyebrow="CP2b" title={content.title} subtitle={content.description} photo={{ src: '/assets/fotos/governanca-mesa.webp', width: 700, height: 500 }} />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

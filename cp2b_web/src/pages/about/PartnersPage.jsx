@@ -83,7 +83,6 @@ const PartnerCard = ({ partner, language }) => {
                 borderRadius: 'var(--radius-full)',
                 backgroundColor: 'var(--gray-200)',
                 color: 'var(--brand-primary)',
-                fontFamily: 'var(--font-mono)',
                 fontSize: initials.length > 3 ? '0.82rem' : '1.1rem',
                 letterSpacing: 'var(--tracking-wide)',
                 flexShrink: 0,
@@ -180,7 +179,6 @@ const HeadquartersCard = ({ partner, language, label }) => {
                   borderRadius: 'var(--radius-full)',
                   backgroundColor: 'var(--gray-200)',
                   color: 'var(--brand-primary)',
-                  fontFamily: 'var(--font-mono)',
                   fontSize: initials.length > 3 ? '0.92rem' : '1.3rem',
                   letterSpacing: 'var(--tracking-wide)',
                   flexShrink: 0,
@@ -289,7 +287,7 @@ const PartnersPage = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
-      <PageHero eyebrow="CP2b" title={labels.title} subtitle={labels.description} />
+      <PageHero eyebrow="CP2b" title={labels.title} subtitle={labels.description} photo={{ src: '/assets/fotos/parceiros-delegacao.webp', width: 700, height: 500 }} />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

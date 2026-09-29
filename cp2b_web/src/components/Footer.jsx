@@ -134,7 +134,7 @@ const Footer = () => {
 
           <Col lg={4} md={6}>
             <h6>{labels.contact}</h6>
-            <address className="small mb-4" style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.7)', fontStyle: 'normal', lineHeight: 1.8 }}>
+            <address className="small mb-4" style={{ color: 'rgba(255,255,255,0.7)', fontStyle: 'normal', lineHeight: 1.8 }}>
               {contact.institution}<br />
               {contact.address_line1}<br />
               {contact.address_line2}<br />
@@ -155,7 +155,7 @@ const Footer = () => {
 
         <Row className="footer-bottom py-4">
           <Col md={8}>
-            <small style={{ fontFamily: 'var(--font-mono)', lineHeight: 1.7 }}>
+            <small style={{ lineHeight: 1.7 }}>
               &copy; 1969 - {new Date().getFullYear()} {labels.university} · CP2b<br />
               <strong>Expediente:</strong> {footerSettings.credits}
             </small>

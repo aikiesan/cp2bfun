@@ -67,7 +67,7 @@ describe('About Page — Missão, Visão e Valores & Redesign', () => {
     const videoRatio = container.querySelector('.ratio.ratio-16x9');
     expect(videoRatio).toBeTruthy();
     expect(container.querySelector('video')).toBeTruthy();
-    expect(screen.getByText('LABORATÓRIO VIVO')).toBeInTheDocument();
+    expect(screen.getByText('Laboratório vivo')).toBeInTheDocument();
 
     // Resumo Executivo, Objetivos and Resultados
     expect(screen.getByText('Resumo Executivo')).toBeInTheDocument();
@@ -115,7 +115,7 @@ describe('About Page — Missão, Visão e Valores & Redesign', () => {
     expect(screen.getByRole('link', { name: /Transparency/i })).toHaveAttribute('href', '/sobre/transparencia');
     expect(screen.getByRole('link', { name: /Partners/i })).toHaveAttribute('href', '/sobre/parceiros');
 
-    expect(screen.getByText('LIVING LAB')).toBeInTheDocument();
+    expect(screen.getByText('Living lab')).toBeInTheDocument();
     const partnerLinkEn = screen.getByText('View Partners Catalog').closest('a');
     expect(partnerLinkEn).toHaveAttribute('href', '/sobre/parceiros');
   });

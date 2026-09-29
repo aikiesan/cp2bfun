@@ -16,10 +16,9 @@
 .axx-pager__kicker {
   display: block;
   font-family: var(--font-sans);
-  font-size: 0.62rem;
+  font-size: 0.76rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
   color: var(--axis, var(--cp2b-verde));
 }
 

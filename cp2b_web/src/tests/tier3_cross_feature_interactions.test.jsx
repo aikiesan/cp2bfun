@@ -98,14 +98,17 @@ describe('Tier 3 — Cross-Feature Interactions: Language Toggling', () => {
     // Default PT
     expect(screen.getByTestId('current-lang')).toHaveTextContent('pt');
 
+    // Os selos de TRL (a régua, os laboratórios e o catálogo) estão na página.
+    // Antes a conferência contava elementos .badge; os selos das modalidades
+    // viraram etiquetas à mão (identidade de papel) e a classe saiu.
     await waitFor(() => {
-      const badges = document.querySelectorAll('.badge');
-      expect(badges.length).toBeGreaterThan(0);
+      expect(screen.getAllByText(/TRL\s*\d/).length).toBeGreaterThan(0);
     });
 
     // Switch to EN
     await user.click(screen.getByText('Set EN'));
     expect(screen.getByTestId('current-lang')).toHaveTextContent('en');
+    expect(screen.getAllByText(/TRL\s*\d/).length).toBeGreaterThan(0);
 
     // Technical services data exists in both languages
     expect(technicalServices[0].en.title).toBeDefined();

@@ -1,8 +1,8 @@
 /* ============================================================
-   PAGE HERO — motion layer for the inner-page title band
-   The band itself (gradient, padding, type) stays in
-   design-system.css; this file only adds the arrival and the
-   pointer-reactive light on top of it. Tokens only.
+   PAGE HERO — paper layer for the inner-page title band
+   The band itself (kraft paper, torn edge, type) stays in
+   design-system.css; this file adds the paper bits, the taped
+   print and the arrival on top of it. Tokens only.
    ============================================================ */
 
 .page-hero-inner {
@@ -10,72 +10,113 @@
   z-index: 1;
 }
 
-/* ---------- Ambient: two colour fields and a light ---------- */
+/* ---------- Paper bits: leaves and dots lying on the band ---------- */
 
 .page-hero-ambient {
   position: absolute;
   inset: 0;
   z-index: 0;
   pointer-events: none;
-  animation: page-hero-fade 1.6s ease-out both;
 }
 
-.page-hero-field {
+.page-hero-bit {
   position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
-  will-change: transform;
-  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 1px 1px 0 rgb(59 42 28 / .14);
+  transform:
+    translate3d(calc(var(--hero-fx, 0) * var(--depth) * 1px), calc(var(--hero-fy, 0) * var(--depth) * 1px), 0)
+    rotate(var(--angle));
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: page-hero-bit-in 0.7s cubic-bezier(0.16, 1, 0.3, 1) calc(0.35s + var(--i) * 60ms) backwards;
 }
 
-/* The two fields drift against the pointer, at different depths. */
-.page-hero-field--a {
-  width: 42rem;
-  height: 42rem;
-  top: -22rem;
-  right: -12rem;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--cp2b-lima) 24%, transparent), transparent);
-  transform: translate3d(calc(var(--hero-fx, 0) * -48px), calc(var(--hero-fy, 0) * -32px), 0);
+/* The leaf shape of the logo: two opposite corners pointed. */
+.page-hero-bit--leaf-lima,
+.page-hero-bit--leaf-verde {
+  width: 18px;
+  height: 11px;
+  border-radius: 0 80% 0 80%;
 }
 
-.page-hero-field--b {
-  width: 36rem;
-  height: 36rem;
-  bottom: -24rem;
-  left: -10rem;
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--cp2b-verde) 32%, transparent), transparent);
-  transform: translate3d(calc(var(--hero-fx, 0) * 36px), calc(var(--hero-fy, 0) * 24px), 0);
+.page-hero-bit--leaf-lima { background: var(--cp2b-lima); }
+.page-hero-bit--leaf-verde { background: var(--cp2b-verde); }
+.page-hero-bit--dot-lima { background: var(--cp2b-lima); }
+.page-hero-bit--dot-verde { background: var(--cp2b-verde); }
+.page-hero-bit--dot-ambar { background: var(--cp2b-ambar); }
+.page-hero-bit--dot-petrol { background: var(--cp2b-azul-petroleo); }
+
+/* On a phone the text fills the band from edge to edge: three bits stay,
+   lined up just above the tear, so none lands on a word. */
+@media (max-width: 767.98px) {
+  .page-hero-bit:nth-child(-n+3),
+  .page-hero-bit:nth-child(5),
+  .page-hero-bit:nth-child(6) {
+    display: none;
+  }
+
+  .page-hero-bit {
+    top: auto;
+    bottom: 1.2rem;
+  }
 }
 
-/* The light rests where the band's own highlight is, and trails the
-   pointer while it is over the band. */
-.page-hero-glow {
+/* ---------- The print: a real photo taped onto the band ---------- */
+
+.page-hero-photo {
   position: absolute;
-  left: var(--hero-x, 82%);
-  top: var(--hero-y, 18%);
-  width: 30rem;
-  height: 30rem;
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(closest-side, color-mix(in srgb, var(--cp2b-branco) 15%, transparent), transparent);
-  opacity: 0.45;
-  transition: left 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    top 0.7s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.5s ease;
+  z-index: 1;
+  right: max(2rem, calc((100vw - 1320px) / 2 + 1rem));
+  top: 50%;
+  width: clamp(15rem, 10rem + 9vw, 21rem);
+  aspect-ratio: 7 / 5;
+  padding: 10px 10px 30px;
+  background: var(--cp2b-branco);
+  box-shadow: 2px 4px 0 rgb(59 42 28 / .16);
+  transform: translateY(-50%) rotate(calc(3deg + var(--hero-fx, 0) * 2deg));
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  animation: page-hero-print-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.35s backwards;
 }
 
-.page-hero[data-pointer] .page-hero-glow {
-  opacity: 1;
+.page-hero-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* ---------- Arrival: rule, title, subtitle ---------- */
+/* A strip of masking tape across the top edge. */
+.page-hero-photo::before {
+  content: '';
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  width: 6.5rem;
+  height: 1.5rem;
+  background: var(--paper-tape);
+  transform: translateX(-50%) rotate(-5deg);
+}
 
+/* The title and subtitle keep clear of the print. */
+.page-hero--photo .page-hero-inner > * {
+  max-width: min(100%, calc(100% - clamp(15rem, 10rem + 9vw, 21rem) - 3rem));
+}
+
+/* Below the desktop layout the print would crowd the title: the band
+   keeps only its paper bits. */
+@media (max-width: 991.98px) {
+  .page-hero-photo { display: none; }
+  .page-hero--photo .page-hero-inner > * { max-width: none; }
+}
+
+/* ---------- Arrival: tag, title, subtitle, print ---------- */
+
+/* The tag is pressed onto the band, as if it had just been stuck there. */
 .page-hero .eyebrow {
-  animation: page-hero-fade 0.6s ease-out both;
-}
-
-.page-hero .eyebrow::before {
-  transform-origin: left center;
-  animation: page-hero-draw 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+  animation: page-hero-tag-in 0.6s cubic-bezier(0.34, 1.4, 0.64, 1) both;
 }
 
 /* The title rises while a mask opens upward over it. It fills backwards
@@ -89,37 +130,46 @@
   animation: page-hero-fade-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
 }
 
+@keyframes page-hero-tag-in {
+  from { opacity: 0; transform: rotate(-9deg) scale(1.12); }
+  to { opacity: 1; transform: rotate(-2deg); }
+}
+
 @keyframes page-hero-title {
   from { opacity: 0; transform: translateY(0.45em); clip-path: inset(0 0 100% 0); }
   to { opacity: 1; transform: none; clip-path: inset(-20% -2% -30% -2%); }
-}
-
-@keyframes page-hero-draw {
-  from { transform: scaleX(0); }
-  to { transform: none; }
-}
-
-@keyframes page-hero-fade {
-  from { opacity: 0; }
 }
 
 @keyframes page-hero-fade-up {
   from { opacity: 0; transform: translateY(12px); }
 }
 
+@keyframes page-hero-bit-in {
+  from { opacity: 0; scale: 0.4; }
+}
+
+@keyframes page-hero-print-in {
+  from { opacity: 0; translate: 0 -18px; rotate: 5deg; }
+}
+
 /* Reduced motion: no arrival at all, not even the staggered delays that
    the global rule in design-system.css leaves in place. */
 @media (prefers-reduced-motion: reduce) {
-  .page-hero-ambient,
   .page-hero .eyebrow,
-  .page-hero .eyebrow::before,
   .page-hero h1,
-  .page-hero .page-hero-sub {
+  .page-hero .page-hero-sub,
+  .page-hero-bit,
+  .page-hero-photo {
     animation: none;
   }
 
-  .page-hero-field,
-  .page-hero-glow {
+  .page-hero-bit,
+  .page-hero-photo {
     transition: none;
   }
+}
+
+body.high-contrast .page-hero-ambient,
+body.high-contrast .page-hero-photo {
+  display: none;
 }

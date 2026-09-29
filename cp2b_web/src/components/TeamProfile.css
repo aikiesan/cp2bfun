@@ -13,28 +13,35 @@
     radial-gradient(circle, color-mix(in srgb, var(--cp2b-verde-escuro) 7%, transparent) 1px, transparent 1.4px) 0 0 / 22px 22px,
     var(--bg-surface);
   border: 1px solid var(--border-default);
-  border-radius: var(--radius-2xl);
-  box-shadow: 0 24px 60px -30px rgb(30 62 76 / .3), var(--shadow-sm);
-  overflow: hidden;
+  border-radius: var(--radius-md);
+  box-shadow: var(--paper-shadow);
+  overflow: visible;
 }
 
+/* Um pedaço de fita crepe prende o painel à página (no lugar do filete). */
 .tprof::before {
   content: '';
   position: absolute;
-  inset: 0 0 auto;
-  height: 3px;
-  background: linear-gradient(90deg, var(--cp2b-verde-escuro), var(--cp2b-verde) 45%, var(--cp2b-lima));
+  top: -0.7rem;
+  left: 50%;
+  z-index: 1;
+  width: 7rem;
+  height: 1.4rem;
+  background: var(--paper-tape);
+  transform: translateX(-50%) rotate(-2deg);
+  pointer-events: none;
 }
 
 .tprof__head { max-width: 44rem; margin-bottom: clamp(1.1rem, 0.8rem + 1vw, 1.6rem); }
 
 .tprof__eyebrow {
   display: block;
-  font-size: 0.64rem;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--cp2b-verde);
+  letter-spacing: 0;
+  color: var(--cp2b-verde-escuro);
+  line-height: 1.1;
 }
 
 .tprof__head h2 {
@@ -58,27 +65,33 @@
   padding: 0;
 }
 
+/* Colunas pautadas, não caixas dentro do painel: um fio grosso em cima de
+   cada número, como numa folha de caderno. */
 .tprof-stats li {
   display: flex;
   flex-direction: column;
-  padding: 1rem 1.1rem;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-xl);
+  padding: 0.85rem 0.2rem 0;
+  border-top: 2px solid var(--tp-hair);
 }
 
 .tprof-stats li.is-highlight {
-  background: color-mix(in srgb, var(--cp2b-verde) 6%, white);
-  border-color: color-mix(in srgb, var(--cp2b-verde) 35%, white);
+  border-top-color: var(--cp2b-verde);
 }
 
 .tprof-stats__num {
-  font-family: var(--font-sans);
+  font-family: var(--font-display);
   font-size: 2.6rem;
-  font-weight: 300;
+  font-weight: 900;
   line-height: 1;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.02em;
   color: var(--tp-ink);
+}
+
+/* O número em destaque ganha um risco de marca-texto lima por baixo. */
+.tprof-stats li.is-highlight .tprof-stats__num {
+  align-self: flex-start;
+  padding: 0 0.12em;
+  background: linear-gradient(transparent 55%, color-mix(in srgb, var(--cp2b-lima) 75%, transparent) 55% 92%, transparent 92%);
 }
 
 .tprof-stats__num small { font-size: 0.45em; letter-spacing: 0; color: var(--text-secondary); }
@@ -108,11 +121,12 @@
 
 .tprof-chart__title {
   margin: 0 0 0.8rem;
-  font-size: 0.64rem;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
   font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
+  letter-spacing: 0;
   color: var(--cp2b-verde-escuro);
+  line-height: 1.1;
 }
 
 .tprof-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }

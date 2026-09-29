@@ -1,5 +1,5 @@
 import { lazy, Suspense } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './styles/fonts.css';
@@ -153,6 +153,19 @@ const LegacyAlbumRedirect = () => {
   return <Navigate to={`/galeria/${albumId}`} replace />;
 };
 
+// O <main> diz se a rota é a Home ou uma página interna. A identidade de
+// papel (etiquetas à mão, cartões de papel) vale só nas internas: a Home
+// herda apenas a base comum — cores, fontes, botões, cabeçalho e rodapé —
+// e mantém suas seções como estão. Ver "Papel" em design-system.css.
+const PageMain = ({ children }) => {
+  const { pathname } = useLocation();
+  return (
+    <main id="main-content" data-page={pathname === '/' ? 'home' : 'inner'} style={{ minHeight: '80vh' }}>
+      {children}
+    </main>
+  );
+};
+
 function App() {
   return (
     <LanguageProvider>
@@ -186,7 +199,7 @@ function App() {
                     elsewhere. See MoleculeField for the reasoning. */}
                 <MoleculeField />
                 <ErrorBoundary>
-                <main id="main-content" style={{ minHeight: '80vh' }}>
+                <PageMain>
                   <Suspense fallback={<PageLoading />}>
                   <Routes>
                     <Route path="/" element={<GuardedRoute pageKey="home" element={<Home />} />} />
@@ -229,7 +242,7 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                   </Routes>
                   </Suspense>
-                </main>
+                </PageMain>
                 </ErrorBoundary>
                 <Footer />
               </>

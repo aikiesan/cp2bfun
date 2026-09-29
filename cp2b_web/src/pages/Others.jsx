@@ -9,14 +9,14 @@ const Others = () => {
 
   const labels = {
     pt: {
-      tag: 'EM BREVE',
+      tag: 'Em breve',
       title: 'Outros',
       description: 'Materiais institucionais, apresentações e recursos complementares.',
       cta: 'Fique atento às novidades',
       ctaLink: '/contato',
     },
     en: {
-      tag: 'COMING SOON',
+      tag: 'Coming soon',
       title: 'Others',
       description: 'Institutional materials, presentations and supplementary resources.',
       cta: 'Stay tuned for updates',

@@ -1,0 +1,162 @@
+/* ============================================================
+   /sobre — identidade de papel
+   Folhas de papel sobre a mesa no lugar dos cartões com sombra
+   difusa; rótulos escritos à mão no lugar das pílulas em
+   caixa-alta; ícones soltos no papel, sem o círculo tingido.
+   Só tokens (tokens.css). Os blocos que eram caixa dentro de
+   caixa (resumo, parceiros) ficaram sem a caixa de fora.
+   ============================================================ */
+
+/* ---------- Folha de papel ---------- */
+.about-sheet {
+  position: relative;
+  background: var(--bg-surface);
+  border: 1px solid var(--paper-line);
+  border-radius: var(--radius-md);
+  box-shadow: var(--paper-shadow);
+}
+
+/* Um pedaço de fita colorida prende a folha pela borda de cima, no lugar
+   do filete colorido que antes marcava cada cartão. */
+.about-sheet[data-tape]::before {
+  content: '';
+  position: absolute;
+  top: -0.6rem;
+  left: 1.5rem;
+  width: 4.5rem;
+  height: 1.2rem;
+  transform: rotate(-4deg);
+  background: color-mix(in srgb, var(--tape-color) 55%, transparent);
+}
+
+.about-sheet[data-tape="verde"] { --tape-color: var(--cp2b-verde); }
+.about-sheet[data-tape="lima"] { --tape-color: var(--cp2b-lima); }
+.about-sheet[data-tape="ambar"] { --tape-color: var(--cp2b-ambar); }
+
+.about-sheet__title {
+  font-weight: 800;
+  color: var(--cp2b-azul-petroleo);
+}
+
+.about-sheet__quote {
+  color: var(--text-secondary);
+  font-size: 1.15rem;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* ---------- Rótulo à mão e ícone solto ---------- */
+.about-label {
+  font-family: var(--font-hand);
+  font-size: 1.45rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--cp2b-verde-escuro);
+}
+
+.about-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--cp2b-ambar);
+}
+
+/* Os ícones dos valores alternam entre as três cores da marca. */
+.about-values > :nth-child(3n + 2) .about-icon { color: var(--cp2b-verde-escuro); }
+.about-values > :nth-child(3n + 3) .about-icon { color: var(--cp2b-verde); }
+
+.about-value__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  min-height: 2.4rem;
+}
+
+.about-value__text {
+  font-size: 0.88rem;
+  line-height: 1.45;
+  color: var(--text-secondary);
+}
+
+/* ---------- Títulos de bloco com ícone ---------- */
+.about-block-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 800;
+  color: var(--cp2b-azul-petroleo);
+}
+
+/* ---------- Resumo executivo: texto corrido, sem caixa ---------- */
+.about-abstract__text {
+  max-width: 72ch;
+  white-space: pre-line;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+}
+
+/* ---------- Selo do vídeo: etiqueta presa com fita ---------- */
+.about-video-tag {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 2;
+  pointer-events: none;
+  padding: 0.1rem 0.85rem 0.2rem;
+  background: var(--cp2b-branco);
+  box-shadow: var(--paper-shadow);
+  transform: rotate(-2deg);
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--paper-ink);
+}
+
+.about-video-tag::before {
+  content: '';
+  position: absolute;
+  left: -0.7rem;
+  top: -0.45rem;
+  width: 2.6rem;
+  height: 0.95rem;
+  background: var(--paper-tape);
+  transform: rotate(-28deg);
+}
+
+/* ---------- Listas de parceiros: folhinhas no lugar dos "checks" ---------- */
+.about-leaf {
+  flex-shrink: 0;
+  width: 0.8rem;
+  height: 0.5rem;
+  margin: 0.4rem 0.55rem 0 0;
+  border-radius: 0 80% 0 80%;
+  background: var(--cp2b-verde);
+}
+
+/* ---------- Alto contraste ---------- */
+body.high-contrast .about-sheet {
+  background: #000;
+  border-color: #fff;
+  box-shadow: none;
+}
+
+body.high-contrast .about-sheet[data-tape]::before,
+body.high-contrast .about-video-tag::before {
+  display: none;
+}
+
+body.high-contrast .about-label,
+body.high-contrast .about-sheet__title,
+body.high-contrast .about-block-title,
+body.high-contrast .about-value__title,
+body.high-contrast .about-value__text,
+body.high-contrast .about-sheet__quote,
+body.high-contrast .about-abstract__text {
+  color: #fff;
+}
+
+body.high-contrast .about-video-tag {
+  background: #000;
+  color: #fff;
+  border: 1px solid #fff;
+}

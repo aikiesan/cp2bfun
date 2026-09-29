@@ -140,6 +140,7 @@ const Publications = () => {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <PageHero
       className="page-hero--overlap"
+      photo={{ src: '/assets/fotos/publicacoes-parede.webp', width: 700, height: 500 }}
       eyebrow={language === 'pt' ? 'Produção Científica' : 'Scientific Output'}
       title={language === 'pt' ? 'Publicações' : 'Publications'}
       subtitle={language === 'pt'

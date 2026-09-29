@@ -56,7 +56,7 @@ export const capacitacaoContent = {
       newsletterCta: 'Avise-me das turmas',
     },
     propose: {
-      tag: 'PARA PESQUISADORES',
+      tag: 'Para pesquisadores',
       title: 'Proponha um curso',
       lead:
         'O Eixo 6 convida os pesquisadores do CP2b a propor cursos de extensão e capacitação. Cada curso amplia o networking e a visibilidade do Centro e gera receita para quem o ministra e para o CP2b.',
@@ -87,7 +87,7 @@ export const capacitacaoContent = {
       },
     },
     outline: {
-      tag: 'ESTRUTURA DA PROPOSTA',
+      tag: 'Estrutura da proposta',
       title: 'O que o template pede',
       lead: 'Confira antes de começar: são estas as seções que a proposta precisa responder.',
       sections: [
@@ -154,7 +154,7 @@ export const capacitacaoContent = {
       newsletterCta: 'Notify me about classes',
     },
     propose: {
-      tag: 'FOR RESEARCHERS',
+      tag: 'For researchers',
       title: 'Propose a course',
       lead:
         "Axis 6 invites CP2b researchers to propose extension and training courses. Each course broadens the Centre's network and visibility and generates income for the people who teach it and for CP2b.",
@@ -185,7 +185,7 @@ export const capacitacaoContent = {
       },
     },
     outline: {
-      tag: 'PROPOSAL STRUCTURE',
+      tag: 'Proposal structure',
       title: 'What the template asks for',
       lead: 'Check before you start: these are the sections your proposal needs to cover.',
       sections: [
