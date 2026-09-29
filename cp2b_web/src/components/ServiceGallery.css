@@ -29,19 +29,17 @@
 .svc:hover,
 .svc.is-open {
   border-color: color-mix(in srgb, var(--cp2b-verde) 50%, white);
-  box-shadow: 0 16px 34px -22px rgb(0 87 58 / .4);
+  box-shadow: var(--paper-shadow-lift);
 }
 
-/* Quadro da ilustração: fundo claro com uma leve luz da marca, sem caixa
-   dentro de caixa — a imagem recortada "flutua" no card. */
+/* Quadro da ilustração: papel claro, sem caixa dentro de caixa e sem o
+   brilho da marca — a imagem recortada fica sobre o papel do card. */
 .svc__art {
   display: grid;
   place-items: center;
   aspect-ratio: 4 / 3;
   padding: 0.75rem;
-  background:
-    radial-gradient(70% 70% at 50% 55%, color-mix(in srgb, var(--cp2b-lima) 16%, transparent), transparent 75%),
-    color-mix(in srgb, var(--cp2b-verde) 4%, white);
+  background: var(--paper);
   border-bottom: 1px solid var(--border-divider);
 }
 

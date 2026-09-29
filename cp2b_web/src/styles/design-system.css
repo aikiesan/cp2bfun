@@ -1082,13 +1082,11 @@ main#main-content,
   }
 
   .solution-modality-icon {
-    width: 40px !important;
-    height: 40px !important;
-    font-size: 1.2rem !important;
+    font-size: 1.35rem;
   }
 
   .solution-modality-badge {
-    font-size: 0.68rem !important;
+    font-size: 1.1rem;
   }
 
   .solution-modality-copy {
@@ -1097,9 +1095,7 @@ main#main-content,
   }
 
   .solution-step-number {
-    width: 32px !important;
-    height: 32px !important;
-    font-size: 0.85rem !important;
+    font-size: 1.6rem;
   }
 
   .partner-logo-frame {
@@ -1301,6 +1297,36 @@ main[data-page="inner"] .shadow-lg {
 
 main[data-page="inner"] .rounded-4 {
   border-radius: var(--radius-md) !important;
+}
+
+/* ---------- /solucoes: modalidades e passos ----------
+   O ícone fica solto no papel (sem o círculo em gradiente cinza), o selo de
+   cada modalidade é uma etiqueta à mão e o número de cada passo é um
+   algarismo grande em âmbar, sem o círculo verde. */
+.solution-modality-icon {
+  font-size: 1.6rem;
+  line-height: 1;
+  color: var(--cp2b-ambar);
+}
+
+.solution-modality-badge {
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: right;
+  color: var(--cp2b-verde-escuro);
+}
+
+.solution-step-number {
+  flex-shrink: 0;
+  min-width: 2.2rem;
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  font-weight: 900;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  color: var(--cp2b-ambar);
 }
 
 /* ---------- Pills do cabeçalho (PILAR-2b, Arqueia) ----------

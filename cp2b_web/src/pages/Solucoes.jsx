@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import { Container, Row, Col, Card, Button, Badge } from 'react-bootstrap';
+import { Container, Row, Col, Card, Button } from 'react-bootstrap';
 import { motion, useReducedMotion } from 'framer-motion';
 import { Link, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
@@ -416,25 +416,8 @@ const Solucoes = () => {
                     }}
                   >
                     <div className="d-flex align-items-center justify-content-between mb-2 mb-md-3">
-                      <div
-                        className="rounded-circle d-flex align-items-center justify-content-center solution-modality-icon"
-                        style={{
-                          width: 48,
-                          height: 48,
-                          background: 'linear-gradient(135deg, var(--gray-100) 0%, var(--gray-200) 100%)',
-                          color: 'var(--cp2b-verde-escuro)',
-                          fontSize: '1.4rem',
-                        }}
-                      >
-                        <i className={`bi ${mod.icon}`} />
-                      </div>
-                      <Badge
-                        bg="light"
-                        className="text-dark border px-2 py-1 solution-modality-badge"
-                        style={{ fontSize: '0.72rem', fontWeight: 600 }}
-                      >
-                        {mod.badge}
-                      </Badge>
+                      <i className={`bi ${mod.icon} solution-modality-icon`} aria-hidden="true" />
+                      <span className="solution-modality-badge">{mod.badge}</span>
                     </div>
                     <h3 className="fw-bold mb-1 mb-md-2 fs-5 mobile-compact-title" style={{ color: 'var(--text-primary)' }}>
                       {mod.title}
@@ -472,18 +455,7 @@ const Solucoes = () => {
                     }}
                   >
                     <div className="d-flex align-items-center gap-3 mb-3">
-                      <span
-                        className="mono-label fw-bold d-inline-flex align-items-center justify-content-center rounded-circle solution-step-number"
-                        style={{
-                          width: 36,
-                          height: 36,
-                          background: 'var(--brand-primary)',
-                          color: '#ffffff',
-                          fontSize: '0.9rem',
-                        }}
-                      >
-                        {st.number}
-                      </span>
+                      <span className="solution-step-number">{st.number}</span>
                       <h4 className="fw-bold fs-6 mb-0" style={{ color: 'var(--text-primary)' }}>
                         {st.title}
                       </h4>
