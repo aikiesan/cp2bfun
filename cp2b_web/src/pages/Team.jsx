@@ -239,6 +239,13 @@ const Team = () => {
       .filter((group) => group.members.length > 0);
   }, [allGroups, selectedCategory, searchQuery]);
 
+  // Easter egg: quem busca "metaninho" encontra o mascote no meio da equipe.
+  // Ele não entra nas contagens nem nos filtros; só aparece para essa busca.
+  const showMascot = useMemo(
+    () => searchQuery.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().includes('metaninho'),
+    [searchQuery]
+  );
+
   const totalFilteredCount = useMemo(() => {
     return filteredGroups.reduce((acc, g) => acc + g.members.length, 0);
   }, [filteredGroups]);
@@ -525,7 +532,46 @@ const Team = () => {
                   </Row>
                 </motion.section>
               ))}
-              {filteredGroups.length === 0 && (
+              {showMascot && (
+                <motion.section
+                  key="metaninho"
+                  className="mb-4 mb-md-5 team-mascot"
+                  {...listItemMotion(animateList, { layoutDependency: layoutKey })}
+                >
+                  <div className="d-flex align-items-baseline justify-content-between border-bottom pb-2 mb-3 mb-md-4">
+                    <h3
+                      className="fw-bold mb-0 text-uppercase fs-6"
+                      style={{ letterSpacing: '1px', color: 'var(--text-primary)' }}
+                    >
+                      {language === 'pt' ? 'Mascote' : 'Mascot'}
+                    </h3>
+                  </div>
+                  <Row className="g-2 g-sm-3 g-md-4">
+                    <Col xs={12} sm={6} lg={4} xl={3}>
+                      <Card className="h-100 p-2 p-sm-3 border-0 shadow-sm team-member-card team-mascot__card">
+                        <div className="d-flex align-items-center gap-2 gap-sm-3 team-member-inner">
+                          <Metaninho pose="feliz" size={64} className="team-mascot__img" />
+                          <div style={{ minWidth: 0 }} className="flex-grow-1">
+                            <h4 className="fw-bold mb-1 team-member-name" style={{ fontSize: '0.92rem', lineHeight: 1.25 }}>
+                              Metaninho
+                            </h4>
+                            <div
+                              className="small fw-semibold mb-1 team-member-role"
+                              style={{ color: 'var(--brand-primary, #00573A)', fontSize: '0.75rem', lineHeight: 1.25 }}
+                            >
+                              {language === 'pt' ? 'Mascote oficial do CP2b' : "CP2b's official mascot"}
+                            </div>
+                            <div className="text-muted small team-member-inst" style={{ fontSize: '0.75rem' }}>
+                              {language === 'pt' ? 'CH₄ · um carbono e quatro hidrogênios' : 'CH₄ · one carbon and four hydrogens'}
+                            </div>
+                          </div>
+                        </div>
+                      </Card>
+                    </Col>
+                  </Row>
+                </motion.section>
+              )}
+              {filteredGroups.length === 0 && !showMascot && (
                 <motion.div
                   key="empty"
                   className="text-center py-5 text-muted"
