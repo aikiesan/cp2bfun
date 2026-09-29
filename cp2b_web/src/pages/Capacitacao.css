@@ -395,8 +395,10 @@
   overflow-wrap: anywhere;
 }
 
-/* Cartão do arquivo. Sem sticky: o overflow-x: hidden do body (index.css)
-   o transforma em contêiner de rolagem e o sticky nunca prende. */
+/* Cartão do arquivo, sem sticky: fica no fluxo, ao lado do passo a passo.
+   (O motivo antigo não vale mais: o body agora usa overflow-x: clip, que
+   não cria contêiner de rolagem (index.css), e um sticky aqui prenderia.
+   Se um dia o cartão acompanhar a rolagem, conferir no navegador.) */
 .cap-download {
   display: grid;
   justify-items: start;

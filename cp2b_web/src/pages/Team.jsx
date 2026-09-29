@@ -245,10 +245,13 @@ const Team = () => {
   // Ao filtrar, grupos e cartões deslizam para o novo lugar e os que saem
   // somem aos poucos (hooks/useListMotion). Só a troca de filtro dispara a
   // medição: carregar a API, trocar de idioma ou abrir um perfil não mexem
-  // nos cartões.
+  // nos cartões. A chegada da API troca a fonte da lista (estática → API) e
+  // remonta a fronteira de presença (resetKey): a lista nova entra em
+  // repouso, como a primeira, sem animar a diferença entre as duas.
   const listRef = useRef(null);
   const animateList = useListMotion(listRef);
   const layoutKey = `${selectedCategory}|${searchQuery.trim().toLowerCase()}`;
+  const listSource = apiMembers ? 'api' : 'static';
 
   return (
     <>
@@ -389,7 +392,7 @@ const Team = () => {
 
           {/* Members by Group */}
           <div ref={listRef} className="list-motion">
-            <ListPresence animate={animateList}>
+            <ListPresence animate={animateList} resetKey={listSource}>
               {filteredGroups.map((group, groupIndex) => (
                 <motion.section
                   key={group.category}

@@ -54,8 +54,8 @@ const TrlMatcher = ({ language, labels, countServices, onShowServices }) => {
         <span className="trl-match__kicker" id="trl-match-pick">{labels.pickerLabel}</span>
         {/* Nove botões, agrupados nas mesmas três fases da régua. */}
         <div className="trl-match__picker" role="group" aria-labelledby="trl-match-pick">
-          {phases.map((p, i) => (
-            <div key={p.name} className="trl-match__phase" style={{ '--i': i }}>
+          {phases.map((p) => (
+            <div key={p.name} className="trl-match__phase">
               <span className="trl-match__phase-head" aria-hidden="true">
                 <span className="trl-match__phase-range">TRL {p.from}–{p.to}</span>
                 <span className="trl-match__phase-name">{p.name}</span>
@@ -78,7 +78,15 @@ const TrlMatcher = ({ language, labels, countServices, onShowServices }) => {
           ))}
         </div>
 
-        <div className="trl-match__result" aria-live="polite">
+        {/* O leitor de tela ouve só um resumo curto a cada troca de nível
+            ("TRL 4 · Validação e escalonamento: 3 laboratórios, 15
+            serviços"); o painel detalhado, com cards e botões, fica fora da
+            região viva e é lido quando a pessoa chega nele. */}
+        <p className="visually-hidden trl-match__live" aria-live="polite">
+          {level ? labels.liveSummary(level, phase.name, labs.length, nServices) : ''}
+        </p>
+
+        <div className="trl-match__result">
           <AnimatePresence mode="wait" initial={false}>
             {level ? (
               <motion.div key={level} className="trl-match__panel" {...swap}>

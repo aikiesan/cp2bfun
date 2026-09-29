@@ -12,9 +12,12 @@ const relatedLabels = {
 
 const RelatedPosts = ({ posts, language }) => {
   // The cards arrive one after another the first time the row scrolls into
-  // view (see RelatedPosts.css).
+  // view (see RelatedPosts.css), as soon as its top edge shows ('some'). A
+  // fraction of the row is not safe: stacked in one column on a phone, or
+  // at 200% zoom on a laptop, it grows taller than the window can ever show
+  // a quarter of, and the cards would stay hidden.
   const gridRef = useRef(null);
-  const reveal = useScrollReveal(gridRef, { amount: 0.25 });
+  const reveal = useScrollReveal(gridRef, { amount: 'some' });
 
   if (!posts || posts.length === 0) return null;
 

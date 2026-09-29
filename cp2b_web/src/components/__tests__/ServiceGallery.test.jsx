@@ -47,14 +47,57 @@ describe('ServiceGallery — troca de filtro', () => {
     expect(entering.style.transform).toMatch(/scale/);
   });
 
-  it('with reduced motion nothing slides or scales: cards just swap', async () => {
-    motion.reduce = true;
+  // The styles right after a swap, before any frame has run: the moment an
+  // animation would show its first pose. Checked there, and not after a
+  // waitFor, which would sit through a normal animation and see it settled.
+  const swapNow = () => {
     const { container, rerender } = render(gallery(cemara));
     rerender(gallery(ppbioen));
+    const style = (li) => ({ opacity: li.style.opacity, transform: li.style.transform });
+    const find = (s) => cards(container).find((li) => li.textContent.includes(s.pt.title));
+    return { container, entering: style(find(ppbioen[0])), leaving: style(find(cemara[0])) };
+  };
+
+  it('with reduced motion nothing slides or scales: cards just swap', async () => {
+    motion.reduce = true;
+    const { container, entering, leaving } = swapNow();
+    // The new card is already at rest, at once...
+    expect(entering.opacity === '' || entering.opacity === '1').toBe(true);
+    expect(entering.transform).not.toMatch(/scale/);
+    // ...and the card going out is either there or gone, never half-faded
+    // or shrinking.
+    expect(['', '0', '1']).toContain(leaving.opacity);
+    expect(leaving.transform).not.toMatch(/scale/);
     await waitFor(() => expect(cards(container)).toHaveLength(ppbioen.length));
-    cards(container).forEach((li) => {
-      expect(li.style.transform === '' || li.style.transform === 'none').toBe(true);
-      expect(li.style.opacity === '' || li.style.opacity === '1').toBe(true);
-    });
+  });
+
+  it('with motion allowed, the same check does catch the scale', () => {
+    // Proof that the check above can fail: at that very point, the normal
+    // animation shows the new card faded and scaled down.
+    const { entering } = swapNow();
+    expect(entering.opacity).toBe('0');
+    expect(entering.transform).toMatch(/scale\(0\.96\)/);
+  });
+});
+
+describe('ServiceGallery — nada a mostrar', () => {
+  it('shows the empty message only once the leaving cards have faded out', () => {
+    const { container, rerender } = render(<ServiceGallery services={cemara} language="pt" labels={labels} emptyText="Nada aqui." />);
+    expect(container.querySelector('.svc-empty')).toBeNull();
+
+    rerender(<ServiceGallery services={[]} language="pt" labels={labels} emptyText="Nada aqui." />);
+    // In place, but held transparent while the cards still fade over it.
+    expect(container.querySelector('.svc-empty')).toHaveTextContent('Nada aqui.');
+    expect(container.querySelector('.svc-empty').style.opacity).toBe('0');
+  });
+
+  it('shows it at once with reduced motion, where the cards leave at once too', async () => {
+    motion.reduce = true;
+    const { container, rerender } = render(<ServiceGallery services={cemara} language="pt" labels={labels} emptyText="Nada aqui." />);
+    rerender(<ServiceGallery services={[]} language="pt" labels={labels} emptyText="Nada aqui." />);
+    const empty = container.querySelector('.svc-empty');
+    expect(empty).toHaveTextContent('Nada aqui.');
+    expect(empty.style.opacity === '' || empty.style.opacity === '1').toBe(true);
+    await waitFor(() => expect(cards(container)).toHaveLength(0));
   });
 });

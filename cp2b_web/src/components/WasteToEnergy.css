@@ -6,13 +6,17 @@
 
 /* overflow: clip, never hidden: hidden would make the band a scroll
    container and the stage below would stop sticking. The margin is the
-   same step /eixos uses between its other sections. */
+   same step /eixos uses between its other sections. The solid
+   background-color comes first as a fallback: a browser without
+   color-mix() (Safari < 16.2, Chrome < 111) drops the whole shorthand
+   below, and the white text would sit on the light page background. */
 .w2e {
   position: relative;
   overflow: clip;
   margin-top: clamp(2.5rem, 1.5rem + 4vw, 5rem);
   padding: var(--section-y) 0;
   color: var(--cp2b-branco);
+  background-color: var(--cp2b-petrol-900);
   background:
     radial-gradient(40rem 28rem at 88% 8%, color-mix(in srgb, var(--cp2b-lima) 14%, transparent), transparent 70%),
     radial-gradient(36rem 30rem at 0% 100%, color-mix(in srgb, var(--cp2b-verde) 22%, transparent), transparent 70%),
@@ -198,11 +202,16 @@
   list-style: none;
 }
 
+/* The steps that are not the current one recede, but only so far: 0.75
+   is the floor that keeps their text at AA on the petrol band (the body
+   copy, white at 82%, stays above 5:1 and the lime step number above
+   4.5:1; at the old 0.35 both fell to about 2.3:1). */
 .w2e-step {
+  --w2e-step-dim: 0.75;
   display: flex;
   align-items: center;
   min-height: 62vh;
-  opacity: 0.35;
+  opacity: var(--w2e-step-dim);
   transition: opacity 0.4s ease;
 }
 
@@ -214,6 +223,14 @@
 .w2e-step.is-active,
 .w2e-step:focus-within {
   opacity: 1;
+}
+
+/* Where :has() exists, only keyboard focus keeps a step lit: the focus a
+   mouse click leaves on a chip no longer holds that step up while another
+   one is current. Without :has() the whole rule is dropped and the
+   :focus-within above still applies. */
+.w2e-step:not(.is-active):focus-within:not(:has(:focus-visible)) {
+  opacity: var(--w2e-step-dim);
 }
 
 .w2e-step-art {
@@ -398,6 +415,8 @@
     border-radius: var(--radius-xl);
     border: 1px solid color-mix(in srgb, var(--cp2b-branco) 12%, transparent);
     background: color-mix(in srgb, var(--cp2b-branco) 5%, transparent);
+    /* Every step is a card of its own here: none recedes. */
+    --w2e-step-dim: 1;
     opacity: 1;
   }
 

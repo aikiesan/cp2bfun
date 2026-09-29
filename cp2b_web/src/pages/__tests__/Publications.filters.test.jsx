@@ -82,6 +82,38 @@ describe('Publications — filters in the link', () => {
     expect(screen.getByLabelText('Tipo')).toHaveValue('all');
   });
 
+  it('shows a linked year with no publications in the selector, and lets "Todos" undo it', async () => {
+    api.get.mockImplementation((url) =>
+      Promise.resolve({ data: url.includes('year=2019') ? [] : [article, chapter] })
+    );
+    openAt('/publicacoes?ano=2019');
+    await screen.findByText('Nenhuma publicação encontrada');
+
+    expect(lastRequest()).toBe('/publications?year=2019');
+    // The selector says which filter is on, even though no result has 2019...
+    const year = screen.getByLabelText('Ano');
+    expect(year).toHaveValue('2019');
+    expect([...year.options].map((o) => o.value)).toEqual(['all', '2019']);
+
+    // ...so "Todos" is a real change, and takes the filter off.
+    fireEvent.change(year, { target: { value: 'all' } });
+    expect(window.location.search).toBe('');
+    await screen.findByText('Artigo sobre biogás');
+    expect(lastRequest()).toBe('/publications?');
+    expect([...year.options].map((o) => o.value)).toEqual(['all', '2025', '2024']);
+  });
+
+  it('keeps the chosen year among the options when another filter leaves it empty', async () => {
+    openAt('/publicacoes?ano=2025');
+    await screen.findByText('Artigo sobre biogás');
+
+    api.get.mockResolvedValueOnce({ data: [] });
+    fireEvent.change(screen.getByLabelText('Tipo'), { target: { value: 'book' } });
+    await screen.findByText('Nenhuma publicação encontrada');
+    expect(lastRequest()).toBe('/publications?year=2025&type=book');
+    expect(screen.getByLabelText('Ano')).toHaveValue('2025');
+  });
+
   it('leaves the URL alone when opened without parameters', async () => {
     openAt('/publicacoes');
     await screen.findByText('Artigo sobre biogás');
@@ -123,7 +155,52 @@ describe('Publications — filters in the link', () => {
     await waitFor(() => expect(param('busca')).toBe('Costa'));
   });
 
-  it('keeps the current list on screen while the next one loads', async () => {
+  it('searches the trimmed text, the same the link keeps', async () => {
+    openAt('/publicacoes');
+    await screen.findByText('Artigo sobre biogás');
+
+    const field = screen.getByPlaceholderText('Título, autores, revista...');
+    fireEvent.change(field, { target: { value: '  Costa ' } });
+
+    // The field keeps what was typed; the request and the link do not.
+    expect(field).toHaveValue('  Costa ');
+    await waitFor(() => expect(lastRequest()).toBe('/publications?search=Costa'));
+    await waitFor(() => expect(param('busca')).toBe('Costa'));
+  });
+
+  it('filters the static fallback by the trimmed text too', async () => {
+    api.get.mockRejectedValue(new Error('offline'));
+    // Two leading spaces: no title starts that way, the trimmed text matches.
+    openAt('/publicacoes?busca=%20%20Aeration-Driven');
+    expect(await screen.findByText(/^Aeration-Driven Microbial Aggregation/)).toBeInTheDocument();
+    expect(lastRequest()).toBe('/publications?search=Aeration-Driven');
+  });
+
+  it('keeps the current list on screen, dimmed as busy, while the next one loads, when motion is allowed', async () => {
+    giveLayout();
+    openAt('/publicacoes');
+    await screen.findByText('Artigo sobre biogás');
+    const holder = screen.getByText('Artigo sobre biogás').closest('[aria-busy]');
+    expect(holder).toHaveAttribute('aria-busy', 'false');
+
+    let answer;
+    api.get.mockReturnValueOnce(new Promise((resolve) => { answer = resolve; }));
+    fireEvent.change(screen.getByLabelText('Tipo'), { target: { value: 'chapter' } });
+
+    // No spinner in place of the list: the old list stays until the new one
+    // arrives, which is what lets the items glide from one to the other. It
+    // is marked busy, which dims it (ListPresence.css).
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+    expect(screen.getByText('Artigo sobre biogás')).toBeInTheDocument();
+    expect(holder).toHaveAttribute('aria-busy', 'true');
+
+    answer({ data: [chapter] });
+    await waitFor(() => expect(screen.queryByText('Artigo sobre biogás')).not.toBeInTheDocument());
+    expect(screen.getByText('Capítulo sem links')).toBeInTheDocument();
+    expect(holder).toHaveAttribute('aria-busy', 'false');
+  });
+
+  it('without motion, shows the spinner in place of the list while the next one loads, as before', async () => {
     openAt('/publicacoes');
     await screen.findByText('Artigo sobre biogás');
 
@@ -131,14 +208,27 @@ describe('Publications — filters in the link', () => {
     api.get.mockReturnValueOnce(new Promise((resolve) => { answer = resolve; }));
     fireEvent.change(screen.getByLabelText('Tipo'), { target: { value: 'chapter' } });
 
-    // No spinner in place of the list: the old list stays until the new one
-    // arrives, which is what lets the items glide from one to the other.
-    expect(screen.queryByRole('status')).not.toBeInTheDocument();
-    expect(screen.getByText('Artigo sobre biogás')).toBeInTheDocument();
+    expect(screen.getByRole('status')).toBeInTheDocument();
+    expect(screen.queryByText('Artigo sobre biogás')).not.toBeInTheDocument();
 
     answer({ data: [chapter] });
-    await waitFor(() => expect(screen.queryByText('Artigo sobre biogás')).not.toBeInTheDocument());
-    expect(screen.getByText('Capítulo sem links')).toBeInTheDocument();
+    expect(await screen.findByText('Capítulo sem links')).toBeInTheDocument();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
+  it('shows the spinner the same way under reduced motion, with layout', async () => {
+    motion.reduce = true;
+    giveLayout();
+    openAt('/publicacoes');
+    await screen.findByText('Artigo sobre biogás');
+
+    let answer;
+    api.get.mockReturnValueOnce(new Promise((resolve) => { answer = resolve; }));
+    fireEvent.change(screen.getByLabelText('Tipo'), { target: { value: 'chapter' } });
+    expect(screen.getByRole('status')).toBeInTheDocument();
+
+    answer({ data: [chapter] });
+    expect(await screen.findByText('Capítulo sem links')).toBeInTheDocument();
   });
 
   it('does not let a slow earlier answer overwrite the current filter', async () => {

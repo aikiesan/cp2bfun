@@ -14,7 +14,8 @@ import './WasteToEnergy.css';
  *
  * The steps list is the content; the stage is a picture of it and is hidden
  * from assistive technology. Each axis chip opens that axis in the details
- * below (Research.jsx reads ?eixo= and scrolls to the hash).
+ * below (Research.jsx reads ?eixo=, scrolls to the hash and moves the focus
+ * to the axis tab), replacing the history entry rather than adding one.
  *
  * Motion (none of it loops): the heading and the stage arrive once, the first
  * time they scroll into view (useScrollReveal, so under reduced motion or
@@ -123,10 +124,13 @@ const WasteToEnergy = ({ copy, axisNames, axisHref = defaultAxisHref }) => {
                   </span>
                   <h3 className="w2e-step-title">{step.title}</h3>
                   <p className="w2e-step-text">{step.text}</p>
+                  {/* replace, como a figura dos eixos e as abas do
+                      detalhamento: trocar de eixo nesta página não empilha
+                      histórico, e o Voltar sai de /eixos de uma vez. */}
                   <ul className="w2e-step-axes">
                     {step.axes.map((id) => (
                       <li key={id}>
-                        <Link to={axisHref(id)} className="w2e-axis-chip">
+                        <Link to={axisHref(id)} replace className="w2e-axis-chip">
                           <span className="w2e-axis-chip-num">
                             {copy.axisLabel} {id}
                           </span>{' '}

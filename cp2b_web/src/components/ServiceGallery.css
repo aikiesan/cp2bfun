@@ -214,7 +214,13 @@
 
 .svc-trl__clear i { font-size: 0.65rem; }
 .svc-trl__clear:hover { background: var(--cp2b-verde-escuro); color: #fff; }
-.svc-trl__clear:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+/* O anel do site (lima translúcido) some sobre o verde-claro da faixa: vem
+   com um contorno escuro, como os botões de nível do seletor de TRL. */
+.svc-trl__clear:focus-visible {
+  outline: 2px solid var(--cp2b-verde-escuro);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
+}
 
 .svc-empty {
   margin: 0;

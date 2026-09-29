@@ -5,12 +5,17 @@ import { renderWithProviders } from '../../test/utils';
 // jsdom has no layout and no scrolling, so "in view", the OS motion setting
 // and the scroll progress are driven from here. The spring is swapped for a
 // value of its own, so a test can tell which of the two the bar follows.
-const motion = vi.hoisted(() => ({ inView: false, reduce: false, progress: 0.75, spring: 0.25 }));
+// Each watch is recorded, with its options, so a test can check how much of
+// a block has to show before it enters.
+const motion = vi.hoisted(() => ({ inView: false, reduce: false, progress: 0.75, spring: 0.25, watches: [] }));
 vi.mock('framer-motion', async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...actual,
-    useInView: () => motion.inView,
+    useInView: (ref, options) => {
+      motion.watches.push({ ref, options });
+      return motion.inView;
+    },
     useReducedMotion: () => motion.reduce,
     useScroll: () => ({ scrollYProgress: actual.motionValue(motion.progress) }),
     useSpring: () => actual.motionValue(motion.spring),
@@ -51,6 +56,7 @@ const giveLayout = (height) =>
 beforeEach(() => {
   motion.inView = false;
   motion.reduce = false;
+  motion.watches = [];
 });
 
 afterEach(() => {
@@ -156,5 +162,13 @@ describe('ArticleLayout — related posts', () => {
     giveLayout(400);
     renderArticle();
     expect(grid()).not.toHaveAttribute('data-reveal');
+  });
+
+  it('enters as soon as the top edge of the row shows, however tall it grows', () => {
+    // In one column on a phone, or at 200% zoom, a quarter of the row may
+    // never fit in the window: any part showing is enough.
+    renderArticle();
+    const watch = motion.watches.filter((w) => w.ref.current === grid()).at(-1);
+    expect(watch.options).toEqual(expect.objectContaining({ once: true, amount: 'some' }));
   });
 });

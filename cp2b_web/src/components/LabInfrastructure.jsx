@@ -103,8 +103,10 @@ const TrlRuler = ({ labels, onPick, activeSlug }) => (
     <div className="lab-trl__line lab-trl__line--head" aria-hidden="true">
       <span className="lab-trl__label" />
       <span className="lab-trl__track lab-trl__track--phases">
+        {/* Chave pela faixa, não pelo nome: o nome muda com o idioma, e a
+            fase remontada tocaria de novo a entrada (lab-fade). */}
         {phasesOf(labels).map((p, i) => (
-          <span key={p.name} className="lab-trl__phase" style={{ gridColumn: `${p.from} / ${p.to + 1}`, '--i': i }}>
+          <span key={p.from} className="lab-trl__phase" style={{ gridColumn: `${p.from} / ${p.to + 1}`, '--i': i }}>
             <span className="lab-trl__phase-range">TRL {p.from}–{p.to}</span>
             <span className="lab-trl__phase-name">{p.name}</span>
           </span>

@@ -50,12 +50,23 @@ const Research = () => {
   // efeito e levaria a página de volta ao topo. A chave da navegação entra
   // nas dependências porque, de um chip para outro, o hash não muda: sem
   // ela o segundo clique trocaria o eixo sem rolar até ele.
+  //
+  // O foco vai junto, para a aba do eixo aberto: o <Link> impede a navegação
+  // de fragmento do navegador, e sem isso o foco ficaria no chip, lá na faixa
+  // escura (o próximo Tab levaria a página de volta para cima). A aba, e não
+  // o título da seção, porque o leitor de tela anuncia nela o que abriu
+  // ("Eixo 4: …, guia, selecionada, 4 de 8"); o título diria só "Conheça os
+  // Eixos". Dali o Tab segue para o painel e as setas trocam de eixo.
+  // preventScroll: a rolagem acabou de ser feita, até o topo da seção.
   const { hash, key: locationKey } = useLocation();
   useEffect(() => {
     if (hash !== '#explorar-eixos') return undefined;
     const id = requestAnimationFrame(() => {
       const el = document.getElementById('explorar-eixos');
-      if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start' });
+      if (!el) return;
+      if (el.scrollIntoView) el.scrollIntoView({ block: 'start' });
+      const tab = el.querySelector('.axx-tab.is-active');
+      if (tab) tab.focus({ preventScroll: true });
     });
     return () => cancelAnimationFrame(id);
   }, [hash, locationKey]);

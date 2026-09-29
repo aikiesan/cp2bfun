@@ -69,6 +69,11 @@
   font-weight: 600;
   line-height: 1.3;
   color: var(--cp2b-verde-escuro);
+  /* No celular estreito (menos de ~335px) a coluna do nome fica mais
+     estreita que "escalonamento" ou "Demonstração": a palavra quebra (com
+     hífen, no idioma do <html>) em vez de passar por baixo dos botões. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
 }
 
 .trl-match__phase:nth-child(3) .trl-match__phase-name { color: var(--text-secondary); }
@@ -104,8 +109,9 @@
   font-weight: 600;
 }
 
-/* Sobre os tons claros das fases o anel de foco do site (lima translúcido)
-   quase some: aqui ele vem com um contorno escuro. */
+/* Sobre os tons claros das fases (e sobre o branco da caixa) o anel de foco
+   do site, lima translúcido, quase some: aqui ele vem com um contorno
+   escuro. O mesmo vale para os botões do resultado, mais abaixo. */
 .trl-match__level:focus-visible {
   outline: 2px solid var(--cp2b-verde-escuro);
   outline-offset: 2px;
@@ -254,7 +260,11 @@
 }
 
 .trl-match__show:hover { background: var(--cp2b-verde-escuro); color: var(--cp2b-branco); }
-.trl-match__show:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.trl-match__show:focus-visible {
+  outline: 2px solid var(--cp2b-verde-escuro);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
+}
 
 /* ---------- contato: sempre à vista, com ou sem laboratório no nível ---------- */
 .trl-match__contact {
@@ -285,7 +295,11 @@
 
 .trl-match__cta:hover,
 .trl-match__cta:focus-visible { background: var(--cp2b-azul-petroleo); color: var(--cp2b-branco); }
-.trl-match__cta:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+.trl-match__cta:focus-visible {
+  outline: 2px solid var(--cp2b-verde-escuro);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
+}
 
 /* ---------- tablet ---------- */
 @media (max-width: 991.98px) {

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { screen, waitFor, fireEvent } from '@testing-library/react';
+import { act, screen, waitFor, fireEvent } from '@testing-library/react';
 import { renderWithProviders } from '../../test/utils';
 
 // O sistema operacional pedindo menos movimento é controlado daqui; o resto
@@ -177,6 +177,46 @@ describe('Team — how the cards move', () => {
     // ...and gone once the fade is over (checked on the held nodes, cheap on
     // every frame).
     await waitFor(() => leaving.forEach((node) => expect(node).not.toBeInTheDocument()));
+    expect(screen.queryByText('Bruna de Souza Moraes')).not.toBeInTheDocument();
+  });
+
+  it('marks a group on its way out, and unmarks it when it comes back before its fade is over', async () => {
+    giveLayout();
+    openAt('/equipe');
+    await ready();
+    const search = screen.getByRole('searchbox', { name: /buscar membro da equipe/i });
+    const direction = sectionOf(/Direção do CP2b/);
+
+    fireEvent.change(search, { target: { value: 'Lamparelli' } });
+    expect(direction).toHaveClass('is-leaving');
+
+    fireEvent.change(search, { target: { value: '' } });
+    // The same section, back in place, with no leftover of the way out (the
+    // rule that lifts the gutter goes by this class).
+    expect(sectionOf(/Direção do CP2b/)).toBe(direction);
+    expect(direction).not.toHaveClass('is-leaving');
+  });
+
+  it('lets the API list arrive at rest, instead of animating it in over the static one', async () => {
+    giveLayout();
+    let answer;
+    fetchTeam.mockReturnValue(new Promise((resolve) => { answer = resolve; }));
+    openAt('/equipe');
+    await ready();
+
+    await act(async () => {
+      answer({
+        associates: [
+          { name: 'Rubens Augusto Camargo Lamparelli', role_pt: 'Coordenador do Eixo 1', institution: 'UNICAMP', axes: '1' },
+          { name: 'Pessoa Nova da Silva', role_pt: 'Pesquisadora', institution: 'UNICAMP', axes: '1' },
+        ],
+      });
+    });
+
+    const card = screen.getByText('Pessoa Nova da Silva').closest('.team-member-card').parentElement;
+    expect(card.style.opacity).toBe('1');
+    expect(card.style.transform).not.toMatch(/translateY/);
+    // What the API does not list is gone at once, not fading over the rest.
     expect(screen.queryByText('Bruna de Souza Moraes')).not.toBeInTheDocument();
   });
 

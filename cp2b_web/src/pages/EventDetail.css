@@ -30,7 +30,7 @@
   color: var(--cp2b-branco);
 }
 
-/* O número conta a partir de 0: a vaga já tem a largura final (--digits,
+/* O número conta a partir de 2: a vaga já tem a largura final (--digits,
    com algarismos de largura fixa), para o selo não crescer enquanto conta. */
 .event-countdown__num {
   display: inline-block;

@@ -15,12 +15,14 @@ import './EventDetail.css';
 // Programação do evento, num componente próprio para que os hooks de entrada
 // montem junto com a lista (no corpo da página montariam com o spinner e nunca
 // a veriam). As linhas entram em sequência na primeira vez em que a lista
-// aparece (ver EventDetail.css). Acima de 12 itens a lista pode passar de
-// várias telas e 20% dela nunca caberia na janela, deixando-a presa escondida:
-// aí basta a borda de cima aparecer.
+// aparece (ver EventDetail.css). A entrada dispara assim que a borda de cima
+// aparece ('some'), qualquer que seja o tamanho da lista: uma fração dela
+// (20%, por exemplo) pode nunca caber na janela, seja por serem muitos itens,
+// seja por zoom alto (400% deixa a janela com 320x256), e a programação
+// ficaria presa escondida.
 const EventSchedule = ({ items, title, language }) => {
   const listRef = useRef(null);
-  const reveal = useScrollReveal(listRef, { amount: items.length > 12 ? 'some' : 0.2 });
+  const reveal = useScrollReveal(listRef, { amount: 'some' });
 
   return (
     <section className="mb-5">
@@ -53,14 +55,16 @@ const EventSchedule = ({ items, title, language }) => {
 };
 
 // Selo da contagem regressiva, logo abaixo da data. O número de dias entra
-// contando (CountUp); os demais estados são só texto.
+// contando (CountUp); os demais estados são só texto. A contagem parte de 2,
+// o menor número que o texto no plural ("Faltam N dias") admite: partindo de
+// 0, o selo passaria por "Faltam 0 dias" e "Faltam 1 dias".
 const EventCountdown = ({ countdown, labels }) => (
   <span className={`event-countdown event-countdown--${countdown.kind}`}>
     <i className={`bi ${countdown.kind === 'days' || countdown.kind === 'tomorrow' ? 'bi-hourglass-split' : 'bi-calendar-event'}`} aria-hidden="true" />
     {countdown.kind === 'days' ? (
       <span style={{ '--digits': String(countdown.days).length }}>
         {labels.daysBefore}
-        <CountUp value={countdown.days} duration={1.2} className="event-countdown__num" />
+        <CountUp value={countdown.days} from={2} duration={1.2} className="event-countdown__num" />
         {labels.daysAfter}
       </span>
     ) : (
@@ -286,6 +290,8 @@ const EventDetail = () => {
           </Col>
 
           <Col lg={4}>
+            {/* O sticky só passou a prender com o overflow-x: clip do body
+                (index.css): antes o body virava contêiner de rolagem. */}
             <div className="bg-white rounded-4 shadow-sm p-4 position-sticky" style={{ top: '110px' }}>
               <dl className="mb-0">
                 <dt className="card-meta mb-1">{labels.date}</dt>

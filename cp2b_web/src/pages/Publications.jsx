@@ -16,7 +16,10 @@ import useListMotion, { listItemMotion } from '../hooks/useListMotion';
 
 // Filtros no link, para compartilhar a busca: ?ano=&tipo=&busca=. Valor fora
 // do esperado é ignorado e o filtro volta a "Todos". O ano só precisa ter
-// cara de ano: quais anos existem, só a resposta da API diz.
+// cara de ano: quais anos existem, só a resposta da API diz. Um ano bem
+// formado mas sem publicações (?ano=2019) vale, e entra nas opções do
+// seletor (ver yearOptions): assim o seletor mostra o filtro que está
+// valendo, e escolher "Todos" o desfaz.
 const isYearParam = (value) => /^\d{4}$/.test(value);
 // Os mesmos tipos do seletor abaixo (typeLabels), que são os que o backend aceita.
 const PUBLICATION_TYPES = ['article', 'book', 'chapter', 'thesis', 'conference'];
@@ -62,10 +65,13 @@ const Publications = () => {
   const [selectedYear, setSelectedYear] = useUrlChoice('ano', { fallback: 'all', isValid: isYearParam });
   const [selectedType, setSelectedType] = useUrlChoice('tipo', { fallback: 'all', isValid: isTypeParam });
   const [searchText, setSearchText] = useUrlText('busca');
-  // O eixo segue sem controle na página: fica em "Todos", como sempre.
+  // O eixo segue sem controle na página: fica em "Todos", como sempre. A
+  // busca vai aparada, como o link a guarda: 'Costa ' e 'Costa' dão o mesmo
+  // resultado a quem busca e a quem abre o link.
+  const searchQuery = searchText.trim();
   const filters = useMemo(
-    () => ({ year: selectedYear, type: selectedType, axis: 'all', search: searchText }),
-    [selectedYear, selectedType, searchText]
+    () => ({ year: selectedYear, type: selectedType, axis: 'all', search: searchQuery }),
+    [selectedYear, selectedType, searchQuery]
   );
 
   useEffect(() => {
@@ -116,6 +122,17 @@ const Publications = () => {
   };
 
   const sortedYears = Object.keys(groupedByYear).sort((a, b) => b - a);
+  // As opções de ano vêm dos resultados; o ano escolhido entra nelas mesmo
+  // quando não trouxe nada (ou quando só veio pelo link).
+  const yearOptions = selectedYear !== 'all' && !sortedYears.includes(selectedYear)
+    ? [...sortedYears, selectedYear].sort((a, b) => b - a)
+    : sortedYears;
+  // Sem movimento (movimento reduzido, ou sem layout), a troca de filtro é
+  // como sempre foi: o spinner toma o lugar da lista enquanto a próxima
+  // carrega. Com movimento, a lista atual fica na tela, esmaecida (aria-busy,
+  // ListPresence.css), para os itens deslizarem de uma para a outra.
+  const showSpinner = loading && (!loaded || !animateList);
+  const showList = loaded && (animateList || !loading);
 
   return (
     <>
@@ -153,7 +170,7 @@ const Publications = () => {
                   }}
                 >
                   <option value="all">{language === 'pt' ? 'Todos' : 'All'}</option>
-                  {sortedYears.map(year => (
+                  {yearOptions.map(year => (
                     <option key={year} value={year}>{year}</option>
                   ))}
                 </Form.Select>
@@ -182,7 +199,7 @@ const Publications = () => {
                 <Form.Control
                   type="text"
                   placeholder={language === 'pt' ? 'Título, autores, revista...' : 'Title, authors, journal...'}
-                  value={filters.search}
+                  value={searchText}
                   onChange={(e) => {
                     setAnnounce(true);
                     setSearchText(e.target.value);
@@ -196,9 +213,10 @@ const Publications = () => {
 
       {/* Carregando: só a lista espera — o topo da página continua na tela
           enquanto os filtros buscam. Na primeira carga não há lista ainda, e
-          o spinner ocupa o lugar dela; nas seguintes a lista atual fica até a
-          nova chegar. */}
-      {loading && !loaded && (
+          o spinner ocupa o lugar dela; nas seguintes, com movimento, a lista
+          atual fica (esmaecida) até a nova chegar, e sem movimento o spinner
+          volta a ocupar o lugar dela (showSpinner). */}
+      {showSpinner && (
         <div className="py-5 text-center" role="status" aria-live="polite">
           <Spinner animation="border" />
         </div>
@@ -215,10 +233,14 @@ const Publications = () => {
       </p>
 
       {/* Publications grouped by year */}
-      <div ref={listRef} className="list-motion" aria-busy={loading && loaded ? 'true' : undefined}>
+      <div
+        ref={listRef}
+        className="list-motion"
+        aria-busy={animateList ? String(loading && loaded) : undefined}
+      >
         {/* Só existe depois da primeira resposta: a lista chega como sempre
             chegou, e o movimento fica para as trocas de filtro. */}
-        {loaded && (
+        {showList && (
           <ListPresence animate={animateList}>
             {sortedYears.map((year, yearIndex) => (
               <motion.div

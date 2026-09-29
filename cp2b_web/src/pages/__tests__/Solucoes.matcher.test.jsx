@@ -21,6 +21,7 @@ const expectedLabs = (n) => laboratories.filter((l) => l.group === 'bioprocessos
 const expectedServices = (n) => technicalServices.filter((s) => s.trlMin <= n && n <= s.trlMax);
 
 const results = () => document.querySelector('.trl-match__result');
+const live = () => document.querySelector('.trl-match__live');
 const pick = (n) => fireEvent.click(screen.getByRole('button', { name: new RegExp(`^TRL ${n}:`) }));
 const catalogTitles = () => [...document.querySelectorAll('#servicos .svc__title')].map((e) => e.textContent);
 const titlesOf = (services) => services.map((s) => formatFormulas(s.pt.title));
@@ -51,11 +52,32 @@ describe('Infraestrutura e Soluções — "Qual é o seu desafio?"', () => {
     expect(levels[8]).toHaveAccessibleName(`TRL 9: ${rulerPhases[2]}`);
   });
 
-  it('starts with nothing chosen and a live results region', () => {
+  it('starts with nothing chosen and a live summary region, empty until a level is chosen', () => {
     renderWithProviders(<Solucoes />);
-    expect(results()).toHaveAttribute('aria-live', 'polite');
+    expect(live()).toHaveAttribute('aria-live', 'polite');
+    expect(live()).toHaveClass('visually-hidden');
+    expect(live()).toBeEmptyDOMElement();
     expect(within(results()).getByText(/Escolha um nível de 1 a 9/)).toBeInTheDocument();
     expect(screen.getByRole('link', { name: /Fale com o CP2b/ })).toHaveAttribute('href', '/contato');
+  });
+
+  it('announces only a short summary of the level, never the whole panel', async () => {
+    renderWithProviders(<Solucoes />);
+    pick(4);
+    const nLabs = expectedLabs(4).length;
+    const nServices = expectedServices(4).length;
+    expect(nLabs).toBeGreaterThan(1);
+    expect(live()).toHaveTextContent(`TRL 4 · Validação e escalonamento: ${nLabs} laboratórios, ${nServices} serviços`);
+
+    // The detailed panel (lab cards, chips, the button) is outside any live
+    // region, so it is not read out on every change.
+    await waitFor(() => expect(results().querySelectorAll('.trl-match__lab')).toHaveLength(nLabs));
+    expect(results().closest('[aria-live]')).toBeNull();
+    expect(results().querySelector('[aria-live]')).toBeNull();
+    expect(live()).not.toHaveTextContent(expectedLabs(4)[0].lead);
+
+    pick(8);
+    expect(live()).toHaveTextContent('TRL 8 · Demonstração e mercado: nenhum laboratório, nenhum serviço');
   });
 
   it.each([2, 3, 4, 5, 6])('TRL %i: lists exactly the core labs whose range covers it, and counts the services', async (n) => {
@@ -126,8 +148,10 @@ describe('Infraestrutura e Soluções — "Qual é o seu desafio?"', () => {
     fireEvent.click(await within(results()).findByRole('button', { name: `Ver os ${at6.length} serviços` }));
 
     expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith(expect.objectContaining({ behavior: 'smooth' }));
-    // O foco do teclado acompanha a rolagem até o catálogo.
+    // O foco do teclado acompanha a rolagem até o catálogo, que tem nome: é
+    // o que o leitor de tela anuncia ao chegar.
     expect(document.activeElement).toBe(document.getElementById('servicos'));
+    expect(document.activeElement).toHaveAccessibleName('Serviços Técnicos Especializados');
     await waitFor(() => expect(catalogTitles()).toEqual(titlesOf(at6)));
 
     // O filtro ativo fica à vista, com o número do que está sendo mostrado.
@@ -193,6 +217,7 @@ describe('Infraestrutura e Soluções — "Qual é o seu desafio?"', () => {
     renderWithProviders(<Solucoes />);
     expect(screen.getByRole('heading', { name: 'What is your challenge?' })).toBeInTheDocument();
     pick(8);
+    expect(live()).toHaveTextContent('TRL 8 · Demonstration and market: no laboratories, no services');
     await waitFor(() => expect(within(results()).getByText('No CP2b core laboratory works at this level today.')).toBeInTheDocument());
     expect(screen.getByRole('link', { name: /Talk to CP2b/ })).toHaveAttribute('href', '/contato');
   });

@@ -48,6 +48,29 @@ describe('CountUp', () => {
     await waitFor(() => expect(number(container)).toHaveTextContent('25'));
   });
 
+  it('can start from another number, and then never shows one below it', async () => {
+    giveLayout();
+    const { container, rerender } = render(<CountUp value={12} from={2} duration={0.05} />);
+    expect(number(container)).toHaveTextContent('2');
+
+    // Every number the count shows on its way, frame by frame.
+    const seen = [];
+    const watcher = new MutationObserver(() => seen.push(Number(number(container).textContent)));
+    watcher.observe(number(container), { subtree: true, childList: true, characterData: true });
+
+    motion.inView = true;
+    rerender(<CountUp value={12} from={2} duration={0.05} />);
+    await waitFor(() => expect(number(container)).toHaveTextContent('12'));
+    watcher.disconnect();
+    expect(seen.length).toBeGreaterThan(0);
+    expect(Math.min(...seen)).toBeGreaterThanOrEqual(2);
+  });
+
+  it('still shows the real value, not `from`, when there is nothing to animate', () => {
+    const { container } = render(<CountUp value={12} from={2} />);
+    expect(number(container)).toHaveTextContent('12');
+  });
+
   it('never counts under reduced motion', () => {
     motion.reduce = true;
     giveLayout();

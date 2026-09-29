@@ -95,6 +95,12 @@ const content = {
       servicesCover: (n) => (n === 1 ? 'serviço técnico do catálogo cobre este nível' : 'serviços técnicos do catálogo cobrem este nível'),
       noServices: 'Nenhum serviço técnico do catálogo cobre este nível.',
       showServices: (n) => (n === 1 ? 'Ver o serviço' : `Ver os ${n} serviços`),
+      // Resumo que o leitor de tela anuncia a cada troca de nível.
+      liveSummary: (level, phase, nLabs, nServices) => {
+        const labs = nLabs === 0 ? 'nenhum laboratório' : `${nLabs} ${nLabs === 1 ? 'laboratório' : 'laboratórios'}`;
+        const services = nServices === 0 ? 'nenhum serviço' : `${nServices} ${nServices === 1 ? 'serviço' : 'serviços'}`;
+        return `TRL ${level} · ${phase}: ${labs}, ${services}`;
+      },
       contactLead: 'Quer levar a sua demanda adiante?',
       contact: 'Fale com o CP2b',
     },
@@ -200,6 +206,12 @@ const content = {
       servicesCover: (n) => (n === 1 ? 'catalog service covers this level' : 'catalog services cover this level'),
       noServices: 'No technical service in the catalog covers this level.',
       showServices: (n) => (n === 1 ? 'See the service' : `See the ${n} services`),
+      // Summary a screen reader announces on each change of level.
+      liveSummary: (level, phase, nLabs, nServices) => {
+        const labs = nLabs === 0 ? 'no laboratories' : `${nLabs} ${nLabs === 1 ? 'laboratory' : 'laboratories'}`;
+        const services = nServices === 0 ? 'no services' : `${nServices} ${nServices === 1 ? 'service' : 'services'}`;
+        return `TRL ${level} · ${phase}: ${labs}, ${services}`;
+      },
       contactLead: 'Ready to take your challenge further?',
       contact: 'Talk to CP2b',
     },
@@ -304,12 +316,20 @@ const Solucoes = () => {
             onShowServices={showServicesAtTrl}
           />
 
-          {/* Section 3: Technical Services with TRL Ranges */}
-          <section id="servicos" ref={servicesRef} tabIndex={-1} className="solucoes-services mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top">
+          {/* Section 3: Technical Services with TRL Ranges. Recebe o foco dos
+              botões que levam ao catálogo; o nome (aria-labelledby) é o que o
+              leitor de tela anuncia ao chegar, em vez de só "seção". */}
+          <section
+            id="servicos"
+            ref={servicesRef}
+            tabIndex={-1}
+            aria-labelledby="servicos-title"
+            className="solucoes-services mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top"
+          >
             <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end mb-4 gap-3">
               <div>
                 <span className="mono-label text-success d-block mb-1">{t.servicesSection.tag}</span>
-                <h2 className="fw-bold fs-2 mb-2">{t.servicesSection.title}</h2>
+                <h2 id="servicos-title" className="fw-bold fs-2 mb-2">{t.servicesSection.title}</h2>
                 <p className="text-muted small mb-0">{t.servicesSection.subtitle}</p>
               </div>
 
@@ -361,9 +381,15 @@ const Solucoes = () => {
               )}
             </div>
 
-            {/* Galeria: ilustração + título + TRL; a descrição abre sob demanda. */}
-            <ServiceGallery services={filteredServices} language={language} labels={t.servicesSection} />
-            {filteredServices.length === 0 && <p className="svc-empty">{t.servicesSection.noMatch}</p>}
+            {/* Galeria: ilustração + título + TRL; a descrição abre sob demanda.
+                Sem serviço na combinação, a galeria mostra a mensagem de vazio
+                (emptyText) depois que os cards acabam de sair. */}
+            <ServiceGallery
+              services={filteredServices}
+              language={language}
+              labels={t.servicesSection}
+              emptyText={t.servicesSection.noMatch}
+            />
           </section>
 
           {/* Section 2: 5 Partnership Modalities */}

@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
-import { screen, waitFor, within } from '@testing-library/react';
+import { act, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../test/utils';
 import Research from '../Research';
@@ -107,6 +107,7 @@ describe('Research', () => {
       window.history.replaceState(null, '', '/');
       delete Element.prototype.scrollIntoView;
       localStorage.clear();
+      vi.restoreAllMocks();
     });
 
     it('sits between the axis figure and the axis details, as a full-width band', () => {
@@ -162,6 +163,44 @@ describe('Research', () => {
       await user.click(within(steps[1]).getAllByRole('link')[1]);
       expect(document.querySelector('.axx-tab.is-active')).toHaveTextContent('Engenharia de Processos e Bioprocessos');
       await waitFor(() => expect(scrollIntoView).toHaveBeenCalledTimes(2));
+    });
+
+    it('moves the keyboard focus to the opened axis tab, without scrolling again', async () => {
+      Element.prototype.scrollIntoView = vi.fn();
+      const focus = vi.spyOn(HTMLElement.prototype, 'focus');
+      const user = userEvent.setup();
+      renderWithProviders(<Research />);
+      const steps = document.querySelectorAll('.w2e-step');
+
+      const chip = within(steps[3]).getByRole('link');
+      act(() => chip.focus());
+      await user.keyboard('{Enter}');
+
+      // Focus leaves the chip in the dark band and lands on the tab that
+      // names what opened, so the next Tab goes on into its panel.
+      const tab = document.querySelector('.axx-tab.is-active');
+      await waitFor(() => expect(document.activeElement).toBe(tab));
+      expect(tab).toHaveAttribute('role', 'tab');
+      expect(tab).toHaveAttribute('aria-selected', 'true');
+      expect(tab).toHaveAccessibleName(/Inovação em Bioprodutos na Cadeia do Biogás/);
+      expect(focus.mock.contexts.at(-1)).toBe(tab);
+      expect(focus.mock.calls.at(-1)[0]).toEqual({ preventScroll: true });
+    });
+
+    it('replaces the history entry on each chip, like the figure and the axis tabs', async () => {
+      Element.prototype.scrollIntoView = vi.fn();
+      const user = userEvent.setup();
+      renderWithProviders(<Research />);
+      const steps = document.querySelectorAll('.w2e-step');
+      const historyLength = window.history.length;
+
+      await user.click(within(steps[3]).getByRole('link'));
+      await user.click(within(steps[1]).getAllByRole('link')[1]);
+      await user.click(within(steps[4]).getAllByRole('link')[0]);
+
+      expect(window.location.search).toBe('?eixo=4');
+      expect(window.location.hash).toBe('#explorar-eixos');
+      expect(window.history.length).toBe(historyLength);
     });
   });
 });

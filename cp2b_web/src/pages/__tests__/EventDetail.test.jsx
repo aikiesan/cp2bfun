@@ -3,13 +3,17 @@ import { screen, within } from '@testing-library/react';
 import { renderWithProviders } from '../../test/utils';
 
 // jsdom has no layout and no scrolling, so "in view" and the OS motion
-// setting are driven from here.
-const motion = vi.hoisted(() => ({ inView: false, reduce: false }));
+// setting are driven from here. Each watch is recorded, with its options, so
+// a test can check how much of a block has to show before it enters.
+const motion = vi.hoisted(() => ({ inView: false, reduce: false, watches: [] }));
 vi.mock('framer-motion', async (importOriginal) => {
   const actual = await importOriginal();
   return {
     ...actual,
-    useInView: () => motion.inView,
+    useInView: (ref, options) => {
+      motion.watches.push({ ref, options });
+      return motion.inView;
+    },
     useReducedMotion: () => motion.reduce,
   };
 });
@@ -48,6 +52,7 @@ const countdown = () => document.querySelector('.event-countdown');
 beforeEach(() => {
   motion.inView = false;
   motion.reduce = false;
+  motion.watches = [];
   localStorage.clear();
   // Only the clock is frozen (5 October 2026, local noon); timers stay real
   // so the page's async load still resolves.
@@ -101,6 +106,15 @@ describe('EventDetail — countdown', () => {
     expect(countdown()).toBeNull();
   });
 
+  it('counts the days up from 2, so the plural text never reads "Faltam 0 dias" or "Faltam 1 dias"', async () => {
+    vi.spyOn(Element.prototype, 'getBoundingClientRect').mockReturnValue({
+      top: 0, bottom: 20, left: 0, right: 60, width: 60, height: 20, x: 0, y: 0,
+    });
+    await renderEvent({ start_date: '2026-10-17T13:00:00.000Z', end_date: '2026-10-17T20:00:00.000Z' });
+    // Armed and waiting to scroll into view: the count's first frame.
+    expect(countdown()).toHaveTextContent('Faltam 2 dias');
+  });
+
   it('translates the countdown to English', async () => {
     localStorage.setItem('cp2b_lang', 'en');
     await renderEvent({ start_date: '2026-10-17', end_date: '2026-10-17' });
@@ -149,5 +163,13 @@ describe('EventDetail — schedule', () => {
     });
     await renderEvent({ start_date: '2026-10-17', end_date: '2026-10-17', schedule });
     expect(list()).not.toHaveAttribute('data-reveal');
+  });
+
+  it('enters as soon as the top edge shows, whatever the length of the list', async () => {
+    // A share of the list may never fit in the window (many items, or 400%
+    // zoom), which would keep it hidden: any part showing is enough.
+    await renderEvent({ start_date: '2026-10-17', end_date: '2026-10-17', schedule });
+    const watch = motion.watches.filter((w) => w.ref.current === list()).at(-1);
+    expect(watch.options).toEqual(expect.objectContaining({ once: true, amount: 'some' }));
   });
 });

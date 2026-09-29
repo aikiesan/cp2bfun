@@ -71,6 +71,18 @@ describe('LabInfrastructure — régua de TRL', () => {
     expect(phases.map((p) => p.style.gridColumn)).toEqual(['1 / 4', '4 / 7', '7 / 10']);
     expect(phases.map((p) => p.querySelector('.lab-trl__phase-name').textContent)).toEqual(trlPhases('pt').map((p) => p.name));
   });
+
+  it('keeps the phase bands through a change of language, so their entrance does not play again', () => {
+    const { rerender } = renderWithProviders(<LabInfrastructure language="pt" />);
+    const before = [...document.querySelectorAll('.lab-trl__phase')];
+
+    rerender(<LabInfrastructure language="en" />);
+    const after = [...document.querySelectorAll('.lab-trl__phase')];
+    // The same elements, renamed in place: a remounted band would run its
+    // lab-fade again.
+    after.forEach((band, i) => expect(band).toBe(before[i]));
+    expect(after.map((p) => p.querySelector('.lab-trl__phase-name').textContent)).toEqual(trlPhases('en').map((p) => p.name));
+  });
 });
 
 describe('LabInfrastructure — helpers shared with the TRL matcher', () => {

@@ -190,6 +190,20 @@ describe('WasteToEnergy', () => {
       expect(band).not.toMatch(/overflow:\s*hidden/);
     });
 
+    it('keeps a solid petrol behind the band where color-mix() is missing', () => {
+      const band = css.match(/\.w2e\s*\{[^}]*\}/)[0];
+      // Before the shorthand, which such a browser drops as a whole.
+      expect(band).toMatch(/background-color:\s*var\(--cp2b-petrol-900\);\s*background:/);
+    });
+
+    it('lets the other steps recede only down to a readable floor, lit again by keyboard focus only', () => {
+      const step = css.match(/\.w2e-step\s*\{[^}]*\}/)[0];
+      const floor = Number(step.match(/--w2e-step-dim:\s*([\d.]+)/)[1]);
+      expect(floor).toBeGreaterThanOrEqual(0.75);
+      expect(step).toMatch(/opacity:\s*var\(--w2e-step-dim\)/);
+      expect(css).toMatch(/\.w2e-step:not\(\.is-active\):focus-within:not\(:has\(:focus-visible\)\)\s*\{\s*opacity:\s*var\(--w2e-step-dim\)/);
+    });
+
     it('uses brand tokens, not literal colours', () => {
       expect(css).not.toMatch(/#[0-9a-f]{3,8}\b/i);
       expect(css).not.toMatch(/rgba?\(/);
