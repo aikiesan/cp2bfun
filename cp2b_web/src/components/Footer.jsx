@@ -1,5 +1,5 @@
 import { Container, Row, Col } from 'react-bootstrap';
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp } from 'react-icons/fa';
+import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp, FaSpotify } from 'react-icons/fa';
 import { socialLinks } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import NewsletterSignup from './NewsletterSignup';
@@ -56,6 +56,7 @@ const Footer = () => {
               <a href={socialLinks.instagram} className="text-white fs-5" target="_blank" rel="noreferrer"><FaInstagram /></a>
               <a href={socialLinks.youtube} className="text-white fs-5" target="_blank" rel="noreferrer"><FaYoutube /></a>
               <a href={socialLinks.whatsapp} className="text-white fs-5" target="_blank" rel="noreferrer"><FaWhatsapp /></a>
+              <a href={socialLinks.spotify} className="text-white fs-5" target="_blank" rel="noreferrer"><FaSpotify /></a>
             </div>
             
             <h5 className="mb-3 text-uppercase fw-bold">{labels.partners}</h5>

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaSpotify } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { menuLabels, socialLinks } from '../data/content';
@@ -131,6 +131,17 @@ const Header = () => {
                   aria-label="YouTube"
                 >
                   <FaYoutube size={14} />
+                </a>
+              )}
+              {socialLinks.spotify !== '#' && (
+                <a
+                  href = {socialLinks.spotify}
+                  target = '_blank'
+                  rel = 'noopener noreferrer'
+                  className = "text-muted social-icon-top"
+                  arial-label = "Spotify"
+                >
+                  <FaSpotify size = {14}/>
                 </a>
               )}
             </div>

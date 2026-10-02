@@ -1,4 +1,4 @@
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp } from 'react-icons/fa';
+import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp, FaSpotify } from 'react-icons/fa';
 import { useLocation } from 'react-router-dom';
 import { socialLinks } from '../data/content';
 import { motion } from 'framer-motion';
@@ -11,7 +11,8 @@ const SocialSidebar = () => {
     { icon: FaLinkedinIn, url: socialLinks.linkedin, label: 'LinkedIn', color: '#0A66C2' },
     { icon: FaInstagram, url: socialLinks.instagram, label: 'Instagram', color: '#E4405F' },
     { icon: FaYoutube, url: socialLinks.youtube, label: 'YouTube', color: '#FF0000' },
-    { icon: FaWhatsapp, url: socialLinks.whatsapp, label: 'WhatsApp', color: '#25D366' }
+    { icon: FaWhatsapp, url: socialLinks.whatsapp, label: 'WhatsApp', color: '#25D366' },
+    {icon: FaSpotify, url: socialLinks.spotify, label: 'Spotify', color: '#1ad43cff'}
   ];
 
   return (
