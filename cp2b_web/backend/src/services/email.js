@@ -92,6 +92,12 @@ export async function sendNewsletterBroadcast(subscribers, subject, htmlContent)
   }
 }
 
+// Relatório semanal de inscritos (jobs/newsletterReport.js). O conteúdo é
+// montado lá; aqui só sai pelo mesmo transporte dos outros e-mails.
+export async function sendNewsletterReport({ to, subject, html, text, attachments }) {
+  await transporter.sendMail({ from: FROM, to, subject, html, text, attachments });
+}
+
 export async function sendWelcomeEmail(toEmail, toName) {
   const subject = `Cadastro confirmado — Forum Paulista CP2b`;
   const html = `

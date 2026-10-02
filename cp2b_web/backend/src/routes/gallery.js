@@ -77,7 +77,7 @@ router.get('/', async (req, res) => {
   try {
     // Adicionamos album_id e is_cover no SELECT
     const result = await pool.query(
-      'SELECT id, url, title, date, album_id, is_cover, created_at FROM gallery ORDER BY created_at DESC'
+      'SELECT id, url, title, caption, date, album_id, is_cover, created_at FROM gallery ORDER BY created_at DESC'
     );
     res.json(result.rows);
   } catch (error) {
@@ -227,6 +227,39 @@ router.delete('/album/:albumId', async (req, res) => {
     res.status(500).json({ error: 'Failed to delete gallery album' });
   } finally {
     client.release();
+  }
+});
+
+// ============================================================
+// PATCH /api/gallery/:id — edita a legenda da foto (texto vazio remove)
+// ============================================================
+export const MAX_CAPTION_LENGTH = 300;
+
+router.patch('/:id', async (req, res) => {
+  if (!/^\d+$/.test(req.params.id)) {
+    return res.status(404).json({ error: 'Foto não encontrada.' });
+  }
+  const { caption } = req.body || {};
+  if (caption != null && typeof caption !== 'string') {
+    return res.status(400).json({ error: 'Legenda inválida.' });
+  }
+  const value = caption?.trim() || null;
+  if (value && value.length > MAX_CAPTION_LENGTH) {
+    return res.status(400).json({ error: `A legenda pode ter até ${MAX_CAPTION_LENGTH} caracteres.` });
+  }
+
+  try {
+    const result = await pool.query(
+      'UPDATE gallery SET caption = $1 WHERE id = $2 RETURNING id, url, title, caption, date, album_id, is_cover, created_at',
+      [value, req.params.id]
+    );
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Foto não encontrada.' });
+    }
+    res.json(result.rows[0]);
+  } catch (error) {
+    console.error('Error updating gallery caption:', error);
+    res.status(500).json({ error: 'Failed to update gallery caption' });
   }
 });
 

@@ -590,6 +590,7 @@ export const fetchGallery = async () => {
 export const uploadGalleryPhoto = async (formData) => (await api.post('/gallery', formData)).data;
 export const deleteGalleryPhoto = async (id) => (await api.delete(`/gallery/${id}`)).data;
 export const deleteGalleryAlbum = async (albumId) => (await api.delete(`/gallery/album/${albumId}`)).data;
+export const updateGalleryCaption = async (id, caption) => (await api.patch(`/gallery/${id}`, { caption })).data;
 export const fetchGalleryStorage = async () => {
   try {
     return (await api.get('/gallery/storage')).data;

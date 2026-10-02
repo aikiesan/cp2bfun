@@ -58,6 +58,10 @@ const SECTIONS = [
           <li>Crie um álbum novo (dê o nome do evento, ex.: &quot;I Fórum Paulista — Junho 2026&quot;) ou escolha um álbum existente.</li>
           <li>Marque <strong>uma</strong> foto como <strong>capa</strong> — é ela que representa o álbum na página da galeria.</li>
           <li>As fotos são comprimidas automaticamente; mesmo assim, evite arquivos acima de 10&nbsp;MB.</li>
+          <li>
+            Para pôr <strong>legenda</strong> numa foto, volte a <strong>Conteúdo → Galeria</strong> depois do envio e
+            escreva no campo <strong>Legenda</strong> da foto (Enter salva). Ela aparece sob a foto no álbum e na foto ampliada.
+          </li>
         </ol>
         <p className="mb-0">
           A galeria pública organiza os álbuns por ano em <code>/galeria</code>. Para mostrar um álbum na página de um evento, vincule-o no editor do evento.
@@ -123,7 +127,8 @@ const SECTIONS = [
       <p className="mb-0">
         Mensagens enviadas pelo formulário de contato chegam em <Link to="/admin/messages">Engajamento → Mensagens</Link>{' '}
         (o número vermelho no menu indica não lidas). Os inscritos da newsletter ficam em{' '}
-        <Link to="/admin/newsletter">Newsletter</Link>, onde você pode exportar a lista de e-mails.
+        <Link to="/admin/newsletter">Newsletter</Link>. Toda segunda-feira, às 08h30, a lista completa vai em planilha
+        (.xlsx) para o e-mail do marketing; o botão <strong>Enviar planilha agora</strong> manda na hora.
       </p>
     ),
   },

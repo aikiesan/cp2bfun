@@ -1,10 +1,58 @@
 import { useState, useEffect } from 'react';
-import { Container, Button, Table, Image, Badge, Spinner, ProgressBar } from 'react-bootstrap';
+import { Container, Button, Table, Image, Badge, Spinner, ProgressBar, Form, InputGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
-import { fetchGallery, deleteGalleryPhoto, deleteGalleryAlbum, fetchGalleryStorage } from '../../services/api';
+import { fetchGallery, deleteGalleryPhoto, deleteGalleryAlbum, fetchGalleryStorage, updateGalleryCaption } from '../../services/api';
 import { ConfirmDialog, useToast } from '../../components/admin';
 
 const formatMB = (bytes) => (bytes / (1024 * 1024)).toFixed(0);
+
+// Mesmo limite da coluna gallery.caption (backend/src/routes/gallery.js).
+const MAX_CAPTION_LENGTH = 300;
+
+// Legenda de uma foto: Enter ou "Salvar" grava, Esc desfaz. Texto vazio remove.
+const CaptionField = ({ photo, onSaved }) => {
+  const { success, error } = useToast();
+  const [value, setValue] = useState(photo.caption || '');
+  const [saving, setSaving] = useState(false);
+  const dirty = value.trim() !== (photo.caption || '');
+
+  const save = async () => {
+    if (!dirty || saving) return;
+    setSaving(true);
+    try {
+      const updated = await updateGalleryCaption(photo.id, value.trim());
+      onSaved(updated);
+      setValue(updated.caption || '');
+      success(updated.caption ? 'Legenda salva!' : 'Legenda removida.');
+    } catch (err) {
+      console.error('Error saving gallery caption:', err);
+      error(err.response?.data?.error || 'Não foi possível salvar a legenda.');
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  return (
+    <InputGroup size="sm">
+      <Form.Control
+        value={value}
+        maxLength={MAX_CAPTION_LENGTH}
+        placeholder="Adicionar legenda"
+        aria-label={`Legenda da foto ${photo.id}`}
+        onChange={(e) => setValue(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') { e.preventDefault(); save(); }
+          if (e.key === 'Escape') setValue(photo.caption || '');
+        }}
+      />
+      {dirty && (
+        <Button variant="primary" onClick={save} disabled={saving}>
+          {saving ? 'Salvando...' : 'Salvar'}
+        </Button>
+      )}
+    </InputGroup>
+  );
+};
 
 const GalleryList = () => {
   const navigate = useNavigate();
@@ -37,6 +85,10 @@ const GalleryList = () => {
   const requestDeleteAlbum = (albumId, title) => {
     setTarget({ kind: 'album', albumId, title });
     setIsConfirmOpen(true);
+  };
+
+  const handleCaptionSaved = (updated) => {
+    setPhotos((prev) => prev.map((photo) => (photo.id === updated.id ? { ...photo, caption: updated.caption } : photo)));
   };
 
   const executeDelete = async () => {
@@ -91,6 +143,7 @@ const GalleryList = () => {
             <tr>
               <th className="py-3 px-4">Imagem</th>
               <th className="py-3">Título</th>
+              <th className="py-3" style={{ minWidth: '240px' }}>Legenda</th>
               <th className="py-3">Data</th>
               <th className="py-3 text-end px-4">Ações</th>
             </tr>
@@ -98,14 +151,14 @@ const GalleryList = () => {
           <tbody>
             {loading ? (
               <tr>
-                <td colSpan="4" className="text-center py-5">
+                <td colSpan="5" className="text-center py-5">
                   <Spinner animation="border" variant="primary" size="sm" className="me-2" />
                   Carregando fotos...
                 </td>
               </tr>
             ) : photos.length === 0 ? (
               <tr>
-                <td colSpan="4" className="text-center py-5 text-muted">
+                <td colSpan="5" className="text-center py-5 text-muted">
                   <i className="bi bi-images mb-2 d-block" style={{ fontSize: '2rem' }}></i>
                   Nenhuma foto cadastrada na galeria.
                 </td>
@@ -127,6 +180,13 @@ const GalleryList = () => {
                     {photo.title}
                     {photo.is_cover && (
                       <Badge bg="warning" text="dark" className="ms-2">Capa do Álbum</Badge>
+                    )}
+                  </td>
+                  <td>
+                    {photo.is_cover ? (
+                      <span className="text-muted small">A capa não aparece dentro do álbum</span>
+                    ) : (
+                      <CaptionField photo={photo} onSaved={handleCaptionSaved} />
                     )}
                   </td>
                   <td>

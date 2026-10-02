@@ -74,6 +74,8 @@ const AlbumView = () => {
     );
   }
 
+  const currentPhoto = albumPhotos[currentPhotoIndex];
+
   const albumDate = albumInfo.date
     ? new Date(albumInfo.date).toLocaleDateString(language === 'pt' ? 'pt-BR' : 'en-US', {
         timeZone: 'UTC', day: '2-digit', month: 'long', year: 'numeric',
@@ -120,9 +122,12 @@ const AlbumView = () => {
               key={photo.id}
               className="photo-item"
               onClick={() => openLightbox(index)}
-              aria-label={`${albumInfo.title} — ${index + 1}/${albumPhotos.length}`}
+              aria-label={`${photo.caption || albumInfo.title} — ${index + 1}/${albumPhotos.length}`}
             >
-              <img src={photo.url} alt={photo.title || `${albumInfo.title} ${index + 1}`} loading="lazy" />
+              <span className="photo-frame">
+                <img src={photo.url} alt={photo.caption || `${albumInfo.title} ${index + 1}`} loading="lazy" />
+              </span>
+              {photo.caption && <span className="photo-caption">{photo.caption}</span>}
             </button>
           ))}
         </div>
@@ -152,12 +157,17 @@ const AlbumView = () => {
                   <i className="bi bi-chevron-left"></i>
                 </Button>
 
-                <Image
-                  src={albumPhotos[currentPhotoIndex].url}
-                  alt={albumPhotos[currentPhotoIndex].title || albumInfo.title}
-                  className="shadow-lg rounded"
-                  style={{ maxHeight: '85vh', maxWidth: '100%', objectFit: 'contain' }}
-                />
+                <figure className="m-0">
+                  <Image
+                    src={currentPhoto.url}
+                    alt={currentPhoto.caption || albumInfo.title}
+                    className="shadow-lg rounded"
+                    style={{ maxHeight: currentPhoto.caption ? '78vh' : '85vh', maxWidth: '100%', objectFit: 'contain' }}
+                  />
+                  {currentPhoto.caption && (
+                    <figcaption className="lightbox-caption">{currentPhoto.caption}</figcaption>
+                  )}
+                </figure>
 
                 <Button
                   variant="dark"

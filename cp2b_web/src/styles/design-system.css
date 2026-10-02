@@ -377,7 +377,33 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   filter: brightness(1.05);
 }
 
+/* Legenda da foto (opcional, editada em Admin → Galeria). O quadro segura o
+   zoom do hover para a imagem não passar por cima do texto. */
+.photo-masonry .photo-frame {
+  display: block;
+  overflow: hidden;
+  border-radius: var(--cp2b-radius-sm);
+}
+
+.photo-masonry .photo-caption {
+  display: block;
+  padding: 0.45rem 0.15rem 0;
+  font-size: 0.85rem;
+  line-height: 1.35;
+  color: var(--cp2b-ink-soft);
+  text-align: left;
+}
+
 /* Lightbox */
+.lightbox-caption {
+  max-width: 70ch;
+  margin: 0.75rem auto 0;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 0.95rem;
+  line-height: 1.4;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+
 .lightbox-counter {
   font-family: var(--font-sans);
   color: rgba(255, 255, 255, 0.85);
