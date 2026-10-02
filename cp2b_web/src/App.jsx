@@ -37,7 +37,8 @@ const organizationJsonLd = {
   sameAs: [
     'https://www.instagram.com/centro_biogas_cp2b/',
     'https://br.linkedin.com/company/centro-paulista-de-estudos-em-biog%C3%A1s-e-bioprodutos-cp2b',
-    'https://www.youtube.com/@nipeunicamp4034',
+    'https://www.youtube.com/@CP2B_Biog%C3%A1s',
+    'https://open.spotify.com/show/4TiFNi6N2BZiokWvGpaZnb',
   ],
   knowsAbout: ['biogás', 'bioprodutos', 'energia renovável', 'resíduos sólidos', 'saneamento', 'políticas públicas', 'biogas', 'bioproducts', 'renewable energy'],
 };

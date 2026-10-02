@@ -2,9 +2,9 @@ export const socialLinks = {
   instagram: 'https://www.instagram.com/centro_biogas_cp2b/',
   linkedin: 'https://br.linkedin.com/company/centro-paulista-de-estudos-em-biog%C3%A1s-e-bioprodutos-cp2b',
   facebook: 'https://www.facebook.com/nipeunicamp/',
-  youtube: 'https://www.youtube.com/@nipeunicamp4034',
+  youtube: 'https://www.youtube.com/@CP2B_Biog%C3%A1s',
   whatsapp: 'https://wa.me/message/KVJUNJN7SIAZP1',
-  spotify: "https://open.spotify.com/intl-pt"
+  spotify: 'https://open.spotify.com/show/4TiFNi6N2BZiokWvGpaZnb'
 };
 
 export const menuLabels = {
