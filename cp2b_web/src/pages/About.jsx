@@ -15,6 +15,7 @@ import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import AboutSubnav from '../components/AboutSubnav';
 import AxisConstellation from '../components/AxisConstellation';
+import LazyVideo from '../components/LazyVideo';
 import './About.css';
 
 const About = () => {
@@ -34,6 +35,7 @@ const About = () => {
       start: 'Início',
       duration: 'Duração',
       lab: 'Laboratório vivo',
+      video: 'Vídeo institucional do CP2b, sem som',
       abstract: 'Resumo Executivo',
       goals: 'Objetivos',
       results: 'Resultados Esperados',
@@ -55,6 +57,7 @@ const About = () => {
       start: 'Start',
       duration: 'Duration',
       lab: 'Living lab',
+      video: 'CP2b institutional video, no sound',
       abstract: 'Executive Summary',
       goals: 'Objectives',
       results: 'Expected Results',
@@ -232,18 +235,17 @@ const About = () => {
           style={{ maxWidth: '1100px' }}
         >
           <div className="ratio ratio-16x9">
-            <video
+            {/* Só carrega e toca quando chega na tela (LazyVideo). O celular
+                recebe o arquivo em 720p; telas maiores, o de 1080p. */}
+            <LazyVideo
               className="w-100 h-100 object-fit-cover"
               poster="/assets/cp2b-institucional-poster.jpg"
-              controls
-              playsInline
-              autoPlay
-              muted
-              loop
-              preload="auto"
-            >
-              <source src="/assets/cp2b-institucional.mp4" type="video/mp4" />
-            </video>
+              label={labels.video}
+              sources={[
+                { src: '/assets/cp2b-institucional-720.mp4', media: '(max-width: 767.98px)' },
+                { src: '/assets/cp2b-institucional.mp4' },
+              ]}
+            />
           </div>
           {/* Selo no canto superior: embaixo ele cobria o botão de play e o
               início da linha do tempo dos controles nativos do vídeo. */}
