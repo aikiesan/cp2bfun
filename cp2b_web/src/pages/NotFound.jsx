@@ -2,7 +2,13 @@ import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import SeoHead from '../components/SeoHead';
-import Metaninho from '../components/Metaninho';
+import MetaninhoAmigo from '../components/MetaninhoAmigo';
+
+// O que o Metaninho diz na 404 quando alguém clica nele (easter egg).
+const NOT_FOUND_LINES = {
+  pt: ['Essa página virou gás!', 'Procurei até no biodigestor e não achei…', 'Volta pro início que eu te encontro lá!'],
+  en: ['This page turned into gas!', 'I looked even inside the digester. Nothing…', "Head back home, I'll meet you there!"],
+};
 
 const NotFound = () => {
   const { language } = useLanguage();
@@ -33,7 +39,7 @@ const NotFound = () => {
         noIndex
       />
     <Container className="py-5 text-center" style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
-      <Metaninho pose="surpreso" size={180} className="mb-2" />
+      <MetaninhoAmigo pose="surpreso" size={180} lines={NOT_FOUND_LINES} bubble="right" className="mb-2" />
       <h1 className="display-1 fw-bold text-muted">{labels.title}</h1>
       <h2 className="mb-3">{labels.message}</h2>
       <p className="text-muted mb-4">{labels.description}</p>

@@ -7,13 +7,14 @@ import useSiteSettings from '../hooks/useSiteSettings';
 import NewsletterSignup from './NewsletterSignup';
 import { safeHref } from '../utils/safeUrl';
 import useScrollReveal from '../hooks/useScrollReveal';
-import Metaninho from './Metaninho';
+import MetaninhoAmigo from './MetaninhoAmigo';
 
 const Footer = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
-  // Nas páginas internas o Metaninho espia por cima da borda rasgada do
-  // rodapé e sobe quando o rodapé entra na tela (a Home fica como está).
+  // Nas páginas internas o Metaninho fica sentado na borda rasgada do rodapé
+  // e aparece quando o rodapé entra na tela (a Home fica como está). Um
+  // clique nele e ele fala (MetaninhoAmigo).
   const peekRef = useRef(null);
   const peek = useScrollReveal(peekRef, { amount: 0.5 });
   const { contact, social, footer: footerSettings } = useSiteSettings();
@@ -88,8 +89,8 @@ const Footer = () => {
   return (
     <footer className="site-footer pt-5 mt-5">
       {pathname !== '/' && (
-        <span ref={peekRef} className="footer-metaninho" data-reveal={peek} aria-hidden="true">
-          <Metaninho pose="feliz" size={124} />
+        <span ref={peekRef} className="footer-metaninho" data-reveal={peek}>
+          <MetaninhoAmigo pose="tranquilo" size={104} />
         </span>
       )}
       <Container>

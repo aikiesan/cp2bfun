@@ -35,7 +35,7 @@ describe('Footer', () => {
     scrollSpy.mockRestore();
   });
 
-  it('shows Metaninho peeking over the edge on inner pages, not on the Home', () => {
+  it('seats Metaninho on the edge on inner pages, not on the Home', () => {
     window.history.pushState({}, '', '/');
     const { container, unmount } = renderWithProviders(<Footer />);
     expect(container.querySelector('.footer-metaninho')).toBeNull();
@@ -43,9 +43,10 @@ describe('Footer', () => {
 
     window.history.pushState({}, '', '/sobre');
     const inner = renderWithProviders(<Footer />);
-    const peek = inner.container.querySelector('.footer-metaninho');
-    expect(peek).toHaveAttribute('aria-hidden', 'true');
-    expect(peek.querySelector('img')).toHaveAttribute('src', '/assets/metaninho/metaninho-feliz.webp');
+    const seat = inner.container.querySelector('.footer-metaninho');
+    expect(seat.querySelector('img')).toHaveAttribute('src', '/assets/metaninho/metaninho-tranquilo.webp');
+    // Easter egg: he is a button that talks when clicked.
+    expect(screen.getByRole('button', { name: 'Metaninho, o mascote do CP2b' })).toBeInTheDocument();
     window.history.pushState({}, '', '/');
   });
 });
