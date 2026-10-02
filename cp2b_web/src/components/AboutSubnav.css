@@ -1,0 +1,64 @@
+/* Navegação da seção Sobre — mesmo controle segmentado dos filtros de
+   Infraestrutura e Soluções e das abas de /eixos. */
+
+.about-subnav {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 auto clamp(1.5rem, 1rem + 2vw, 2.75rem);
+  padding: 4px;
+  background: var(--paper-soft);
+  border-radius: 0.9rem;
+}
+
+.about-subnav__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.55rem 1rem;
+  border-radius: 0.65rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.about-subnav__link i { color: var(--gray-500); }
+.about-subnav__link:hover { color: var(--text-primary); }
+.about-subnav__link:hover i { color: var(--cp2b-verde); }
+
+.about-subnav__link.is-active {
+  background: var(--bg-surface);
+  color: var(--cp2b-verde-escuro);
+  box-shadow: 0 1px 3px rgb(0 0 0 / .08), 0 0 0 1px color-mix(in srgb, var(--cp2b-verde-escuro) 12%, white);
+}
+
+.about-subnav__link.is-active i { color: var(--cp2b-verde); }
+.about-subnav__link:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+/* Celular: duas linhas equilibradas (3 + 2), ícone ao lado do rótulo —
+   todos os nomes cabem inteiros, sem rolagem lateral. */
+@media (max-width: 767.98px) {
+  .about-subnav {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    width: 100%;
+  }
+
+  .about-subnav__link { grid-column: span 2; justify-content: center; gap: 0.35rem; padding: 0.55rem 0.3rem; font-size: 0.76rem; }
+  .about-subnav__link:nth-child(n + 4) { grid-column: span 3; }
+  .about-subnav__link span { min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+}
+
+/* Telas muito estreitas (320px): ícone acima do rótulo. */
+@media (max-width: 379.98px) {
+  .about-subnav__link { flex-direction: column; gap: 0.15rem; padding: 0.45rem 0.2rem; font-size: 0.7rem; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .about-subnav__link { transition: background var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard); }
+}

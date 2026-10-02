@@ -15,6 +15,39 @@ async function initializeDatabase() {
   try {
     console.log('🔄 Initializing database...');
 
+    // Guarda de banco alvo.
+    //
+    // O schema.sql usa CREATE TABLE IF NOT EXISTS, que é silenciosamente
+    // inofensivo no banco certo e desastroso no errado: apontado para outra
+    // aplicação, ele cria o schema inteiro do site lá dentro e commita.
+    //
+    // Já aconteceu: um `set -a; . ./.env` do projeto Arqueia deixou
+    // DATABASE_URL exportada na sessão, e como o dotenv não sobrescreve
+    // variáveis existentes, o deploy do site rodou contra o banco de produção
+    // da Arqueia. Só não destruiu nada porque aquele banco tem uma tabela
+    // `projects` de formato diferente, e o índice sobre featured_position
+    // falhou, revertendo a transação implícita.
+    //
+    // A verificação abaixo não depende de como a variável chegou: ela olha o
+    // conteúdo do banco. Um banco do site ou está vazio, ou já tem `news`.
+    const { rows: [target] } = await client.query(
+      `SELECT current_database() AS db,
+              to_regclass('public.news') IS NOT NULL AS has_news,
+              (SELECT count(*) FROM information_schema.tables
+                WHERE table_schema = 'public') AS table_count`
+    );
+
+    if (!target.has_news && Number(target.table_count) > 0) {
+      throw new Error(
+        `Banco "${target.db}" tem ${target.table_count} tabela(s) mas nenhuma chamada "news". ` +
+        'Isto não parece o banco do site CP2b, e criar o schema aqui misturaria ' +
+        'duas aplicações. Verifique DATABASE_URL — inclusive se ela veio exportada ' +
+        'no ambiente em vez do backend/.env.'
+      );
+    }
+
+    console.log(`📍 Banco alvo: ${target.db}`);
+
     // Read and execute schema.sql
     const schemaPath = path.join(__dirname, 'schema.sql');
     const schemaSql = fs.readFileSync(schemaPath, 'utf8');
@@ -22,6 +55,16 @@ async function initializeDatabase() {
     console.log('📋 Creating tables from schema.sql...');
     await client.query(schemaSql);
     console.log('✅ Schema created successfully');
+
+    // Track what has already been applied, so a migration runs exactly once
+    // and a re-run is cheap. Without this every file re-executed on every
+    // boot, which is why the seeds had to be hand-guarded.
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS schema_migrations (
+        filename   VARCHAR(255) PRIMARY KEY,
+        applied_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
 
     // Run migrations in order
     const migrationsDir = path.join(__dirname, 'migrations');
@@ -31,24 +74,76 @@ async function initializeDatabase() {
         .filter(file => file.endsWith('.sql'))
         .sort(); // Ensures migrations run in order (001, 002, 003, etc.)
 
-      console.log(`📦 Found ${migrationFiles.length} migration(s)`);
+      const applied = new Set(
+        (await client.query('SELECT filename FROM schema_migrations')).rows.map(r => r.filename)
+      );
 
-      for (const file of migrationFiles) {
-        console.log(`🔄 Running migration: ${file}`);
-        const migrationPath = path.join(migrationsDir, file);
-        const migrationSql = fs.readFileSync(migrationPath, 'utf8');
+      let pending = migrationFiles.filter(file => !applied.has(file));
+      console.log(`📦 Found ${migrationFiles.length} migration(s), ${pending.length} pending`);
 
-        try {
-          await client.query(migrationSql);
-          console.log(`✅ Migration ${file} completed`);
-        } catch (error) {
-          // If error is about already existing objects, it's okay (already migrated)
-          if (error.code === '42P07' || error.code === '42710') {
-            console.log(`⚠️  Migration ${file} already applied (skipping)`);
-          } else {
-            throw error;
+      // Filename order is not dependency order: 013 fixes the `microscopio`
+      // schema but 018 is what renames `events` into it, so on a fresh
+      // database 013 cannot apply on the first pass. Sweep repeatedly and
+      // stop as soon as a pass makes no progress — deferred files then get
+      // their turn once the table they need exists.
+      let deferred = [];
+
+      while (pending.length > 0) {
+        deferred = [];
+
+        for (const file of pending) {
+          console.log(`🔄 Running migration: ${file}`);
+          const migrationPath = path.join(migrationsDir, file);
+          const migrationSql = fs.readFileSync(migrationPath, 'utf8');
+
+          // One transaction per file. A multi-statement file is atomic either
+          // way in Postgres — the explicit BEGIN just lets us roll back
+          // without poisoning the rest of the loop.
+          try {
+            await client.query('BEGIN');
+            await client.query(migrationSql);
+            await client.query(
+              'INSERT INTO schema_migrations (filename) VALUES ($1) ON CONFLICT DO NOTHING',
+              [file]
+            );
+            await client.query('COMMIT');
+            console.log(`✅ Migration ${file} completed`);
+          } catch (error) {
+            await client.query('ROLLBACK');
+
+            // Tolerated for a migration whose target has not been created or
+            // renamed yet, or already exists:
+            //   42P07 - duplicate_table (table already exists)
+            //   42710 - duplicate_object (index/constraint already exists)
+            //   42P01 - undefined_table (target not renamed yet)
+            //   42703 - undefined_column (target column not added yet)
+            //
+            // The file is deliberately NOT recorded as applied. Postgres
+            // rolls back the whole file, so tolerating the error discards
+            // every statement in it, including the ones that would have
+            // succeeded — that is how news.image_position went missing.
+            // Leaving it unrecorded lets a later pass retry it.
+            if (['42P07', '42710', '42P01', '42703'].includes(error.code)) {
+              deferred.push(file);
+              console.log(`⏭️  Migration ${file} deferred (${error.code}): ${error.message}`);
+            } else {
+              throw error;
+            }
           }
         }
+
+        // No progress this pass: the rest cannot be satisfied by retrying.
+        if (deferred.length === pending.length) break;
+        pending = deferred;
+      }
+
+      if (deferred.length > 0) {
+        console.warn(
+          `⚠️  ${deferred.length} migration(s) never applied and were rolled back entirely: ` +
+          `${deferred.join(', ')}.\n` +
+          '    Every statement in those files was discarded. If they should have applied, ' +
+          'make them idempotent or add a follow-up migration.'
+        );
       }
     }
 
@@ -75,4 +170,5 @@ if (import.meta.url === `file://${process.argv[1]}`) {
     });
 }
 
+export { initializeDatabase };
 export default initializeDatabase;

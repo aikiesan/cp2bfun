@@ -42,7 +42,7 @@ const ProjectsList = () => {
     try {
       await api.delete(`/projects/${itemToDelete.slug}`);
       setProjects((prev) => prev.filter((p) => p.slug !== itemToDelete.slug));
-      toast.success(`Projeto "${itemToDelete.title_pt}" excluído com sucesso.`);
+      toast.success(`Entrevista "${itemToDelete.title_pt}" excluída com sucesso.`);
     } catch (err) {
       toast.error('Erro ao excluir projeto. Tente novamente.');
       console.error(err);
@@ -74,8 +74,8 @@ const ProjectsList = () => {
     <Container>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <h2 className="mb-1">Projetos</h2>
-          <p className="text-muted mb-0">{projects.length} projetos cadastrados</p>
+          <h2 className="mb-1">Entrevistas</h2>
+          <p className="text-muted mb-0">{projects.length} entrevistas cadastradas</p>
         </div>
         <Button as={Link} to="/admin/projects/new" variant="primary">
           <i className="bi bi-plus-circle me-2"></i>Novo Projeto

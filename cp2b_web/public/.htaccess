@@ -1,0 +1,116 @@
+# Apache config for the prerendered CP2b build.
+#
+# Why this file exists — the indexing bug it fixes:
+#
+# `npm run build` writes a prerendered directory per route (dist/sobre/index.html).
+# Because /sobre is a real directory, mod_dir's DirectorySlash issued a
+# 301 from /sobre to /sobre/ — and built that Location with the *http* scheme,
+# since TLS is terminated upstream. http://cp2b.unicamp.br is answered by
+# UNICAMP's central server, which returns 403 for everything.
+#
+# So every content URL in sitemap.xml resolved as:
+#   https://cp2b.unicamp.br/sobre  ->  301  ->  http://cp2b.unicamp.br/sobre/  ->  403
+#
+# Browsers never showed it (HSTS rewrites to https before the request leaves),
+# but Googlebot followed the redirect and reported
+# "Bloqueada devido a acesso proibido (403)" for ~30 pages.
+#
+# The fix: serve /sobre directly from /sobre/index.html and never redirect.
+# This also matches the canonical the prerenderer emits (no trailing slash).
+
+<IfModule mod_mime.c>
+    # O manifesto do PWA; nem todo mime.types do Apache conhece a extensão.
+    AddType application/manifest+json .webmanifest
+</IfModule>
+
+<IfModule mod_dir.c>
+    # Stop mod_dir from redirecting /sobre -> /sobre/ (the source of the bad 301).
+    DirectorySlash Off
+</IfModule>
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # /na-midia foi removida em definitivo (set/2026). 410 Gone diz ao Google
+    # que a página não volta — sem isso a SPA responderia 200 com a tela de
+    # "não encontrado", que o Search Console classifica como soft 404 e mantém
+    # em fila de recrawl por muito mais tempo.
+    RewriteRule ^na-midia/?$ - [G,L]
+
+    RewriteRule ^index\.html$ - [L]
+
+    # Serve the prerendered file for an extensionless route, with no redirect.
+    # /sobre -> /sobre/index.html (200, not 301)
+    RewriteCond %{REQUEST_URI} !^/pilar2b
+    RewriteCond %{REQUEST_URI} !^/abiove
+    RewriteCond %{REQUEST_URI} !^/arqueia
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
+    RewriteRule ^(.*[^/])$ /$1/index.html [L]
+
+    # SPA fallback: anything not on disk is handled by the React router.
+    #
+    # The /pilar2b, /abiove and /arqueia exclusions mirror the vhost's
+    # <Directory> block.
+    # They must be repeated here: mod_rewrite does NOT inherit rules from the
+    # parent context, so these .htaccess rules replace the vhost ones outright.
+    # Without them, a PILAR-2b, ABIOVE or Arqueia URL that reached this
+    # directory would be swallowed by the CP2b SPA.
+    RewriteCond %{REQUEST_URI} !^/pilar2b
+    RewriteCond %{REQUEST_URI} !^/abiove
+    RewriteCond %{REQUEST_URI} !^/arqueia
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule . /index.html [L]
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Safety net: if anything still emits an http:// Location (mod_dir, mod_alias,
+    # a future rule), rewrite it to https so a redirect can never leave TLS.
+    Header always edit Location "^http://" "https://"
+
+    # Páginas rasas por natureza, marcadas com noindex.
+    #
+    # O SeoHead já emite a meta tag, mas só depois que o JS roda: o HTML servido
+    # vem do index.html, que diz "index, follow". O Googlebot renderiza JS e
+    # acabaria vendo o noindex, porém mais tarde e como sinal mais fraco — e
+    # justamente nestas páginas o HTML inicial afirma o contrário do pretendido.
+    # O cabeçalho não depende de JS e vale desde a primeira resposta.
+    #
+    # `follow` de propósito: os links internos devem continuar sendo seguidos.
+    # A condição lê THE_REQUEST, não REQUEST_URI.
+    #
+    # O mod_headers avalia na resposta, depois de o mod_rewrite já ter
+    # reescrito a URI para /index.html pelo fallback da SPA — a essa altura
+    # %{REQUEST_URI} não é mais /outros, e a regra nunca casava (verificado
+    # contra um Apache 2.4 real com este mesmo .htaccess). THE_REQUEST guarda
+    # a linha de requisição original e não é afetado pelo rewrite.
+    Header always set X-Robots-Tag "noindex, follow" "expr=%{THE_REQUEST} =~ m#^[A-Z]+ /(outros|manutencao|confirmar-meetup)/?[ ?]#"
+</IfModule>
+
+<IfModule mod_headers.c>
+    # Cache.
+    #
+    # O que o Vite gera leva o hash do conteúdo no nome (index-DqSY18wp.js):
+    # nunca muda sob a mesma URL, então pode ficar um ano no navegador.
+    <FilesMatch "-[A-Za-z0-9_-]{8}\.(js|css)$">
+        Header set Cache-Control "public, max-age=31536000, immutable"
+    </FilesMatch>
+
+    # HTML, service worker e manifesto sempre revalidam. Sem isso o navegador
+    # reaproveitava o HTML antigo por heurística e, depois de um deploy, pedia
+    # arquivos JS que o build novo já apagou: a página quebrava até recarregar.
+    <FilesMatch "(\.html|^sw\.js|\.webmanifest)$">
+        Header set Cache-Control "no-cache"
+    </FilesMatch>
+
+    # Segurança: só o que não muda o comportamento da SPA. A política de
+    # conteúdo (CSP) fica para depois, testada primeiro em modo report-only.
+    # Vale só para os arquivos da SPA; /api, /pilar2b e /arqueia passam pelo
+    # proxy do vhost e não leem este .htaccess.
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
+</IfModule>

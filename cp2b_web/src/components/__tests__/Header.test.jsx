@@ -14,9 +14,9 @@ describe('Header', () => {
     renderWithProviders(<Header />);
     // Default language is pt
     expect(screen.getByText('Sobre')).toBeInTheDocument();
-    expect(screen.getByText('Equipe')).toBeInTheDocument();
-    expect(screen.getByText('Notícias')).toBeInTheDocument();
+    expect(screen.getByText('Comunicação')).toBeInTheDocument();
     expect(screen.getByText('Publicações')).toBeInTheDocument();
+    expect(screen.getByText('Eixos')).toBeInTheDocument();
   });
 
   it('does not render a search bar', () => {
@@ -25,23 +25,66 @@ describe('Header', () => {
     expect(screen.queryByPlaceholderText('Search')).not.toBeInTheDocument();
   });
 
-  it('renders accessibility buttons', () => {
+  it('renders accessibility buttons with >= 44x44px touch targets', () => {
     renderWithProviders(<Header />);
-    expect(screen.getByLabelText('Increase font size')).toBeInTheDocument();
-    expect(screen.getByLabelText('Decrease font size')).toBeInTheDocument();
-    expect(screen.getByLabelText('Toggle high contrast')).toBeInTheDocument();
+    const incBtn = screen.getByLabelText('Increase font size');
+    const decBtn = screen.getByLabelText('Decrease font size');
+    const contrastBtn = screen.getByLabelText('Toggle high contrast');
+
+    expect(incBtn).toBeInTheDocument();
+    expect(decBtn).toBeInTheDocument();
+    expect(contrastBtn).toBeInTheDocument();
+
+    expect(incBtn).toHaveClass('header-touch-target');
+    expect(decBtn).toHaveClass('header-touch-target');
+    expect(contrastBtn).toHaveClass('header-touch-target');
   });
 
-  it('toggles language when clicking flag buttons', async () => {
+  it('renders navbar toggle with explicit aria-label', () => {
+    renderWithProviders(<Header />);
+    const toggleBtn = screen.getByLabelText('Alternar navegação');
+    expect(toggleBtn).toBeInTheDocument();
+  });
+
+  it('toggles language when clicking language buttons', async () => {
     const user = userEvent.setup();
     renderWithProviders(<Header />);
 
+    const ptBtn = screen.getByTitle('Português');
+    const enBtn = screen.getByTitle('English');
+
+    expect(ptBtn).toHaveClass('header-touch-target');
+    expect(enBtn).toHaveClass('header-touch-target');
+
     // Start in PT, switch to EN
-    await user.click(screen.getByTitle('English'));
+    await user.click(enBtn);
     expect(screen.getByText('About')).toBeInTheDocument();
 
     // Switch back to PT
-    await user.click(screen.getByTitle('Portuguese'));
+    await user.click(ptBtn);
     expect(screen.getByText('Sobre')).toBeInTheDocument();
+  });
+  it('publica PILAR-2b e Arqueia como links completos, nao rotas da SPA', () => {
+    renderWithProviders(<Header />);
+
+    // Ambas as aplicacoes ficam atras do proxy do Apache em outra porta, entao
+    // precisam de navegacao completa (<a>), nao de transicao do react-router.
+    for (const [label, path] of [['PILAR-2b', '/pilar2b'], ['Arqueia', '/arqueia']]) {
+      const link = screen.getByRole('link', { name: label });
+      expect(link).toHaveAttribute('href', path);
+      expect(link.tagName).toBe('A');
+    }
+  });
+
+  it('diferencia visualmente as duas plataformas', () => {
+    renderWithProviders(<Header />);
+
+    const pilar = screen.getByRole('link', { name: 'PILAR-2b' });
+    const arqueia = screen.getByRole('link', { name: 'Arqueia' });
+
+    // Cada pill tem a sua cor chapada da marca (design-system.css).
+    expect(pilar).toHaveClass('header-pill', 'header-pill--pilar');
+    expect(arqueia).toHaveClass('header-pill', 'header-pill--arqueia');
+    expect(arqueia).not.toHaveClass('header-pill--pilar');
   });
 });

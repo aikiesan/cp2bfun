@@ -1,0 +1,592 @@
+/* Cursos e Capacitação (/capacitacao) — mesma linguagem de /eixos,
+   Publicações e Infraestrutura e Soluções: painel sobre o hero, filetes
+   finos e a cor do Eixo 6 (utils/axisTheme) como acento, em --cap-axis. */
+
+.cap {
+  --cap-axis: var(--cp2b-ambar);
+  --cap-ink: var(--cp2b-azul-petroleo);
+  --cap-hair: color-mix(in srgb, var(--cp2b-verde-escuro) 12%, white);
+}
+
+/* ---------- botões ---------- */
+.cap-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 44px;
+  padding: 0.6rem 1.35rem;
+  border: 0;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+}
+
+.cap-btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+.cap-btn--lime { background: var(--cp2b-lima); color: var(--cp2b-azul-petroleo); }
+.cap-btn--lime:hover { background: color-mix(in srgb, var(--cp2b-lima) 85%, white); color: var(--cp2b-azul-petroleo); }
+
+.cap-btn--primary { background: var(--cp2b-verde-escuro); color: #fff; }
+.cap-btn--primary:hover { background: color-mix(in srgb, var(--cp2b-verde-escuro) 85%, black); color: #fff; }
+
+/* ---------- hero ---------- */
+.cap-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.cap-hero__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  color: rgb(255 255 255 / .88);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cap-hero__link:hover { color: #fff; }
+.cap-hero__link:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+
+/* ---------- curso-modelo ---------- */
+.cap-course {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(-4.5rem, -3rem - 2vw, -2.5rem);
+  padding: clamp(1.25rem, 0.75rem + 2.5vw, 2.5rem);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--paper-shadow);
+  overflow: visible;
+  scroll-margin-top: 6rem;
+}
+
+.cap-course::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cap-axis), var(--cp2b-ambar) 45%, var(--cp2b-lima));
+}
+
+.cap-course__head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.5rem 2rem;
+  padding-bottom: clamp(1.25rem, 1rem + 1vw, 1.75rem);
+  border-bottom: 1px solid var(--cap-hair);
+}
+
+.cap-course__top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.35rem;
+}
+
+.cap-course__icon {
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin-right: 0.35rem;
+  border-radius: 0.7rem;
+  background: color-mix(in srgb, var(--cap-axis) 12%, white);
+  color: var(--cap-axis);
+  font-size: 1.2rem;
+}
+
+.cap-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: var(--radius-full);
+  background: var(--paper-soft);
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.cap-chip--axis { background: color-mix(in srgb, var(--cap-axis) 12%, white); color: var(--cap-axis); }
+
+.cap-course__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--cap-ink);
+  text-wrap: balance;
+}
+
+.cap-course__intro { margin: 0; color: var(--text-secondary); }
+
+/* Anel da carga horária: só a partir do tablet (no celular, o chip). */
+.cap-course__hours { display: none; }
+
+@media (min-width: 768px) {
+  .cap-course__head { grid-template-columns: minmax(0, 1fr) auto; }
+  .cap-course__head > :not(.cap-course__hours) { grid-column: 1; }
+  .cap-chip--hours { display: none; }
+
+  .cap-course__hours {
+    grid-column: 2;
+    grid-row: 1 / span 3;
+    align-self: center;
+    display: grid;
+    place-items: center;
+    align-content: center;
+    width: 7rem;
+    height: 7rem;
+    border-radius: 50%;
+    border: 1px solid var(--cap-hair);
+    box-shadow: inset 0 0 0 6px color-mix(in srgb, var(--cp2b-ambar) 12%, white), 0 0 0 1px color-mix(in srgb, var(--cap-axis) 25%, white);
+  }
+
+  .cap-course__hours-num {
+    font-size: 2.6rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--cap-ink);
+  }
+
+  .cap-course__hours-unit {
+    margin-top: 0.2rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--cap-axis);
+  }
+}
+
+.cap-course__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.5rem 2.5rem;
+  padding: clamp(1.25rem, 1rem + 1vw, 1.75rem) 0;
+}
+
+@media (min-width: 992px) {
+  .cap-course__body { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .cap-modules { padding-left: 2.5rem; border-left: 1px solid var(--cap-hair); }
+}
+
+.cap-facts { display: grid; gap: 1rem; margin: 0; }
+
+.cap-fact dt,
+.cap-modules__title,
+.cap-download__kicker,
+.cap-contact__kicker {
+  display: block;
+  margin: 0 0 0.3rem;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--cap-axis);
+}
+
+.cap-fact dd { margin: 0; color: var(--text-primary); line-height: 1.5; }
+
+.cap-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0.15rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cap-tags li {
+  padding: 0.25rem 0.7rem;
+  border: 1px solid var(--cap-hair);
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--cap-ink);
+}
+
+.cap-modules__list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.15rem 1.5rem;
+  margin: 0.5rem 0 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: cap-module;
+}
+
+@media (min-width: 576px) {
+  .cap-modules__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.cap-modules__list li {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px dashed var(--cap-hair);
+  line-height: 1.35;
+  color: var(--text-primary);
+  counter-increment: cap-module;
+}
+
+.cap-modules__list li::before {
+  content: counter(cap-module, decimal-leading-zero);
+  flex-shrink: 0;
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--cap-axis);
+  font-variant-numeric: tabular-nums;
+}
+
+.cap-modules__note { margin: 0.75rem 0 0; font-size: 0.85rem; color: var(--text-secondary); }
+
+.cap-course__foot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-top: clamp(1rem, 0.75rem + 1vw, 1.5rem);
+  border-top: 1px solid var(--cap-hair);
+}
+
+.cap-course__demo {
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+.cap-course__demo i { color: var(--cap-axis); }
+.cap-course__foot .arrow-link { min-height: 44px; }
+
+/* No celular não há sobreposição ao hero, como em /eixos e /solucoes. */
+@media (max-width: 575.98px) {
+  .cap-course { margin-top: 1.5rem; border-radius: var(--radius-xl); }
+}
+
+/* ---------- seções ---------- */
+.cap-section {
+  padding-top: clamp(2.5rem, 1.75rem + 3vw, 4.5rem);
+  scroll-margin-top: 6rem;
+}
+
+.cap-section__head { max-width: 46rem; margin-bottom: clamp(1.5rem, 1.25rem + 1.5vw, 2.5rem); }
+
+/* ---------- proponha um curso ---------- */
+.cap-propose {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (min-width: 992px) {
+  .cap-propose { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 3rem; }
+}
+
+.cap-formats {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  margin: 0 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 576px) {
+  .cap-formats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+.cap-format {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.8rem;
+  padding: 0.9rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+}
+
+.cap-format__icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  background: var(--paper-soft);
+  color: var(--cp2b-verde-escuro);
+  font-size: 1.1rem;
+}
+
+.cap-format__body { display: grid; gap: 0.15rem; min-width: 0; }
+.cap-format__title { font-size: 0.95rem; color: var(--text-primary); line-height: 1.3; }
+.cap-format__text { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.45; }
+
+.cap-subtitle {
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--cap-ink);
+}
+
+.cap-steps { margin: 0; padding: 0; list-style: none; }
+
+.cap-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr);
+  gap: 0.9rem;
+  padding-bottom: 1.25rem;
+}
+
+.cap-step:last-child { padding-bottom: 0; }
+
+/* Fio que liga os números dos passos. */
+.cap-step:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  top: 2.4rem;
+  bottom: 0.2rem;
+  left: calc(1.125rem - 1px);
+  width: 2px;
+  background: var(--cap-hair);
+}
+
+.cap-step__num {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background: var(--brand-primary);
+  color: #fff;
+  font-family: var(--font-display);
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+}
+
+.cap-step__body { padding-top: 0.3rem; }
+.cap-step__title { display: block; margin-bottom: 0.15rem; color: var(--text-primary); }
+.cap-step__text { margin: 0; color: var(--text-secondary); line-height: 1.5; }
+
+.cap-email {
+  font-weight: 700;
+  color: var(--cp2b-verde-escuro);
+  overflow-wrap: anywhere;
+}
+
+/* Cartão do arquivo, sem sticky: fica no fluxo, ao lado do passo a passo.
+   (O motivo antigo não vale mais: o body agora usa overflow-x: clip, que
+   não cria contêiner de rolagem (index.css), e um sticky aqui prenderia.
+   Se um dia o cartão acompanhar a rolagem, conferir no navegador.) */
+.cap-download {
+  display: grid;
+  justify-items: start;
+  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-top: 4px solid var(--cap-axis);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-md);
+}
+
+.cap-download__file {
+  display: grid;
+  place-items: center;
+  width: 3.25rem;
+  height: 3.25rem;
+  margin-bottom: 1rem;
+  border-radius: 0.8rem;
+  background: color-mix(in srgb, #2b579a 10%, white);
+  color: #2b579a;
+  font-size: 1.6rem;
+}
+
+.cap-download__title {
+  margin: 0 0 0.6rem;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--cap-ink);
+}
+
+.cap-download__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem 0;
+  margin: 0 0 1.25rem;
+  padding: 0;
+  list-style: none;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.cap-download__meta li + li::before { content: '·'; margin: 0 0.5rem; color: var(--gray-400); }
+
+.cap-download__note { margin: -0.5rem 0 1.25rem; font-size: 0.85rem; color: var(--text-secondary); }
+.cap-download__button { width: 100%; }
+
+.cap-download__mail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  min-height: 44px;
+  margin-top: 0.5rem;
+  font-weight: 600;
+  color: var(--cp2b-verde-escuro);
+  text-decoration: none;
+}
+
+.cap-download__mail:hover { color: var(--cp2b-verde); text-decoration: underline; }
+.cap-download__mail:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+
+/* ---------- estrutura do template ---------- */
+.cap-outline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 768px) {
+  .cap-outline { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+}
+
+@media (min-width: 1200px) {
+  .cap-outline { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+.cap-outline__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 1rem 1.1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+}
+
+.cap-outline__num {
+  flex-shrink: 0;
+  min-width: 1.75rem;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--cap-axis);
+  font-variant-numeric: tabular-nums;
+}
+
+.cap-outline__body { min-width: 0; }
+
+.cap-outline__title {
+  margin: 0 0 0.2rem;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--text-primary);
+}
+
+.cap-outline__text { margin: 0; font-size: 0.88rem; line-height: 1.5; color: var(--text-secondary); }
+.cap-outline__body .arrow-link { margin-top: 0.4rem; min-height: 32px; }
+
+/* ---------- coordenação e contato ---------- */
+.cap-contact {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+  margin-top: clamp(2.5rem, 1.75rem + 3vw, 4.5rem);
+  padding: clamp(1.5rem, 1rem + 3vw, 3rem);
+  border-radius: var(--radius-2xl);
+  background: linear-gradient(135deg, var(--cp2b-azul-petroleo) 0%, var(--cp2b-verde-escuro) 100%);
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  .cap-contact { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); align-items: center; gap: 3rem; }
+}
+
+.cap-contact .cap-contact__kicker { color: var(--cp2b-lima); }
+
+.cap-contact__people {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0.75rem 0 1rem;
+  padding: 0;
+  list-style: none;
+}
+
+.cap-contact__people li {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.cap-contact__people img { border: 2px solid rgb(255 255 255 / .35); }
+
+.cap-contact__axis {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 44px;
+  font-weight: 700;
+  color: var(--cp2b-lima);
+  text-decoration: none;
+}
+
+.cap-contact__axis:hover { color: #fff; }
+.cap-contact__axis:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+
+.cap-contact__title {
+  margin: 0 0 0.5rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-title);
+  font-weight: 700;
+  color: #fff;
+}
+
+.cap-contact__lead { margin: 0 0 1.25rem; color: rgb(255 255 255 / .78); }
+
+.cap-contact__email {
+  display: block;
+  margin-top: 0.6rem;
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  color: rgb(255 255 255 / .7);
+  overflow-wrap: anywhere;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .cap-btn,
+  .cap-hero__link,
+  .cap-download__mail,
+  .cap-contact__axis { transition: background var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard); }
+}

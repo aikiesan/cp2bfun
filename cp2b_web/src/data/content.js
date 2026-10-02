@@ -3,8 +3,8 @@ export const socialLinks = {
   linkedin: 'https://br.linkedin.com/company/centro-paulista-de-estudos-em-biog%C3%A1s-e-bioprodutos-cp2b',
   facebook: 'https://www.facebook.com/nipeunicamp/',
   youtube: 'https://www.youtube.com/@CP2B_Biog%C3%A1s',
-  whatsapp: '#',
-  spotify: 'https://open.spotify.com/show/4TiFNi6N2BZiokWvGpaZnb?si=wCsfKfszTsqRrfL9_RGt9A&utm_source=whatsapp'
+  whatsapp: 'https://wa.me/message/KVJUNJN7SIAZP1',
+  spotify: 'https://open.spotify.com/show/4TiFNi6N2BZiokWvGpaZnb'
 };
 
 export const menuLabels = {
@@ -13,58 +13,88 @@ export const menuLabels = {
     aboutSubmenu: {
       overview: 'Visão Geral',
       governance: 'Governança',
+      indicators: 'Indicadores',
       transparency: 'Transparência',
-      partners: 'Parceiros'
+      partners: 'Parceiros',
+      opportunities: 'Oportunidades',
+      events: 'Eventos',
+      training: 'Cursos e Capacitação'
     },
     opportunities: 'Oportunidades',
-    news: 'Notícias',
+    news: 'Comunicação',
     newsSubmenu: {
       news: 'Notícias',
-      media: 'Na Mídia',
-      opportunities: 'Oportunidades'
+      microscopio: 'Coluna Microscópio',
+      entrevistas: 'Entrevistas',
+      podcast: 'Podcast',
+      boletins: 'Boletins',
+      gallery: 'Galeria de Fotos',
+      pressKit: 'Identidade Visual',
+      newsletter: 'Newsletter',
     },
     team: 'Equipe',
     publications: 'Publicações',
     projects: 'Projetos',
-    events: 'Eventos',
+    microscopio: 'Microscópio',
     media: 'Mídia',
     others: 'Outros',
     linkedin: 'LinkedIn',
     accessibility: 'Acessibilidade',
     search: 'Buscar',
-    axes: 'Eixos de Pesquisa',
+    axes: 'Eixos',
+    solutions: 'Infraestrutura e Soluções',
+    solutionsShort: 'Soluções',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'Sobre o Evento',
-    forumRegister: 'Registro Meet-up'
+    events: 'Eventos',
+    gallery: 'Galeria',
+    pilar2b: 'PILAR-2b',
+    arqueia: 'Arqueia'
   },
   en: {
     about: 'About',
     aboutSubmenu: {
       overview: 'Overview',
       governance: 'Governance',
+      indicators: 'Indicators',
       transparency: 'Transparency',
-      partners: 'Partners'
+      partners: 'Partners',
+      opportunities: 'Opportunities',
+      events: 'Events',
+      training: 'Courses and Training'
     },
     opportunities: 'Opportunities',
-    news: 'News',
+    news: 'Communication',
     newsSubmenu: {
       news: 'News',
-      media: 'In the Media',
-      opportunities: 'Opportunities'
+      microscopio: 'Microscope Column',
+      entrevistas: 'Interviews',
+      podcast: 'Podcast',
+      // "Bulletins" e não "Newsletters": o item logo abaixo é o cadastro da
+      // newsletter, e dois rótulos iguais no mesmo dropdown confundiriam.
+      boletins: 'Bulletins',
+      gallery: 'Photo Gallery',
+      pressKit: 'Visual Identity',
+      newsletter: 'Newsletter',
     },
     team: 'Team',
     publications: 'Publications',
     projects: 'Projects',
-    events: 'Events',
+    microscopio: 'Microscópio',
     media: 'Media',
     others: 'Others',
     linkedin: 'LinkedIn',
     accessibility: 'Accessibility',
     search: 'Search',
-    axes: 'Research Axes',
+    axes: 'Axes',
+    solutions: 'Infrastructure & Solutions',
+    solutionsShort: 'Solutions',
     forumPaulista: 'Forum Paulista',
     forumAbout: 'About the Event',
-    forumRegister: 'Meet-up Registration'
+    events: 'Events',
+    gallery: 'Gallery',
+    pilar2b: 'PILAR-2b',
+    arqueia: 'Arqueia'
   }
 };
 
@@ -75,36 +105,143 @@ export const projectDetails = {
   beneficiary: 'Bruna de Souza Moraes',
   hostInstitution: 'Núcleo Interdisciplinar de Planejamento Energético/NIPE/UNICAMP',
   startDate: '01/02/2025',
-  duration: '60 meses',
+  
   pt: {
     title: 'Centro Paulista de Estudos em Biogás e Bioprodutos - CP2b',
-    keywords: ['Cadeia de Biogás', 'Ciência e Tecnologia de Base', 'Desenvolvimento Sustentável', 'Engenharia de Processos', 'Inovação em Bioprodutos', 'Politicas Públicas']
+    keywords: ['Cadeia de Biogás', 'Ciência e Tecnologia de Base', 'Desenvolvimento Sustentável', 'Engenharia de Processos', 'Inovação em Bioprodutos', 'Politicas Públicas'],
+    duration: '60 meses',
   },
   en: {
     title: 'São Paulo Center for Biogas and Bioproducts Studies - CP2b',
-    keywords: ['Biogas Chain', 'Basic Science and Technology', 'Sustainable Development', 'Process Engineering', 'Bioproduct Innovation', 'Public Policies']
+    keywords: ['Biogas Chain', 'Basic Science and Technology', 'Sustainable Development', 'Process Engineering', 'Bioproduct Innovation', 'Public Policies'],
+    duration: '60 months',
   }
 };
 
 export const forumData = {
   pt: {
-    badge: 'EM BREVE',
+    badge: 'REALIZADO',
     subtitle: 'Fórum Paulista',
     title: 'Fórum de Biogás e Bioprodutos - Maio/2026',
-    description: 'Prepare-se para o maior encontro de biogás de São Paulo. Reuniremos especialistas, pesquisadores e parceiros estratégicos para discutir o futuro da bioenergia.',
-    button: 'Saiba mais sobre a edição 2026'
+    description: 'O I Fórum Paulista de Biogás e Bioprodutos reuniu pesquisadores, estudantes, profissionais e empresas para discutir os avanços, desafios e oportunidades da cadeia de biogás e bioprodutos no Estado de São Paulo.\n\nConheça o CP2b e acompanhe os debates e iniciativas que estão impulsionando o futuro do setor.',
+    button: 'Saiba mais sobre o Fórum'
   },
   en: {
-    badge: 'COMING SOON',
+    badge: 'HELD',
     subtitle: 'São Paulo Forum',
     title: 'Biogas and Bioproducts Forum - May/2026',
-    description: 'Get ready for the largest biogas meeting in São Paulo. We will bring together specialists, researchers, and strategic partners to discuss the future of bioenergy.',
-    button: 'Learn more about the 2026 edition'
+    description: 'The I Fórum Paulista de Biogás e Bioprodutos brought together researchers, students, professionals and companies to discuss advances, challenges and opportunities in the biogas and bioproducts chain in São Paulo State.\n\nMeet CP2b and follow the debates and initiatives driving the future of the sector.',
+    button: 'Learn more about the Forum'
+  }
+};
+
+export const missionVisionValues = {
+  pt: {
+    sectionTag: 'Diretrizes estratégicas',
+    sectionTitle: 'Missão, Visão e Valores',
+    sectionSubtitle: 'Os princípios fundamentais que orientam a excelência científica, a governança e o impacto socioambiental do CP2b.',
+    mission: {
+      tag: 'Missão',
+      title: 'Nossa Missão',
+      text: '“Desenvolver pesquisas, tecnologias e soluções inovadoras em biogás, com motivação industrial, ambiental e social, promovendo o aproveitamento inteligente de resíduos e contribuindo para um desenvolvimento sustentável, inclusivo e equitativo”.'
+    },
+    vision: {
+      tag: 'Visão',
+      title: 'Nossa Visão',
+      text: '“Ser referência nacional e internacional na gestão eficiente e sustentável de resíduos urbanos e agropecuários, transformando o estado de São Paulo em vitrine de soluções inteligentes em biogás e de desenvolvimento sustentável, inclusivo e equitativo. Para isso, o CP2B busca criar novos conhecimentos e competências, com base em ciência de ponta, que possam apoiar o desenvolvimento de soluções aplicáveis de biogás no estado de SP (ESP), articulando ações conjuntas e complementares nas esferas industrial, política, social e ambiental”.'
+    },
+    valuesTitle: 'Nossos Valores',
+    valuesStatement: 'Valores CP2b estão refletidos nas competências e princípios norteadores:',
+    values: [
+      {
+        icon: 'bi-award',
+        title: 'Excelência Científica & Rigor Técnico',
+        description: 'Compromisso com a produção de conhecimento de alto impacto, rigor metodológico e padrões internacionais de qualidade em todas as etapas da pesquisa.'
+      },
+      {
+        icon: 'bi-tree',
+        title: 'Sustentabilidade & Impacto Socioambiental',
+        description: 'Foco permanente na descarbonização, na preservação dos recursos naturais, na circularidade produtiva e no desenvolvimento socioeconômico inclusivo.'
+      },
+      {
+        icon: 'bi-diagram-3',
+        title: 'Interdisciplinaridade & Integração',
+        description: 'Articulação contínua e colaborativa entre diversas áreas do conhecimento, grupos de pesquisa e instituições científicas de excelência.'
+      },
+      {
+        icon: 'bi-lightbulb',
+        title: 'Inovação & Cooperação com a Sociedade',
+        description: 'Conexão direta entre bancada científica, demandas do mercado produtivo e formulação de políticas públicas orientadas a problemas reais.'
+      },
+      {
+        icon: 'bi-shield-check',
+        title: 'Ética, Transparência & Governança',
+        description: 'Integridade absoluta na condução das pesquisas, responsabilidade na gestão dos recursos públicos e compromisso com a prestação de contas à sociedade.'
+      },
+      {
+        icon: 'bi-people',
+        title: 'Diversidade & Equidade de Gênero',
+        description: 'Valorizar a diversidade e promover a equidade de gênero, assegurando oportunidades, participação, reconhecimento e desenvolvimento para todas as pessoas nos espaços de ciência, tecnologia, inovação e liderança.'
+      }
+    ]
+  },
+  en: {
+    sectionTag: 'Strategic guidelines',
+    sectionTitle: 'Mission, Vision and Values',
+    sectionSubtitle: 'The core principles guiding CP2b scientific excellence, governance and socio-environmental impact.',
+    mission: {
+      tag: 'Mission',
+      title: 'Our Mission',
+      text: '“Develop research, technologies, and innovative biogas solutions with industrial, environmental, and social motivation, promoting the smart use of waste and contributing to sustainable, inclusive and equitable development.”'
+    },
+    vision: {
+      tag: 'Vision',
+      title: 'Our Vision',
+      text: '“To be a national and international reference in the efficient and sustainable management of urban and agricultural waste, transforming the State of São Paulo into a showcase of smart biogas solutions and of sustainable, inclusive and equitable development. To achieve this, CP2B seeks to create new knowledge and competencies, based on cutting-edge science, that can support the development of applicable biogas solutions in the State of São Paulo (ESP), coordinating joint and complementary actions across industrial, political, social, and environmental spheres.”'
+    },
+    valuesTitle: 'Our Values',
+    valuesStatement: 'CP2b values are reflected in our core competencies and guiding principles:',
+    values: [
+      {
+        icon: 'bi-award',
+        title: 'Scientific Excellence & Technical Rigor',
+        description: 'Commitment to high-impact knowledge production, methodological rigor, and international quality standards throughout all research phases.'
+      },
+      {
+        icon: 'bi-tree',
+        title: 'Sustainability & Socio-environmental Impact',
+        description: 'Permanent focus on decarbonization, natural resource preservation, productive circularity, and inclusive socioeconomic development.'
+      },
+      {
+        icon: 'bi-diagram-3',
+        title: 'Interdisciplinarity & Integration',
+        description: 'Continuous and collaborative articulation across diverse fields of knowledge, research groups, and scientific institutions of excellence.'
+      },
+      {
+        icon: 'bi-lightbulb',
+        title: 'Innovation & Societal Cooperation',
+        description: 'Direct link between laboratory research, industrial market demands, and real-world public policy formulation.'
+      },
+      {
+        icon: 'bi-shield-check',
+        title: 'Ethics, Transparency & Governance',
+        description: 'Absolute integrity in research conduct, responsible management of public resources, and commitment to public accountability.'
+      },
+      {
+        icon: 'bi-people',
+        title: 'Diversity & Gender Equity',
+        description: 'Valuing diversity and advancing gender equity, ensuring opportunity, participation, recognition and development for everyone in science, technology, innovation and leadership.'
+      }
+    ]
   }
 };
 
 export const aboutContent = {
   pt: {
+    missionVisionValues: missionVisionValues.pt,
+    missao: missionVisionValues.pt.mission.text,
+    visao: missionVisionValues.pt.vision.text,
+    valores: missionVisionValues.pt.valuesStatement,
     resumo: `O Centro Paulista de Estudos em Biogás e Bioprodutos é dedicado ao tema "Aproveitamento inteligente de resíduos para o desenvolvimento sustentável" e visa criar competências com base em ciência que conduzam ao desenvolvimento e aplicações de soluções inovadoras de biogás. Os sistemas energéticos sociotécnicos que incluem soluções de biogás têm um desempenho de sustentabilidade bastante positivo uma vez que tratam resíduos, produzem combustível renovável e criam nutrientes renováveis para as plantas. No Estado de São Paulo (ESP) há muito substrato disponível - um potencial de mais de 4,5 bilhões de m3 ano de biogás - assim como uma grande demanda por seus bioprodutos, mas apenas uma fração deste potencial é aproveitada.
 
 O papel do CP2b é criar novos conhecimentos e competências que levem a soluções aplicáveis ao biogás no Estado, e articular ações conjuntas nas esferas industrial, política, social e ambiental. O CP2b tem por principal objetivo contribuir para a gestão de resíduos orgânicos e lignocelulósicos - urbanos e agroindustriais -, com prioridade para as ações voltadas à gestão pública de resíduos em setores estratégicos para a economia do estado.
@@ -125,6 +262,10 @@ O centro irá atuar de forma transdisciplinar, organizado em oito eixos temátic
     (iv) Educação ambiental.`
   },
   en: {
+    missionVisionValues: missionVisionValues.en,
+    missao: missionVisionValues.en.mission.text,
+    visao: missionVisionValues.en.vision.text,
+    valores: missionVisionValues.en.valuesStatement,
     resumo: `The São Paulo Center for Biogas and Bioproducts Studies is dedicated to the theme "Intelligent use of waste for sustainable development" and aims to create science-based skills that lead to the development and applications of innovative biogas solutions. Sociotechnical energy systems that include biogas solutions have a very positive sustainability performance as they treat waste, produce renewable fuel and create renewable nutrients for plants. In the State of São Paulo (ESP) there is a lot of substrate available - a potential of more than 4.5 billion m3 of biogas per year - as well as a great demand for its bioproducts, but only a fraction of this potential is used.
 
 CP2b's role is to create new knowledge and skills that lead to applicable solutions for biogas in the State, and to articulate joint actions in the industrial, political, social and environmental spheres. CP2b's main objective is to contribute to the management of organic and lignocellulosic waste - urban and agro-industrial -, with priority given to actions aimed at public waste management in strategic sectors for the state's economy.
@@ -149,10 +290,13 @@ The conception of CP2b and its own mission foresee the strong integration of bas
 
 export const partners = {
   host: { name: 'Núcleo Interdisciplinar de Planejamento Energético (NIPE/UNICAMP)', location: 'Campinas, SP' },
-  public: [
-    { name: 'Secretaria Estadual de Agricultura e Abastecimento de São Paulo (SAASP)', location: 'São Paulo, SP' },
-    { name: 'Secretaria Municipal do Verde, Meio Ambiente e Desenvolvimento Sustentável de Campinas (SMVMADS/PMC)', location: 'Campinas, SP' }
-  ],
+  // DEFESO ELEITORAL 2026 (04/07 a 25/10/2026): Ocultado temporariamente da vitrine institucional.
+  // Reativar após 25/10/2026 descomentando os parceiros abaixo:
+  // public: [
+  //   { name: 'Secretaria Estadual de Agricultura e Abastecimento de São Paulo (SAASP)', location: 'São Paulo, SP' },
+  //   { name: 'Secretaria Municipal do Verde, Meio Ambiente e Desenvolvimento Sustentável de Campinas (SMVMADS/PMC)', location: 'Campinas, SP' }
+  // ],
+  public: [],
   research: [
     { name: 'Universidade Federal de Alfenas (UNIFAL)', location: 'Alfenas, MG' },
     { name: 'Instituto Agronômico de Campinas (IAC/SAASP)', location: 'Campinas, SP' },
@@ -205,7 +349,7 @@ export const newsItems = {
     {
       id: 10,
       date: '18 DEZ 2025',
-      image: '/assets/CP2B-AVATAR-BR@8x.png',
+      image: '/assets/logos/cp2b-avatar-gradient.svg',
       badge: 'Institucional',
       badgeColor: 'success',
       title: 'Conheça o Metaninho: o novo mascote do CP2b!',
@@ -247,7 +391,7 @@ export const newsItems = {
     {
       id: 10,
       date: '18 DEC 2025',
-      image: '/assets/CP2B-AVATAR-BR@8x.png',
+      image: '/assets/logos/cp2b-avatar-gradient.svg',
       badge: 'Institutional',
       badgeColor: 'success',
       title: 'Meet Metaninho: the new CP2b mascot!',
@@ -297,7 +441,7 @@ export const projectsItems = {
       badgeColor: 'primary',
       title: 'Living-Lab de Resíduos Sólidos Urbanos',
       description: 'Planta piloto para gestão de resíduos de restaurantes universitários produzindo biohidrogênio e biometano (Biohitano) para ônibus do campus da UNICAMP.',
-      link: '/projetos/living-lab-ofmsw'
+      link: '/entrevistas/living-lab-ofmsw'
     },
     {
       id: 2,
@@ -307,7 +451,7 @@ export const projectsItems = {
       badgeColor: 'success',
       title: 'Unidade Demonstrativa em Cooperativa Agroindustrial',
       description: 'Sistema de digestão anaeróbia processando resíduos de varejo agroindustrial para gerar eletricidade ou biometano, substituindo diesel em frotas.',
-      link: '/projetos/cooperativa-agroindustrial'
+      link: '/entrevistas/cooperativa-agroindustrial'
     },
     {
       id: 3,
@@ -317,7 +461,7 @@ export const projectsItems = {
       badgeColor: 'info',
       title: 'Biorrefinaria de Vinhaça e Resíduos da Cana',
       description: 'Pesquisa em tecnologias de biorrefinaria para aproveitamento de vinhaça e resíduos da agroindústria sucroenergética, produzindo biohitano e ácidos orgânicos de alto valor.',
-      link: '/projetos/biorrefinaria-vinhaca'
+      link: '/entrevistas/biorrefinaria-vinhaca'
     },
     {
       id: 4,
@@ -327,7 +471,7 @@ export const projectsItems = {
       badgeColor: 'warning',
       title: 'Mapeamento de Resíduos e Oportunidades no Estado de São Paulo',
       description: 'Desenvolvimento de plataforma digital georreferenciada para inventário de resíduos e identificação de oportunidades de aproveitamento energético em São Paulo.',
-      link: '/projetos/mapeamento-residuos-sp'
+      link: '/entrevistas/mapeamento-residuos-sp'
     }
   ],
   en: [
@@ -339,7 +483,7 @@ export const projectsItems = {
       badgeColor: 'primary',
       title: 'Urban Solid Waste Living-Lab',
       description: 'Pilot plant for waste management of university restaurants producing biohydrogen and biomethane (Biohitane) for UNICAMP campus buses.',
-      link: '/projetos/living-lab-ofmsw'
+      link: '/entrevistas/living-lab-ofmsw'
     },
     {
       id: 2,
@@ -349,7 +493,7 @@ export const projectsItems = {
       badgeColor: 'success',
       title: 'Demonstration Unit in Agro-industrial Cooperative',
       description: 'Anaerobic digestion system processing agro-industrial retail waste to generate electricity or biomethane, replacing diesel in fleets.',
-      link: '/projetos/cooperativa-agroindustrial'
+      link: '/entrevistas/cooperativa-agroindustrial'
     },
     {
       id: 3,
@@ -359,7 +503,7 @@ export const projectsItems = {
       badgeColor: 'info',
       title: 'Vinasse and Sugarcane Waste Biorefinery',
       description: 'Research on biorefinery technologies for the utilization of vinasse and sugarcane agro-industry waste, producing biohitane and high-value organic acids.',
-      link: '/projetos/biorrefinaria-vinhaca'
+      link: '/entrevistas/biorrefinaria-vinhaca'
     },
     {
       id: 4,
@@ -369,7 +513,7 @@ export const projectsItems = {
       badgeColor: 'warning',
       title: 'Waste Mapping and Opportunities in São Paulo State',
       description: 'Development of georeferenced digital platform for waste inventory and identification of energy recovery opportunities in São Paulo.',
-      link: '/projetos/mapeamento-residuos-sp'
+      link: '/entrevistas/mapeamento-residuos-sp'
     }
   ]
 };
@@ -405,6 +549,97 @@ export const flagshipProjects = {
   ]
 };
 
+export const timelineData = {
+  pt: [
+    {
+      year: '2025',
+      title: 'Living-Lab de Resíduos Sólidos Urbanos',
+      description: 'Planta piloto para gestão de resíduos de restaurantes universitários produzindo biohidrogênio e biometano (Biohitano) para ônibus do campus da UNICAMP.',
+      status: 'ongoing',
+      icon: 'bi-recycle'
+    },
+    {
+      year: '2025',
+      title: 'Unidade Demonstrativa em Cooperativa Agroindustrial',
+      description: 'Sistema de digestão anaeróbia processando resíduos de varejo agroindustrial para gerar eletricidade (189 MWh/ano) ou biometano, substituindo diesel em frotas.',
+      status: 'ongoing',
+      icon: 'bi-lightning-charge'
+    },
+    {
+      year: '2025',
+      title: 'Biorrefinaria de Vinhaça e Resíduos da Cana',
+      description: 'Pesquisa em tecnologias de biorrefinaria para aproveitamento de vinhaça e resíduos da agroindústria sucroenergética, produzindo biohitano e ácidos orgânicos de alto valor.',
+      status: 'ongoing',
+      icon: 'bi-droplet-half'
+    },
+    {
+      year: '2025',
+      title: 'Mapeamento de Resíduos e Oportunidades em São Paulo',
+      description: 'Desenvolvimento de plataforma digital georreferenciada para inventário de resíduos e identificação de oportunidades de aproveitamento energético no Estado de São Paulo.',
+      status: 'ongoing',
+      icon: 'bi-geo-alt'
+    },
+    {
+      year: '2025',
+      title: 'Fórum Paulista de Biogás e Bioprodutos',
+      description: 'Evento anual de articulação entre pesquisadores, governo e setor produtivo para acelerar a cadeia de valor do biogás e bioprodutos no Estado de São Paulo.',
+      status: 'ongoing',
+      icon: 'bi-people'
+    },
+    {
+      year: '2024',
+      title: 'Criação do CP2b — Centro Paulista de Estudos em Biogás e Bioprodutos',
+      description: 'Fundação do centro de pesquisa apoiado pela FAPESP (Processo 2024/01112-1) com sede no NIPE/UNICAMP, iniciando a missão de transformar resíduos em recursos renováveis.',
+      status: 'completed',
+      icon: 'bi-award'
+    }
+  ],
+  en: [
+    {
+      year: '2025',
+      title: 'Urban Solid Waste Living-Lab',
+      description: 'Pilot plant for waste management from university restaurants producing biohydrogen and biomethane (Biohitane) for UNICAMP campus buses.',
+      status: 'ongoing',
+      icon: 'bi-recycle'
+    },
+    {
+      year: '2025',
+      title: 'Demonstration Unit in Agro-industrial Cooperative',
+      description: 'Anaerobic digestion system processing agro-industrial retail waste to generate electricity (189 MWh/year) or biomethane, replacing diesel in vehicle fleets.',
+      status: 'ongoing',
+      icon: 'bi-lightning-charge'
+    },
+    {
+      year: '2025',
+      title: 'Vinasse and Sugarcane Waste Biorefinery',
+      description: 'Research on biorefinery technologies for the utilization of vinasse and sugarcane agro-industry waste, producing biohitane and high-value organic acids.',
+      status: 'ongoing',
+      icon: 'bi-droplet-half'
+    },
+    {
+      year: '2025',
+      title: 'Waste Mapping and Opportunities in São Paulo',
+      description: 'Development of a georeferenced digital platform for waste inventory and identification of energy recovery opportunities in São Paulo State.',
+      status: 'ongoing',
+      icon: 'bi-geo-alt'
+    },
+    {
+      year: '2025',
+      title: 'São Paulo Biogas and Bioproducts Forum',
+      description: 'Annual event connecting researchers, government and industry to accelerate the biogas and bioproducts value chain in São Paulo State.',
+      status: 'ongoing',
+      icon: 'bi-people'
+    },
+    {
+      year: '2024',
+      title: 'CP2b Founded — São Paulo Center for Biogas and Bioproducts Studies',
+      description: 'Research center founded with FAPESP support (Process 2024/01112-1) hosted at NIPE/UNICAMP, beginning its mission to transform waste into renewable resources.',
+      status: 'completed',
+      icon: 'bi-award'
+    }
+  ]
+};
+
 export const sdgMap = {
   1: '/assets/1-erradicacao-da-pobreza.jpeg',
   2: '/assets/2-fome-zero-e-agricultura-sustentavel.jpeg',
@@ -429,24 +664,23 @@ export const researchAxes = {
   pt: [
     {
       id: '1',
-      title: 'Eixo 1 – Inventário de Resíduos e Mapeamento Tecnológico',
-      coordinator: 'Profº Drº Rubens Augusto Camargo Lamparelli',
+      title: 'Eixo 1 – Inventário de Resíduos e Mapeamento de Tecnologias',
+      coordinator: 'Profº Drº Rubens Augusto Camargo Lamparelli, Drº Lucas Nakamura Cerejo',
       coordinators: [
-        { name: 'Profº Drº Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/FOTO_RUBENS_LAMPARELLI_EIXO_1.jpg' }
+        { name: 'Profº Drº Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/team/rubens-augusto-camargo-lamparelli.webp' },
+        { name: 'Drº Lucas Nakamura Cerejo', role: 'Coord.', photo: '/assets/team/lucas-nakamura-cerejo.webp' }
       ],
-      content: `O Eixo 1 busca ir além dos levantamentos tradicionais de potencial de biomassa. A proposta é trabalhar com dados mais detalhados e precisos, que permitam enxergar de perto quem produz resíduos, onde estão localizados e como se relacionam com as infraestruturas ao redor.
-      Usando técnicas de georreferenciamento, o Eixo 1 pretende mapear as cadeias agroindustriais e identificar oportunidades de aproveitamento desses resíduos, seja dentro da própria cadeia produtiva ou conectando diferentes setores.
-      A ideia é criar uma plataforma digital acessível que funcione como ponte entre quem gera resíduos e quem pode transformá-los em novos produtos.
-      Este eixo se alinha aos Objetivos de Desenvolvimento Sustentável: 7, 11, 13 e 15.`,
+      content: `O Eixo 1 mapeia cadeias agroindustriais e resíduos com georreferenciamento de alta precisão para identificar oportunidades de aproveitamento e integrar geradores em uma plataforma digital acessível.
+      ODS: 7, 11, 13 e 15.`,
       sdgs: [7, 11, 13, 15]
     },
     {
       id: '2',
       title: 'Eixo 2 – Ciência e Tecnologia de Base',
-      coordinator: 'Profº Drº Lucas Tadeu Fuess (Coord.), Profª Drª Priscila Rosseto Camiloti (Adj.)',
+      coordinator: 'Profº Drº Lucas Tadeu Fuess, Drª Fabiane Moreira Vieira',
       coordinators: [
-        { name: 'Profº Drº Lucas Tadeu Fuess', role: 'Coord.', photo: '/assets/FOTO_LUCAS_TADEU_FUESS.jpg' },
-        { name: 'Profª Drª Priscila Rosseto Camiloti', role: 'Adj.', photo: '/assets/FOTO_PRISCILA.jpg' }
+        { name: 'Profº Drº Lucas Tadeu Fuess', role: 'Coord.', photo: '/assets/team/lucas-tadeu-fuess.webp' },
+        { name: 'Drª Fabiane Moreira Vieira', role: 'Coord.', photo: '/assets/team/fabiane-moreira-vieira.webp' }
       ],
       content: `O Eixo 2 se dedica à pesquisa científica fundamental que sustenta os avanços tecnológicos na cadeia do biogás. O principal desafio é a operação de reatores biológicos durante a entressafra da cana-de-açúcar.
       As pesquisas serão organizadas em três etapas: upstream, midstream e downstream.
@@ -456,10 +690,10 @@ export const researchAxes = {
     {
       id: '3',
       title: 'Eixo 3 – Engenharia de Processos e Bioprocessos',
-      coordinator: 'Profª Drª Luana Mattos de Oliveira Cruz (Coord.), Profº Drº Enelton Fagnani (Adj.)',
+      coordinator: 'Profª Drª Priscila Rosseto Camiloti, Drª Ana Beatriz Soares Aguiar',
       coordinators: [
-        { name: 'Profª Drª Luana Mattos de Oliveira Cruz', role: 'Coord.', photo: '/assets/FOTO_LUANA_EIXO_3.jpg' },
-        { name: 'Profº Drº Enelton Fagnani', role: 'Adj.', photo: '/assets/FOTO_ENELTON_EIXO_3.jpg' }
+        { name: 'Profª Drª Priscila Rosseto Camiloti', role: 'Coord.', photo: '/assets/team/priscila-rosseto-camiloti.webp' },
+        { name: 'Drª Ana Beatriz Soares Aguiar', role: 'Coord.', photo: '/assets/team/ana-beatriz-soares-aguiar.webp' }
       ],
       content: `O Eixo 3 é o momento de tirar as ideias do papel e testar em escala maior. O objetivo é ajudar os parceiros a atravessar o famoso "vale da morte" tecnológico.
       As pesquisas alcançarão níveis de maturidade tecnológica (TRL) 6 e 7. A parceria com empresas é o coração deste eixo (SABESP, COPERCANA, Embrapii).
@@ -469,9 +703,10 @@ export const researchAxes = {
     {
       id: '4',
       title: 'Eixo 4 – Avaliação Integrada Socioeconômica, Ambiental e Energética',
-      coordinator: 'Profº Drº Marcelo Pereira Cunha',
+      coordinator: 'Profº Drº Marcelo Pereira Cunha, Drº Carlos Eduardo Driemeier',
       coordinators: [
-        { name: 'Profº Drº Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/FOTO_MARCELO_CUNHA_EIXO_4.jpg' }
+        { name: 'Profº Drº Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/team/marcelo-pereira-da-cunha.webp' },
+        { name: 'Drº Carlos Eduardo Driemeier', role: 'Coord.', photo: null }
       ],
       content: `O Eixo 4 é o espaço da reflexão crítica. Sua missão é avaliar os impactos socioeconômicos, ambientais e energéticos.
       O eixo vai construir e avaliar cenários que subsidiem a formulação de políticas públicas.
@@ -482,9 +717,9 @@ export const researchAxes = {
     {
       id: '5',
       title: 'Eixo 5 – Inovação em Bioprodutos na Cadeia do Biogás',
-      coordinator: 'Profº Drº Luis Alberto Follegatti Romero',
+      coordinator: 'Profª Drª Rachel Biancalana Costa, Vaga temporariamente em aberto',
       coordinators: [
-        { name: 'Profº Drº Luis Alberto Follegatti Romero', role: 'Coord.', photo: null }
+        { name: 'Profª Drª Rachel Biancalana Costa', role: 'Coord.', photo: '/assets/team/rachel-biancalana-costa.webp' }
       ],
       content: `O Eixo 5 mergulha no conceito de biorrefinaria. A vinhaça é um bom exemplo de foco, contendo ácidos orgânicos de alto valor.
       A aposta é o biohitano (combinação de hidrogênio e metano).
@@ -493,11 +728,11 @@ export const researchAxes = {
     },
     {
       id: '6',
-      title: 'Eixo 6 – Educação e Capacitação',
-      coordinator: 'Profª Drª Renata Piacentini Rodriguez (Coord.), Profª Drª Bruna de Souza Moraes (Adj.)',
+      title: 'Eixo 6 – Educação e Capacitação para o Desenvolvimento Sustentável',
+      coordinator: 'Profª Drª Renata Piacentini Rodriguez, Profª Drª Bruna de Souza Moraes',
       coordinators: [
-        { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/FOTO_RENATA.jpg' },
-        { name: 'Profª Drª Bruna de Souza Moraes', role: 'Adj.', photo: '/assets/FOTO_BRUNA.jpg' }
+        { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/team/renata-piacentini-rodriguez.webp' },
+        { name: 'Profª Drª Bruna de Souza Moraes', role: 'Coord.', photo: '/assets/team/bruna-de-souza-moraes.webp' }
       ],
       content: `O Eixo 6 é dedicado à formação de pessoas. O CP2b vai atuar como centro de capacitação profissional oferecendo cursos.
       No desenvolvimento social, atuará na educação socioambiental de comunidades periféricas (ex: Comunidade Capadócia).
@@ -507,10 +742,10 @@ export const researchAxes = {
     {
       id: '7',
       title: 'Eixo 7 – Difusão Científica e Comunicação',
-      coordinator: 'Profª Drª Maria Paula Cardeal Volpi (Coord.), Profª Drª Renata Piacentini Rodriguez (Adj.)',
+      coordinator: 'Profª Drª Maria Paula Cardeal Volpi, Profª Drª Renata Piacentini Rodriguez',
       coordinators: [
-        { name: 'Profª Drª Maria Paula Cardeal Volpi', role: 'Coord.', photo: '/assets/FOTO_MARIA_PAULA.jpg' },
-        { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Adj.', photo: '/assets/FOTO_RENATA.jpg' }
+        { name: 'Profª Drª Maria Paula Cardeal Volpi', role: 'Coord.', photo: '/assets/team/maria-paula-cardeal-volpi.webp' },
+        { name: 'Profª Drª Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/team/renata-piacentini-rodriguez.webp' }
       ],
       content: `O conhecimento precisa ultrapassar os muros da universidade. O centro vai promover visitas científicas, palestras e projetos de estímulo à ciência.
       ODS: 4, 7 e 17.`,
@@ -519,10 +754,10 @@ export const researchAxes = {
     {
       id: '8',
       title: 'Eixo 8 – Políticas Públicas e Inovação Regulatória',
-      coordinator: 'Profº Drº Rafael de Brito Dias (Coord.), Profª Drª Natalia Molina Cetrulo (Adj.)',
+      coordinator: 'Profª Drª Natalia Molina Cetrulo, Drª Thais Aparecida Dibbern',
       coordinators: [
-        { name: 'Profº Drº Rafael de Brito Dias', role: 'Coord.', photo: '/assets/FOTO_RAFAEL_EIXO_8.jpg' },
-        { name: 'Profª Drª Natalia Molina Cetrulo', role: 'Adj.', photo: '/assets/FOTO_NATALIA.jpg' }
+        { name: 'Profª Drª Natalia Molina Cetrulo', role: 'Coord.', photo: '/assets/team/natalia-molina-cetrulo.webp' },
+        { name: 'Drª Thais Aparecida Dibbern', role: 'Coord.', photo: '/assets/team/thais-aparecida-dibbern.webp' }
       ],
       content: `O Eixo 8 analisa políticas públicas e propõe arranjos que otimizem as agendas.
       Prevê a realização de uma "oficina de inovação regulatória" e criação de um conselho com poder público e sociedade civil.
@@ -534,23 +769,22 @@ export const researchAxes = {
     {
       id: '1',
       title: 'Axis 1 – Waste Inventory and Technology Mapping',
-      coordinator: 'Prof. Dr. Rubens Augusto Camargo Lamparelli',
+      coordinator: 'Prof. Dr. Rubens Augusto Camargo Lamparelli, Dr. Lucas Nakamura Cerejo',
       coordinators: [
-        { name: 'Prof. Dr. Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/FOTO_RUBENS_LAMPARELLI_EIXO_1.jpg' }
+        { name: 'Prof. Dr. Rubens Augusto Camargo Lamparelli', role: 'Coord.', photo: '/assets/team/rubens-augusto-camargo-lamparelli.webp' },
+        { name: 'Dr. Lucas Nakamura Cerejo', role: 'Coord.', photo: '/assets/team/lucas-nakamura-cerejo.webp' }
       ],
-      content: `Axis 1 seeks to go beyond traditional biomass potential surveys. The proposal is to work with more detailed and precise data, allowing for a closer look at who produces waste, where they are located, and how they relate to the surrounding infrastructure.
-      Using georeferencing techniques, Axis 1 aims to map agro-industrial chains and identify opportunities for waste recovery, whether within the same production chain or by connecting different sectors.
-      The idea is to create an accessible digital platform that functions as a bridge between those who generate waste and those who can transform it into new products.
-      This axis aligns with Sustainable Development Goals: 7, 11, 13, and 15.`,
+      content: `Axis 1 maps agro-industrial chains and waste streams using high-precision georeferencing to identify recovery opportunities and connect generators through an accessible digital platform.
+      SDGs: 7, 11, 13, and 15.`,
       sdgs: [7, 11, 13, 15]
     },
     {
       id: '2',
       title: 'Axis 2 – Basic Science and Technology',
-      coordinator: 'Prof. Dr. Lucas Tadeu Fuess (Coord.), Prof. Dr. Priscila Rosseto Camiloti (Adj.)',
+      coordinator: 'Prof. Dr. Lucas Tadeu Fuess, Dr. Fabiane Moreira Vieira',
       coordinators: [
-        { name: 'Prof. Dr. Lucas Tadeu Fuess', role: 'Coord.', photo: '/assets/FOTO_LUCAS_TADEU_FUESS.jpg' },
-        { name: 'Prof. Dr. Priscila Rosseto Camiloti', role: 'Adj.', photo: '/assets/FOTO_PRISCILA.jpg' }
+        { name: 'Prof. Dr. Lucas Tadeu Fuess', role: 'Coord.', photo: '/assets/team/lucas-tadeu-fuess.webp' },
+        { name: 'Dr. Fabiane Moreira Vieira', role: 'Coord.', photo: '/assets/team/fabiane-moreira-vieira.webp' }
       ],
       content: `Axis 2 is dedicated to fundamental scientific research that supports technological advances in the biogas chain. The main challenge is the operation of biological reactors during the sugarcane off-season.
       Research will be organized into three stages: upstream, midstream, and downstream.
@@ -560,10 +794,10 @@ export const researchAxes = {
     {
       id: '3',
       title: 'Axis 3 – Process and Bioprocess Engineering',
-      coordinator: 'Prof. Dr. Luana Mattos de Oliveira Cruz (Coord.), Prof. Dr. Enelton Fagnani (Adj.)',
+      coordinator: 'Prof. Dr. Priscila Rosseto Camiloti, Dr. Ana Beatriz Soares Aguiar',
       coordinators: [
-        { name: 'Prof. Dr. Luana Mattos de Oliveira Cruz', role: 'Coord.', photo: '/assets/FOTO_LUANA_EIXO_3.jpg' },
-        { name: 'Prof. Dr. Enelton Fagnani', role: 'Adj.', photo: '/assets/FOTO_ENELTON_EIXO_3.jpg' }
+        { name: 'Prof. Dr. Priscila Rosseto Camiloti', role: 'Coord.', photo: '/assets/team/priscila-rosseto-camiloti.webp' },
+        { name: 'Dr. Ana Beatriz Soares Aguiar', role: 'Coord.', photo: '/assets/team/ana-beatriz-soares-aguiar.webp' }
       ],
       content: `Axis 3 is the moment to put ideas into practice and test them on a larger scale. The goal is to help partners cross the famous technological "valley of death."
       Research will reach technological readiness levels (TRL) 6 and 7. Partnerships with companies are the heart of this axis (SABESP, COPERCANA, Embrapii).
@@ -573,9 +807,10 @@ export const researchAxes = {
     {
       id: '4',
       title: 'Axis 4 – Integrated Socioeconomic, Environmental, and Energy Assessment',
-      coordinator: 'Prof. Dr. Marcelo Pereira Cunha',
+      coordinator: 'Prof. Dr. Marcelo Pereira Cunha, Dr. Carlos Eduardo Driemeier',
       coordinators: [
-        { name: 'Prof. Dr. Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/FOTO_MARCELO_CUNHA_EIXO_4.jpg' }
+        { name: 'Prof. Dr. Marcelo Pereira Cunha', role: 'Coord.', photo: '/assets/team/marcelo-pereira-da-cunha.webp' },
+        { name: 'Dr. Carlos Eduardo Driemeier', role: 'Coord.', photo: null }
       ],
       content: `Axis 4 is the space for critical reflection. Its mission is to assess socioeconomic, environmental, and energy impacts.
       The axis will build and evaluate scenarios that support the formulation of public policies.
@@ -586,9 +821,9 @@ export const researchAxes = {
     {
       id: '5',
       title: 'Axis 5 – Bioproduct Innovation in the Biogas Chain',
-      coordinator: 'Prof. Dr. Luis Alberto Follegatti Romero',
+      coordinator: 'Prof. Dr. Rachel Biancalana Costa, Position temporarily open',
       coordinators: [
-        { name: 'Prof. Dr. Luis Alberto Follegatti Romero', role: 'Coord.', photo: null }
+        { name: 'Prof. Dr. Rachel Biancalana Costa', role: 'Coord.', photo: '/assets/team/rachel-biancalana-costa.webp' }
       ],
       content: `Axis 5 dives into the biorefinery concept. Vinasse is a prime focus, containing high-value organic acids.
       The focus is on biohitane (a combination of hydrogen and methane).
@@ -597,11 +832,11 @@ export const researchAxes = {
     },
     {
       id: '6',
-      title: 'Axis 6 – Education and Training',
-      coordinator: 'Prof. Dr. Renata Piacentini Rodriguez (Coord.), Prof. Dr. Bruna de Souza Moraes (Adj.)',
+      title: 'Axis 6 – Education and Training for Sustainable Development',
+      coordinator: 'Prof. Dr. Renata Piacentini Rodriguez, Prof. Dr. Bruna de Souza Moraes',
       coordinators: [
-        { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/FOTO_RENATA.jpg' },
-        { name: 'Prof. Dr. Bruna de Souza Moraes', role: 'Adj.', photo: '/assets/FOTO_BRUNA.jpg' }
+        { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/team/renata-piacentini-rodriguez.webp' },
+        { name: 'Prof. Dr. Bruna de Souza Moraes', role: 'Coord.', photo: '/assets/team/bruna-de-souza-moraes.webp' }
       ],
       content: `Axis 6 is dedicated to human resources training. CP2b will act as a professional training center offering courses.
       In social development, it will work on socio-environmental education for peripheral communities (e.g., Capadócia Community).
@@ -611,10 +846,10 @@ export const researchAxes = {
     {
       id: '7',
       title: 'Axis 7 – Scientific Dissemination and Communication',
-      coordinator: 'Prof. Dr. Maria Paula Cardeal Volpi (Coord.), Prof. Dr. Renata Piacentini Rodriguez (Adj.)',
+      coordinator: 'Prof. Dr. Maria Paula Cardeal Volpi, Prof. Dr. Renata Piacentini Rodriguez',
       coordinators: [
-        { name: 'Prof. Dr. Maria Paula Cardeal Volpi', role: 'Coord.', photo: '/assets/FOTO_MARIA_PAULA.jpg' },
-        { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Adj.', photo: '/assets/FOTO_RENATA.jpg' }
+        { name: 'Prof. Dr. Maria Paula Cardeal Volpi', role: 'Coord.', photo: '/assets/team/maria-paula-cardeal-volpi.webp' },
+        { name: 'Prof. Dr. Renata Piacentini Rodriguez', role: 'Coord.', photo: '/assets/team/renata-piacentini-rodriguez.webp' }
       ],
       content: `Knowledge needs to go beyond the university walls. The center will promote scientific visits, lectures, and projects to stimulate science.
       SDGs: 4, 7, and 17.`,
@@ -623,10 +858,10 @@ export const researchAxes = {
     {
       id: '8',
       title: 'Axis 8 – Public Policies and Regulatory Innovation',
-      coordinator: 'Prof. Dr. Rafael de Brito Dias (Coord.), Prof. Dr. Natalia Molina Cetrulo (Adj.)',
+      coordinator: 'Prof. Dr. Natalia Molina Cetrulo, Dr. Thais Aparecida Dibbern',
       coordinators: [
-        { name: 'Prof. Dr. Rafael de Brito Dias', role: 'Coord.', photo: '/assets/FOTO_RAFAEL_EIXO_8.jpg' },
-        { name: 'Prof. Dr. Natalia Molina Cetrulo', role: 'Adj.', photo: '/assets/FOTO_NATALIA.jpg' }
+        { name: 'Prof. Dr. Natalia Molina Cetrulo', role: 'Coord.', photo: '/assets/team/natalia-molina-cetrulo.webp' },
+        { name: 'Dr. Thais Aparecida Dibbern', role: 'Coord.', photo: '/assets/team/thais-aparecida-dibbern.webp' }
       ],
       content: `Axis 8 analyzes public policies and proposes arrangements that optimize agendas.
       It foresees the realization of a "regulatory innovation workshop" and the creation of a council with public authorities and civil society.
@@ -635,6 +870,22 @@ export const researchAxes = {
     }
   ]
 };
+
+export const teamCategoryLabels = {
+  coordinators: { pt: 'Pesquisadores Responsáveis', en: 'Lead Researchers' },
+  principals: { pt: 'Pesquisadores Principais', en: 'Principal Investigators' },
+  associates: { pt: 'Pesquisadores Associados', en: 'Associate Researchers' },
+  support: { pt: 'Apoio Técnico e Administrativo', en: 'Technical and Administrative Support' },
+  students: { pt: 'Estudantes', en: 'Students' },
+};
+
+export const teamCategories = [
+  { value: 'coordinators', pt: 'Pesquisadores Responsáveis', en: 'Lead Researchers' },
+  { value: 'principals', pt: 'Pesquisadores Principais', en: 'Principal Investigators' },
+  { value: 'associates', pt: 'Pesquisadores Associados', en: 'Associate Researchers' },
+  { value: 'support', pt: 'Apoio Técnico e Administrativo', en: 'Technical and Administrative Support' },
+  { value: 'students', pt: 'Estudantes', en: 'Students' },
+];
 
 export const teamMembers = [
   {
@@ -668,7 +919,7 @@ export const teamMembers = [
       { name: 'José Maria Ferreira Jardim da Silveira', role: 'Pesquisador Principal', institution: 'IE/UNICAMP' },
       { name: 'Luis Alberto Follegatti Romero', role: 'Pesquisador Principal', institution: 'EP/USP' },
       { name: 'Rafael de Brito Dias', role: 'Pesquisador Principal', institution: 'FCA/UNICAMP' },
-      { name: 'Rubens Augusto Camargo Lamparelli', role: 'Pesquisador Principal', institution: 'NIPE/UNICAMP', email: 'lamparel@unicamp.br' }
+      { name: 'Rubens Augusto Camargo Lamparelli', role: 'Coordenador do Eixo 1', institution: 'NIPE/UNICAMP', email: 'lamparel@unicamp.br' }
     ]
   },
   {
@@ -677,6 +928,8 @@ export const teamMembers = [
     en: 'Associate Researchers',
     members: [
       { name: 'Aline Veronese da Silva', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
+      { name: 'Ana Beatriz Soares Aguiar', role: 'Coordenadora do Eixo 3', institution: 'UNICAMP' },
+      { name: 'Carlos Eduardo Driemeier', role: 'Coordenador do Eixo 4', institution: 'NIPE/UNICAMP' },
       { name: 'Barbara Janet Teruel Mederos', role: 'Pesquisador Associado', institution: 'FEAGRI/UNICAMP' },
       { name: 'Caio Henrique Rufino', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
       { name: 'Carla Kazue Nakao Cavaliero', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
@@ -686,16 +939,17 @@ export const teamMembers = [
       { name: 'Danúsia Arantes Ferreira', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'Enelton Fagnani', role: 'Pesquisador Associado', institution: 'FT/UNICAMP' },
       { name: 'Flávia Luciane Consoni', role: 'Pesquisador Associado', institution: 'IG/UNICAMP' },
-      { name: 'Gustavo Mockaitis', role: 'Pesquisador Associado', institution: 'FEAGRI/UNICAMP' },
       { name: 'Hildo Guillardi Júnior', role: 'Pesquisador Associado', institution: 'FESJBV/UNESP' },
       { name: 'Ivo Leandro Dorileo', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
+      // Professor da FEM/UNICAMP — estava classificado como Apoio Técnico.
+      { name: 'Joaquim Eugênio Abel Seabra', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP', membership: 'associado' },
       { name: 'Joni de Almeida Amorim', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'João Guilherme Ito Cypriano', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'Karla Adriana Martins Bessa', role: 'Pesquisador Associado', institution: 'PAGU/UNICAMP' },
       { name: 'Leandro Wang Hantao', role: 'Pesquisador Associado', institution: 'IQ/UNICAMP' },
       { name: 'Lira Luz Benites Lazaro', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'Luana Mattos de Oliveira Cruz', role: 'Pesquisador Associado', institution: 'FEC/UNICAMP' },
-      { name: 'Lucas Tadeu Fuess', role: 'Pesquisador Associado', institution: 'EESC/USP' },
+      { name: 'Lucas Tadeu Fuess', role: 'Coordenador do Eixo 2', institution: 'EESC/USP' },
       { name: 'Luciana Cristina Lenhari da Silva', role: 'Pesquisador Associado', institution: 'IG/UNICAMP' },
       { name: 'Luiz Carlos Pereira da Silva', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'Luiz Carlos Roma Júnior', role: 'Pesquisador Associado', institution: 'IZ/SAASP' },
@@ -703,23 +957,23 @@ export const teamMembers = [
       { name: 'Marcelo Antunes Nolasco', role: 'Pesquisador Associado', institution: 'EACH/USP' },
       { name: 'Marcelo de Carvalho Pereira', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
       { name: 'Marcelo Marques de Magalhães', role: 'Pesquisador Associado', institution: 'CET/UNESP' },
-      { name: 'Marcelo Pereira da Cunha', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
+      { name: 'Marcelo Pereira da Cunha', role: 'Coordenador do Eixo 4', institution: 'IE/UNICAMP' },
       { name: 'Marcelo Zaiat', role: 'Pesquisador Associado', institution: 'EESC/USP' },
-      { name: 'Maria Paula Cardeal Volpi', role: 'Pesquisador Associado', institution: 'ESALQ/USP' },
+      { name: 'Maria Paula Cardeal Volpi', role: 'Coordenadora do Eixo 7', institution: 'ESALQ/USP' },
       { name: 'Mariana Conceição da Costa', role: 'Pesquisador Associado', institution: 'FEQ/UNICAMP' },
-      { name: 'Marlon Fernandes de Souza', role: 'Pesquisador Associado', institution: 'ESALQ/USP' },
       { name: 'Mauro Donizeti Berni', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
-      { name: 'Natalia Molina Cetrulo', role: 'Pesquisador Associado', institution: 'EACH/USP' },
+      { name: 'Natalia Molina Cetrulo', role: 'Coordenadora do Eixo 8', institution: 'FCA/UNICAMP' },
       { name: 'Patricia Jacqueline Thyssen', role: 'Pesquisador Associado', institution: 'IB/UNICAMP' },
       { name: 'Patricia Nunes da Silva Mariuzzo', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
       { name: 'Paulo Cesar Souza Manduca', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
       { name: 'Paulo Sergio Graziano Magalhães', role: 'Pesquisador Associado', institution: 'UPP' },
-      { name: 'Priscila Rosseto Camiloti', role: 'Pesquisador Associado', institution: 'IEE/USP' },
+      { name: 'Priscila Rosseto Camiloti', role: 'Coordenadora do Eixo 3', institution: 'IEE/USP' },
+      { name: 'Rachel Biancalana Costa', role: 'Coordenadora do Eixo 5', institution: 'POLI/USP' },
       { name: 'Sarita Cândida Rabelo', role: 'Pesquisador Associado', institution: 'FCA/UNESP' },
       { name: 'Sergio Valdir Bajay', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
       { name: 'Solange Teles da Silva', role: 'Pesquisador Associado', institution: 'CPG/UPM' },
       { name: 'Sonia Regina da Cal Seixas', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
-      { name: 'Thais Aparecida Dibbern', role: 'Pesquisador Associado', institution: 'FCA/UNICAMP' },
+      { name: 'Thais Aparecida Dibbern', role: 'Coordenadora do Eixo 8', institution: 'FCA/UNICAMP' },
       { name: 'Thalita dos Santos Dalbelo', role: 'Pesquisador Associado', institution: 'FEC/UNICAMP' },
       { name: 'Valeria Maia Merzel', role: 'Pesquisador Associado', institution: 'CPQBA/UNICAMP' },
       { name: 'Waldyr Luiz Ribeiro Gallo', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' }
@@ -731,7 +985,6 @@ export const teamMembers = [
     en: 'Technical and Administrative Support',
     members: [
       { name: 'Bruno Felipe Veloso', role: 'Apoio Técnico', institution: 'CCUEC/UNICAMP' },
-      { name: 'Joaquim Eugênio Abel Seabra', role: 'Apoio Técnico', institution: 'FEM/UNICAMP' },
       { name: 'Raffaella Rossetto', role: 'Apoio Técnico', institution: 'APTA/SAASP' },
       { name: 'Magali Luzia Maróstica', role: 'Apoio Administrativo', institution: 'NIPE/UNICAMP' },
       { name: 'Paulo César de Almeida Pinheiro', role: 'Apoio Administrativo', institution: 'NIPE/UNICAMP' },
@@ -773,6 +1026,16 @@ A estrutura conta com pesquisadores de diferentes instituições acadêmicas e p
 
 O Comitê Gestor é responsável pelas decisões estratégicas, acompanhamento dos projetos, gestão de recursos e articulação com parceiros e sociedade.`
       },
+      committees: {
+        title: 'Instâncias de Governança',
+        content: `O CP2b conta com três comitês que apoiam a diretoria em decisões estratégicas, éticas e de execução:
+
+- Comitê Científico: acompanha o mérito e a qualidade da produção científica do centro.
+- Comitê Ético e de Gestão de Dados: zela pela conduta em pesquisa e pela governança dos dados gerados.
+- Comitê Executivo: acompanha a execução do planejamento e das decisões operacionais.
+
+O centro é vinculado ao NIPE/UNICAMP e financiado pela FAPESP.`
+      },
       guidelines: {
         title: 'Diretrizes e Regulamentos',
         content: `O CP2b opera segundo princípios de transparência, colaboração e compromisso com o desenvolvimento sustentável.
@@ -811,6 +1074,16 @@ The structure includes researchers from different academic institutions and stra
 
 The Management Committee is responsible for strategic decisions, project monitoring, resource management and coordination with partners and society.`
       },
+      committees: {
+        title: 'Governance Bodies',
+        content: `CP2b has three committees supporting the board on strategic, ethical and operational decisions:
+
+- Scientific Committee: oversees the merit and quality of the center's scientific output.
+- Ethics and Data Governance Committee: oversees research conduct and the governance of data generated.
+- Executive Committee: monitors the execution of planning and operational decisions.
+
+The center is linked to NIPE/UNICAMP and funded by FAPESP.`
+      },
       guidelines: {
         title: 'Guidelines and Regulations',
         content: `CP2b operates according to principles of transparency, collaboration and commitment to sustainable development.
@@ -828,6 +1101,30 @@ CP2b's Internal Regulations were approved in 2025 during the I Annual Workshop, 
   }
 };
 
+// Organograma institucional do CP2b.
+// Fonte: "Planejamento e gestão integrada do CP2b.pptx", slide "Estrutura de
+// Governança e Organograma" (imagem sem camada de texto, transcrita manualmente).
+export const governanceChart = {
+  pt: {
+    committees: ['Comitê Científico', 'Comitê Ético e de Gestão de Dados', 'Comitê Executivo'],
+    sponsors: ['UNICAMP - NIPE', 'FAPESP'],
+    direction: ['Coordenadora Diretora', 'Vice-Diretora'],
+    management: ['Gestora Executiva', 'Gestora de Transferência de Tecnologia', 'Gestor Administrativo/Financeiro', 'Gestor de Difusão Científica'],
+    axes: 'Coordenadores de Eixo',
+    assembly: 'Assembleia Geral - Todos os Pesquisadores',
+    partners: 'Instituições Parceiras e Associadas',
+  },
+  en: {
+    committees: ['Scientific Committee', 'Ethics and Data Governance Committee', 'Executive Committee'],
+    sponsors: ['UNICAMP - NIPE', 'FAPESP'],
+    direction: ['Director', 'Vice-Director'],
+    management: ['Executive Manager', 'Technology Transfer Manager', 'Administrative/Financial Manager', 'Scientific Outreach Manager'],
+    axes: 'Axis Coordinators',
+    assembly: 'General Assembly - All Researchers',
+    partners: 'Partner and Associated Institutions',
+  },
+};
+
 export const transparencyContent = {
   pt: {
     title: 'Transparência',
@@ -840,7 +1137,15 @@ export const transparencyContent = {
       },
       reports: {
         title: 'Relatórios Anuais',
-        items: []
+        items: [
+          {
+            id: 'ano-1',
+            title: 'Relatório Científico Ano 1',
+            period: 'Fevereiro/2025 – Fevereiro/2026',
+            description: 'Primeiro relatório científico do CP2b à FAPESP, cobrindo os convênios firmados (MME, LCPE, UnB) e a produção científica do primeiro ano do processo 2024/01112-1.',
+            link: 'https://bv.fapesp.br/pt/auxilios/118756/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
+          }
+        ]
       },
       financials: {
         title: 'Informações Financeiras',
@@ -869,7 +1174,15 @@ Para mais informações sobre o financiamento e recursos, consulte o processo co
       },
       reports: {
         title: 'Annual Reports',
-        items: []
+        items: [
+          {
+            id: 'ano-1',
+            title: 'Year 1 Scientific Report',
+            period: 'February/2025 – February/2026',
+            description: "CP2b's first scientific report to FAPESP, covering the agreements signed (MME, LCPE, UnB) and the scientific output of the first year of process 2024/01112-1.",
+            link: 'https://bv.fapesp.br/pt/auxilios/118756/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
+          }
+        ]
       },
       financials: {
         title: 'Financial Information',
@@ -887,4 +1200,423 @@ For more information about funding and resources, consult the complete process o
       }
     }
   }
+};
+
+export const pageSeo = {
+  home: {
+    pt: {
+      title: 'CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos',
+      description: 'Pesquisa, inovação e políticas públicas para a cadeia de biogás e bioprodutos no Estado de São Paulo. Vinculado ao NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'CP2b - São Paulo Center for Biogas and Bioproducts Studies',
+      description: 'Research, innovation and public policy for the biogas and bioproducts chain in São Paulo State. Affiliated with NIPE-UNICAMP.',
+    },
+  },
+  about: {
+    pt: {
+      title: 'Sobre o CP2b',
+      description: 'Conheça o Centro Paulista de Estudos em Biogás e Bioprodutos: missão, estrutura e vínculo com o NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'About CP2b',
+      description: 'Learn about the São Paulo Center for Biogas and Bioproducts Studies: mission, structure and affiliation with NIPE-UNICAMP.',
+    },
+  },
+  research: {
+    pt: {
+      title: 'Eixos de Pesquisa',
+      description: 'Os 8 eixos de pesquisa do CP2b: biogás, bioprodutos, resíduos, saneamento, logística reversa, políticas públicas e mais.',
+    },
+    en: {
+      title: 'Research Axes',
+      description: 'The 8 CP2b research axes: biogas, bioproducts, waste, sanitation, reverse logistics, public policy and more.',
+    },
+  },
+  team: {
+    pt: {
+      title: 'Equipe',
+      description: 'Pesquisadores, colaboradores e parceiros do Centro Paulista de Estudos em Biogás e Bioprodutos.',
+    },
+    en: {
+      title: 'Team',
+      description: 'Researchers, collaborators and partners of the São Paulo Center for Biogas and Bioproducts Studies.',
+    },
+  },
+  news: {
+    pt: {
+      title: 'Notícias',
+      description: 'Últimas notícias do CP2b sobre biogás, bioprodutos, energia renovável e políticas públicas no Brasil.',
+    },
+    en: {
+      title: 'News',
+      description: 'Latest CP2b news on biogas, bioproducts, renewable energy and public policy in Brazil.',
+    },
+  },
+  opportunities: {
+    pt: {
+      title: 'Oportunidades',
+      description: 'Bolsas, vagas e oportunidades de pesquisa em biogás e bioprodutos no CP2b-UNICAMP.',
+    },
+    en: {
+      title: 'Opportunities',
+      description: 'Scholarships, positions and research opportunities in biogas and bioproducts at CP2b-UNICAMP.',
+    },
+  },
+  publications: {
+    pt: {
+      title: 'Publicações',
+      description: 'Artigos científicos, relatórios e estudos técnicos sobre biogás e bioprodutos publicados pelo CP2b.',
+    },
+    en: {
+      title: 'Publications',
+      description: 'Scientific articles, reports and technical studies on biogas and bioproducts published by CP2b.',
+    },
+  },
+  projects: {
+    pt: {
+      title: 'Projetos',
+      description: 'Projetos de pesquisa do CP2b em biogás, saneamento, logística reversa de óleo de cozinha e energia renovável.',
+    },
+    en: {
+      title: 'Projects',
+      description: 'CP2b research projects in biogas, sanitation, cooking oil reverse logistics and renewable energy.',
+    },
+  },
+  entrevistas: {
+    pt: {
+      title: 'Entrevistas CP2b',
+      description: 'Entrevistas com pesquisadores e especialistas do CP2b sobre biogás, bioprodutos e políticas de energia renovável.',
+    },
+    en: {
+      title: 'CP2b Interviews',
+      description: 'Interviews with CP2b researchers and experts on biogas, bioproducts and renewable energy policy.',
+    },
+  },
+  podcast: {
+    pt: {
+      title: 'Podcast CP2b',
+      description: 'Episódios do podcast CP2b sobre biogás, bioprodutos e transição energética no Brasil.',
+    },
+    en: {
+      title: 'CP2b Podcast',
+      description: 'CP2b podcast episodes on biogas, bioproducts and energy transition in Brazil.',
+    },
+  },
+  boletins: {
+    pt: {
+      title: 'Boletins CP2b',
+      description: 'Edições do boletim do CP2b sobre biogás e bioprodutos, disponíveis para download em PDF.',
+    },
+    en: {
+      title: 'CP2b Bulletins',
+      description: 'Issues of the CP2b bulletin on biogas and bioproducts, available for download as PDF.',
+    },
+  },
+  newsletter: {
+    pt: {
+      title: 'Newsletter CP2b',
+      description: 'Cadastre-se na newsletter do CP2b e receba oportunidades, boletins e convites para eventos por e-mail.',
+    },
+    en: {
+      title: 'CP2b Newsletter',
+      description: 'Subscribe to the CP2b newsletter and receive opportunities, bulletins and event invitations by email.',
+    },
+  },
+  microscopio: {
+    pt: {
+      title: 'Microscópio CP2b',
+      description: 'Análises aprofundadas e artigos de opinião do CP2b sobre biogás, sustentabilidade e políticas energéticas.',
+    },
+    en: {
+      title: 'CP2b Microscope',
+      description: 'In-depth analyses and opinion pieces from CP2b on biogas, sustainability and energy policy.',
+    },
+  },
+  media: {
+    pt: {
+      title: 'Na Mídia',
+      description: 'CP2b na imprensa: cobertura jornalística sobre biogás, bioprodutos e políticas de energia renovável.',
+    },
+    en: {
+      title: 'In the Media',
+      description: 'CP2b in the press: journalism coverage on biogas, bioproducts and renewable energy policy.',
+    },
+  },
+  forum: {
+    pt: {
+      title: 'I Fórum Paulista de Biogás e Bioprodutos',
+      description: 'Memória do I Fórum Paulista de Biogás e Bioprodutos, que reuniu 140 participantes na UNICAMP em maio de 2026: momentos, diálogos e registro fotográfico.',
+    },
+    en: {
+      title: 'I São Paulo Biogas and Bioproducts Forum',
+      description: 'Memories from the 1st São Paulo Biogas and Bioproducts Forum, which welcomed 140 attendees at UNICAMP in May 2026: moments, discussions and photo coverage.',
+    },
+  },
+  solucoes: {
+    pt: {
+      title: 'Infraestrutura e Soluções',
+      description: 'Laboratórios do CP2b da bancada à planta piloto (TRL 2 a 6), serviços técnicos, P&D cooperativo, licenciamento de tecnologia e capacitação em biogás e bioprodutos.',
+    },
+    en: {
+      title: 'Infrastructure and Solutions',
+      description: 'CP2b laboratories from bench to pilot plant (TRL 2 to 6), technical services, cooperative R&D, technology licensing and training in biogas and bioproducts.',
+    },
+  },
+  capacitacao: {
+    pt: {
+      title: 'Cursos e Capacitação',
+      description: 'Cursos de extensão e capacitação do CP2b em biogás, biometano e bioprodutos: conheça o curso-modelo de 16 horas e baixe o template para propor um curso.',
+    },
+    en: {
+      title: 'Courses and Training',
+      description: 'CP2b extension and training courses on biogas, biomethane and bioproducts: see the 16-hour model course and download the template to propose a course.',
+    },
+  },
+  contact: {
+    pt: {
+      title: 'Contato',
+      description: 'Entre em contato com o CP2b — Centro Paulista de Estudos em Biogás e Bioprodutos no NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'Contact',
+      description: 'Get in touch with CP2b — São Paulo Center for Biogas and Bioproducts Studies at NIPE-UNICAMP.',
+    },
+  },
+  governance: {
+    pt: {
+      title: 'Governança',
+      description: 'Estrutura de governança e comitês do CP2b, vinculado ao NIPE-UNICAMP.',
+    },
+    en: {
+      title: 'Governance',
+      description: 'Governance structure and committees of CP2b, affiliated with NIPE-UNICAMP.',
+    },
+  },
+  indicators: {
+    pt: {
+      title: 'Indicadores Estratégicos',
+      description: 'Sistema de indicadores e pesos do CP2b: 7 dimensões e dezenas de indicadores usados para monitorar impacto científico, tecnológico, ambiental, social e de governança.',
+    },
+    en: {
+      title: 'Strategic Indicators',
+      description: "CP2b's indicator and weighting system: 7 dimensions and dozens of indicators used to monitor scientific, technological, environmental, social and governance impact.",
+    },
+  },
+  transparency: {
+    pt: {
+      title: 'Transparência',
+      description: 'Documentos de transparência, relatórios e prestação de contas do CP2b.',
+    },
+    en: {
+      title: 'Transparency',
+      description: 'Transparency documents, reports and accountability information from CP2b.',
+    },
+  },
+  partners: {
+    pt: {
+      title: 'Parceiros e Apoiadores',
+      description: 'Instituições, empresas e organizações parceiras do CP2b no avanço da cadeia de biogás e bioprodutos.',
+    },
+    en: {
+      title: 'Partners & Supporters',
+      description: 'Institutions, companies and organizations partnering with CP2b to advance the biogas and bioproducts chain.',
+    },
+  },
+  pressKit: {
+    pt: {
+      title: 'Identidade Visual',
+      description: 'Logotipos, manual de identidade, paleta e tipografia oficiais do CP2b, prontos para download.',
+    },
+    en: {
+      title: 'Visual Identity',
+      description: 'CP2b logos, identity manual, palette and official typography, ready to download.',
+    },
+  },
+  gallery: {
+    pt: {
+      title: 'Galeria de Fotos',
+      description: 'Registros fotográficos dos eventos, fóruns e atividades do CP2b organizados por ano.',
+    },
+    en: {
+      title: 'Photo Gallery',
+      description: 'Photographic records of CP2b events, forums and activities organized by year.',
+    },
+  },
+  events: {
+    pt: {
+      title: 'Eventos',
+      description: 'Agenda de eventos do CP2b: fóruns, workshops, conferências e encontros sobre biogás e bioprodutos.',
+    },
+    en: {
+      title: 'Events',
+      description: 'CP2b events calendar: forums, workshops, conferences and meetings on biogas and bioproducts.',
+    },
+  },
+};
+
+export { staticPublications as publications } from './generated/publications.js';
+
+
+// Copy for the institutional layer of the Home page (hero, números, eixos e
+// chamada para o catálogo de soluções). Os números em si NÃO ficam aqui —
+// são derivados em Home.jsx a partir de teamMembers, researchAxes,
+// laboratories e technicalServices, para não desatualizarem.
+export const homeContent = {
+  pt: {
+    stats: {
+      eyebrow: 'O Centro em Números',
+      title: 'Uma rede transdisciplinar em operação',
+      subtitle: 'Valores apurados diretamente da base institucional do CP2b.',
+      axes: 'Eixos temáticos',
+      researchers: 'Pesquisadores',
+      institutions: 'Instituições',
+      laboratories: 'Laboratórios centrais',
+      services: 'Serviços técnicos',
+    },
+    axes: {
+      eyebrow: 'Estrutura Científica',
+      title: 'Oito eixos temáticos integrados',
+      cta: 'Explorar todos os eixos',
+    },
+    solutions: {
+      eyebrow: 'Para Empresas e Poder Público',
+      title: 'Quais problemas conseguimos ajudar a resolver?',
+      subtitle: 'Infraestrutura analítica multiusuária, serviços especializados e modelos flexíveis de cooperação tecnológica.',
+      servicesLabel: 'serviços técnicos especializados',
+      labsLabel: 'laboratórios centrais',
+      trlValue: 'TRL 2–6',
+      trlLabel: 'da bancada ao piloto',
+      cta: 'Ver o catálogo de soluções',
+    },
+  },
+  en: {
+    stats: {
+      eyebrow: 'The Centre in Numbers',
+      title: 'A transdisciplinary network at work',
+      subtitle: 'Figures drawn directly from the CP2b institutional dataset.',
+      axes: 'Thematic axes',
+      researchers: 'Researchers',
+      institutions: 'Institutions',
+      laboratories: 'Core laboratories',
+      services: 'Technical services',
+    },
+    axes: {
+      eyebrow: 'Scientific Structure',
+      title: 'Eight integrated thematic axes',
+      cta: 'Explore all axes',
+    },
+    solutions: {
+      eyebrow: 'For Industry and Government',
+      title: 'What problems can we help you solve?',
+      subtitle: 'Multi-user analytical infrastructure, specialized services and flexible technological cooperation models.',
+      servicesLabel: 'specialized technical services',
+      labsLabel: 'core laboratories',
+      trlValue: 'TRL 2–6',
+      trlLabel: 'bench to pilot',
+      cta: 'See the solutions catalog',
+    },
+  },
+};
+
+// Faixa "Do resíduo à energia" em /eixos: as cinco etapas da cadeia do
+// biogás e os eixos que trabalham em cada uma. `axes` são ids de researchAxes;
+// o nome de cada eixo vem de lá (Research.jsx), não é repetido aqui.
+export const wasteToEnergyFlow = {
+  pt: {
+    eyebrow: 'A cadeia do biogás',
+    title: 'Do resíduo à energia',
+    subtitle: 'Cinco etapas, e os eixos de pesquisa do CP2b que trabalham em cada uma delas.',
+    axisLabel: 'Eixo',
+    steps: [
+      {
+        key: 'mapear',
+        kicker: 'Mapear',
+        title: 'Onde está o resíduo',
+        text: 'Vinhaça, dejetos da pecuária, restos de alimentos e lodo de esgoto: o inventário georreferenciado do CP2b mostra quanto resíduo o Estado de São Paulo gera e onde ele está.',
+        image: '/assets/services/cp2b-lab-biomassa.webp',
+        axes: [1],
+      },
+      {
+        key: 'converter',
+        kicker: 'Converter',
+        title: 'Digestão anaeróbia',
+        text: 'Em biorreatores de bancada e em escala piloto, consórcios de microrganismos decompõem a matéria orgânica sem oxigênio e liberam biogás.',
+        image: '/assets/services/ppbioen-estabilizacao.webp',
+        axes: [2, 3],
+      },
+      {
+        key: 'energizar',
+        kicker: 'Energizar',
+        title: 'Biogás vira biometano e eletricidade',
+        text: 'Purificado, o biogás vira biometano, que substitui o diesel em frotas e o gás natural na rede, ou alimenta motores que geram eletricidade e calor.',
+        image: '/assets/services/ppbioen-biogas.webp',
+        axes: [3],
+      },
+      {
+        key: 'valorizar',
+        kicker: 'Valorizar',
+        title: 'Nada se perde',
+        text: 'O digestato volta ao campo como biofertilizante, e as correntes do processo dão origem a ácidos orgânicos e outros bioprodutos de maior valor.',
+        image: '/assets/services/cemara-vias.webp',
+        axes: [5],
+      },
+      {
+        key: 'escalar',
+        kicker: 'Escalar',
+        title: 'Da bancada ao território',
+        text: 'Avaliação de impactos, formação de pessoas, comunicação e políticas públicas levam cada resultado até quem decide e quem opera.',
+        image: '/assets/services/ppbioen-scaleup.webp',
+        axes: [4, 6, 7, 8],
+      },
+    ],
+  },
+  en: {
+    eyebrow: 'The biogas chain',
+    title: 'From waste to energy',
+    subtitle: 'Five stages, and the CP2b research axes working on each of them.',
+    axisLabel: 'Axis',
+    steps: [
+      {
+        key: 'mapear',
+        kicker: 'Map',
+        title: 'Where the waste is',
+        text: 'Vinasse, livestock manure, food scraps and sewage sludge: the CP2b georeferenced inventory shows how much waste São Paulo State generates and where it is.',
+        image: '/assets/services/cp2b-lab-biomassa.webp',
+        axes: [1],
+      },
+      {
+        key: 'converter',
+        kicker: 'Convert',
+        title: 'Anaerobic digestion',
+        text: 'In bench-scale and pilot bioreactors, microbial consortia break down organic matter without oxygen and release biogas.',
+        image: '/assets/services/ppbioen-estabilizacao.webp',
+        axes: [2, 3],
+      },
+      {
+        key: 'energizar',
+        kicker: 'Energize',
+        title: 'Biogas becomes biomethane and power',
+        text: 'Once upgraded, biogas becomes biomethane that replaces diesel in fleets and natural gas in the grid, or it fuels engines that generate electricity and heat.',
+        image: '/assets/services/ppbioen-biogas.webp',
+        axes: [3],
+      },
+      {
+        key: 'valorizar',
+        kicker: 'Add value',
+        title: 'Nothing goes to waste',
+        text: 'Digestate returns to the field as biofertilizer, and process streams yield organic acids and other higher-value bioproducts.',
+        image: '/assets/services/cemara-vias.webp',
+        axes: [5],
+      },
+      {
+        key: 'escalar',
+        kicker: 'Scale',
+        title: 'From bench to territory',
+        text: 'Impact assessment, training, science communication and public policy carry every result to the people who decide and the people who operate.',
+        image: '/assets/services/ppbioen-scaleup.webp',
+        axes: [4, 6, 7, 8],
+      },
+    ],
+  },
 };

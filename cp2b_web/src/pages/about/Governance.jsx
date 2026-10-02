@@ -1,12 +1,20 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
-import { governanceContent } from '../../data/content';
+import { governanceContent, governanceChart } from '../../data/content';
+import OrgChart from '../../components/OrgChart';
 import { useLanguage } from '../../context/LanguageContext';
 import { fetchPageContent } from '../../services/api';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../../data/content';
+import SeoHead from '../../components/SeoHead';
+import PageHero from '../../components/PageHero';
+import AboutSubnav from '../../components/AboutSubnav';
 
 const Governance = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.governance[language] || pageSeo.governance.pt;
   const staticContent = governanceContent[language];
   const [content, setContent] = useState({
     title: staticContent.title,
@@ -14,9 +22,11 @@ const Governance = () => {
     sections: {
       structure: staticContent.sections.structure,
       committee: staticContent.sections.committee,
+      committees: staticContent.sections.committees,
       guidelines: staticContent.sections.guidelines
     }
   });
+  const chart = governanceChart[language] || governanceChart.pt;
 
   useEffect(() => {
     const loadContent = async () => {
@@ -36,6 +46,7 @@ const Governance = () => {
                 title: langContent.section2_title || staticContent.sections.committee.title,
                 content: langContent.section2_content || staticContent.sections.committee.content
               },
+              committees: staticContent.sections.committees,
               guidelines: {
                 title: langContent.section3_title || staticContent.sections.guidelines.title,
                 content: langContent.section3_content || staticContent.sections.guidelines.content
@@ -51,24 +62,20 @@ const Governance = () => {
   }, [language]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Container className="py-5">
-        <Row className="mb-5">
-          <Col lg={8}>
-            <span className="mono-label text-success">CP2b</span>
-            <h1 className="display-4 fw-bold mb-4">{content.title}</h1>
-            <p className="lead text-muted">{content.description}</p>
-          </Col>
-        </Row>
-
-        {/* Organizational Structure */}
-        <Row className="mb-5">
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <PageHero eyebrow="CP2b" title={content.title} subtitle={content.description} photo={{ src: '/assets/fotos/governanca-mesa.webp', width: 700, height: 500 }} />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Container className="py-4 py-md-5">
+          <AboutSubnav />
+          {/* Organizational Structure */}
+        <Row className="mb-4 mb-md-5">
           <Col md={12}>
-            <h3 className="fw-bold mb-4">{content.sections.structure.title}</h3>
+            <h3 className="fw-bold mb-3 mb-md-4">{content.sections.structure.title}</h3>
             <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
               {content.sections.structure.content}
             </p>
@@ -76,19 +83,39 @@ const Governance = () => {
         </Row>
 
         {/* Management Committee */}
-        <Row className="mb-5 bg-light p-4 rounded-3">
+        <Row className="mb-4 mb-md-5 bg-light p-3 p-md-4 rounded-3">
           <Col md={12}>
-            <h3 className="fw-bold mb-4">{content.sections.committee.title}</h3>
+            <h3 className="fw-bold mb-3 mb-md-4">{content.sections.committee.title}</h3>
             <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
               {content.sections.committee.content}
             </p>
           </Col>
         </Row>
 
+        {/* Organizational Chart */}
+        <Row className="mb-4 mb-md-5">
+          <Col md={12}>
+            <h3 className="fw-bold mb-3 mb-md-4">{language === 'pt' ? 'Organograma' : 'Organizational Chart'}</h3>
+            <OrgChart chart={chart} />
+          </Col>
+        </Row>
+
+        {/* Governance Bodies (Committees) */}
+        {content.sections.committees && (
+          <Row className="mb-4 mb-md-5">
+            <Col md={12}>
+              <h3 className="fw-bold mb-3 mb-md-4">{content.sections.committees.title}</h3>
+              <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
+                {content.sections.committees.content}
+              </p>
+            </Col>
+          </Row>
+        )}
+
         {/* Guidelines */}
         <Row>
           <Col md={12}>
-            <h3 className="fw-bold mb-4">{content.sections.guidelines.title}</h3>
+            <h3 className="fw-bold mb-3 mb-md-4">{content.sections.guidelines.title}</h3>
             <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
               {content.sections.guidelines.content}
             </p>
@@ -96,6 +123,7 @@ const Governance = () => {
         </Row>
       </Container>
     </motion.div>
+    </>
   );
 };
 

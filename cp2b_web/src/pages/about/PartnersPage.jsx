@@ -3,9 +3,224 @@ import { Container, Row, Col, Card, Spinner, Alert } from 'react-bootstrap';
 import { useLanguage } from '../../context/LanguageContext';
 import { motion } from 'framer-motion';
 import { fetchPartnersGrouped } from '../../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../../data/content';
+import { getPartnerLogo } from '../../data/partnerLogos';
+import SeoHead from '../../components/SeoHead';
+import PageHero from '../../components/PageHero';
+import AboutSubnav from '../../components/AboutSubnav';
+import { emDefesoEleitoral } from '../../utils/defeso';
+import { safeHref } from '../../utils/safeUrl';
+
+/**
+ * Extracts monogram initials from a partner name.
+ * Prefers acronyms in parentheses (e.g. "UNIFAL" from "Universidade... (UNIFAL)")
+ * or the first two main words' initials.
+ */
+const getPartnerInitials = (name) => {
+  if (!name) return 'CP';
+  const match = name.match(/\(([^)]+)\)/);
+  if (match && match[1]) {
+    const acronym = match[1].replace(/[^a-zA-Z0-9]/g, '');
+    if (acronym.length >= 2 && acronym.length <= 8) {
+      return acronym.slice(0, 6);
+    }
+  }
+  return name
+    .split(' ')
+    .filter((w) => w.length > 2 && !['dos', 'das', 'com', 'para', 'and', 'the', 'for', 'dos', 'del'].includes(w.toLowerCase()))
+    .slice(0, 2)
+    .map((w) => w[0])
+    .join('')
+    .toUpperCase();
+};
+
+const PartnerCard = ({ partner, language }) => {
+  const [imgError, setImgError] = useState(false);
+  const name = language === 'pt' ? partner.name_pt : (partner.name_en || partner.name_pt);
+  const initials = getPartnerInitials(name);
+  const logoSrc = partner.logo || getPartnerLogo(partner.name_pt) || getPartnerLogo(partner.name_en);
+  const hasLogo = Boolean(logoSrc) && !imgError;
+
+  const cardContent = (
+    <Card
+      className="h-100 border shadow-sm"
+      style={{
+        backgroundColor: 'var(--bg-surface)',
+        borderColor: 'var(--border-default)',
+        borderRadius: 'var(--radius-lg)',
+        transition: 'transform var(--duration-base) var(--ease-standard), box-shadow var(--duration-base) var(--ease-standard)',
+      }}
+    >
+      <Card.Body className="d-flex flex-column p-2 p-sm-3 p-md-4">
+        <div
+          className="d-flex align-items-center justify-content-center mb-3 rounded partner-logo-frame"
+          style={{
+            height: '90px',
+            backgroundColor: 'var(--gray-50)',
+            borderRadius: 'var(--radius-md)',
+            overflow: 'hidden',
+            padding: 'var(--space-2)',
+          }}
+        >
+          {hasLogo ? (
+            <img
+              src={logoSrc}
+              alt={name}
+              onError={() => setImgError(true)}
+              style={{
+                maxHeight: '64px',
+                maxWidth: '100%',
+                objectFit: 'contain',
+              }}
+            />
+          ) : (
+            <div
+              className="d-flex align-items-center justify-content-center fw-bold partner-logo-placeholder"
+              style={{
+                width: '64px',
+                height: '64px',
+                borderRadius: 'var(--radius-full)',
+                backgroundColor: 'var(--gray-200)',
+                color: 'var(--brand-primary)',
+                fontSize: initials.length > 3 ? '0.82rem' : '1.1rem',
+                letterSpacing: 'var(--tracking-wide)',
+                flexShrink: 0,
+              }}
+            >
+              {initials}
+            </div>
+          )}
+        </div>
+        <h6
+          className="fw-bold mb-2 flex-grow-1 partner-card-name"
+          style={{ color: 'var(--text-primary)' }}
+        >
+          {name}
+        </h6>
+        <p className="mb-0 small" style={{ color: 'var(--text-secondary)' }}>
+          {partner.location}
+        </p>
+        {partner.website && (
+          <span
+            className="small fw-semibold mt-3 d-inline-flex align-items-center gap-1"
+            style={{ color: 'var(--brand-primary)' }}
+          >
+            <span>{language === 'pt' ? 'Visitar site' : 'Visit website'}</span>
+            <i className="bi bi-arrow-up-right" style={{ fontSize: '0.75rem' }} />
+          </span>
+        )}
+      </Card.Body>
+    </Card>
+  );
+
+  if (partner.website) {
+    return (
+      <a
+        href={safeHref(partner.website)}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-decoration-none h-100 d-block"
+      >
+        {cardContent}
+      </a>
+    );
+  }
+
+  return <div className="h-100">{cardContent}</div>;
+};
+
+const HeadquartersCard = ({ partner, language, label }) => {
+  const [imgError, setImgError] = useState(false);
+  const name = language === 'pt' ? partner.name_pt : (partner.name_en || partner.name_pt);
+  const initials = getPartnerInitials(name);
+  const logoSrc = partner.logo || getPartnerLogo(partner.name_pt) || getPartnerLogo(partner.name_en);
+  const hasLogo = Boolean(logoSrc) && !imgError;
+
+  return (
+    <Card
+      className="border shadow-sm mb-4"
+      style={{
+        backgroundColor: 'var(--bg-surface)',
+        borderColor: 'var(--border-default)',
+        borderRadius: 'var(--radius-xl)',
+      }}
+    >
+      <Card.Body className="p-3 p-md-4 p-lg-5">
+        <div className="d-flex flex-column flex-md-row align-items-md-center gap-4">
+          <div
+            className="d-flex align-items-center justify-content-center rounded"
+            style={{
+              width: '100px',
+              height: '100px',
+              backgroundColor: 'var(--gray-50)',
+              borderRadius: 'var(--radius-lg)',
+              flexShrink: 0,
+              padding: 'var(--space-2)',
+            }}
+          >
+            {hasLogo ? (
+              <img
+                src={logoSrc}
+                alt={name}
+                onError={() => setImgError(true)}
+                style={{
+                  maxHeight: '80px',
+                  maxWidth: '100%',
+                  objectFit: 'contain',
+                }}
+              />
+            ) : (
+              <div
+                className="d-flex align-items-center justify-content-center fw-bold"
+                style={{
+                  width: '80px',
+                  height: '80px',
+                  borderRadius: 'var(--radius-full)',
+                  backgroundColor: 'var(--gray-200)',
+                  color: 'var(--brand-primary)',
+                  fontSize: initials.length > 3 ? '0.92rem' : '1.3rem',
+                  letterSpacing: 'var(--tracking-wide)',
+                  flexShrink: 0,
+                }}
+              >
+                {initials}
+              </div>
+            )}
+          </div>
+          <div className="flex-grow-1">
+            <span className="mono-label" style={{ color: 'var(--brand-primary)' }}>
+              {label}
+            </span>
+            <h4 className="fw-bold mt-1 mb-2" style={{ color: 'var(--text-primary)' }}>
+              {name}
+            </h4>
+            <p className="mb-0" style={{ color: 'var(--text-secondary)' }}>
+              {partner.location}
+            </p>
+            {partner.website && (
+              <div className="mt-3">
+                <a
+                  href={safeHref(partner.website)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-outline-success btn-sm"
+                >
+                  {language === 'pt' ? 'Acessar website oficial' : 'Visit official website'} ↗
+                </a>
+              </div>
+            )}
+          </div>
+        </div>
+      </Card.Body>
+    </Card>
+  );
+};
 
 const PartnersPage = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.partners[language] || pageSeo.partners.pt;
   const [partners, setPartners] = useState({ host: [], public: [], research: [], companies: [] });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -35,7 +250,7 @@ const PartnersPage = () => {
       headquarters: 'Sede',
       public: 'Instituições Públicas',
       companies: 'Empresas Parceiras',
-      research: 'Instituições de Pesquisa Associadas'
+      research: 'Instituições de Pesquisa Associadas',
     },
     en: {
       title: 'Partners',
@@ -43,8 +258,8 @@ const PartnersPage = () => {
       headquarters: 'Headquarters',
       public: 'Public Institutions',
       companies: 'Partner Companies',
-      research: 'Associated Research Institutions'
-    }
+      research: 'Associated Research Institutions',
+    },
   }[language];
 
   if (loading) {
@@ -67,102 +282,89 @@ const PartnersPage = () => {
     );
   }
 
-  const hostPartner = partners.host[0]; // Get first host partner
+  const hostPartner = partners.host[0];
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Container className="py-5">
-        <Row className="mb-5">
-          <Col lg={8}>
-            <span className="mono-label text-success">CP2b</span>
-            <h1 className="display-4 fw-bold mb-4">{labels.title}</h1>
-            <p className="lead text-muted">{labels.description}</p>
-          </Col>
-        </Row>
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <PageHero eyebrow="CP2b" title={labels.title} subtitle={labels.description} photo={{ src: '/assets/fotos/parceiros-delegacao.webp', width: 700, height: 500 }} />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Container className="py-4 py-md-5">
+          <AboutSubnav />
+          {/* Headquarters */}
+          {hostPartner && (
+            <Row className="mb-4 mb-md-5">
+              <Col md={12}>
+                <HeadquartersCard
+                  partner={hostPartner}
+                  language={language}
+                  label={labels.headquarters}
+                />
+              </Col>
+            </Row>
+          )}
 
-        {/* Headquarters */}
-        {hostPartner && (
-          <Row className="mb-5">
-            <Col md={12}>
-              <Card className="border-0 shadow-sm mb-4">
-                <Card.Body className="p-4">
-                  <h3 className="fw-bold text-success mb-3">{labels.headquarters}</h3>
-                  <h5>{language === 'pt' ? hostPartner.name_pt : (hostPartner.name_en || hostPartner.name_pt)}</h5>
-                  <p className="text-muted mb-0">{hostPartner.location}</p>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-        )}
+          {/* Órgãos públicos: fora do ar durante o defeso eleitoral, mesmo que o
+              cadastro ainda os traga ativos (ver utils/defeso). */}
+          {!emDefesoEleitoral() && partners.public && partners.public.length > 0 && (
+            <Row className="mb-4 mb-md-5">
+              <Col md={12}>
+                <h3 className="fw-bold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
+                  {labels.public}
+                </h3>
+                <Row className="g-2 g-sm-3 g-md-4">
+                  {partners.public.map((p) => (
+                    <Col xs={6} sm={6} lg={4} xl={3} key={p.id}>
+                      <PartnerCard partner={p} language={language} />
+                    </Col>
+                  ))}
+                </Row>
+              </Col>
+            </Row>
+          )}
 
-        {/* Public Institutions */}
-        {partners.public && partners.public.length > 0 && (
-          <Row className="mb-5">
-            <Col md={12}>
-              <h3 className="fw-bold mb-4">{labels.public}</h3>
-              <Row className="g-3">
-                {partners.public.map((p) => (
-                  <Col md={6} key={p.id}>
-                    <Card className="h-100 border-0 shadow-sm hover-lift">
-                      <Card.Body>
-                        <h6 className="fw-bold">{language === 'pt' ? p.name_pt : (p.name_en || p.name_pt)}</h6>
-                        <p className="text-muted small mb-0">{p.location}</p>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            </Col>
-          </Row>
-        )}
+          {/* Partner Companies */}
+          {partners.companies && partners.companies.length > 0 && (
+            <Row className="mb-4 mb-md-5">
+              <Col md={12}>
+                <h3 className="fw-bold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
+                  {labels.companies}
+                </h3>
+                <Row className="g-2 g-sm-3 g-md-4">
+                  {partners.companies.map((p) => (
+                    <Col xs={6} sm={6} lg={4} xl={3} key={p.id}>
+                      <PartnerCard partner={p} language={language} />
+                    </Col>
+                  ))}
+                </Row>
+              </Col>
+            </Row>
+          )}
 
-        {/* Partner Companies */}
-        {partners.companies && partners.companies.length > 0 && (
-          <Row className="mb-5">
-            <Col md={12}>
-              <h3 className="fw-bold mb-4">{labels.companies}</h3>
-              <Row className="g-3">
-                {partners.companies.map((p) => (
-                  <Col md={6} key={p.id}>
-                    <Card className="h-100 border-0 shadow-sm hover-lift">
-                      <Card.Body>
-                        <h6 className="fw-bold">{language === 'pt' ? p.name_pt : (p.name_en || p.name_pt)}</h6>
-                        <p className="text-muted small mb-0">{p.location}</p>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            </Col>
-          </Row>
-        )}
-
-        {/* Research Institutions */}
-        {partners.research && partners.research.length > 0 && (
-          <Row>
-            <Col md={12}>
-              <h3 className="fw-bold mb-4">{labels.research}</h3>
-              <Row className="g-3">
-                {partners.research.map((p) => (
-                  <Col md={6} key={p.id}>
-                    <Card className="h-100 border-0 shadow-sm hover-lift">
-                      <Card.Body>
-                        <h6 className="fw-bold">{language === 'pt' ? p.name_pt : (p.name_en || p.name_pt)}</h6>
-                        <p className="text-muted small mb-0">{p.location}</p>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            </Col>
-          </Row>
-        )}
-      </Container>
-    </motion.div>
+          {/* Research Institutions */}
+          {partners.research && partners.research.length > 0 && (
+            <Row>
+              <Col md={12}>
+                <h3 className="fw-bold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
+                  {labels.research}
+                </h3>
+                <Row className="g-2 g-sm-3 g-md-4">
+                  {partners.research.map((p) => (
+                    <Col xs={6} sm={6} lg={4} xl={3} key={p.id}>
+                      <PartnerCard partner={p} language={language} />
+                    </Col>
+                  ))}
+                </Row>
+              </Col>
+            </Row>
+          )}
+        </Container>
+      </motion.div>
+    </>
   );
 };
 

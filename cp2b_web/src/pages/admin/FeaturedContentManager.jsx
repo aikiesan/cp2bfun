@@ -1,11 +1,19 @@
 import { useState, useEffect } from 'react';
 import { Form, Button, Alert, Spinner, Card, Row, Col } from 'react-bootstrap';
-import { fetchNews, fetchProjects, fetchFeaturedContent, updateFeaturedContent } from '../../services/api';
+import { fetchNews, fetchProjects, fetchMicroscopia, fetchOpportunities, fetchBoletins, fetchPodcastEpisodes, fetchEvents, fetchFeaturedContent, updateFeaturedContent } from '../../services/api';
 
 const FeaturedContentManager = () => {
   const [allNews, setAllNews] = useState([]);
   const [allProjects, setAllProjects] = useState([]);
+  const [allMicroscopia, setAllMicroscopia] = useState([]);
+  const [allOpportunities, setAllOpportunities] = useState([]);
+  const [allBoletins, setAllBoletins] = useState([]);
+  const [allPodcast, setAllPodcast] = useState([]);
+  const [allEvents, setAllEvents] = useState([]);
   const [currentFeatured, setCurrentFeatured] = useState({ A: null, B: null, C: null });
+
+// Boletim e podcast não têm slug — a listagem do admin e a gravação usam o id.
+const identifierOf = (item) => (item.slug ?? String(item.id));
 
   // Each position has type and slug
   const [positionA, setPositionA] = useState({ type: '', slug: '' });
@@ -23,14 +31,24 @@ const FeaturedContentManager = () => {
   const loadData = async () => {
     setLoading(true);
     try {
-      const [newsData, projectsData, featuredData] = await Promise.all([
+      const [newsData, projectsData, microscopiaData, opportunitiesData, boletinsData, podcastData, eventsData, featuredData] = await Promise.all([
         fetchNews(),
         fetchProjects(),
+        fetchMicroscopia(),
+        fetchOpportunities(),
+        fetchBoletins(),
+        fetchPodcastEpisodes(),
+        fetchEvents(),
         fetchFeaturedContent()
       ]);
 
       setAllNews(newsData || []);
       setAllProjects(projectsData || []);
+      setAllMicroscopia(microscopiaData || []);
+      setAllOpportunities(opportunitiesData || []);
+      setAllBoletins(boletinsData || []);
+      setAllPodcast(podcastData || []);
+      setAllEvents(eventsData || []);
       setCurrentFeatured(featuredData);
 
       // Set dropdown values to current selections
@@ -91,8 +109,30 @@ const FeaturedContentManager = () => {
     }
   };
 
+  // 'project' é o tipo antigo da seção que hoje se chama Entrevistas — o valor
+  // continua o mesmo no banco e na rota; só o rótulo acompanha o site.
+  const typeLabels = {
+    news: 'Notícia',
+    project: 'Entrevista',
+    microscopio: 'Microscópio',
+    opportunity: 'Oportunidade',
+    boletim: 'Boletim',
+    podcast: 'Podcast',
+    event: 'Evento',
+  };
+
+  const itemsByType = {
+    news: allNews,
+    project: allProjects,
+    microscopio: allMicroscopia,
+    opportunity: allOpportunities,
+    boletim: allBoletins,
+    podcast: allPodcast,
+    event: allEvents,
+  };
+
   const renderPositionSelector = (position, setPosition, label, currentItem) => {
-    const items = position.type === 'news' ? allNews : allProjects;
+    const items = itemsByType[position.type] || [];
 
     return (
       <Card className="mb-3">
@@ -108,8 +148,9 @@ const FeaturedContentManager = () => {
                   onChange={(e) => setPosition({ type: e.target.value, slug: '' })}
                 >
                   <option value="">-- Selecione --</option>
-                  <option value="news">Notícia</option>
-                  <option value="project">Projeto</option>
+                  {Object.entries(typeLabels).map(([value, label]) => (
+                    <option key={value} value={value}>{label}</option>
+                  ))}
                 </Form.Select>
               </Form.Group>
             </Col>
@@ -117,14 +158,14 @@ const FeaturedContentManager = () => {
             <Col md={8}>
               {position.type && (
                 <Form.Group className="mb-3">
-                  <Form.Label>Selecionar {position.type === 'news' ? 'Notícia' : 'Projeto'}</Form.Label>
+                  <Form.Label>Selecionar {typeLabels[position.type]}</Form.Label>
                   <Form.Select
                     value={position.slug}
                     onChange={(e) => setPosition({ ...position, slug: e.target.value })}
                   >
                     <option value="">-- Nenhum --</option>
                     {items.map((item) => (
-                      <option key={item.slug} value={item.slug}>
+                      <option key={identifierOf(item)} value={identifierOf(item)}>
                         {item.title_pt} {item.date_display && `(${item.date_display})`}
                       </option>
                     ))}
@@ -136,7 +177,7 @@ const FeaturedContentManager = () => {
 
           {currentItem && (
             <Form.Text className="text-muted">
-              <strong>Atual:</strong> {currentItem.content_type === 'news' ? 'Notícia' : 'Projeto'} - {currentItem.title_pt}
+              <strong>Atual:</strong> {typeLabels[currentItem.content_type] || currentItem.content_type} - {currentItem.title_pt}
             </Form.Text>
           )}
         </Card.Body>
@@ -166,8 +207,10 @@ const FeaturedContentManager = () => {
         <Card.Body>
           <Card.Title>Selecione o conteúdo para cada posição</Card.Title>
           <Card.Text className="text-muted mb-4">
-            Escolha notícias ou projetos para destacar na página inicial.
-            A Posição A é a maior (lado esquerdo), e B/C são menores (lado direito, topo/base).
+            Escolha o conteúdo de cada posição: notícia, entrevista, microscópio,
+            oportunidade, boletim, podcast ou evento. A Posição A é a maior (lado
+            esquerdo), e B/C são menores (lado direito, topo/base). Boletim e podcast
+            levam à listagem, porque não têm página própria.
           </Card.Text>
 
           <Form onSubmit={handleSave}>
@@ -211,59 +254,128 @@ const FeaturedContentManager = () => {
         </Card.Body>
       </Card>
 
-      {/* Preview section */}
+      {/* Visual preview — mirrors FeaturedContent.jsx layout */}
       <Card>
         <Card.Body>
           <Card.Title>Pré-visualização</Card.Title>
-          <div className="row">
-            <div className="col-md-6">
-              {positionA.slug && (
-                <div className="border p-3 bg-light">
-                  <strong>Posição A (Principal)</strong>
-                  <p className="mb-0">
-                    {positionA.type === 'news'
-                      ? allNews.find(n => n.slug === positionA.slug)?.title_pt
-                      : allProjects.find(p => p.slug === positionA.slug)?.title_pt}
-                  </p>
-                  <small className="text-muted">
-                    {positionA.type === 'news' ? 'Notícia' : 'Projeto'}
-                  </small>
+          <Card.Text className="text-muted small mb-3">
+            Representação aproximada do layout na página inicial.
+          </Card.Text>
+          {(() => {
+            const findItem = (pos) => {
+              if (!pos.slug) return null;
+              return (itemsByType[pos.type] || []).find(i => i.slug === pos.slug);
+            };
+            const itemA = findItem(positionA);
+            const itemB = findItem(positionB);
+            const itemC = findItem(positionC);
+
+            const overlayStyle = {
+              position: 'absolute',
+              inset: 0,
+              background: 'linear-gradient(to top, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.1) 60%)',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'flex-end',
+              padding: '12px',
+            };
+
+            const emptyStyle = {
+              background: '#dee2e6',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#adb5bd',
+              fontSize: '0.8rem',
+              fontStyle: 'italic',
+            };
+
+            const cardBase = (item) => ({
+              position: 'relative',
+              borderRadius: '6px',
+              overflow: 'hidden',
+              backgroundImage: item?.image ? `url(${item.image})` : 'none',
+              backgroundSize: 'cover',
+              backgroundPosition: item?.image_position || '50% 50%',
+              ...(item?.image ? {} : emptyStyle),
+            });
+
+            return (
+              <div style={{ display: 'flex', gap: '6px', height: '280px' }}>
+                {/* Card A — portrait, left half */}
+                <div style={{ flex: 1, ...cardBase(itemA) }}>
+                  {itemA?.image ? (
+                    <div style={overlayStyle}>
+                      {itemA.badge && (
+                        <span className={`badge bg-${itemA.badge_color || 'primary'} mb-1`} style={{ alignSelf: 'flex-start', fontSize: '0.65rem' }}>
+                          {itemA.badge}
+                        </span>
+                      )}
+                      <div style={{ color: '#fff', fontWeight: '600', fontSize: '0.85rem', lineHeight: '1.3' }}>
+                        {itemA.title_pt}
+                      </div>
+                      {itemA.date_display && (
+                        <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.7rem', marginTop: '4px' }}>
+                          {itemA.date_display}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <span>Posição A vazia</span>
+                  )}
                 </div>
-              )}
-            </div>
-            <div className="col-md-6">
-              <div className="mb-2">
-                {positionB.slug && (
-                  <div className="border p-2 bg-light">
-                    <strong>Posição B</strong>
-                    <p className="mb-0 small">
-                      {positionB.type === 'news'
-                        ? allNews.find(n => n.slug === positionB.slug)?.title_pt
-                        : allProjects.find(p => p.slug === positionB.slug)?.title_pt}
-                    </p>
-                    <small className="text-muted">
-                      {positionB.type === 'news' ? 'Notícia' : 'Projeto'}
-                    </small>
+
+                {/* Right half — Cards B and C stacked */}
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  {/* Card B — landscape top */}
+                  <div style={{ flex: 1, ...cardBase(itemB) }}>
+                    {itemB?.image ? (
+                      <div style={overlayStyle}>
+                        {itemB.badge && (
+                          <span className={`badge bg-${itemB.badge_color || 'primary'} mb-1`} style={{ alignSelf: 'flex-start', fontSize: '0.65rem' }}>
+                            {itemB.badge}
+                          </span>
+                        )}
+                        <div style={{ color: '#fff', fontWeight: '600', fontSize: '0.8rem', lineHeight: '1.3' }}>
+                          {itemB.title_pt}
+                        </div>
+                        {itemB.date_display && (
+                          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.65rem', marginTop: '3px' }}>
+                            {itemB.date_display}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span>Posição B vazia</span>
+                    )}
                   </div>
-                )}
-              </div>
-              <div>
-                {positionC.slug && (
-                  <div className="border p-2 bg-light">
-                    <strong>Posição C</strong>
-                    <p className="mb-0 small">
-                      {positionC.type === 'news'
-                        ? allNews.find(n => n.slug === positionC.slug)?.title_pt
-                        : allProjects.find(p => p.slug === positionC.slug)?.title_pt}
-                    </p>
-                    <small className="text-muted">
-                      {positionC.type === 'news' ? 'Notícia' : 'Projeto'}
-                    </small>
+
+                  {/* Card C — landscape bottom */}
+                  <div style={{ flex: 1, ...cardBase(itemC) }}>
+                    {itemC?.image ? (
+                      <div style={overlayStyle}>
+                        {itemC.badge && (
+                          <span className={`badge bg-${itemC.badge_color || 'primary'} mb-1`} style={{ alignSelf: 'flex-start', fontSize: '0.65rem' }}>
+                            {itemC.badge}
+                          </span>
+                        )}
+                        <div style={{ color: '#fff', fontWeight: '600', fontSize: '0.8rem', lineHeight: '1.3' }}>
+                          {itemC.title_pt}
+                        </div>
+                        {itemC.date_display && (
+                          <div style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.65rem', marginTop: '3px' }}>
+                            {itemC.date_display}
+                          </div>
+                        )}
+                      </div>
+                    ) : (
+                      <span>Posição C vazia</span>
+                    )}
                   </div>
-                )}
+                </div>
               </div>
-            </div>
-          </div>
+            );
+          })()}
         </Card.Body>
       </Card>
     </div>

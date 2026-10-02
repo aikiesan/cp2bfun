@@ -3,27 +3,34 @@ import { Container, Row, Col, Form, Button, Alert, Spinner } from 'react-bootstr
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
 import api from '../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
+import PageHero from '../components/PageHero';
+import Metaninho from '../components/Metaninho';
 
 const Contact = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.contact[language] || pageSeo.contact.pt;
 
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
   const [status, setStatus] = useState({ loading: false, success: false, error: null });
 
   const labels = {
     pt: {
-      tag: 'FALE CONOSCO',
+      tag: 'Fale conosco',
       title: 'Entre em Contato',
-      address: 'Endereco',
+      address: 'Endereço',
       direct: 'Contatos Diretos',
       general: 'Geral',
-      financial: 'Financeiro',
+      coordination: 'Coordenação',
       phone: 'Telefone',
       sendMsg: 'Envie uma mensagem',
-      formName: 'NOME',
-      formEmail: 'E-MAIL',
-      formMsg: 'MENSAGEM',
-      formBtn: 'ENVIAR MENSAGEM',
+      formName: 'Nome',
+      formEmail: 'E-mail',
+      formMsg: 'Mensagem',
+      formBtn: 'Enviar mensagem',
       sending: 'Enviando...',
       successMsg: 'Mensagem enviada com sucesso!',
       errorMsg: 'Erro ao enviar mensagem. Tente novamente.',
@@ -31,18 +38,18 @@ const Contact = () => {
       invalidEmail: 'E-mail invalido.',
     },
     en: {
-      tag: 'GET IN TOUCH',
+      tag: 'Get in touch',
       title: 'Contact Us',
       address: 'Address',
       direct: 'Direct Contacts',
       general: 'General',
-      financial: 'Administrative',
+      coordination: 'Coordination',
       phone: 'Phone',
       sendMsg: 'Send a message',
-      formName: 'NAME',
-      formEmail: 'E-MAIL',
-      formMsg: 'MESSAGE',
-      formBtn: 'SEND MESSAGE',
+      formName: 'Name',
+      formEmail: 'E-mail',
+      formMsg: 'Message',
+      formBtn: 'Send message',
       sending: 'Sending...',
       successMsg: 'Message sent successfully!',
       errorMsg: 'Failed to send message. Please try again.',
@@ -83,20 +90,17 @@ const Contact = () => {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-    <Container className="py-5">
-      <Row className="justify-content-center">
-        <Col lg={8} className="text-center mb-5">
-           <span className="mono-label text-success">{labels.tag}</span>
-           <h1 className="display-4 fw-bold">{labels.title}</h1>
-        </Col>
-      </Row>
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    <PageHero eyebrow={labels.tag} title={labels.title} photo={{ src: '/assets/fotos/contato-banner.webp', width: 700, height: 500 }} />
+    <Container className="py-4 py-md-5">
 
-      <Row className="justify-content-center g-5">
+      <Row className="justify-content-center g-4 g-lg-5">
         <Col lg={5}>
-          <div className="mb-5">
-            <h4 className="fw-bold mb-3">{labels.address}</h4>
-            <p className="text-muted">
+          <div className="mb-4 mb-md-5">
+            <h4 className="fw-bold mb-2 mb-md-3">{labels.address}</h4>
+            <p className="text-muted mb-0">
               Rua Cora Coralina, 330<br/>
               Universidade Estadual de Campinas - UNICAMP<br/>
               Campinas - São Paulo, Brasil<br/>
@@ -104,14 +108,14 @@ const Contact = () => {
             </p>
           </div>
 
-          <div className="mb-5">
-            <h4 className="fw-bold mb-3">{labels.direct}</h4>
-            <p className="text-muted mb-1"><strong>{labels.general}:</strong> nipe@nipe.unicamp.br</p>
-            <p className="text-muted mb-1"><strong>{labels.financial}:</strong> administrativo@cp2b.unicamp.br</p>
-            <p className="text-muted"><strong>{labels.phone}:</strong> +55 (19) 3521-1244</p>
+          <div className="mb-4 mb-md-5">
+            <h4 className="fw-bold mb-2 mb-md-3">{labels.direct}</h4>
+            <p className="text-muted mb-2"><strong>{labels.general}:</strong> <a href="mailto:administrativo@cp2b.unicamp.br" className="text-decoration-none text-dark hover-blue d-inline-block py-1">administrativo@cp2b.unicamp.br</a></p>
+            <p className="text-muted mb-2"><strong>{labels.coordination}:</strong> <a href="mailto:diretoria@cp2b.unicamp.br" className="text-decoration-none text-dark hover-blue d-inline-block py-1">diretoria@cp2b.unicamp.br</a></p>
+            <p className="text-muted mb-0"><strong>{labels.phone}:</strong> <a href="tel:+551935211244" className="text-decoration-none text-dark hover-blue d-inline-block py-1">+55 (19) 3521-1244</a></p>
           </div>
 
-          <div className="mt-4">
+          <div className="mt-3 mt-md-4">
                <img
                  src="/assets/nipe_unicamp_2024-07-08_22-20-16_jpg_2024-07-08_22-20-16.webp"
                  alt="NIPE Unicamp"
@@ -121,12 +125,15 @@ const Contact = () => {
         </Col>
 
         <Col lg={6}>
-          <div className="bg-light p-4 border border-dark h-100">
-            <h4 className="fw-bold mb-4">{labels.sendMsg}</h4>
+          <div className="bg-light p-3 p-md-4 border border-dark h-100">
+            <h4 className="fw-bold mb-3 mb-md-4">{labels.sendMsg}</h4>
 
             {status.success && (
               <Alert variant="success" dismissible onClose={() => setStatus({ ...status, success: false })}>
-                {labels.successMsg}
+                <div className="d-flex align-items-center gap-3">
+                  <Metaninho pose="feliz" size={72} />
+                  <span>{labels.successMsg}</span>
+                </div>
               </Alert>
             )}
             {status.error && (
@@ -137,10 +144,12 @@ const Contact = () => {
 
             <Form noValidate onSubmit={handleSubmit}>
               <Form.Group className="mb-3">
-                <Form.Label className="mono-label text-muted">{labels.formName}</Form.Label>
+                <Form.Label htmlFor = "name" className="small fw-semibold text-secondary">{labels.formName}</Form.Label>
                 <Form.Control
                   type="text"
                   name="name"
+                  autoComplete = "name"
+                  id = "name"
                   value={formData.name}
                   onChange={handleChange}
                   className="rounded-0 border-dark bg-transparent"
@@ -148,10 +157,12 @@ const Contact = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-3">
-                <Form.Label className="mono-label text-muted">{labels.formEmail}</Form.Label>
+                <Form.Label htmlFor = "email" className="small fw-semibold text-secondary">{labels.formEmail}</Form.Label>
                 <Form.Control
                   type="email"
                   name="email"
+                  id = "email"
+                  autoComplete = "email"
                   value={formData.email}
                   onChange={handleChange}
                   className="rounded-0 border-dark bg-transparent"
@@ -159,10 +170,13 @@ const Contact = () => {
                 />
               </Form.Group>
               <Form.Group className="mb-4">
-                <Form.Label className="mono-label text-muted">{labels.formMsg}</Form.Label>
+                <Form.Label htmlFor = "message"className="small fw-semibold text-secondary">{labels.formMsg}</Form.Label>
                 <Form.Control
                   as="textarea"
                   rows={5}
+                  autoComplete = "off"
+                  id = "message"
+                  type = "text"
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
@@ -183,6 +197,7 @@ const Contact = () => {
       </Row>
     </Container>
     </motion.div>
+    </>
   );
 };
 

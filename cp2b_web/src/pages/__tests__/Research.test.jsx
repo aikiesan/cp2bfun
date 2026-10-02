@@ -1,19 +1,26 @@
-import { describe, it, expect } from 'vitest';
-import { screen } from '@testing-library/react';
+import { describe, it, expect, vi, afterEach } from 'vitest';
+import { act, screen, waitFor, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { renderWithProviders } from '../../test/utils';
 import Research from '../Research';
+import { wasteToEnergyFlow } from '../../data/content';
 
 describe('Research', () => {
   it('renders the research structure heading', () => {
     renderWithProviders(<Research />);
-    expect(screen.getByText('Estrutura de Pesquisa')).toBeInTheDocument();
+    // O título da figura dos eixos é o próprio título da página, uma vez só:
+    // antes ele se repetia no hero e no topo do infográfico.
+    expect(screen.getByRole('heading', { level: 1, name: 'Eixos de Atuação do CP2b' })).toBeInTheDocument();
+    expect(screen.getAllByText('Eixos de Atuação do CP2b')).toHaveLength(1);
+    expect(screen.queryByText('Estrutura de Pesquisa')).toBeNull();
   });
 
-  it('renders at least 8 accordion items (research axes)', () => {
+  it('renders all 8 axes in the details selector', () => {
     renderWithProviders(<Research />);
-    // Each axis has an Accordion.Header button
-    const buttons = screen.getAllByRole('button');
-    expect(buttons.length).toBeGreaterThanOrEqual(8);
+    // Seletor 01–08 do detalhamento: um botão por eixo. Os títulos vêm de
+    // content.js no formato "Eixo N – Título"; o seletor mostra só o título.
+    const axisNodes = document.querySelectorAll('.axx-tab');
+    expect(axisNodes.length).toBe(8);
   });
 
   it('renders "Conheça os Eixos" section title', () => {
@@ -21,14 +28,179 @@ describe('Research', () => {
     expect(screen.getByText('Conheça os Eixos')).toBeInTheDocument();
   });
 
-  it('renders at least one SDG tag label', () => {
+  it('shows SDG icons for the selected axis', () => {
     renderWithProviders(<Research />);
-    // Several research axes have SDG references defined in content.js.
-    // Using queryAllByText (not getAllByText) lets us count without throwing
-    // if somehow none exist — but we expect at least one to be present.
-    // Note: .toBeGreaterThanOrEqual(0) would ALWAYS pass (array.length >= 0
-    // is a tautology). Use a real lower bound instead.
-    const sdgLabels = screen.queryAllByText('ODS Relacionados:');
-    expect(sdgLabels.length).toBeGreaterThan(0);
+    // O primeiro eixo abre por padrão; seus ODS aparecem como
+    // imagens com alt "ODS <n>".
+    const sdgImages = screen.getAllByAltText(/^ODS \d+$/);
+    expect(sdgImages.length).toBeGreaterThan(0);
+  });
+
+  it('drills down from an axis into its activity branches', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<Research />);
+
+    // Eixo 2 tem competências, projetos e infraestrutura.
+    const axisNodes = document.querySelectorAll('.axx-tab');
+    await user.click(axisNodes[1]);
+
+    const branchNodes = document.querySelectorAll('.axx-branch');
+    expect(branchNodes.length).toBeGreaterThan(0);
+    // Cada ramo mostra um contador de itens.
+    expect(document.querySelectorAll('.axx-branch__count').length).toBe(branchNodes.length);
+  });
+
+  it('opens with the integrative figure of the 8 axes and their coordination', () => {
+    renderWithProviders(<Research />);
+    expect(screen.getByRole('heading', { name: 'Eixos de Atuação do CP2b' })).toBeInTheDocument();
+
+    const cards = document.querySelectorAll('.axo-card');
+    expect(cards.length).toBe(8);
+    // Coordenação e vice, sem os títulos acadêmicos que vêm nos dados.
+    expect(cards[0]).toHaveTextContent('Rubens Augusto Camargo Lamparelli');
+    expect(cards[0]).toHaveTextContent('Lucas Nakamura Cerejo');
+    expect(cards[0]).not.toHaveTextContent(/Prof|Dr[ºª.]/);
+    // Eixo 5 tem só a coordenação: a vice aparece como vaga.
+    expect(cards[4]).toHaveTextContent('Rachel Biancalana Costa');
+    expect(cards[4]).toHaveTextContent('Vaga temporariamente em aberto');
+  });
+
+  it('opens the matching axis in the details when a figure card is clicked', async () => {
+    const user = userEvent.setup();
+    renderWithProviders(<Research />);
+
+    await user.click(document.querySelectorAll('.axo-card')[2]);
+    const active = document.querySelector('.axx-tab.is-active');
+    expect(active).toHaveTextContent('Engenharia de Processos e Bioprocessos');
+  });
+
+  it('keeps the axis details free of people', async () => {
+    // A coordenação aparece só na figura do topo; o detalhamento continua
+    // descrevendo o trabalho. Ver AxisExplorer (HIDDEN_BRANCHES).
+    const user = userEvent.setup();
+    renderWithProviders(<Research />);
+
+    const map = document.querySelector('.axx');
+    expect(map).not.toHaveTextContent(/Rubens Augusto Camargo Lamparelli/);
+
+    const axisNodes = document.querySelectorAll('.axx-tab');
+    for (const node of axisNodes) {
+      await user.click(node);
+      const branches = [...document.querySelectorAll('.axx-branch')].map((b) => b.textContent);
+      expect(branches.some((b) => /Equipe/i.test(b))).toBe(false);
+    }
+  });
+
+  it('does not list the laboratory infrastructure here', () => {
+    // A infraestrutura laboratorial vai ganhar página própria, mais
+    // detalhada; /eixos não repete a lista de laboratórios.
+    renderWithProviders(<Research />);
+    expect(screen.queryByText('Infraestrutura Laboratorial')).toBeNull();
+    expect(screen.queryByText('Planta Piloto para Bioenergia')).toBeNull();
+  });
+
+  describe('biogas chain band', () => {
+    const flow = wasteToEnergyFlow.pt;
+
+    afterEach(() => {
+      // The chip clicks below navigate; the other tests expect a clean URL.
+      window.history.replaceState(null, '', '/');
+      delete Element.prototype.scrollIntoView;
+      localStorage.clear();
+      vi.restoreAllMocks();
+    });
+
+    it('sits between the axis figure and the axis details, as a full-width band', () => {
+      renderWithProviders(<Research />);
+      const figure = document.querySelector('.axo');
+      const band = document.querySelector('section.w2e');
+      const details = document.getElementById('explorar-eixos');
+
+      expect(screen.getByRole('heading', { level: 2, name: flow.title })).toBeInTheDocument();
+      expect(figure.compareDocumentPosition(band) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      expect(band.compareDocumentPosition(details) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+      // Out of the page Container, so the dark band spans the whole width.
+      expect(band.parentElement.closest('.container')).toBeNull();
+    });
+
+    it('points every axis chip at /eixos?eixo=N#explorar-eixos, named from the page axes', () => {
+      renderWithProviders(<Research />);
+      const steps = document.querySelectorAll('.w2e-step');
+      expect(steps).toHaveLength(flow.steps.length);
+
+      steps.forEach((step, i) => {
+        const chips = within(step).getAllByRole('link');
+        expect(chips.map((chip) => chip.getAttribute('href'))).toEqual(
+          flow.steps[i].axes.map((id) => `/eixos?eixo=${id}#explorar-eixos`)
+        );
+      });
+      // Axis 5's chip: the title the axis figure shows, "Eixo 5 –" dropped.
+      const chip = within(steps[3]).getByRole('link');
+      expect(chip).toHaveTextContent('Eixo 5 Inovação em Bioprodutos na Cadeia do Biogás');
+    });
+
+    it('names the chips in English on the English page', () => {
+      localStorage.setItem('cp2b_lang', 'en');
+      renderWithProviders(<Research />);
+      const chip = within(document.querySelectorAll('.w2e-step')[3]).getByRole('link');
+      expect(chip).toHaveTextContent(/^Axis 5 \S/);
+      expect(chip.textContent).not.toMatch(/–/);
+    });
+
+    it('opens the chosen axis in the details, and scrolls there on every chip', async () => {
+      const scrollIntoView = vi.fn();
+      Element.prototype.scrollIntoView = scrollIntoView;
+      const user = userEvent.setup();
+      renderWithProviders(<Research />);
+      const steps = document.querySelectorAll('.w2e-step');
+
+      await user.click(within(steps[3]).getByRole('link'));
+      expect(document.querySelector('.axx-tab.is-active')).toHaveTextContent('Inovação em Bioprodutos na Cadeia do Biogás');
+      await waitFor(() => expect(scrollIntoView).toHaveBeenCalledTimes(1));
+      expect(scrollIntoView.mock.contexts[0]).toBe(document.getElementById('explorar-eixos'));
+
+      // Same hash as before: the second chip must still bring the details up.
+      await user.click(within(steps[1]).getAllByRole('link')[1]);
+      expect(document.querySelector('.axx-tab.is-active')).toHaveTextContent('Engenharia de Processos e Bioprocessos');
+      await waitFor(() => expect(scrollIntoView).toHaveBeenCalledTimes(2));
+    });
+
+    it('moves the keyboard focus to the opened axis tab, without scrolling again', async () => {
+      Element.prototype.scrollIntoView = vi.fn();
+      const focus = vi.spyOn(HTMLElement.prototype, 'focus');
+      const user = userEvent.setup();
+      renderWithProviders(<Research />);
+      const steps = document.querySelectorAll('.w2e-step');
+
+      const chip = within(steps[3]).getByRole('link');
+      act(() => chip.focus());
+      await user.keyboard('{Enter}');
+
+      // Focus leaves the chip in the dark band and lands on the tab that
+      // names what opened, so the next Tab goes on into its panel.
+      const tab = document.querySelector('.axx-tab.is-active');
+      await waitFor(() => expect(document.activeElement).toBe(tab));
+      expect(tab).toHaveAttribute('role', 'tab');
+      expect(tab).toHaveAttribute('aria-selected', 'true');
+      expect(tab).toHaveAccessibleName(/Inovação em Bioprodutos na Cadeia do Biogás/);
+      expect(focus.mock.contexts.at(-1)).toBe(tab);
+      expect(focus.mock.calls.at(-1)[0]).toEqual({ preventScroll: true });
+    });
+
+    it('replaces the history entry on each chip, like the figure and the axis tabs', async () => {
+      Element.prototype.scrollIntoView = vi.fn();
+      const user = userEvent.setup();
+      renderWithProviders(<Research />);
+      const steps = document.querySelectorAll('.w2e-step');
+      const historyLength = window.history.length;
+
+      await user.click(within(steps[3]).getByRole('link'));
+      await user.click(within(steps[1]).getAllByRole('link')[1]);
+      await user.click(within(steps[4]).getAllByRole('link')[0]);
+
+      expect(window.location.search).toBe('?eixo=4');
+      expect(window.location.hash).toBe('#explorar-eixos');
+      expect(window.history.length).toBe(historyLength);
+    });
   });
 });

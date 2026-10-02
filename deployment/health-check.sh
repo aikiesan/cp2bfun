@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# ATENCAO: partes deste script ainda supoem o layout antigo (backend como
+# servico systemd, frontend em /var/www/cp2b/frontend). Na VM atual o backend
+# roda no pm2 e o site sai de /var/www/cp2b/repo/cp2b_web/dist; as checagens
+# de pos-deploy estao em cp2b_web/docs/PUBLICACAO_VM.md. O banco consultado
+# e o do site, cp2b_db ("cp2b" e o do PILAR-2b).
+
 # CP2B Website Health Check Script
 # Verifies all services are running correctly
 
@@ -133,19 +139,19 @@ if systemctl is-active --quiet postgresql; then
     ((PASS_COUNT++))
 
     # Check database connection
-    if sudo -u postgres psql -d cp2b -c "SELECT 1;" > /dev/null 2>&1; then
-        print_pass "Database 'cp2b' is accessible"
+    if sudo -u postgres psql -d cp2b_db -c "SELECT 1;" > /dev/null 2>&1; then
+        print_pass "Database 'cp2b_db' is accessible"
         ((PASS_COUNT++))
 
         # Get connection count
-        CONN_COUNT=$(sudo -u postgres psql -d cp2b -t -c "SELECT count(*) FROM pg_stat_activity WHERE datname='cp2b';" 2>/dev/null | tr -d ' ')
+        CONN_COUNT=$(sudo -u postgres psql -d cp2b_db -t -c "SELECT count(*) FROM pg_stat_activity WHERE datname='cp2b_db';" 2>/dev/null | tr -d ' ')
         print_info "Active connections: $CONN_COUNT"
 
         # Get database size
-        DB_SIZE=$(sudo -u postgres psql -d cp2b -t -c "SELECT pg_size_pretty(pg_database_size('cp2b'));" 2>/dev/null | tr -d ' ')
+        DB_SIZE=$(sudo -u postgres psql -d cp2b_db -t -c "SELECT pg_size_pretty(pg_database_size('cp2b_db'));" 2>/dev/null | tr -d ' ')
         print_info "Database size: $DB_SIZE"
     else
-        print_fail "Cannot connect to database 'cp2b'"
+        print_fail "Cannot connect to database 'cp2b_db'"
         ((FAIL_COUNT++))
     fi
 else

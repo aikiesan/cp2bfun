@@ -92,7 +92,7 @@ const VideosList = () => {
         <div>
           <h2 className="mb-0">
             <FaYoutube className="me-2 text-danger" />
-            Vídeos em Destaque
+            Vídeos
           </h2>
           <p className="text-muted mt-2">
             Gerencie os vídeos do YouTube exibidos na página inicial

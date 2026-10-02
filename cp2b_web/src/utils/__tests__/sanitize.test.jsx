@@ -147,3 +147,23 @@ describe('SafeHtml component', () => {
     expect(container.querySelector('p')).toHaveTextContent('Safe content');
   });
 });
+
+describe('sanitizeHtml — iframes and data: URIs', () => {
+  it('keeps the video players the editor inserts', () => {
+    const html = '<iframe src="https://www.youtube.com/embed/abc123" allowfullscreen></iframe>';
+    expect(sanitizeHtml(html)).toContain('src="https://www.youtube.com/embed/abc123"');
+  });
+
+  it('drops iframes from any other host', () => {
+    const out = sanitizeHtml('<p>a</p><iframe src="https://evil.example/pagina"></iframe>');
+    expect(out).not.toContain('<iframe');
+    expect(out).toContain('<p>a</p>');
+  });
+
+  it('drops data: links but keeps inline images', () => {
+    const out = sanitizeHtml('<a href="data:text/html;base64,PHNjcmlwdD4=">x</a><img src="data:image/png;base64,iVBORw0KGgo=" alt="i">');
+    expect(out).not.toContain('data:text/html');
+    expect(out).toContain('src="data:image/png;base64,iVBORw0KGgo="');
+  });
+});
+

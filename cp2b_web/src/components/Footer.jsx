@@ -1,90 +1,186 @@
 import { Container, Row, Col } from 'react-bootstrap';
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp, FaSpotify } from 'react-icons/fa';
-import { socialLinks } from '../data/content';
+import { useRef } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { FaSpotify, FaLinkedinIn, FaInstagram, FaYoutube, FaWhatsapp } from 'react-icons/fa';
 import { useLanguage } from '../context/LanguageContext';
+import useSiteSettings from '../hooks/useSiteSettings';
 import NewsletterSignup from './NewsletterSignup';
+import { safeHref } from '../utils/safeUrl';
+import useScrollReveal from '../hooks/useScrollReveal';
+import Metaninho from './Metaninho';
 
 const Footer = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  // Nas páginas internas o Metaninho espia por cima da borda rasgada do
+  // rodapé e sobe quando o rodapé entra na tela (a Home fica como está).
+  const peekRef = useRef(null);
+  const peek = useScrollReveal(peekRef, { amount: 0.5 });
+  const { contact, social, footer: footerSettings } = useSiteSettings();
 
   const labels = {
     pt: {
-      nipe: 'Núcleo Interdisciplinar de Planejamento Energético',
+      tagline: 'Centro Paulista de Estudos em Biogás e Bioprodutos. Pesquisa, inovação e políticas públicas para a transição energética no Estado de São Paulo.',
+      explore: 'Explore',
+      institutional: 'Institucional',
+      contact: 'Contato',
       connect: 'Conecte-se',
-      partners: 'Parceiros',
-      backToTop: 'VOLTAR AO TOPO ↑',
-      university: 'Universidade Estadual de Campinas'
+      backToTop: 'Voltar ao topo ↑',
+      university: 'Universidade Estadual de Campinas',
+      links: [
+        { to: '/sobre', label: 'Sobre o CP2b' },
+        { to: '/eixos', label: 'Eixos de Pesquisa' },
+        { to: '/equipe', label: 'Equipe' },
+        { to: '/publicacoes', label: 'Publicações' },
+        { to: '/noticias', label: 'Notícias' },
+        { to: '/eventos', label: 'Eventos' },
+        { to: '/galeria', label: 'Galeria' },
+        { to: '/contato', label: 'Contato' },
+      ],
+      institutionalLinks: [
+        { to: '/sobre/governanca', label: 'Governança' },
+        { to: '/sobre/transparencia', label: 'Transparência' },
+        { to: '/sobre/parceiros', label: 'Parceiros' },
+        { to: '/oportunidades', label: 'Oportunidades' },
+        { to: '/capacitacao', label: 'Cursos e Capacitação' },
+        { to: '/press-kit', label: 'Press Kit' },
+        { to: '/forum-paulista', label: 'Fórum Paulista' },
+      ],
     },
     en: {
-      nipe: 'Interdisciplinary Center for Energy Planning',
+      tagline: 'São Paulo Center for Biogas and Bioproducts Studies. Research, innovation and public policy for the energy transition in the State of São Paulo.',
+      explore: 'Explore',
+      institutional: 'Institutional',
+      contact: 'Contact',
       connect: 'Connect with us',
-      partners: 'Partners',
-      backToTop: 'BACK TO TOP ↑',
-      university: 'University of Campinas'
-    }
+      backToTop: 'Back to top ↑',
+      university: 'University of Campinas',
+      links: [
+        { to: '/sobre', label: 'About CP2b' },
+        { to: '/eixos', label: 'Research Axes' },
+        { to: '/equipe', label: 'Team' },
+        { to: '/publicacoes', label: 'Publications' },
+        { to: '/noticias', label: 'News' },
+        { to: '/eventos', label: 'Events' },
+        { to: '/galeria', label: 'Gallery' },
+        { to: '/contato', label: 'Contact' },
+      ],
+      institutionalLinks: [
+        { to: '/sobre/governanca', label: 'Governance' },
+        { to: '/sobre/transparencia', label: 'Transparency' },
+        { to: '/sobre/parceiros', label: 'Partners' },
+        { to: '/oportunidades', label: 'Opportunities' },
+        { to: '/capacitacao', label: 'Courses and Training' },
+        { to: '/press-kit', label: 'Press Kit' },
+        { to: '/forum-paulista', label: 'Fórum Paulista' },
+      ],
+    },
   }[language];
 
+  const socials = [
+    { href: social.linkedin, icon: <FaLinkedinIn />, label: 'LinkedIn' },
+    { href: social.instagram, icon: <FaInstagram />, label: 'Instagram' },
+    { href: social.youtube, icon: <FaYoutube />, label: 'YouTube' },
+    { href: social.spotify, icon: <FaSpotify />, label: 'Spotify' },
+    { href: social.whatsapp, icon: <FaWhatsapp />, label: 'WhatsApp' },
+  ].filter((s) => s.href && s.href !== '#');
+
   return (
-    <footer className="bg-dark text-white py-5 mt-5">
+    <footer className="site-footer pt-5 mt-5">
+      {pathname !== '/' && (
+        <span ref={peekRef} className="footer-metaninho" data-reveal={peek} aria-hidden="true">
+          <Metaninho pose="feliz" size={124} />
+        </span>
+      )}
       <Container>
-        <Row className="gy-4 mb-4">
+        <Row className="pb-4 mb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.12)' }}>
           <Col md={12}>
-            <div style={{ borderTop: '1px solid #444', paddingTop: '1.5rem' }}>
-              <NewsletterSignup />
+            <NewsletterSignup />
+          </Col>
+        </Row>
+
+        <Row className="gy-3 gy-lg-4 pb-5">
+          <Col lg={4} md={6}>
+            {/* Versão colorida sobre fundo escuro: folhas e molécula em cor,
+                "CP2b" e o descritivo em branco. O negativo totalmente branco
+                perdia a identidade cromática da marca no rodapé. */}
+            <img
+              src="/assets/logos/cp2b-logo-gradient-alt.svg"
+              alt="CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos"
+              style={{ maxHeight: '64px', borderRadius: 0 }}
+              className="mb-3"
+            />
+            <p className="small" style={{ maxWidth: '22rem', color: 'rgba(255,255,255,0.7)' }}>
+              {labels.tagline}
+            </p>
+            <div className="d-flex align-items-center gap-3 mt-3">
+              <div style={{ background: '#fff', borderRadius: '6px', padding: '4px 10px' }}>
+                <img src="/assets/logo_Unicamp.png" alt="Unicamp" style={{ maxHeight: '34px', display: 'block' }} />
+              </div>
+              <div style={{ background: '#fff', borderRadius: '6px', padding: '4px 10px' }}>
+                <img src="/assets/fapesp_1-e1724070166377-500x200.jpg" alt="FAPESP" style={{ maxHeight: '34px', display: 'block' }} />
+              </div>
+            </div>
+          </Col>
+
+          <Col lg={2} md={6} sm={6}>
+            <h6>{labels.explore}</h6>
+            <ul className="footer-links">
+              {labels.links.map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to}>{link.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </Col>
+
+          <Col lg={2} md={6} sm={6}>
+            <h6>{labels.institutional}</h6>
+            <ul className="footer-links">
+              {labels.institutionalLinks.map((link) => (
+                <li key={link.to}>
+                  <Link to={link.to}>{link.label}</Link>
+                </li>
+              ))}
+            </ul>
+          </Col>
+
+          <Col lg={4} md={6}>
+            <h6>{labels.contact}</h6>
+            <address className="small mb-4" style={{ color: 'rgba(255,255,255,0.7)', fontStyle: 'normal', lineHeight: 1.8 }}>
+              {contact.institution}<br />
+              {contact.address_line1}<br />
+              {contact.address_line2}<br />
+              <a href={`tel:${contact.phone.replace(/[^+\d]/g, '')}`} style={{ color: 'rgba(255,255,255,0.85)' }}>{contact.phone}</a><br />
+              <a href={`mailto:${contact.email}`} style={{ color: 'rgba(255,255,255,0.85)' }}>{contact.email}</a>
+            </address>
+
+            <h6>{labels.connect}</h6>
+            <div className="footer-social d-flex gap-2">
+              {socials.map((s) => (
+                <a key={s.label} href={safeHref(s.href)} target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+                  {s.icon}
+                </a>
+              ))}
             </div>
           </Col>
         </Row>
-        <Row className="gy-4">
-          <Col md={4}>
-            <h5 className="mb-3 text-uppercase fw-bold text-success">NIPE</h5>
-            <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.85rem', color: '#ccc' }}>
-              <p className="mb-1">{labels.nipe}</p>
-              <p className="mb-1">Rua Cora Coralina, 330</p>
-              <p className="mb-1">{labels.university} - UNICAMP</p>
-              <p className="mb-3">Campinas - São Paulo, Brasil CEP: 13083-896</p>
-              
-              <p className="mb-1">+55 (19) 3521-1244</p>
-              <p>nipe@nipe.unicamp.br</p>
-            </div>
-          </Col>
-          
-          <Col md={4}>
-            <h5 className="mb-3 text-uppercase fw-bold">{labels.connect}</h5>
-            <div className="d-flex gap-3 mb-4">
-              <a href={socialLinks.facebook} className="text-white fs-5" target="_blank" rel="noreferrer"><FaFacebookF /></a>
-              <a href={socialLinks.linkedin} className="text-white fs-5" target="_blank" rel="noreferrer"><FaLinkedinIn /></a>
-              <a href={socialLinks.instagram} className="text-white fs-5" target="_blank" rel="noreferrer"><FaInstagram /></a>
-              <a href={socialLinks.youtube} className="text-white fs-5" target="_blank" rel="noreferrer"><FaYoutube /></a>
-              <a href={socialLinks.whatsapp} className="text-white fs-5" target="_blank" rel="noreferrer"><FaWhatsapp /></a>
-              <a href={socialLinks.spotify} className="text-white fs-5" target="_blank" rel="noreferrer"><FaSpotify /></a>
-            </div>
-            
-            <h5 className="mb-3 text-uppercase fw-bold">{labels.partners}</h5>
-            <div style={{ background: '#fff', borderRadius: '8px', padding: '8px 12px', display: 'inline-block' }}>
-              <img
-                src="/assets/parceiros.png"
-                alt="Parceiros"
-                style={{ maxWidth: '240px', display: 'block' }}
-              />
-            </div>
-          </Col>
 
-          <Col md={4} className="text-md-end">
-             <div className="mb-4 d-flex flex-column align-items-md-end gap-3">
-                <img src="/assets/CP2B-LOGO-NEGATIVO-BR@8x.png" alt="CP2b Logo" style={{ maxHeight: '70px', borderRadius: 0 }} />
-                <div style={{ background: '#fff', borderRadius: '6px', padding: '4px 10px', display: 'inline-block' }}>
-                  <img src="/assets/logo_Unicamp.png" alt="Unicamp Logo" style={{ maxHeight: '38px', display: 'block' }} />
-                </div>
-             </div>
-             <p className="small text-white-50" style={{ fontFamily: 'var(--font-mono)' }}>
-               &copy; 1969 - {new Date().getFullYear()}<br/>{labels.university}
-             </p>
-             <button
-               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-               className="btn btn-link text-white text-decoration-none small fw-bold opacity-75 p-0"
-             >
-               {labels.backToTop}
-             </button>
+        <Row className="footer-bottom py-4">
+          <Col md={8}>
+            <small style={{ lineHeight: 1.7 }}>
+              &copy; 1969 - {new Date().getFullYear()} {labels.university} · CP2b<br />
+              <strong>Expediente:</strong> {footerSettings.credits}
+            </small>
+          </Col>
+          <Col md={4} className="text-md-end mt-3 mt-md-0">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="btn btn-link p-0 small fw-bold text-decoration-none footer-back-to-top"
+              style={{ color: 'var(--cp2b-lime-500)' }}
+            >
+              {labels.backToTop}
+            </button>
           </Col>
         </Row>
       </Container>

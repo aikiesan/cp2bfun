@@ -2,8 +2,9 @@ import { useState } from 'react';
 import { Form, Spinner } from 'react-bootstrap';
 import PropTypes from 'prop-types';
 import api from '../services/api';
+import ImagePositionPicker from './admin/ImagePositionPicker';
 
-const ImageUploadField = ({ label, value, onChange, helperText }) => {
+const ImageUploadField = ({ label, value, onChange, helperText, positionValue, onPositionChange }) => {
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(value);
   const [error, setError] = useState(null);
@@ -101,6 +102,14 @@ const ImageUploadField = ({ label, value, onChange, helperText }) => {
           {helperText}
         </Form.Text>
       )}
+
+      {preview && onPositionChange && (
+        <ImagePositionPicker
+          imageUrl={preview}
+          value={positionValue}
+          onChange={onPositionChange}
+        />
+      )}
     </Form.Group>
   );
 };
@@ -110,6 +119,8 @@ ImageUploadField.propTypes = {
   value: PropTypes.string,
   onChange: PropTypes.func.isRequired,
   helperText: PropTypes.string,
+  positionValue: PropTypes.string,
+  onPositionChange: PropTypes.func,
 };
 
 export default ImageUploadField;

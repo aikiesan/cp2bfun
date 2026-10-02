@@ -8,7 +8,7 @@ router.get('/featured', async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, slug, title_pt, title_en, description_pt, description_en,
-              image, badge, badge_color, date_display, featured_position
+              image, image_position, badge, badge_color, date_display, featured_position
        FROM news
        WHERE featured_position IN ('A', 'B', 'C')
        ORDER BY featured_position`
@@ -63,7 +63,7 @@ router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, slug, title_pt, title_en, description_pt, description_en,
-              image, badge, badge_color, date_display, published_at, created_at, sort_order,
+              image, image_position, badge, badge_color, date_display, published_at, created_at, sort_order,
               author, tags
        FROM news
        ORDER BY sort_order ASC NULLS LAST, published_at DESC NULLS LAST, created_at DESC`
@@ -130,18 +130,18 @@ router.post('/', async (req, res) => {
   try {
     const {
       slug, title_pt, title_en, description_pt, description_en,
-      content_pt, content_en, image, badge, badge_color, date_display, published_at,
+      content_pt, content_en, image, image_position, badge, badge_color, date_display, published_at,
       author, image_caption_pt, image_caption_en, tags
     } = req.body;
 
     const result = await pool.query(
       `INSERT INTO news (slug, title_pt, title_en, description_pt, description_en,
-                         content_pt, content_en, image, badge, badge_color, date_display,
+                         content_pt, content_en, image, image_position, badge, badge_color, date_display,
                          published_at, author, image_caption_pt, image_caption_en, tags)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17)
        RETURNING *`,
       [slug, title_pt, title_en, description_pt, description_en,
-       content_pt, content_en, image, badge, badge_color, date_display, published_at,
+       content_pt, content_en, image, image_position || 'center center', badge, badge_color, date_display, published_at,
        author, image_caption_pt, image_caption_en, tags]
     );
 
@@ -161,7 +161,7 @@ router.put('/:slug', async (req, res) => {
     const { slug } = req.params;
     const {
       title_pt, title_en, description_pt, description_en,
-      content_pt, content_en, image, badge, badge_color, date_display, published_at,
+      content_pt, content_en, image, image_position, badge, badge_color, date_display, published_at,
       new_slug, author, image_caption_pt, image_caption_en, tags
     } = req.body;
 
@@ -175,19 +175,20 @@ router.put('/:slug', async (req, res) => {
          content_pt = COALESCE($6, content_pt),
          content_en = COALESCE($7, content_en),
          image = COALESCE($8, image),
-         badge = COALESCE($9, badge),
-         badge_color = COALESCE($10, badge_color),
-         date_display = COALESCE($11, date_display),
-         published_at = COALESCE($12, published_at),
-         author = COALESCE($14, author),
-         image_caption_pt = COALESCE($15, image_caption_pt),
-         image_caption_en = COALESCE($16, image_caption_en),
-         tags = COALESCE($17, tags),
+         image_position = COALESCE($9, image_position),
+         badge = COALESCE($10, badge),
+         badge_color = COALESCE($11, badge_color),
+         date_display = COALESCE($12, date_display),
+         published_at = COALESCE($13, published_at),
+         author = COALESCE($15, author),
+         image_caption_pt = COALESCE($16, image_caption_pt),
+         image_caption_en = COALESCE($17, image_caption_en),
+         tags = COALESCE($18, tags),
          updated_at = NOW()
-       WHERE slug = $13
+       WHERE slug = $14
        RETURNING *`,
       [new_slug, title_pt, title_en, description_pt, description_en,
-       content_pt, content_en, image, badge, badge_color, date_display, published_at, slug,
+       content_pt, content_en, image, image_position, badge, badge_color, date_display, published_at, slug,
        author, image_caption_pt, image_caption_en, tags]
     );
 

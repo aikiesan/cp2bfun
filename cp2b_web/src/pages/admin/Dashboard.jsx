@@ -11,8 +11,7 @@ const Dashboard = () => {
     publicationsCount: 0,
     publicationsThisYear: 0,
     projectsCount: 0,
-    eventsCount: 0,
-    upcomingEvents: 0,
+    microscopioCount: 0,
     teamCount: 0,
     partnersCount: 0,
     axesCount: 0,
@@ -21,6 +20,9 @@ const Dashboard = () => {
     participantsCount: 0,
     meetupRequestsCount: 0,
     newsletterSubscribersCount: 0,
+    opportunitiesCount: 0,
+    eventsCount: 0,
+    upcomingEventsCount: 0,
   });
   const [loading, setLoading] = useState(true);
   const [apiError, setApiError] = useState(false);
@@ -33,8 +35,7 @@ const Dashboard = () => {
           featuredNewsRes,
           publicationsRes,
           projectsRes,
-          eventsRes,
-          upcomingEventsRes,
+          microscopioRes,
           teamRes,
           partnersRes,
           axesRes,
@@ -42,13 +43,13 @@ const Dashboard = () => {
           participantsRes,
           meetupRequestsRes,
           newsletterRes,
+          opportunitiesRes,
         ] = await Promise.all([
           api.get('/news'),
           api.get('/news/featured'),
           api.get('/publications').catch(() => ({ data: [] })),
           api.get('/projects').catch(() => ({ data: [] })),
-          api.get('/events').catch(() => ({ data: [] })),
-          api.get('/events/upcoming').catch(() => ({ data: [] })),
+          api.get('/microscopio').catch(() => ({ data: [] })),
           api.get('/team'),
           api.get('/partners').catch(() => ({ data: [] })),
           api.get('/axes'),
@@ -56,7 +57,9 @@ const Dashboard = () => {
           api.get('/participants').catch(() => ({ data: [] })),
           api.get('/meetup-requests/all').catch(() => ({ data: [] })),
           api.get('/newsletter/subscribers').catch(() => ({ data: [] })),
+          api.get('/opportunities').catch(() => ({ data: [] })),
         ]);
+        const eventsRes = await api.get('/events').catch(() => ({ data: [] }));
 
         const currentYear = new Date().getFullYear();
         const publicationsThisYear = publicationsRes.data.filter(p => p.year === currentYear).length;
@@ -68,8 +71,7 @@ const Dashboard = () => {
           publicationsCount: publicationsRes.data.length,
           publicationsThisYear,
           projectsCount: projectsRes.data.length,
-          eventsCount: eventsRes.data.length,
-          upcomingEvents: upcomingEventsRes.data.length,
+          microscopioCount: microscopioRes.data.length,
           teamCount: teamRes.data.length,
           partnersCount: partnersRes.data.length,
           axesCount: axesRes.data.length,
@@ -78,6 +80,11 @@ const Dashboard = () => {
           participantsCount: participantsRes.data.length,
           meetupRequestsCount: meetupRequestsRes.data.length,
           newsletterSubscribersCount: newsletterRes.data.filter(s => s.active).length,
+          opportunitiesCount: opportunitiesRes.data.length,
+          eventsCount: eventsRes.data.length,
+          upcomingEventsCount: eventsRes.data.filter(
+            (e) => new Date(e.end_date || e.start_date) >= new Date() && e.status !== 'cancelled'
+          ).length,
         });
         setApiError(false);
       } catch (error) {
@@ -108,19 +115,21 @@ const Dashboard = () => {
       subtitle: stats.publicationsThisYear > 0 ? `${stats.publicationsThisYear} este ano` : null,
     },
     {
-      title: 'Projetos',
+      // "Entrevistas" e nao "Projetos": e assim que o menu lateral e o site
+      // publico (/entrevistas) chamam este conteudo. O nome antigo fazia o
+      // Dashboard contar uma coisa que a equipe nao achava no menu.
+      title: 'Entrevistas',
       count: stats.projectsCount,
-      icon: 'bi-folder',
+      icon: 'bi-mic',
       link: '/admin/projects',
       color: '#00695C',
     },
     {
-      title: 'Eventos',
-      count: stats.eventsCount,
-      icon: 'bi-calendar-event',
-      link: '/admin/events',
+      title: 'Microscópio',
+      count: stats.microscopioCount,
+      icon: 'bi-binoculars',
+      link: '/admin/microscopio',
       color: '#6A1B9A',
-      subtitle: stats.upcomingEvents > 0 ? `${stats.upcomingEvents} próximos` : null,
     },
     {
       title: 'Mensagens',
@@ -137,6 +146,15 @@ const Dashboard = () => {
       icon: 'bi-person-badge',
       link: '/admin/team',
       color: '#2E7D32'
+    },
+    {
+      title: 'Eventos',
+      count: stats.eventsCount,
+      icon: 'bi-calendar-event',
+      link: '/admin/events',
+      color: '#00838F',
+      subtitle: stats.upcomingEventsCount > 0 ? `${stats.upcomingEventsCount} próximo${stats.upcomingEventsCount > 1 ? 's' : ''}` : null,
+      isNew: true,
     },
     {
       title: 'Parceiros',
@@ -166,6 +184,14 @@ const Dashboard = () => {
       icon: 'bi-diagram-2',
       link: '/admin/forum/meetups',
       color: '#AD1457',
+      isNew: true,
+    },
+    {
+      title: 'Oportunidades',
+      count: stats.opportunitiesCount,
+      icon: 'bi-briefcase',
+      link: '/admin/oportunidades',
+      color: '#558B2F',
       isNew: true,
     },
     {
@@ -263,9 +289,8 @@ const Dashboard = () => {
                   </Link>
                 </Col>
                 <Col md={4} sm={6}>
-                  <Link to="/admin/events/new" className="btn btn-outline-primary w-100">
-                    <i className="bi bi-calendar-plus me-2"></i>Novo Evento
-                    <Badge bg="success" className="ms-2">NEW</Badge>
+                  <Link to="/admin/microscopio/new" className="btn btn-outline-primary w-100">
+                    <i className="bi bi-binoculars me-2"></i>Novo Artigo Microscópio
                   </Link>
                 </Col>
                 <Col md={4} sm={6}>
@@ -276,8 +301,19 @@ const Dashboard = () => {
                 </Col>
                 <Col md={4} sm={6}>
                   <Link to="/admin/projects/new" className="btn btn-outline-primary w-100">
-                    <i className="bi bi-folder-plus me-2"></i>Novo Projeto
+                    <i className="bi bi-mic me-2"></i>Nova Entrevista
                     <Badge bg="success" className="ms-2">NEW</Badge>
+                  </Link>
+                </Col>
+                <Col md={4} sm={6}>
+                  <Link to="/admin/events/new" className="btn btn-outline-primary w-100">
+                    <i className="bi bi-calendar-plus me-2"></i>Novo Evento
+                    <Badge bg="success" className="ms-2">NEW</Badge>
+                  </Link>
+                </Col>
+                <Col md={4} sm={6}>
+                  <Link to="/admin/gallery/upload" className="btn btn-outline-primary w-100">
+                    <i className="bi bi-camera me-2"></i>Enviar Fotos
                   </Link>
                 </Col>
                 <Col md={4} sm={6}>
@@ -304,15 +340,16 @@ const Dashboard = () => {
                   </Link>
                 </Col>
                 <Col md={4} sm={6}>
-                  <Link to="/admin/newsletter" className="btn btn-outline-primary w-100">
-                    <i className="bi bi-envelope-paper me-2"></i>Newsletter
+                  <Link to="/admin/oportunidades/new" className="btn btn-outline-primary w-100">
+                    <i className="bi bi-briefcase me-2"></i>Nova Oportunidade
                     <Badge bg="success" className="ms-2">NEW</Badge>
                   </Link>
                 </Col>
                 <Col md={4} sm={6}>
-                  <a href="/registro" target="_blank" rel="noopener noreferrer" className="btn btn-outline-secondary w-100">
-                    <i className="bi bi-box-arrow-up-right me-2"></i>Página de Inscrição
-                  </a>
+                  <Link to="/admin/newsletter" className="btn btn-outline-primary w-100">
+                    <i className="bi bi-envelope-paper me-2"></i>Newsletter
+                    <Badge bg="success" className="ms-2">NEW</Badge>
+                  </Link>
                 </Col>
               </Row>
             </Card.Body>
@@ -343,13 +380,21 @@ const Dashboard = () => {
                 <small className="text-muted d-block mb-1">Recursos</small>
                 <p className="mb-0">
                   <Badge bg="success" className="me-1">Notícias</Badge>
-                  <Badge bg="success" className="me-1">Eventos</Badge>
+                  <Badge bg="success" className="me-1">Microscópio</Badge>
                   <Badge bg="success" className="me-1">Publicações</Badge>
                   <Badge bg="success">Parceiros</Badge>
                 </p>
               </div>
               <hr />
-              <div className="d-grid">
+              <div className="d-grid gap-2">
+                <Link to="/admin/ajuda" className="btn btn-success btn-sm">
+                  <i className="bi bi-question-circle me-2"></i>
+                  Guia de Uso do Painel
+                </Link>
+                <Link to="/admin/settings" className="btn btn-outline-secondary btn-sm">
+                  <i className="bi bi-sliders me-2"></i>
+                  Configurações do Site
+                </Link>
                 <Link to="/" className="btn btn-outline-secondary btn-sm">
                   <i className="bi bi-arrow-left me-2"></i>
                   Voltar ao Site

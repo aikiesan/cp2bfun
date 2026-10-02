@@ -1,6 +1,8 @@
 import { Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
+import SeoHead from '../components/SeoHead';
+import Metaninho from '../components/Metaninho';
 
 const NotFound = () => {
   const { language } = useLanguage();
@@ -8,9 +10,9 @@ const NotFound = () => {
   const labels = {
     pt: {
       title: '404',
-      message: 'Pagina nao encontrada',
-      description: 'A pagina que voce procura nao existe ou foi movida.',
-      backHome: 'Voltar ao Inicio',
+      message: 'Página não encontrada',
+      description: 'A página que você procura não existe ou foi movida.',
+      backHome: 'Voltar ao Início',
     },
     en: {
       title: '404',
@@ -21,7 +23,17 @@ const NotFound = () => {
   }[language];
 
   return (
+    <>
+      {/* The SPA answers unknown URLs with HTTP 200, so Google read this page as a
+          "soft 404". noindex is the signal that keeps it out of the index. */}
+      <SeoHead
+        title={labels.message}
+        description={labels.description}
+        language={language}
+        noIndex
+      />
     <Container className="py-5 text-center" style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+      <Metaninho pose="surpreso" size={180} className="mb-2" />
       <h1 className="display-1 fw-bold text-muted">{labels.title}</h1>
       <h2 className="mb-3">{labels.message}</h2>
       <p className="text-muted mb-4">{labels.description}</p>
@@ -29,6 +41,7 @@ const NotFound = () => {
         {labels.backHome}
       </Link>
     </Container>
+    </>
   );
 };
 

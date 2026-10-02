@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { Nav, Badge, Collapse, Offcanvas } from 'react-bootstrap';
-import api from '../../services/api';
+import api, { adminAuth, fetchAuthStatus } from '../../services/api';
 import { ToastProvider } from '../../components/admin';
 import Breadcrumbs from '../../components/admin/Breadcrumbs';
+import AdminLogin from './AdminLogin';
 
 const AdminLayout = () => {
+  // null = checking; afterwards mirrors GET /api/auth/status
+  const [authRequired, setAuthRequired] = useState(null);
+  const [authed, setAuthed] = useState(() => Boolean(adminAuth.getToken()));
   const [unreadCount, setUnreadCount] = useState(0);
   const [newsCount, setNewsCount] = useState(0);
   const [participantCount, setParticipantCount] = useState(0);
@@ -21,7 +25,8 @@ const AdminLayout = () => {
       about: false,
       pages: false,
       forum: false,
-      engagement: false
+      engagement: false,
+      system: false
     };
   };
 
@@ -31,6 +36,25 @@ const AdminLayout = () => {
   useEffect(() => {
     localStorage.setItem('adminCategoriesCollapsed', JSON.stringify(collapsed));
   }, [collapsed]);
+
+  useEffect(() => {
+    fetchAuthStatus().then((status) => setAuthRequired(Boolean(status?.required)));
+  }, []);
+
+  // Expired/invalid token on any request sends the user back to the login screen.
+  useEffect(() => {
+    const onUnauthorized = () => {
+      adminAuth.clearToken();
+      setAuthed(false);
+    };
+    window.addEventListener('cp2b-admin-unauthorized', onUnauthorized);
+    return () => window.removeEventListener('cp2b-admin-unauthorized', onUnauthorized);
+  }, []);
+
+  const handleLogout = () => {
+    adminAuth.clearToken();
+    setAuthed(false);
+  };
 
   // Fetch counts for badges
   useEffect(() => {
@@ -73,10 +97,16 @@ const AdminLayout = () => {
       items: [
         { path: '/admin/news', label: 'Notícias', icon: 'bi-newspaper', badge: newsCount },
         { path: '/admin/videos', label: 'Vídeos', icon: 'bi-youtube', },
-        { path: '/admin/projects', label: 'Projetos', icon: 'bi-folder', },
+        { path: '/admin/projects', label: 'Entrevistas', icon: 'bi-mic', },
+        { path: '/admin/gallery', label: 'Galeria', icon: 'bi-images', },
+        { path: '/admin/events', label: 'Eventos', icon: 'bi-calendar-event', isNew: true },
         { path: '/admin/featured', label: 'Destaques', icon: 'bi-star' },
-        { path: '/admin/publications', label: 'Publicações', icon: 'bi-journal', },
-        { path: '/admin/events', label: 'Eventos', icon: 'bi-calendar-event', }
+        { path: '/admin/publications', label: 'Publicações', icon: 'bi-journal', isNew: true },
+        { path: '/admin/microscopio', label: 'Microscópio', icon: 'bi-binoculars' },
+        { path: '/admin/oportunidades', label: 'Oportunidades', icon: 'bi-briefcase', isNew: true },
+        { path: '/admin/press-kit', label: 'Press Kit', icon: 'bi-file-earmark-zip' },
+        { path: '/admin/podcast', label: 'Podcast', icon: 'bi-mic' },
+        { path: '/admin/boletins', label: 'Boletins', icon: 'bi-journal-text', isNew: true }
       ]
     },
     {
@@ -97,7 +127,8 @@ const AdminLayout = () => {
         { path: '/admin/content/home', label: 'Página Inicial', icon: 'bi-house-door' },
         { path: '/admin/content/about', label: 'Página Sobre', icon: 'bi-info-circle' },
         { path: '/admin/content/governance', label: 'Governança', icon: 'bi-diagram-2' },
-        { path: '/admin/content/transparency', label: 'Transparência', icon: 'bi-eye' }
+        { path: '/admin/content/transparency', label: 'Transparência', icon: 'bi-eye' },
+        { path: '/admin/content/microscopio', label: 'Coluna Microscópio', icon: 'bi-binoculars' }
       ]
     },
     {
@@ -116,7 +147,18 @@ const AdminLayout = () => {
       label: 'ENGAJAMENTO',
       icon: 'bi-chat-dots',
       items: [
-        { path: '/admin/messages', label: 'Mensagens', icon: 'bi-envelope', badge: unreadCount }
+        { path: '/admin/messages', label: 'Mensagens', icon: 'bi-envelope', badge: unreadCount },
+        { path: '/admin/newsletter', label: 'Newsletter', icon: 'bi-send' }
+      ]
+    },
+    {
+      id: 'system',
+      label: 'SISTEMA',
+      icon: 'bi-gear',
+      items: [
+        { path: '/admin/page-status', label: 'Status das Páginas', icon: 'bi-toggles' },
+        { path: '/admin/settings', label: 'Configurações do Site', icon: 'bi-sliders', isNew: true },
+        { path: '/admin/ajuda', label: 'Guia de Uso', icon: 'bi-question-circle' }
       ]
     }
   ];
@@ -182,9 +224,27 @@ const AdminLayout = () => {
           <i className="bi bi-arrow-left me-2"></i>
           Voltar ao Site
         </Nav.Link>
+        {authRequired && (
+          <Nav.Link onClick={handleLogout} className="px-3 py-2 text-danger" role="button">
+            <i className="bi bi-box-arrow-right me-2"></i>
+            Sair
+          </Nav.Link>
+        )}
       </Nav>
     </>
   );
+
+  if (authRequired === null) {
+    return (
+      <div className="d-flex align-items-center justify-content-center min-vh-100">
+        <div className="spinner-border text-primary" role="status" aria-label="Carregando" />
+      </div>
+    );
+  }
+
+  if (authRequired && !authed) {
+    return <AdminLogin onSuccess={() => setAuthed(true)} />;
+  }
 
   return (
     <ToastProvider>

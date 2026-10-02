@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Form, Button, InputGroup, Alert } from 'react-bootstrap';
 import { useLanguage } from '../context/LanguageContext';
 import api from '../services/api';
+import Metaninho from './Metaninho';
 
 const labels = {
   pt: {
@@ -28,9 +29,17 @@ const labels = {
   },
 };
 
-const NewsletterSignup = () => {
+// O mesmo formulário vive no rodapé escuro e no card branco de /newsletter.
+// `tone` troca só as cores: no card, o cinza-claro pensado para o rodapé dava
+// contraste de 1,6:1 com o branco e o subtítulo mal se lia.
+const NewsletterSignup = ({ tone = 'dark' }) => {
   const { language } = useLanguage();
   const t = labels[language];
+  const light = tone === 'light';
+  // newsletter-input só pinta o placeholder de branco — no card claro ele
+  // sumiria, então fica de fora e vale o cinza padrão do Bootstrap.
+  const inputClass = light ? '' : 'bg-dark text-white border-secondary newsletter-input';
+  const inputStyle = light ? { fontSize: '0.85rem' } : { fontSize: '0.85rem', color: 'white' };
 
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -62,12 +71,13 @@ const NewsletterSignup = () => {
 
   return (
     <div>
-      <h5 className="mb-2 text-uppercase fw-bold text-success">{t.title}</h5>
-      <p className="mb-3" style={{ fontSize: '0.85rem', color: '#ccc' }}>{t.subtitle}</p>
+      <h2 className={light ? 'newsletter-signup__title newsletter-signup__title--light mb-2' : 'newsletter-signup__title mb-2'}>{t.title}</h2>
+      <p className="mb-3" style={{ fontSize: '0.85rem', color: light ? 'var(--text-secondary)' : '#ccc' }}>{t.subtitle}</p>
 
       {status === 'success' && (
-        <Alert variant="success" className="py-2 px-3" style={{ fontSize: '0.85rem' }}>
-          <i className="bi bi-check-circle me-2"></i>{t.success}
+        <Alert variant="success" className="py-2 px-3 d-flex align-items-center gap-2" style={{ fontSize: '0.85rem' }}>
+          <Metaninho pose="feliz" size={48} />
+          <span>{t.success}</span>
         </Alert>
       )}
       {status === 'error' && (
@@ -77,14 +87,14 @@ const NewsletterSignup = () => {
       )}
 
       {status !== 'success' && (
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={handleSubmit} style={{ maxWidth: '480px' }}>
           <Form.Control
             type="text"
             placeholder={t.namePlaceholder}
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="mb-2 bg-dark text-white border-secondary"
-            style={{ fontSize: '0.85rem' }}
+            className={`mb-2 ${inputClass}`.trim()}
+            style={inputStyle}
           />
           <InputGroup>
             <Form.Control
@@ -93,8 +103,8 @@ const NewsletterSignup = () => {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="bg-dark text-white border-secondary"
-              style={{ fontSize: '0.85rem' }}
+              className={inputClass || undefined}
+              style={inputStyle}
             />
             <Button
               type="submit"

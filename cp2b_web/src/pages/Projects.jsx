@@ -4,23 +4,29 @@ import { Link } from 'react-router-dom';
 import { projectsItems } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchProjects } from '../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
+import PageHero from '../components/PageHero';
 
 const Projects = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = (pageSeo.entrevistas || pageSeo.projects)[language] || (pageSeo.entrevistas || pageSeo.projects).pt;
   const [projects, setProjects] = useState(null);
   const [loading, setLoading] = useState(true);
   const [_error, setError] = useState(false);
 
   const labels = {
     pt: {
-      title: 'Agencia CP2b de Projetos',
+      title: 'Entrevistas CP2b',
       readMore: 'Leia mais',
-      latest: 'Ultimas projetos'
+      latest: 'Mais entrevistas'
     },
     en: {
-      title: 'CP2b Projects Agency',
+      title: 'CP2b Interviews',
       readMore: 'Read more',
-      latest: 'Latest projects'
+      latest: 'More interviews'
     }
   }[language];
 
@@ -39,7 +45,7 @@ const Projects = () => {
           badgeColor: item.badge_color,
           title: language === 'pt' ? item.title_pt : (item.title_en || item.title_pt),
           description: language === 'pt' ? item.description_pt : (item.description_en || item.description_pt),
-          link: `/projetos/${item.slug}`
+          link: `/entrevistas/${item.slug}`
         }));
         setProjects(transformed);
       } else {
@@ -67,25 +73,27 @@ const Projects = () => {
   const others = projects.slice(1);
 
   return (
-    <Container className="py-5">
-      <h1 className="fw-bold mb-5 border-bottom pb-3" style={{ color: '#004a80' }}>{labels.title}</h1>
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <PageHero eyebrow={language === 'pt' ? 'Comunicação' : 'Communication'} title={labels.title} />
+      <Container className="py-4 py-md-5">
 
       {/* Featured Projects - FAPESP Style */}
-      <section className="mb-5">
+      <section className="mb-4 mb-md-5">
         <Row className="g-0 bg-white shadow-sm overflow-hidden rounded-4 border border-light">
           <Col lg={7}>
-            <div style={{ height: '400px' }}>
+            <div className="news-featured-media">
               <img src={featured.image} alt={featured.title} className="w-100 h-100 object-fit-cover" />
             </div>
           </Col>
-          <Col lg={5} className="p-4 p-lg-5 d-flex flex-column justify-content-center">
+          <Col lg={5} className="p-3 p-md-4 p-lg-5 d-flex flex-column justify-content-center">
             <span className={`text-${featured.badgeColor} fw-bold text-uppercase small mb-2`}>{featured.badge}</span>
-            <h2 className="fw-bold mb-3 display-6">
+            <h2 className="fw-bold mb-2 mb-md-3 display-6 mobile-featured-title">
               <Link to={featured.link} className="text-decoration-none text-dark hover-blue">{featured.title}</Link>
             </h2>
-            <p className="text-muted mb-4">{featured.description}</p>
+            <p className="text-muted mb-3 mb-md-4">{featured.description}</p>
             <div className="mt-auto d-flex justify-content-between align-items-center">
-              <span className="small text-muted" style={{ fontFamily: 'var(--font-mono)' }}>{featured.date}</span>
+              <span className="small text-muted">{featured.date}</span>
               <Link to={featured.link} className="fw-bold text-primary text-decoration-none">{labels.readMore} +</Link>
             </div>
           </Col>
@@ -93,12 +101,12 @@ const Projects = () => {
       </section>
 
       {/* Others Grid */}
-      <h4 className="fw-bold mb-4 text-muted text-uppercase small" style={{ letterSpacing: '2px' }}>{labels.latest}</h4>
-      <Row className="g-4">
+      <h4 className="fw-bold mb-3 mb-md-4 text-muted text-uppercase small" style={{ letterSpacing: '2px' }}>{labels.latest}</h4>
+      <Row className="g-3 g-md-4">
         {others.map((item) => (
           <Col md={6} lg={4} key={item.id}>
             <Card className="h-100 border-0 bg-transparent" style={{ overflow: 'visible' }}>
-              <div className="overflow-hidden rounded-4 mb-3" style={{ height: '200px' }}>
+              <div className="overflow-hidden rounded-4 mb-3 news-card-media">
                 <img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover hover-scale" />
               </div>
               <Card.Body className="p-0 px-2">
@@ -107,7 +115,7 @@ const Projects = () => {
                   <Link to={item.link} className="text-decoration-none text-dark hover-blue">{item.title}</Link>
                 </Card.Title>
                 <div className="d-flex justify-content-between align-items-center mt-3">
-                   <span className="x-small text-muted" style={{ fontFamily: 'var(--font-mono)', fontSize: '0.75rem' }}>{item.date}</span>
+                   <span className="x-small text-muted" style={{ fontSize: '0.75rem' }}>{item.date}</span>
                 </div>
               </Card.Body>
             </Card>
@@ -115,6 +123,7 @@ const Projects = () => {
         ))}
       </Row>
     </Container>
+    </>
   );
 };
 

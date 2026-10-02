@@ -3,33 +3,59 @@ import pool from '../db/connection.js';
 
 const router = Router();
 
-// GET unified featured content (news + projects)
+/**
+ * Tipos que podem ocupar os três destaques da home.
+ *
+ * O destaque exige uma forma comum (slug, imagem, badge, data), mas as tabelas
+ * não são iguais: boletim e podcast não têm slug nem página de detalhe, o
+ * boletim guarda a capa em `cover_image`, e nenhum dos dois tem badge. Em vez
+ * de replicar seis colunas em cada tabela nova, cada tipo declara aqui como se
+ * projeta nessa forma — a próxima seção destacável é uma entrada a mais, não
+ * uma migração.
+ *
+ *  key    coluna que identifica o item ao gravar a posição.
+ *  image  coluna da imagem do card.
+ *  badge  expressão SQL do rótulo; um literal quando a tabela não tem badge.
+ *  date   expressão SQL da data exibida; NULL quando não há o que mostrar.
+ */
+const TYPES = {
+  news:        { table: 'news',            key: 'slug', image: 'image',       badge: 'badge', badgeColor: 'badge_color', date: 'date_display' },
+  project:     { table: 'projects',        key: 'slug', image: 'image',       badge: 'badge', badgeColor: 'badge_color', date: 'date_display' },
+  microscopio: { table: 'microscopio',     key: 'slug', image: 'image',       badge: 'badge', badgeColor: 'badge_color', date: 'date_display' },
+  opportunity: { table: 'opportunities',   key: 'slug', image: 'image',       badge: 'badge', badgeColor: 'badge_color', date: 'date_display' },
+  event:       { table: 'events',          key: 'slug', image: 'image',       badge: "'Evento'",  badgeColor: "'#00573A'", date: 'NULL' },
+  // Sem slug: o clique leva à listagem, porque o conteúdo vive no PDF e no
+  // Spotify, não numa página do site.
+  boletim:     { table: 'boletins',        key: 'id',   image: 'cover_image', badge: "'Boletim'", badgeColor: "'#1E3E4C'", date: 'NULL' },
+  podcast:     { table: 'podcast_episodes', key: 'id',  image: 'image',       badge: "'Podcast'", badgeColor: "'#5CA032'", date: 'NULL' },
+};
+
+// GET unified featured content
 router.get('/', async (req, res) => {
   try {
-    // Fetch featured news
-    const newsResult = await pool.query(
-      `SELECT id, slug, title_pt, title_en, description_pt, description_en,
-              image, badge, badge_color, date_display, featured_position,
-              'news' as content_type
-       FROM news
-       WHERE featured_position IN ('A', 'B', 'C')`
+    const queries = Object.entries(TYPES).map(([type, t]) =>
+      pool.query(
+        `SELECT id,
+                ${t.key === 'slug' ? 'slug' : 'id::text AS slug'},
+                title_pt, title_en, description_pt, description_en,
+                ${t.image} AS image,
+                ${t.badge} AS badge,
+                ${t.badgeColor} AS badge_color,
+                ${t.date} AS date_display,
+                featured_position,
+                '${type}' AS content_type
+         FROM ${t.table}
+         WHERE featured_position IN ('A', 'B', 'C')`
+      )
     );
 
-    // Fetch featured projects
-    const projectsResult = await pool.query(
-      `SELECT id, slug, title_pt, title_en, description_pt, description_en,
-              image, badge, badge_color, date_display, featured_position,
-              'project' as content_type
-       FROM projects
-       WHERE featured_position IN ('A', 'B', 'C')`
-    );
+    const results = await Promise.all(queries);
+    const allFeatured = results.flatMap((r) => r.rows);
 
-    // Combine and organize by position
-    const allFeatured = [...newsResult.rows, ...projectsResult.rows];
     const featured = {
-      A: allFeatured.find(item => item.featured_position === 'A') || null,
-      B: allFeatured.find(item => item.featured_position === 'B') || null,
-      C: allFeatured.find(item => item.featured_position === 'C') || null
+      A: allFeatured.find((item) => item.featured_position === 'A') || null,
+      B: allFeatured.find((item) => item.featured_position === 'B') || null,
+      C: allFeatured.find((item) => item.featured_position === 'C') || null,
     };
 
     res.json(featured);
@@ -42,37 +68,28 @@ router.get('/', async (req, res) => {
 // PUT unified featured positions
 router.put('/', async (req, res) => {
   const { positionA, positionB, positionC } = req.body;
-  // positionA = { type: 'news', slug: 'my-news' } or { type: 'project', slug: 'my-project' }
 
   try {
     await pool.query('BEGIN');
 
-    // Clear all existing featured positions
-    await pool.query('UPDATE news SET featured_position = NULL WHERE featured_position IS NOT NULL');
-    await pool.query('UPDATE projects SET featured_position = NULL WHERE featured_position IS NOT NULL');
-
-    // Set new positions
-    if (positionA && positionA.slug) {
-      const table = positionA.type === 'news' ? 'news' : 'projects';
+    // Limpa todas as posições antes de gravar as novas: um mesmo item pode
+    // trocar de posição, e duas tabelas não podem disputar a mesma letra.
+    for (const t of Object.values(TYPES)) {
       await pool.query(
-        `UPDATE ${table} SET featured_position = $1 WHERE slug = $2`,
-        ['A', positionA.slug]
+        `UPDATE ${t.table} SET featured_position = NULL WHERE featured_position IS NOT NULL`
       );
     }
 
-    if (positionB && positionB.slug) {
-      const table = positionB.type === 'news' ? 'news' : 'projects';
-      await pool.query(
-        `UPDATE ${table} SET featured_position = $1 WHERE slug = $2`,
-        ['B', positionB.slug]
-      );
-    }
+    for (const [pos, data] of [['A', positionA], ['B', positionB], ['C', positionC]]) {
+      if (!data || !TYPES[data.type]) continue;
+      const t = TYPES[data.type];
+      // O admin manda sempre `slug`; para as tabelas sem slug ele carrega o id.
+      const identifier = data.slug;
+      if (identifier === undefined || identifier === null || identifier === '') continue;
 
-    if (positionC && positionC.slug) {
-      const table = positionC.type === 'news' ? 'news' : 'projects';
       await pool.query(
-        `UPDATE ${table} SET featured_position = $1 WHERE slug = $2`,
-        ['C', positionC.slug]
+        `UPDATE ${t.table} SET featured_position = $1 WHERE ${t.key}::text = $2`,
+        [pos, String(identifier)]
       );
     }
 

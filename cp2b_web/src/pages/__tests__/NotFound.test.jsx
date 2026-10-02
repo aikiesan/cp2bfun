@@ -11,12 +11,12 @@ describe('NotFound', () => {
 
   it('renders the not found message in Portuguese by default', () => {
     renderWithProviders(<NotFound />);
-    expect(screen.getByText('Pagina nao encontrada')).toBeInTheDocument();
+    expect(screen.getByText('Página não encontrada')).toBeInTheDocument();
   });
 
   it('renders a link back to home', () => {
     renderWithProviders(<NotFound />);
-    const homeLink = screen.getByText('Voltar ao Inicio');
+    const homeLink = screen.getByText('Voltar ao Início');
     expect(homeLink).toBeInTheDocument();
     expect(homeLink.closest('a')).toHaveAttribute('href', '/');
   });

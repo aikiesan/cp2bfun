@@ -20,11 +20,16 @@ vi.mock('../services/api', () => ({
   fetchFeaturedContent: vi.fn().mockResolvedValue(null),
   fetchFeaturedVideos: vi.fn().mockResolvedValue([]),
   fetchAxes: vi.fn().mockResolvedValue([]),
+  fetchOpportunities: vi.fn().mockResolvedValue([]),
+  fetchOpportunity: vi.fn().mockResolvedValue(null),
+  fetchGallery: vi.fn().mockResolvedValue([]),
 }));
 
 import Home from '../pages/Home';
 import About from '../pages/About';
 import Research from '../pages/Research';
+import Solucoes from '../pages/Solucoes';
+import Capacitacao from '../pages/Capacitacao';
 import Team from '../pages/Team';
 import News from '../pages/News';
 import Contact from '../pages/Contact';
@@ -32,10 +37,12 @@ import Opportunities from '../pages/Opportunities';
 import Publications from '../pages/Publications';
 import Events from '../pages/Events';
 import Projects from '../pages/Projects';
-import Media from '../pages/Media';
 import Others from '../pages/Others';
 import ForumPaulista from '../pages/ForumPaulista';
 import NotFound from '../pages/NotFound';
+import Governance from '../pages/about/Governance';
+import Indicators from '../pages/about/Indicators';
+import Transparency from '../pages/about/Transparency';
 
 describe('Public pages smoke tests', () => {
   beforeEach(() => {
@@ -46,6 +53,8 @@ describe('Public pages smoke tests', () => {
     ['Home (/)', Home],
     ['About (/sobre)', About],
     ['Research (/eixos)', Research],
+    ['Solucoes (/solucoes)', Solucoes],
+    ['Capacitacao (/capacitacao)', Capacitacao],
     ['Team (/equipe)', Team],
     ['News (/noticias)', News],
     ['Contact (/contato)', Contact],
@@ -53,10 +62,12 @@ describe('Public pages smoke tests', () => {
     ['Publications (/publicacoes)', Publications],
     ['Events (/eventos)', Events],
     ['Projects (/projetos)', Projects],
-    ['Media (/na-midia)', Media],
     ['Others (/outros)', Others],
     ['ForumPaulista (/forum-paulista)', ForumPaulista],
     ['NotFound (404)', NotFound],
+    ['Governance (/sobre/governanca)', Governance],
+    ['Indicators (/sobre/indicadores)', Indicators],
+    ['Transparency (/sobre/transparencia)', Transparency],
   ];
 
   pages.forEach(([label, PageComponent]) => {

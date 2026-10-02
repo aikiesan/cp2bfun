@@ -1,0 +1,333 @@
+/* "Qual é o seu desafio?" — seletor por maturidade em /solucoes. Mesma
+   linguagem da régua de TRL logo acima: as três fases nos mesmos tons,
+   numerais em traço leve, filetes finos, cor forte só no estado ativo.
+   Só variáveis de tokens.css, sem cor literal. */
+
+.trl-match {
+  /* O cabeçalho (.lab-head) e os chips de eixo (.lab-chip) vêm de
+     LabInfrastructure.css e leem estas duas variáveis. */
+  --lab-ink: var(--cp2b-verde-escuro);
+  --lab-hair: color-mix(in srgb, var(--cp2b-verde-escuro) 12%, var(--cp2b-branco));
+  --trl-tint: color-mix(in srgb, var(--cp2b-verde) 4%, var(--cp2b-branco));
+  margin: clamp(2.5rem, 1.5rem + 4vw, 5rem) 0 clamp(2rem, 1.5rem + 2vw, 3rem);
+  scroll-margin-top: 6rem;
+}
+
+.trl-match__box {
+  padding: clamp(1rem, 0.5rem + 2vw, 2.25rem);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.trl-match__kicker {
+  display: block;
+  margin: 0 0 0.6rem;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--cp2b-verde-escuro);
+  line-height: 1.1;
+}
+
+/* ---------- nove níveis em três fases ---------- */
+.trl-match__picker {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 3px;
+}
+
+.trl-match__phase {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.55rem;
+  min-width: 0;
+  padding: 0.6rem 0.6rem 0.65rem;
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--cp2b-lima) 12%, var(--cp2b-branco));
+}
+
+.trl-match__phase:nth-child(2) { background: color-mix(in srgb, var(--cp2b-verde) 12%, var(--cp2b-branco)); }
+.trl-match__phase:nth-child(3) { background: var(--paper-soft); }
+
+.trl-match__phase-range {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--cp2b-verde-escuro);
+}
+
+.trl-match__phase-name {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--cp2b-verde-escuro);
+  /* No celular estreito (menos de ~335px) a coluna do nome fica mais
+     estreita que "escalonamento" ou "Demonstração": a palavra quebra (com
+     hífen, no idioma do <html>) em vez de passar por baixo dos botões. */
+  overflow-wrap: anywhere;
+  hyphens: auto;
+}
+
+.trl-match__phase:nth-child(3) .trl-match__phase-name { color: var(--text-secondary); }
+
+.trl-match__levels {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+}
+
+.trl-match__level {
+  min-width: 0;
+  min-height: 2.75rem;
+  padding: 0.3rem 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--lab-hair);
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--cp2b-verde-escuro);
+  cursor: pointer;
+}
+
+.trl-match__level:hover { background: var(--trl-tint); border-color: var(--cp2b-verde-escuro); }
+
+.trl-match__level.is-active {
+  background: var(--cp2b-verde-escuro);
+  border-color: var(--cp2b-verde-escuro);
+  color: var(--cp2b-branco);
+  font-weight: 600;
+}
+
+/* Sobre os tons claros das fases (e sobre o branco da caixa) o anel de foco
+   do site, lima translúcido, quase some: aqui ele vem com um contorno
+   escuro. O mesmo vale para os botões do resultado, mais abaixo. */
+.trl-match__level:focus-visible {
+  outline: 2px solid var(--cp2b-verde-escuro);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
+}
+
+/* ---------- resultado ---------- */
+.trl-match__result { margin-top: 1.25rem; }
+
+.trl-match__hint,
+.trl-match__empty {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  border: 1px dashed var(--border-default);
+  border-radius: var(--radius-xl);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.trl-match__hint { text-align: center; }
+
+.trl-match__summary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 0.75rem;
+  margin: 0 0 1rem;
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--cp2b-verde-escuro);
+}
+
+.trl-match__badge {
+  padding: 0.2rem 0.7rem;
+  border-radius: var(--radius-full);
+  background: var(--cp2b-verde-escuro);
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  color: var(--cp2b-branco);
+}
+
+.trl-match__cols {
+  display: grid;
+  grid-template-columns: minmax(0, 1.7fr) minmax(14rem, 1fr);
+  gap: 1.5rem;
+}
+
+.trl-match__labs {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 13rem), 1fr));
+  gap: 0.75rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.trl-match__lab {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 0.9rem 1rem 1rem;
+  background: var(--trl-tint);
+  border: 1px solid var(--lab-hair);
+  border-radius: var(--radius-xl);
+}
+
+.trl-match__lab-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 0.5rem;
+}
+
+.trl-match__lab-acr {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--cp2b-verde-escuro);
+}
+
+.trl-match__focus {
+  padding: 0.12rem 0.5rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--cp2b-lima) 40%, var(--cp2b-branco));
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--cp2b-verde-escuro);
+}
+
+.trl-match__lab-meta { margin-top: 0.2rem; font-size: 0.76rem; color: var(--text-secondary); }
+
+.trl-match__facts { margin: 0.4rem 0 0; }
+.trl-match__facts > div { margin-top: 0.55rem; padding-top: 0.55rem; border-top: 1px solid var(--lab-hair); }
+
+.trl-match__facts dt {
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--cp2b-verde-escuro);
+}
+
+.trl-match__facts dd { margin: 0.3rem 0 0; font-size: 0.86rem; line-height: 1.45; color: var(--text-primary); }
+
+.trl-match__services { padding-left: 1.5rem; border-left: 1px solid var(--lab-hair); }
+
+.trl-match__count {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+  margin: 0 0 0.9rem;
+  font-size: 0.88rem;
+  line-height: 1.35;
+  color: var(--text-secondary);
+}
+
+.trl-match__num {
+  font-family: var(--font-sans);
+  font-size: 3rem;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  color: var(--cp2b-verde-escuro);
+}
+
+.trl-match__show {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--cp2b-verde-escuro);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--cp2b-verde-escuro);
+  cursor: pointer;
+}
+
+.trl-match__show:hover { background: var(--cp2b-verde-escuro); color: var(--cp2b-branco); }
+.trl-match__show:focus-visible {
+  outline: 2px solid var(--cp2b-verde-escuro);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
+}
+
+/* ---------- contato: sempre à vista, com ou sem laboratório no nível ---------- */
+.trl-match__contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+  margin-top: 1.25rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--lab-hair);
+}
+
+.trl-match__contact p { margin: 0; font-weight: 600; color: var(--cp2b-verde-escuro); }
+
+.trl-match__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.6rem 1.3rem;
+  border-radius: var(--radius-full);
+  background: var(--cp2b-verde-escuro);
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: var(--cp2b-branco);
+  text-decoration: none;
+}
+
+.trl-match__cta:hover,
+.trl-match__cta:focus-visible { background: var(--cp2b-azul-petroleo); color: var(--cp2b-branco); }
+.trl-match__cta:focus-visible {
+  outline: 2px solid var(--cp2b-verde-escuro);
+  outline-offset: 2px;
+  box-shadow: var(--focus-ring);
+}
+
+/* ---------- tablet ---------- */
+@media (max-width: 991.98px) {
+  .trl-match__cols { grid-template-columns: minmax(0, 1fr); }
+  .trl-match__services { padding: 1.1rem 0 0; border-left: none; border-top: 1px solid var(--lab-hair); }
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 575.98px) {
+  /* As fases empilham: nome à esquerda e os três níveis à direita, com
+     área de toque confortável, em vez de nove botões espremidos. */
+  .trl-match__picker { grid-template-columns: minmax(0, 1fr); }
+  .trl-match__phase { flex-direction: row; align-items: center; gap: 0.75rem; }
+  .trl-match__phase-head { flex: 1 1 auto; min-width: 0; }
+  .trl-match__levels { flex: 0 0 9.5rem; }
+  .trl-match__summary { font-size: 1rem; }
+  .trl-match__num { font-size: 2.4rem; }
+  .trl-match__contact { flex-direction: column; align-items: stretch; }
+  .trl-match__cta { justify-content: center; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .trl-match__level,
+  .trl-match__show,
+  .trl-match__cta {
+    transition: background var(--duration-base) var(--ease-standard),
+      border-color var(--duration-base) var(--ease-standard),
+      color var(--duration-base) var(--ease-standard),
+      box-shadow var(--duration-base) var(--ease-standard);
+  }
+
+  .trl-match__cta i { transition: transform var(--duration-base) var(--ease-standard); }
+  .trl-match__cta:hover i { transform: translateX(3px); }
+}

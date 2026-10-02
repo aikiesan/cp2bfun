@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import pool from '../db/connection.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -60,7 +61,7 @@ router.get('/featured', async (req, res) => {
  * GET /api/videos
  * Returns all videos (for admin management)
  */
-router.get('/', async (req, res) => {
+router.get('/', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT * FROM featured_videos

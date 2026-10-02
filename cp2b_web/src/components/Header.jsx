@@ -1,14 +1,21 @@
 import { useState, useEffect } from 'react';
 import { Navbar, Nav, Container, NavDropdown } from 'react-bootstrap';
-import { FaFacebookF, FaLinkedinIn, FaInstagram, FaYoutube, FaSpotify } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { FaSpotify, FaLinkedinIn, FaInstagram, FaYoutube } from 'react-icons/fa';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { menuLabels, socialLinks } from '../data/content';
 
 const Header = () => {
   const { language, setLanguage } = useLanguage();
   const t = menuLabels[language];
+  const location = useLocation();
 
+  const isAboutActive = ['/sobre', '/oportunidades', '/eventos', '/capacitacao'].some(
+    (p) => location.pathname.startsWith(p)
+  );
+  const isNewsActive = ['/noticias', '/microscopio', '/entrevistas', '/galeria', '/press-kit', '/podcast', '/boletins', '/newsletter'].some(
+    (p) => location.pathname.startsWith(p)
+  );
   const [fontSize, setFontSize] = useState(() => {
     const saved = localStorage.getItem('cp2b-font-size');
     return saved ? Number(saved) : 100;
@@ -17,6 +24,12 @@ const Header = () => {
     return localStorage.getItem('cp2b-high-contrast') === 'true';
   });
   const [isScrolled, setIsScrolled] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+
+  // Close the mobile menu whenever the route changes.
+  useEffect(() => {
+    setExpanded(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     document.documentElement.style.fontSize = `${fontSize}%`;
@@ -45,6 +58,9 @@ const Header = () => {
 
   return (
     <header>
+      <a href="#main-content" className="skip-link">
+        {language === 'pt' ? 'Ir para o conteúdo' : 'Skip to content'}
+      </a>
       {/* Top Header - Recod.ai Style */}
       <div
         id="top-header"
@@ -61,47 +77,66 @@ const Header = () => {
 
             {/* Accessibility */}
             <div className="col col-lg-3 accessibility d-flex align-items-center justify-content-end gap-3 text-muted">
-              <button onClick={increaseFontSize} className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted" title="Aumentar tamanho da letra" aria-label="Increase font size">A+</button>
-              <button onClick={decreaseFontSize} className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted" title="Diminuir tamanho da letra" aria-label="Decrease font size">A-</button>
-              <button onClick={toggleContrast} className="btn btn-sm p-0 border-0 bg-transparent" title="Contraste" aria-label="Toggle high contrast">
+              <button
+                onClick={increaseFontSize}
+                className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted header-touch-target"
+                title="Aumentar tamanho da letra"
+                aria-label="Increase font size"
+              >
+                A+
+              </button>
+              <button
+                onClick={decreaseFontSize}
+                className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted header-touch-target"
+                title="Diminuir tamanho da letra"
+                aria-label="Decrease font size"
+              >
+                A-
+              </button>
+              <button
+                onClick={toggleContrast}
+                className="btn btn-sm p-0 border-0 bg-transparent header-touch-target"
+                title="Contraste"
+                aria-label="Toggle high contrast"
+              >
                 <span style={{ width: '16px', height: '16px', borderRadius: '50%', border: '1px solid #333', background: 'linear-gradient(to right, #333 50%, #fff 50%)', display: 'inline-block' }}></span>
               </button>
               <span className="d-none d-md-block">{t.accessibility}</span>
             </div>
 
             {/* Languages */}
-            <div className="col col-lg-2">
-              <div className="languages d-flex justify-content-end gap-2">
-                <button
-                  onClick={() => toggleLang('en')}
-                  className={`btn btn-sm p-0 ${language === 'en' ? 'opacity-100' : 'opacity-50'}`}
-                  title="English"
-                  style={{ border: 'none', background: 'none' }}
-                >
-                  <img loading="lazy" src="https://flagcdn.com/24x18/us.png" width="24" height="18" alt="en" />
-                </button>
+            <div className="col col-lg-2 d-flex justify-content-end">
+              <div className="lang-switch" role="group" aria-label="Language">
                 <button
                   onClick={() => toggleLang('pt')}
-                  className={`btn btn-sm p-0 ${language === 'pt' ? 'opacity-100' : 'opacity-50'}`}
-                  title="Portuguese"
-                  style={{ border: 'none', background: 'none' }}
+                  className={`${language === 'pt' ? 'active ' : ''}header-touch-target`}
+                  title="Português"
+                  aria-pressed={language === 'pt'}
                 >
-                  <img loading="lazy" src="https://flagcdn.com/24x18/br.png" width="24" height="18" alt="pt" />
+                  PT
+                </button>
+                <button
+                  onClick={() => toggleLang('en')}
+                  className={`${language === 'en' ? 'active ' : ''}header-touch-target`}
+                  title="English"
+                  aria-pressed={language === 'en'}
+                >
+                  EN
                 </button>
               </div>
             </div>
 
             {/* Social Media Icons */}
             <div className="d-none d-lg-flex align-items-center gap-3 ms-3">
-              {socialLinks.facebook !== '#' && (
+              {socialLinks.spotify !== '#' && (
                 <a
-                  href={socialLinks.facebook}
+                  href={socialLinks.spotify}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-muted social-icon-top"
-                  aria-label="Facebook"
+                  aria-label="Spotify"
                 >
-                  <FaFacebookF size={14} />
+                  <FaSpotify size={14} />
                 </a>
               )}
               <a
@@ -133,85 +168,144 @@ const Header = () => {
                   <FaYoutube size={14} />
                 </a>
               )}
-              {socialLinks.spotify !== '#' && (
-                <a
-                  href = {socialLinks.spotify}
-                  target = '_blank'
-                  rel = 'noopener noreferrer'
-                  className = "text-muted social-icon-top"
-                  aria-label = "Spotify"
-                >
-                  <FaSpotify size = {14}/>
-                </a>
-              )}
             </div>
           </div>
         </Container>
       </div>
 
-      {/* Main Navbar */}
+      {/* Main Navbar.
+          expand="xl", nao "lg": com a segunda pill (Arqueia) o menu horizontal
+          passa de 980px e estoura o container de 960px do breakpoint lg, e o
+          botao ficava cortado. Abaixo de 1200px tudo vai para o sanfonado. */}
       <Navbar
-        expand="lg"
+        expand="xl"
         sticky="top"
+        expanded={expanded}
+        onToggle={setExpanded}
         className={`bg-white shadow-sm ${isScrolled ? 'navbar-shrunk' : ''}`}
       >
         <Container className="py-3">
           <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
+            {/* O SVG do press kit em vez do PNG @8x: é o mesmo logo, mas o
+                PNG tinha 15360x5854 px e 860 KB para ser exibido a 55px de
+                altura, em toda página. O vetor pesa 15 KB e fica nítido em
+                qualquer densidade de tela. */}
             <img
-              src="/assets/CP2B-LOGO-COLOR-DEGRADE@8x.png"
+              src="/assets/logos/cp2b-logo-gradient.svg"
               alt="CP2b Logo"
               className={`me-2 ${isScrolled ? 'logo-shrunk' : ''}`}
               style={{ height: isScrolled ? '35px' : '55px', width: 'auto', transition: 'height 0.3s ease' }}
             />
           </Navbar.Brand>
 
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Toggle aria-controls="basic-navbar-nav" label="Alternar navegação" aria-label="Alternar navegação" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto align-items-center gap-1">
               {/* About Dropdown */}
-              <NavDropdown title={t.about} id="nav-dropdown-about" className="fw-semibold">
-                <NavDropdown.Item as={Link} to="/sobre">
+              <NavDropdown
+                title={t.about}
+                id="nav-dropdown-about"
+                className={`fw-semibold ${isAboutActive ? 'active' : ''}`}
+              >
+                <NavDropdown.Item as={NavLink} to="/sobre" end>
                   {t.aboutSubmenu.overview}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/sobre/governanca">
+                <NavDropdown.Item as={NavLink} to="/sobre/governanca">
                   {t.aboutSubmenu.governance}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/sobre/transparencia">
+                <NavDropdown.Item as={NavLink} to="/sobre/indicadores">
+                  {t.aboutSubmenu.indicators}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/sobre/transparencia">
                   {t.aboutSubmenu.transparency}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/sobre/parceiros">
+                <NavDropdown.Item as={NavLink} to="/sobre/parceiros">
                   {t.aboutSubmenu.partners}
                 </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={Link} to="/equipe">
+                  {t.team}
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={NavLink} to="/oportunidades">
+                  {t.aboutSubmenu.opportunities}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/eventos">
+                  {t.aboutSubmenu.events}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/capacitacao">
+                  {t.aboutSubmenu.training}
+                </NavDropdown.Item>
               </NavDropdown>
 
-              {/* News Dropdown */}
-              <NavDropdown title={t.news} id="nav-dropdown-news" className="fw-semibold">
-                <NavDropdown.Item as={Link} to="/noticias">
+              {/* Comunicação Dropdown */}
+              <NavDropdown
+                title={t.news}
+                id="nav-dropdown-news"
+                className={`fw-semibold ${isNewsActive ? 'active' : ''}`}
+              >
+                <NavDropdown.Item as={NavLink} to="/noticias">
                   {t.newsSubmenu.news}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/na-midia">
-                  {t.newsSubmenu.media}
+                <NavDropdown.Item as={NavLink} to="/microscopio">
+                  {t.newsSubmenu.microscopio}
                 </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to="/oportunidades">
-                  {t.newsSubmenu.opportunities}
+                <NavDropdown.Item as={NavLink} to="/entrevistas">
+                  {t.newsSubmenu.entrevistas}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/podcast">
+                  {t.newsSubmenu.podcast}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/boletins">
+                  {t.newsSubmenu.boletins}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/galeria">
+                  {t.newsSubmenu.gallery}
+                </NavDropdown.Item>
+                <NavDropdown.Item as={NavLink} to="/press-kit">
+                  {t.newsSubmenu.pressKit}
+                </NavDropdown.Item>
+                {/* Separado dos itens de conteúdo: aqui não se lê nada, se
+                    assina. */}
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={NavLink} to="/newsletter">
+                  {t.newsSubmenu.newsletter}
                 </NavDropdown.Item>
               </NavDropdown>
 
-              {/* Keep existing items */}
-              <Nav.Link as={Link} to="/equipe" className="fw-semibold px-2">{t.team}</Nav.Link>
-              <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
-              <Nav.Link as={Link} to="/projetos" className="fw-semibold px-2">{t.projects}</Nav.Link>
-              <Nav.Link as={Link} to="/eventos" className="fw-semibold px-2">{t.events}</Nav.Link>
               <Nav.Link as={Link} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
-              <Nav.Link as={Link} to="/outros" className="fw-semibold px-2">{t.others}</Nav.Link>
-              <NavDropdown title={t.forumPaulista} id="nav-dropdown-forum" className="fw-semibold">
-                <NavDropdown.Item as={Link} to="/forum-paulista">
-                  {t.forumAbout}
-                </NavDropdown.Item>
-                <NavDropdown.Item as={Link} to={`/registro?convite=${import.meta.env.VITE_INVITE_TOKEN || 'palavra-secreta'}`}>
-                  {t.forumRegister}
-                </NavDropdown.Item>
-              </NavDropdown>
+              <Nav.Link as={Link} to="/solucoes" className="fw-semibold px-2">
+                {/* O rótulo completo não cabe na barra horizontal entre 1200 e
+                    1399px sem quebrar o menu em duas linhas; ali fica a forma
+                    curta. No menu recolhido (< 1200px) e acima de 1400px, o
+                    completo. Só um dos dois fica visível por vez. */}
+                <span className="d-xl-none d-xxl-inline">{t.solutions}</span>
+                <span className="d-none d-xl-inline d-xxl-none">{t.solutionsShort}</span>
+              </Nav.Link>
+              <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
+              {/* O Fórum de 2026 já aconteceu: cronograma e registro saíram,
+                  sobrou só a retrospectiva — dropdown de um item vira link. */}
+              <Nav.Link as={Link} to="/forum-paulista" className="fw-semibold px-2">{t.forumPaulista}</Nav.Link>
+              <Nav.Item>
+                <a
+                  href="/pilar2b"
+                  className="btn btn-sm rounded-pill fw-semibold ms-2 px-3 header-pill header-pill--pilar"
+                >
+                  {t.pilar2b}
+                </a>
+              </Nav.Item>
+              {/* Como o PILAR-2b: <a> cru, não <Link>. O Apache faz proxy de
+                  /arqueia para outra aplicação, então a navegação precisa ser
+                  completa. Cor própria para as duas pills não ficarem
+                  indistinguíveis lado a lado (design-system.css). */}
+              <Nav.Item>
+                <a
+                  href="/arqueia"
+                  className="btn btn-sm rounded-pill fw-semibold ms-2 px-3 header-pill header-pill--arqueia"
+                >
+                  {t.arqueia}
+                </a>
+              </Nav.Item>
             </Nav>
           </Navbar.Collapse>
         </Container>

@@ -5,9 +5,10 @@ import { renderWithProviders } from '../../test/utils';
 import Footer from '../Footer';
 
 describe('Footer', () => {
-  it('renders NIPE section', () => {
+  it('renders NIPE contact section', () => {
     renderWithProviders(<Footer />);
-    expect(screen.getByText('NIPE')).toBeInTheDocument();
+    expect(screen.getByText(/NIPE/)).toBeInTheDocument();
+    expect(screen.getByText(/Rua Cora Coralina, 330/)).toBeInTheDocument();
   });
 
   it('renders social links', () => {
@@ -28,9 +29,23 @@ describe('Footer', () => {
 
     renderWithProviders(<Footer />);
     // Default language is pt
-    await user.click(screen.getByText('VOLTAR AO TOPO ↑'));
+    await user.click(screen.getByText('Voltar ao topo ↑'));
     expect(scrollSpy).toHaveBeenCalledWith({ top: 0, behavior: 'smooth' });
 
     scrollSpy.mockRestore();
+  });
+
+  it('shows Metaninho peeking over the edge on inner pages, not on the Home', () => {
+    window.history.pushState({}, '', '/');
+    const { container, unmount } = renderWithProviders(<Footer />);
+    expect(container.querySelector('.footer-metaninho')).toBeNull();
+    unmount();
+
+    window.history.pushState({}, '', '/sobre');
+    const inner = renderWithProviders(<Footer />);
+    const peek = inner.container.querySelector('.footer-metaninho');
+    expect(peek).toHaveAttribute('aria-hidden', 'true');
+    expect(peek.querySelector('img')).toHaveAttribute('src', '/assets/metaninho/metaninho-feliz.webp');
+    window.history.pushState({}, '', '/');
   });
 });

@@ -1,209 +1,154 @@
-import { useState, useEffect } from 'react';
-import { Container, Table, Button, Badge, Spinner, Form, Row, Col } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { Container, Table, Button, Badge, Alert } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import api from '../../services/api';
-import { ConfirmDialog, EmptyState, useToast } from '../../components/admin';
+import useCrudList from '../../hooks/useCrudList';
+import {
+  AdminPageHeader,
+  ConfirmDialog,
+  EmptyState,
+  TableSkeleton,
+  useToast,
+} from '../../components/admin';
+
+const TYPE_LABELS = {
+  workshop: 'Workshop',
+  forum: 'Fórum',
+  conference: 'Conferência',
+  meeting: 'Reunião',
+  webinar: 'Webinar',
+  course: 'Curso',
+};
+
+const STATUS = {
+  upcoming: { label: 'Em breve', variant: 'primary' },
+  ongoing: { label: 'Em andamento', variant: 'success' },
+  completed: { label: 'Realizado', variant: 'secondary' },
+  cancelled: { label: 'Cancelado', variant: 'danger' },
+};
+
+const fetchEvents = () => api.get('/events').then((r) => r.data);
+const deleteEvent = (event) => api.delete(`/events/${event.id}`);
+
+const formatRange = (event) => {
+  const start = new Date(event.start_date);
+  const end = new Date(event.end_date || event.start_date);
+  const fmt = (d) => d.toLocaleDateString('pt-BR');
+  return start.toDateString() === end.toDateString() ? fmt(start) : `${fmt(start)} — ${fmt(end)}`;
+};
 
 const EventsList = () => {
-  const navigate = useNavigate();
+  const { items, loading, error, setError, deletingId, removeItem } = useCrudList({
+    fetchItems: fetchEvents,
+    deleteItem: deleteEvent,
+  });
+  const [pendingDelete, setPendingDelete] = useState(null);
   const toast = useToast();
-  const [events, setEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [filters, setFilters] = useState({ status: 'all', type: 'all' });
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
-  const [deleting, setDeleting] = useState(false);
 
-  useEffect(() => {
-    fetchEvents();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filters]);
-
-  const fetchEvents = async () => {
-    setLoading(true);
-    try {
-      const params = new URLSearchParams();
-      if (filters.status !== 'all') params.append('status', filters.status);
-      if (filters.type !== 'all') params.append('type', filters.type);
-
-      const response = await api.get(`/events?${params}`);
-      setEvents(response.data);
-    } catch (err) {
-      toast.error('Erro ao carregar eventos. Verifique se a API está rodando.');
-      console.error(err);
-    } finally {
-      setLoading(false);
+  const confirmDelete = async () => {
+    const event = pendingDelete;
+    setPendingDelete(null);
+    if (await removeItem(event)) {
+      toast.success(`Evento "${event.title_pt}" excluído.`);
     }
   };
-
-  const handleDeleteClick = (event) => {
-    setItemToDelete(event);
-    setShowDeleteDialog(true);
-  };
-
-  const handleDeleteConfirm = async () => {
-    if (!itemToDelete) return;
-    setDeleting(true);
-    try {
-      await api.delete(`/events/${itemToDelete.id}`);
-      setEvents((prev) => prev.filter((e) => e.id !== itemToDelete.id));
-      toast.success(`Evento "${itemToDelete.title_pt}" excluído com sucesso.`);
-    } catch (err) {
-      toast.error('Erro ao excluir evento. Tente novamente.');
-      console.error(err);
-    } finally {
-      setDeleting(false);
-      setShowDeleteDialog(false);
-      setItemToDelete(null);
-    }
-  };
-
-  const typeLabels = {
-    workshop: 'Workshop',
-    forum: 'Fórum',
-    conference: 'Conferência',
-    meeting: 'Reunião',
-    webinar: 'Webinar',
-    course: 'Curso'
-  };
-
-  const statusLabels = {
-    upcoming: 'Próximo',
-    ongoing: 'Em Andamento',
-    completed: 'Concluído',
-    cancelled: 'Cancelado'
-  };
-
-  const statusColors = {
-    upcoming: 'primary',
-    ongoing: 'success',
-    completed: 'secondary',
-    cancelled: 'danger'
-  };
-
-  if (loading) {
-    return (
-      <Container className="text-center py-5">
-        <Spinner animation="border" />
-      </Container>
-    );
-  }
 
   return (
-    <Container>
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          <h2 className="mb-1">Eventos</h2>
-          <p className="text-muted mb-0">{events.length} eventos cadastrados</p>
-        </div>
-        <Button as={Link} to="/admin/events/new" variant="primary">
-          <i className="bi bi-plus-circle me-2"></i>Novo Evento
-        </Button>
-      </div>
+    <Container fluid className="py-4">
+      <AdminPageHeader
+        title="Eventos"
+        description={
+          <>
+            Agenda pública em <code>/eventos</code> — eventos com slug ganham página própria em{' '}
+            <code>/eventos/&lt;slug&gt;</code>
+          </>
+        }
+        actionLabel="Novo Evento"
+        actionLink="/admin/events/new"
+      />
 
-      {/* Filters */}
-      <Row className="mb-3">
-        <Col md={3}>
-          <Form.Select
-            value={filters.status}
-            onChange={(e) => setFilters({ ...filters, status: e.target.value })}
-          >
-            <option value="all">Todos os status</option>
-            {Object.entries(statusLabels).map(([value, label]) => (
-              <option key={value} value={value}>{label}</option>
-            ))}
-          </Form.Select>
-        </Col>
-        <Col md={3}>
-          <Form.Select
-            value={filters.type}
-            onChange={(e) => setFilters({ ...filters, type: e.target.value })}
-          >
-            <option value="all">Todos os tipos</option>
-            {Object.entries(typeLabels).map(([value, label]) => (
-              <option key={value} value={value}>{label}</option>
-            ))}
-          </Form.Select>
-        </Col>
-      </Row>
+      {error && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
 
-      {events.length === 0 ? (
+      {loading ? (
+        <TableSkeleton rows={4} columns={6} />
+      ) : items.length === 0 ? (
         <EmptyState
           icon="bi-calendar-event"
           title="Nenhum evento cadastrado"
-          message="Crie o primeiro evento para exibir no site."
+          description="Crie o primeiro evento para ele aparecer na agenda pública do site."
           actionLabel="Novo Evento"
-          onAction={() => navigate('/admin/events/new')}
+          actionLink="/admin/events/new"
         />
       ) : (
-        <div className="card">
-          <Table responsive hover className="mb-0 align-middle">
-            <thead className="bg-light">
-              <tr>
-                <th>Título</th>
-                <th>Tipo</th>
-                <th>Data</th>
-                <th>Status</th>
-                <th style={{ width: '110px' }} className="text-end">Ações</th>
-              </tr>
-            </thead>
-            <tbody>
-              {events.map(event => (
+        <Table hover responsive className="bg-white rounded shadow-sm align-middle">
+          <thead>
+            <tr>
+              <th>Evento</th>
+              <th>Data</th>
+              <th>Tipo</th>
+              <th>Status</th>
+              <th>Página própria</th>
+              <th className="text-end">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {items.map((event) => {
+              const status = STATUS[event.status] || { label: event.status, variant: 'secondary' };
+              return (
                 <tr key={event.id}>
                   <td>
-                    <strong>{event.title_pt}</strong>
-                    {event.title_en && (
-                      <small className="d-block text-muted">{event.title_en}</small>
+                    <div className="fw-semibold">{event.title_pt}</div>
+                    {event.location && <small className="text-muted">{event.location}</small>}
+                  </td>
+                  <td>{formatRange(event)}</td>
+                  <td><Badge bg="info">{TYPE_LABELS[event.event_type] || event.event_type}</Badge></td>
+                  <td><Badge bg={status.variant}>{status.label}</Badge></td>
+                  <td>
+                    {event.slug ? (
+                      <a href={`/eventos/${event.slug}`} target="_blank" rel="noreferrer">
+                        /eventos/{event.slug} <i className="bi bi-box-arrow-up-right small"></i>
+                      </a>
+                    ) : (
+                      <span className="text-muted small">sem slug</span>
                     )}
-                  </td>
-                  <td>
-                    <Badge bg="info">{typeLabels[event.event_type]}</Badge>
-                  </td>
-                  <td className="text-nowrap">
-                    {new Date(event.start_date).toLocaleDateString('pt-BR', {
-                      day: '2-digit',
-                      month: '2-digit',
-                      year: 'numeric'
-                    })}
-                  </td>
-                  <td>
-                    <Badge bg={statusColors[event.status]}>{statusLabels[event.status]}</Badge>
                   </td>
                   <td className="text-end">
                     <Button
+                      as={Link}
+                      to={`/admin/events/${event.id}`}
                       variant="outline-primary"
                       size="sm"
-                      className="me-1"
-                      onClick={() => navigate(`/admin/events/${event.id}`)}
-                      title="Editar"
+                      className="me-2"
+                      aria-label={`Editar ${event.title_pt}`}
                     >
                       <i className="bi bi-pencil"></i>
                     </Button>
                     <Button
                       variant="outline-danger"
                       size="sm"
-                      onClick={() => handleDeleteClick(event)}
-                      title="Excluir"
+                      disabled={deletingId === event.id}
+                      onClick={() => setPendingDelete(event)}
+                      aria-label={`Excluir ${event.title_pt}`}
                     >
                       <i className="bi bi-trash"></i>
                     </Button>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
-        </div>
+              );
+            })}
+          </tbody>
+        </Table>
       )}
 
       <ConfirmDialog
-        show={showDeleteDialog}
-        title="Excluir Evento"
-        message={`Tem certeza que deseja excluir o evento "${itemToDelete?.title_pt}"? Esta ação não pode ser desfeita.`}
-        confirmLabel={deleting ? 'Excluindo…' : 'Excluir'}
+        show={pendingDelete !== null}
+        title="Excluir evento"
+        message={`Excluir o evento "${pendingDelete?.title_pt}"? Esta ação não pode ser desfeita.`}
+        confirmLabel="Excluir"
         confirmVariant="danger"
         icon="bi-trash"
-        onConfirm={handleDeleteConfirm}
-        onCancel={() => { setShowDeleteDialog(false); setItemToDelete(null); }}
+        onConfirm={confirmDelete}
+        onCancel={() => setPendingDelete(null)}
       />
     </Container>
   );

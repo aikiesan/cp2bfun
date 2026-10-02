@@ -28,11 +28,25 @@ print_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
+# ATENCAO: este script foi escrito para o layout antigo da VM (frontend em
+# /var/www/cp2b/frontend, backend como servico systemd). Hoje o site roda do
+# repositorio em /var/www/cp2b/repo, com o backend no pm2, e o deploy.sh da
+# raiz nao gera os pacotes que este script restaura. Para voltar uma versao,
+# siga o procedimento de rollback de cp2b_web/docs/PUBLICACAO_VM.md.
+if [ "${LEGACY_LAYOUT:-0}" != "1" ]; then
+    echo "rollback.sh: layout antigo (systemd + /var/www/cp2b/frontend) — nao se aplica a VM atual." >&2
+    echo "Siga o rollback de cp2b_web/docs/PUBLICACAO_VM.md. Para forcar: LEGACY_LAYOUT=1 bash rollback.sh" >&2
+    exit 1
+fi
+
 # Configuration
 BACKUP_DIR="/var/www/cp2b/backups"
 FRONTEND_DIR="/var/www/cp2b/frontend"
 BACKEND_DIR="/var/www/cp2b/backend"
-DB_NAME="cp2b"
+# O banco do site e cp2b_db. "cp2b" e o banco do PILAR-2b nesta VM: com ele
+# aqui, um rollback derrubava as conexoes do PILAR-2b e carregava o dump do
+# site dentro do banco dele.
+DB_NAME="cp2b_db"
 
 print_info "========================================="
 print_info "CP2B Website Rollback Script"

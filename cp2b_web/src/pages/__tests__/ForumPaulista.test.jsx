@@ -1,29 +1,46 @@
 import { describe, it, expect } from 'vitest';
-import { screen } from '@testing-library/react';
+import { fireEvent, screen } from '@testing-library/react';
 import { renderWithProviders } from '../../test/utils';
 import ForumPaulista from '../ForumPaulista';
 
 describe('ForumPaulista', () => {
-  it('renders the Forum Paulista title', () => {
+  it('presents the Forum as a completed event memoir', () => {
     renderWithProviders(<ForumPaulista />);
-    expect(screen.getByRole('heading', { name: /Fórum Paulista/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Este foi o nosso Fórum. E foi incrível.' })).toBeInTheDocument();
+    expect(screen.getByText('Até o ano que vem!')).toBeInTheDocument();
+    expect(screen.queryByText(/Inscreva-se/i)).not.toBeInTheDocument();
   });
 
-  it('"Registro Meet-up" button links to /registro', () => {
+  it('shows the final attendance total supplied by the organizers', () => {
     renderWithProviders(<ForumPaulista />);
-    const link = screen.getAllByText('Registro Meet-up')[0].closest('a');
-    expect(link).toBeTruthy();
-    expect(link.getAttribute('href')).toMatch(/^\/registro/);
+    expect(screen.getByText('140')).toBeInTheDocument();
+    expect(screen.getByText('pessoas presentes')).toBeInTheDocument();
   });
 
-  it('renders FAQ section', () => {
+  it('links the main action to the photographic record', () => {
     renderWithProviders(<ForumPaulista />);
-    expect(screen.getByText('Perguntas Frequentes')).toBeInTheDocument();
+    expect(screen.getByText('Rever os melhores momentos').closest('a')).toHaveAttribute('href', '#fotos');
   });
 
-  it('renders at least 5 FAQ items', () => {
+  it('keeps the Forum-to-opening memory and omits the removed long sections', () => {
     renderWithProviders(<ForumPaulista />);
-    const faqButtons = screen.getAllByRole('button');
-    expect(faqButtons.length).toBeGreaterThanOrEqual(5);
+    expect(screen.getByRole('heading', { name: 'Dois dias que marcaram a história do CP2b' })).toBeInTheDocument();
+    expect(screen.queryByText('Um evento contado em quatro momentos')).not.toBeInTheDocument();
+    expect(screen.queryByText('Os assuntos que moveram o dia')).not.toBeInTheDocument();
+  });
+
+  it('starts with a curated selection and can reveal all 30 photographs', () => {
+    renderWithProviders(<ForumPaulista />);
+    expect(screen.getAllByRole('button', { name: /^Foto \d+ de 30:/ })).toHaveLength(12);
+    fireEvent.click(screen.getByRole('button', { name: 'Ver as 30 fotos' }));
+    expect(screen.getAllByRole('button', { name: /^Foto \d+ de 30:/ })).toHaveLength(30);
+  });
+
+  it('opens and closes the accessible photo viewer', () => {
+    renderWithProviders(<ForumPaulista />);
+    fireEvent.click(screen.getByRole('button', { name: /^Foto 1 de 30:/ }));
+    expect(screen.getByRole('dialog', { name: 'Foto 1 de 30' })).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Fechar' }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 });

@@ -1,35 +1,51 @@
+import { useRef, useState } from 'react';
 import { Container, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { FaArrowLeft, FaShareAlt } from 'react-icons/fa';
+import { FaArrowLeft, FaWhatsapp, FaTelegramPlane, FaLinkedinIn } from 'react-icons/fa';
 import { getCategoryColor } from '../utils/categoryColor';
 import { SafeHtml } from '../utils/sanitize.jsx';
 import RelatedPosts from './RelatedPosts';
+import ReadingProgress from './ReadingProgress';
+import './ArticleLayout.css';
 
 const ArticleLayout = ({
   article,
   relatedPosts,
   backLink,
   backLabel,
-  shareLabel,
   language,
 }) => {
+  // The reading column (title to share buttons) that the progress bar follows,
+  // and the photo whose load starts the opening zoom (see ArticleLayout.css).
+  const articleRef = useRef(null);
+  const [loadedHero, setLoadedHero] = useState(null);
+
   if (!article) return null;
 
-  const { title, description, content, image, badge, badgeColor, date, author, imageCaption, tags } = article;
+  const { title, description, content, image, imagePosition, badge, badgeColor, date, author, imageCaption, tags } = article;
+
+  const url = encodeURIComponent(window.location.href);
+  const tituloEncoded = encodeURIComponent(title); // Adaptado para usar o 'title' do seu arquivo
+
+  const whatsappUrl = `https://wa.me/?text=${tituloEncoded}%20${url}`;
+  const telegramUrl = `https://t.me/share/url?url=${url}&text=${tituloEncoded}`;
+  const linkedinUrl = `https://linkedin.com/sharing/share-offsite/?url=${url}`;
+
   const categoryColor = getCategoryColor(badgeColor);
 
-  const handleShare = () => {
-    navigator.share?.({
-      title,
-      url: window.location.href,
-    });
-  };
 
   const renderContent = () => {
     if (content) {
+      const isHtml = /<[a-z][\s\S]*>/i.test(content);
+      const html = isHtml
+        ? content
+        : content
+            .split(/\n\n+/)
+            .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+            .join('');
       return (
         <SafeHtml
-          html={content}
+          html={html}
           className="article-content article-fapesp-content"
         />
       );
@@ -46,7 +62,7 @@ const ArticleLayout = ({
 
   return (
     <article className="article-fapesp-page py-5">
-      <Container style={{ maxWidth: '980px' }}>
+      <Container ref={articleRef} style={{ maxWidth: '980px' }}>
 
         {/* 1. Category tag */}
         {badge && (
@@ -66,11 +82,18 @@ const ArticleLayout = ({
         {/* 4. Hero image + optional caption */}
         {image && (
           <figure className="article-fapesp-figure">
-            <img
-              src={image}
-              alt={title}
-              className="article-fapesp-hero"
-            />
+            {/* The frame crops the photo while it zooms, so the box keeps its size.
+                A failed load also releases the starting pose. */}
+            <div className="article-hero-frame" data-loaded={loadedHero === image ? '' : undefined}>
+              <img
+                src={image}
+                alt={title}
+                className="article-fapesp-hero"
+                style={imagePosition ? { objectPosition: imagePosition } : undefined}
+                onLoad={() => setLoadedHero(image)}
+                onError={() => setLoadedHero(image)}
+              />
+            </div>
             {imageCaption && (
               <figcaption className="article-fapesp-caption">{imageCaption}</figcaption>
             )}
@@ -130,7 +153,9 @@ const ArticleLayout = ({
         ) : null}
 
         {/* 7. Footer actions */}
-        <div className="article-fapesp-actions d-flex justify-content-between align-items-center">
+        <div className="article-fapesp-actions d-flex justify-content-between align-items-center flex-wrap gap-2">
+          
+          {/* Filho 1: Botão Voltar (Fica na esquerda) */}
           <Button
             as={Link}
             to={backLink}
@@ -140,20 +165,50 @@ const ArticleLayout = ({
             <FaArrowLeft className="me-2" />
             {backLabel}
           </Button>
-          <Button
-            variant="outline-primary"
-            className="rounded-pill px-4"
-            onClick={handleShare}
-          >
-            <FaShareAlt className="me-2" />
-            {shareLabel}
-          </Button>
+
+          {/* Filho 2: Caixinha das redes sociais (Fica na direita) */}
+          <div className="d-flex gap-2 flex-wrap"> 
+            <Button
+              href={whatsappUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outline-success"
+              className="rounded-pill px-4 border border-success"
+            >
+              <FaWhatsapp className="me-2" size={18} /> WhatsApp
+            </Button>
+            
+            <Button
+              href={telegramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outline-info"
+              className="rounded-pill px-4 border border-info"
+            >
+              <FaTelegramPlane className="me-2" size={18} /> Telegram
+            </Button>
+            
+            <Button
+              href={linkedinUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="outline-primary"
+              className="rounded-pill px-4"
+            >
+              <FaLinkedinIn className="me-2" size={18} /> LinkedIn
+            </Button>
+          </div>
+          
         </div>
 
       </Container>
 
       {/* 8. Related posts (full-width section) */}
       <RelatedPosts posts={relatedPosts} language={language} />
+
+      {/* 9. Reading progress bar, portalled to <body>. Rendered after the
+          article so its ref is already attached when the bar starts tracking. */}
+      <ReadingProgress target={articleRef} />
 
     </article>
   );

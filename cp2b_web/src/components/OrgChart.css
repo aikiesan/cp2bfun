@@ -1,0 +1,105 @@
+/* Organograma institucional do CP2b — CSS grid, sem dependência de imagem. */
+
+.org-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.org-chart__row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.org-chart__row--committees,
+.org-chart__row--management {
+  justify-content: center;
+}
+
+.org-chart__row--direction {
+  align-items: stretch;
+  justify-content: center;
+}
+
+.org-chart__direction-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1 1 220px;
+  max-width: 260px;
+}
+
+.org-chart__box {
+  border-radius: 0.5rem;
+  padding: 0.85rem 1rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-align: center;
+  color: var(--text-on-brand, #fff);
+  flex: 1 1 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+}
+
+.org-chart__box--committee {
+  background: var(--brand-primary, #4527A0);
+  max-width: 260px;
+}
+
+.org-chart__box--sponsor {
+  background: linear-gradient(135deg, var(--brand-secondary, #5CA032), var(--color-info, #2563EB));
+  flex: 1 1 200px;
+  max-width: 240px;
+}
+
+.org-chart__box--direction {
+  background: var(--cp2b-verde-escuro, #00573A);
+  flex: 1 1 auto;
+}
+
+.org-chart__box--management {
+  background: var(--brand-primary, #4527A0);
+  flex: 1 1 200px;
+  max-width: 230px;
+}
+
+.org-chart__band {
+  border-radius: 0.5rem;
+  padding: 0.85rem 1rem;
+  font-weight: 700;
+  text-align: center;
+  color: var(--text-on-brand, #fff);
+}
+
+.org-chart__band--axes {
+  background: var(--cp2b-verde-escuro, #00573A);
+}
+
+.org-chart__band--assembly {
+  background: linear-gradient(90deg, var(--brand-primary, #4527A0), var(--brand-secondary, #5CA032));
+}
+
+.org-chart__band--partners {
+  background: var(--gray-600, #5F6368);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .org-chart__box {
+    transition: transform 0.15s ease;
+  }
+
+  .org-chart__box:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@media (max-width: 576px) {
+  .org-chart__box,
+  .org-chart__band {
+    font-size: 0.82rem;
+    padding: 0.7rem 0.85rem;
+  }
+}

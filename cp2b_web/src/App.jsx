@@ -1,114 +1,193 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { lazy, Suspense } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams, useLocation } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import './styles/fonts.css';
+import './styles/tokens.css';
 import './index.css';
+import './styles/design-system.css';
 import { LanguageProvider } from './context/LanguageContext';
+import { PageStatusProvider, usePageStatus } from './context/PageStatusContext';
+import SeoHead from './components/SeoHead';
+
+const organizationJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ResearchOrganization',
+  name: 'CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos',
+  alternateName: 'CP2b',
+  url: 'https://cp2b.unicamp.br',
+  logo: 'https://cp2b.unicamp.br/assets/logos/cp2b-logo-og.png',
+  description: 'Centro de pesquisa vinculado ao NIPE-UNICAMP dedicado ao estudo de biogás, bioprodutos e políticas públicas para energia renovável no Estado de São Paulo.',
+  email: 'administrativo@cp2b.unicamp.br',
+  telephone: '+55-19-3521-1244',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Rua Cora Coralina, 330',
+    addressLocality: 'Campinas',
+    addressRegion: 'SP',
+    postalCode: '13083-896',
+    addressCountry: 'BR',
+  },
+  parentOrganization: {
+    '@type': 'CollegeOrUniversity',
+    name: 'Universidade Estadual de Campinas',
+    alternateName: 'UNICAMP',
+    url: 'https://www.unicamp.br',
+  },
+  sameAs: [
+    'https://www.instagram.com/centro_biogas_cp2b/',
+    'https://br.linkedin.com/company/centro-paulista-de-estudos-em-biog%C3%A1s-e-bioprodutos-cp2b',
+    'https://www.youtube.com/@CP2B_Biog%C3%A1s',
+    'https://open.spotify.com/show/4TiFNi6N2BZiokWvGpaZnb',
+  ],
+  knowsAbout: ['biogás', 'bioprodutos', 'energia renovável', 'resíduos sólidos', 'saneamento', 'políticas públicas', 'biogas', 'bioproducts', 'renewable energy'],
+};
 
 // Components
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import MoleculeField from './components/MoleculeField';
 import SocialSidebar from './components/SocialSidebar';
 import ErrorBoundary from './components/ErrorBoundary';
+import CookieConsent from './components/CookieConsent';
 
-// Pages
+// Páginas carregadas junto com o shell.
+//
+// A Home é a porta de entrada da maioria das visitas: deixá-la sob demanda
+// custaria um round trip extra justamente no caminho mais percorrido. As
+// outras duas são telas de fallback — a Manutencao é o destino do
+// GuardedRoute e a NotFound o da rota curinga —, então precisam estar
+// disponíveis no mesmo instante em que a rota decide desviar para elas.
+// Todas as demais viram chunk próprio logo abaixo.
 import Home from './pages/Home';
-import About from './pages/About';
-import Research from './pages/Research';
-import Team from './pages/Team';
-import News from './pages/News';
-import NewsDetail from './pages/NewsDetail';
-import ProjectDetail from './pages/ProjectDetail';
-import Contact from './pages/Contact';
-import Opportunities from './pages/Opportunities';
-import Publications from './pages/Publications';
-import Projects from './pages/Projects';
-import Events from './pages/Events';
-import Media from './pages/Media';
-import Others from './pages/Others';
 import NotFound from './pages/NotFound';
-import ForumPaulista from './pages/ForumPaulista';
-import Registro from './pages/Registro';
-import AgendaMeetups from './pages/AgendaMeetups';
-import ConfirmarMeetup from './pages/ConfirmarMeetup';
+import Manutencao from './pages/Manutencao';
+
+// Demais páginas: um chunk por rota.
+//
+// Antes deste split, o bundle de entrada carregava as ~30 páginas públicas de
+// uma vez — quem abria a Home baixava também a Galeria, o Fórum e todos os
+// detalhes de notícia. Com React.lazy o Rollup emite um arquivo por página e
+// o visitante busca só a que pediu. O Suspense que cobre essas rotas fica
+// dentro do <main>, para que Header, Footer e MoleculeField permaneçam na
+// tela enquanto o chunk chega.
+const About = lazy(() => import('./pages/About'));
+const Research = lazy(() => import('./pages/Research'));
+const Solucoes = lazy(() => import('./pages/Solucoes'));
+const Capacitacao = lazy(() => import('./pages/Capacitacao'));
+const Team = lazy(() => import('./pages/Team'));
+const News = lazy(() => import('./pages/News'));
+const NewsDetail = lazy(() => import('./pages/NewsDetail'));
+const OportunidadesDetail = lazy(() => import('./pages/OportunidadesDetail'));
+const MicroscopioDetail = lazy(() => import('./pages/MicroscopioDetail'));
+const ProjectDetail = lazy(() => import('./pages/ProjectDetail'));
+const Contact = lazy(() => import('./pages/Contact'));
+const Opportunities = lazy(() => import('./pages/Opportunities'));
+const Publications = lazy(() => import('./pages/Publications'));
+const Projects = lazy(() => import('./pages/Projects'));
+const Microscopio = lazy(() => import('./pages/Microscopio'));
+const PressKit = lazy(() => import('./pages/PressKit'));
+const Podcast = lazy(() => import('./pages/Podcast'));
+const Boletins = lazy(() => import('./pages/Boletins'));
+const Newsletter = lazy(() => import('./pages/Newsletter'));
+const Others = lazy(() => import('./pages/Others'));
+const ForumPaulista = lazy(() => import('./pages/ForumPaulista'));
+const ConfirmarMeetup = lazy(() => import('./pages/ConfirmarMeetup'));
+const Events = lazy(() => import('./pages/Events'));
+const EventDetail = lazy(() => import('./pages/EventDetail'));
+const Gallery = lazy(() => import('./pages/Gallery'));
+const AlbumView = lazy(() => import('./pages/AlbumView'));
 
 // About sub-pages
-import Governance from './pages/about/Governance';
-import Transparency from './pages/about/Transparency';
-import PartnersPage from './pages/about/PartnersPage';
+const Governance = lazy(() => import('./pages/about/Governance'));
+const Indicators = lazy(() => import('./pages/about/Indicators'));
+const Transparency = lazy(() => import('./pages/about/Transparency'));
+const PartnersPage = lazy(() => import('./pages/about/PartnersPage'));
 
-// Admin Pages
-import {
-  AdminLayout,
-  Dashboard,
-  NewsList,
-  NewsEditor,
-  VideosList,
-  VideosEditor,
-  TeamEditor,
-  AxesEditor,
-  MessagesPanel,
-  PartnersEditor,
-  PublicationsList,
-  PublicationsEditor,
-  EventsList,
-  EventsEditor,
-  ProjectsList,
-  ProjectsEditor,
-  ParticipantsPanel,
-  MeetupSlotsManager,
-  MeetupRequestsPanel,
-  ForumDashboard,
-  NewsletterPanel,
-} from './pages/admin';
-import FeaturedContentManager from './pages/admin/FeaturedContentManager';
-import {
-  HomeContentEditor,
-  AboutContentEditor,
-  GovernanceContentEditor,
-  TransparencyContentEditor
-} from './pages/admin/content';
+// Painel administrativo: um único chunk carregado sob demanda em /admin.
+// Ver src/AdminApp.jsx para o motivo.
+const AdminApp = lazy(() => import('./AdminApp'));
+
+// Placeholder enquanto um chunk sob demanda é baixado. role="status" +
+// aria-live fazem o leitor de tela anunciar o carregamento em vez de ficar em
+// silêncio.
+const ChunkLoading = ({ label, minHeight }) => (
+  <div
+    role="status"
+    aria-live="polite"
+    style={{
+      minHeight,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '0.75rem',
+      color: '#1E3E4C',
+    }}
+  >
+    <span className="spinner-border spinner-border-sm" aria-hidden="true" />
+    {label}
+  </div>
+);
+
+const AdminLoading = () => (
+  <ChunkLoading label="Carregando o painel…" minHeight="100vh" />
+);
+
+// O Header e o Footer já estão na tela quando este fallback aparece, então ele
+// ocupa só a altura do <main> — sem isso a página saltaria a cada navegação.
+const PageLoading = () => (
+  <ChunkLoading label="Carregando…" minHeight="80vh" />
+);
+
+// Route guard: redirects to /manutencao when page is disabled
+const GuardedRoute = ({ pageKey, element }) => {
+  const { isPageEnabled } = usePageStatus();
+  return isPageEnabled(pageKey) ? element : <Navigate to="/manutencao" replace />;
+};
+
+// Legacy album URL redirect: /gallery/:albumId -> /galeria/:albumId
+// (the public gallery list lives at /galeria; this unifies the previously
+// mismatched detail-page prefix so both use the same Portuguese route).
+const LegacyAlbumRedirect = () => {
+  const { albumId } = useParams();
+  return <Navigate to={`/galeria/${albumId}`} replace />;
+};
+
+// O <main> diz se a rota é a Home ou uma página interna. A identidade de
+// papel (etiquetas à mão, cartões de papel) vale só nas internas: a Home
+// herda apenas a base comum — cores, fontes, botões, cabeçalho e rodapé —
+// e mantém suas seções como estão. Ver "Papel" em design-system.css.
+const PageMain = ({ children }) => {
+  const { pathname } = useLocation();
+  return (
+    <main id="main-content" data-page={pathname === '/' ? 'home' : 'inner'} style={{ minHeight: '80vh' }}>
+      {children}
+    </main>
+  );
+};
 
 function App() {
   return (
     <LanguageProvider>
-      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+      <PageStatusProvider>
+      {/* react-router v7 já aplica startTransition e a resolução relativa de
+          rotas splat por padrão — as future flags do v6 saíram junto com o upgrade. */}
+      <Router>
+        <SeoHead jsonLd={organizationJsonLd} />
         <ScrollToTop />
         <SocialSidebar />
+        <CookieConsent />
         <Routes>
-          {/* Admin Routes - No Header/Footer */}
-          <Route path="/admin" element={<AdminLayout />}>
-            <Route index element={<Dashboard />} />
-            <Route path="news" element={<NewsList />} />
-            <Route path="news/new" element={<NewsEditor />} />
-            <Route path="news/:slug" element={<NewsEditor />} />
-            <Route path="videos" element={<VideosList />} />
-            <Route path="videos/new" element={<VideosEditor />} />
-            <Route path="videos/:id" element={<VideosEditor />} />
-            <Route path="featured" element={<FeaturedContentManager />} />
-            <Route path="publications" element={<PublicationsList />} />
-            <Route path="publications/new" element={<PublicationsEditor />} />
-            <Route path="publications/:id" element={<PublicationsEditor />} />
-            <Route path="events" element={<EventsList />} />
-            <Route path="events/new" element={<EventsEditor />} />
-            <Route path="events/:id" element={<EventsEditor />} />
-            <Route path="projects" element={<ProjectsList />} />
-            <Route path="projects/new" element={<ProjectsEditor />} />
-            <Route path="projects/:slug" element={<ProjectsEditor />} />
-            <Route path="team" element={<TeamEditor />} />
-            <Route path="axes" element={<AxesEditor />} />
-            <Route path="content/home" element={<HomeContentEditor />} />
-            <Route path="content/about" element={<AboutContentEditor />} />
-            <Route path="content/governance" element={<GovernanceContentEditor />} />
-            <Route path="content/transparency" element={<TransparencyContentEditor />} />
-            <Route path="partners" element={<PartnersEditor />} />
-            <Route path="messages" element={<MessagesPanel />} />
-            <Route path="forum" element={<ForumDashboard />} />
-            <Route path="forum/participants" element={<ParticipantsPanel />} />
-            <Route path="forum/slots"        element={<MeetupSlotsManager />} />
-            <Route path="forum/meetups"      element={<MeetupRequestsPanel />} />
-            <Route path="newsletter"         element={<NewsletterPanel />} />
-          </Route>
+          {/* Admin: chunk próprio, sem Header/Footer */}
+          <Route
+            path="/admin/*"
+            element={
+              <Suspense fallback={<AdminLoading />}>
+                <AdminApp />
+              </Suspense>
+            }
+          />
 
           {/* Public Routes - With Header/Footer */}
           <Route
@@ -116,33 +195,55 @@ function App() {
             element={
               <>
                 <Header />
+                {/* Ambient CH4 field: mounted once so it persists across
+                    route changes, at full density on Home and lower
+                    elsewhere. See MoleculeField for the reasoning. */}
+                <MoleculeField />
                 <ErrorBoundary>
-                <main style={{ minHeight: '80vh' }}>
+                <PageMain>
+                  <Suspense fallback={<PageLoading />}>
                   <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/sobre" element={<About />} />
-                    <Route path="/sobre/governanca" element={<Governance />} />
-                    <Route path="/sobre/transparencia" element={<Transparency />} />
-                    <Route path="/sobre/parceiros" element={<PartnersPage />} />
-                    <Route path="/eixos" element={<Research />} />
-                    <Route path="/equipe" element={<Team />} />
-                    <Route path="/noticias" element={<News />} />
-                    <Route path="/noticias/:slug" element={<NewsDetail />} />
+                    <Route path="/" element={<GuardedRoute pageKey="home" element={<Home />} />} />
+                    <Route path="/sobre" element={<GuardedRoute pageKey="sobre" element={<About />} />} />
+                    <Route path="/sobre/governanca" element={<GuardedRoute pageKey="governanca" element={<Governance />} />} />
+                    <Route path="/sobre/indicadores" element={<GuardedRoute pageKey="indicadores" element={<Indicators />} />} />
+                    <Route path="/sobre/transparencia" element={<GuardedRoute pageKey="transparencia" element={<Transparency />} />} />
+                    <Route path="/sobre/parceiros" element={<GuardedRoute pageKey="parceiros" element={<PartnersPage />} />} />
+                    <Route path="/eixos" element={<GuardedRoute pageKey="eixos" element={<Research />} />} />
+                    <Route path="/solucoes" element={<GuardedRoute pageKey="solucoes" element={<Solucoes />} />} />
+                    <Route path="/capacitacao" element={<GuardedRoute pageKey="capacitacao" element={<Capacitacao />} />} />
+                    <Route path="/equipe" element={<GuardedRoute pageKey="equipe" element={<Team />} />} />
+                    <Route path="/noticias" element={<GuardedRoute pageKey="noticias" element={<News />} />} />
+                    <Route path="/noticias/:slug" element={<GuardedRoute pageKey="noticias" element={<NewsDetail />} />} />
                     <Route path="/contato" element={<Contact />} />
-                    <Route path="/oportunidades" element={<Opportunities />} />
-                    <Route path="/publicacoes" element={<Publications />} />
-                    <Route path="/eventos" element={<Events />} />
-                    <Route path="/projetos" element={<Projects />} />
-                    <Route path="/projetos/:slug" element={<ProjectDetail />} />
-                    <Route path="/na-midia" element={<Media />} />
+                    <Route path="/oportunidades" element={<GuardedRoute pageKey="oportunidades" element={<Opportunities />} />} />
+                    <Route path="/oportunidades/:slug" element={<GuardedRoute pageKey="oportunidades" element={<OportunidadesDetail />} />} />
+                    <Route path="/publicacoes" element={<GuardedRoute pageKey="publicacoes" element={<Publications />} />} />
+                    <Route path="/microscopio" element={<GuardedRoute pageKey="microscopio" element={<Microscopio />} />} />
+                    <Route path="/microscopio/:slug" element={<GuardedRoute pageKey="microscopio" element={<MicroscopioDetail />} />} />
+                    <Route path="/eventos" element={<GuardedRoute pageKey="eventos" element={<Events />} />} />
+                    <Route path="/eventos/:slug" element={<GuardedRoute pageKey="eventos" element={<EventDetail />} />} />
+                    <Route path="/galeria" element={<GuardedRoute pageKey="galeria" element={<Gallery />} />} />
+                    <Route path="/galeria/:albumId" element={<GuardedRoute pageKey="galeria" element={<AlbumView />} />} />
+                    {/* Legacy album URL — redirect old /gallery/:albumId links to the unified /galeria/:albumId */}
+                    <Route path="/gallery/:albumId" element={<LegacyAlbumRedirect />} />
+                    <Route path="/entrevistas" element={<GuardedRoute pageKey="entrevistas" element={<Projects />} />} />
+                    <Route path="/entrevistas/:slug" element={<GuardedRoute pageKey="entrevistas" element={<ProjectDetail />} />} />
+                    <Route path="/press-kit" element={<GuardedRoute pageKey="press-kit" element={<PressKit />} />} />
+                    <Route path="/podcast" element={<GuardedRoute pageKey="podcast" element={<Podcast />} />} />
+                    <Route path="/boletins" element={<GuardedRoute pageKey="boletins" element={<Boletins />} />} />
+                    <Route path="/newsletter" element={<Newsletter />} />
                     <Route path="/outros" element={<Others />} />
-                    <Route path="/forum-paulista" element={<ForumPaulista />} />
-                    <Route path="/registro" element={<Registro />} />
-                    <Route path="/agenda-meetups" element={<AgendaMeetups />} />
+                    <Route path="/forum-paulista" element={<GuardedRoute pageKey="forum-paulista" element={<ForumPaulista />} />} />
+                    {/* Fórum de 2026 encerrado: /registro, /agenda-meetups e
+                        /cronograma-evento foram removidos. /confirmar-meetup
+                        permanece porque e-mails já enviados apontam para ele. */}
                     <Route path="/confirmar-meetup" element={<ConfirmarMeetup />} />
+                    <Route path="/manutencao" element={<Manutencao />} />
                     <Route path="*" element={<NotFound />} />
                   </Routes>
-                </main>
+                  </Suspense>
+                </PageMain>
                 </ErrorBoundary>
                 <Footer />
               </>
@@ -150,6 +251,7 @@ function App() {
           />
         </Routes>
       </Router>
+      </PageStatusProvider>
     </LanguageProvider>
   );
 }

@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 import { Container, Spinner, Button } from 'react-bootstrap';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { projectsItems } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchProjectArticle, fetchProjects } from '../services/api';
 import ArticleLayout from '../components/ArticleLayout';
+import SeoHead from '../components/SeoHead';
+import Metaninho from '../components/Metaninho';
 
 const ProjectsDetail = () => {
+  const DOMAIN = 'https://cp2b.unicamp.br';
   const { slug } = useParams();
+  const { pathname } = useLocation();
   const { language } = useLanguage();
   const [article, setArticle] = useState(null);
   const [relatedPosts, setRelatedPosts] = useState([]);
@@ -15,16 +19,18 @@ const ProjectsDetail = () => {
 
   const labels = {
     pt: {
-      notFound: 'Projeto não encontrado',
-      backBtn: 'Voltar para Projetos',
+      notFound: 'Entrevista não encontrada',
+      backBtn: 'Voltar para Entrevistas',
       back: 'Voltar',
       share: 'Compartilhar',
+      interviewedBy: 'Entrevistado por',
     },
     en: {
-      notFound: 'Project not found',
-      backBtn: 'Back to Projects',
+      notFound: 'Interview not found',
+      backBtn: 'Back to Interviews',
       back: 'Back',
       share: 'Share',
+      interviewedBy: 'Interviewed by',
     },
   }[language];
 
@@ -67,7 +73,7 @@ const ProjectsDetail = () => {
                 badge: item.badge,
                 badgeColor: item.badge_color,
                 date: item.date_display,
-                link: `/projetos/${item.slug}`,
+                link: `/entrevistas/${item.slug}`,
               }))
           );
         }
@@ -100,23 +106,48 @@ const ProjectsDetail = () => {
   if (!article) {
     return (
       <Container className="py-5 text-center">
+        <Metaninho pose="surpreso" size={140} className="d-block mx-auto mb-3" />
         <h2>{labels.notFound}</h2>
-        <Button as={Link} to="/projetos" variant="primary" className="mt-3">
+        <Button as={Link} to="/entrevistas" variant="primary" className="mt-3">
           {labels.backBtn}
         </Button>
       </Container>
     );
   }
 
+  const articleJsonLd = article ? {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: article.title,
+    description: article.description,
+    image: article.image ? (article.image.startsWith('http') ? article.image : `${DOMAIN}${article.image}`) : undefined,
+    datePublished: article.date,
+    author: { '@type': 'Organization', name: 'CP2b' },
+    publisher: { '@type': 'Organization', name: 'CP2b', logo: { '@type': 'ImageObject', url: 'https://cp2b.unicamp.br/assets/logos/cp2b-logo-og.png' } },
+  } : null;
+
   return (
-    <ArticleLayout
-      article={article}
+    <>
+      {article && (
+        <SeoHead
+          title={article.title}
+          description={article.description}
+          path={pathname}
+          image={article.image}
+          type="article"
+          language={language}
+          jsonLd={articleJsonLd}
+        />
+      )}
+      <ArticleLayout
+        article={article}
       relatedPosts={relatedPosts}
-      backLink="/projetos"
+      backLink="/entrevistas"
       backLabel={labels.back}
       shareLabel={labels.share}
       language={language}
     />
+    </>
   );
 };
 

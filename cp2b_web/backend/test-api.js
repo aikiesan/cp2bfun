@@ -42,7 +42,7 @@ async function testEndpoint(test) {
 }
 
 async function runTests() {
-  console.log('\n🧪 CP2B API Test Suite\n');
+  console.log('\n🧪 CP2b API Test Suite\n');
   console.log('Testing backend at:', BASE_URL);
   console.log('─'.repeat(70));
 

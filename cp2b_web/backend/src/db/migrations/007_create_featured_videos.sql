@@ -20,10 +20,10 @@ CREATE TABLE IF NOT EXISTS featured_videos (
 );
 
 -- Index for efficient position queries
-CREATE INDEX idx_featured_videos_position ON featured_videos(position) WHERE active = TRUE;
+CREATE INDEX IF NOT EXISTS idx_featured_videos_position ON featured_videos(position) WHERE active = TRUE;
 
 -- Index for active videos
-CREATE INDEX idx_featured_videos_active ON featured_videos(active);
+CREATE INDEX IF NOT EXISTS idx_featured_videos_active ON featured_videos(active);
 
 -- Comments for documentation
 COMMENT ON TABLE featured_videos IS 'Stores YouTube videos for featured display on homepage';

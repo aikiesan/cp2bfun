@@ -1,0 +1,158 @@
+.indicators-page{--indicators-ink:var(--paper-ink);--indicators-muted:var(--text-secondary);--indicators-line:var(--paper-line);--indicators-soft:var(--paper-kraft)}.indicators-page section+section{margin-top:clamp(3.5rem,7vw,6.5rem)}.indicators-eyebrow{display:block;margin-bottom:.5rem;color:var(--cp2b-verde-escuro);font-family:var(--font-hand);font-size:1.35rem;font-weight:700;line-height:1.1}.indicators-overview{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);gap:clamp(2rem,6vw,5rem);align-items:center;padding:clamp(2rem,5vw,4rem);overflow:hidden;color:#fff;background:var(--cp2b-azul-petroleo);border-radius:var(--radius-md);box-shadow:var(--paper-shadow)}.indicators-overview .indicators-eyebrow{color:var(--cp2b-lima)}.indicators-overview h2,.indicators-section-heading h2{margin-bottom:1rem;color:inherit;font-size:clamp(2rem,4vw,3.45rem);font-weight:800;letter-spacing:-.04em;line-height:1.02}.indicators-overview__copy>p{max-width:46rem;margin:0;color:rgba(255,255,255,.78);font-size:clamp(1rem,1.5vw,1.15rem);line-height:1.7}.indicators-stats{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.8rem}.indicators-stat{min-height:132px;padding:1.35rem;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius-md)}.indicators-stat--year{grid-column:1/-1;min-height:auto}.indicators-stat strong,.indicators-stat span{display:block}.indicators-stat strong{margin-bottom:.3rem;color:#fff;font-size:clamp(2.2rem,4vw,3.25rem);line-height:1}.indicators-stat span{color:rgba(255,255,255,.78);font-size:.9rem;font-weight:700;letter-spacing:.01em}
+.indicators-journey{position:relative;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.indicators-journey::before{position:absolute;top:2.1rem;right:14%;left:14%;z-index:-1;height:1px;background:var(--indicators-line);content:''}.indicators-journey__step{position:relative;display:grid;grid-template-columns:auto 1fr;gap:1rem;padding:1.4rem;background:#fff;border:1px solid var(--indicators-line);border-radius:var(--radius-md);box-shadow:var(--paper-shadow)}.indicators-journey__number{position:absolute;top:-.65rem;right:1rem;padding:0 .4rem;color:var(--text-secondary);font-family:var(--font-display);font-variant-numeric:tabular-nums;font-size:.8rem;font-weight:700;line-height:1.3;background:#fff}.indicators-journey__icon,.indicators-dimension-panel__icon{display:grid;flex:0 0 auto;width:3rem;height:3rem;place-items:center;color:var(--cp2b-ambar);font-size:1.5rem}.indicators-journey h3{margin:0 0 .35rem;color:var(--indicators-ink);font-size:1.05rem;font-weight:800}.indicators-journey p{margin:0;color:var(--indicators-muted);font-size:.88rem;line-height:1.55}.indicators-section-heading{max-width:48rem;margin-bottom:2rem}.indicators-section-heading h2{color:var(--indicators-ink)}.indicators-section-heading>p{color:var(--indicators-muted);font-size:1.05rem;line-height:1.65}.indicators-section-heading--centered{margin-right:auto;margin-left:auto;text-align:center}
+.indicators-vision{padding:clamp(2rem,5vw,4rem);background:var(--paper-grain),var(--indicators-soft);border-radius:var(--radius-md)}.indicators-vision__grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1rem}.indicators-vision__card{min-height:190px;padding:1.5rem;background:#fff;border:1px solid var(--indicators-line);border-radius:var(--radius-md);box-shadow:var(--paper-shadow)}.indicators-vision__card i{display:block;margin-bottom:1.7rem;color:var(--cp2b-ambar);font-size:1.55rem}.indicators-vision__card p{margin:0;color:var(--indicators-ink);font-weight:700;line-height:1.48}.indicators-principles{display:flex;gap:1.2rem 2rem;align-items:center;justify-content:space-between;margin-top:1.25rem;padding-top:1.25rem;border-top:1px solid var(--indicators-line)}.indicators-principles strong{color:var(--indicators-ink)}.indicators-principles>div{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:flex-end}.indicators-principles span{padding:.45rem .7rem;color:var(--indicators-ink);font-size:.78rem;font-weight:700;background:#fff;border:1px solid var(--indicators-line);border-radius:999px}
+.indicators-dimension-nav{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:.65rem;margin-bottom:1rem}.indicators-dimension-nav__item{min-width:0;padding:1rem .75rem;color:var(--indicators-muted);text-align:left;background:#fff;border:1px solid var(--indicators-line);border-radius:var(--radius-md);box-shadow:var(--paper-shadow);transition:transform 160ms ease,border-color 160ms ease,box-shadow 160ms ease}.indicators-dimension-nav__item:hover,.indicators-dimension-nav__item:focus-visible{border-color:var(--dimension-color);transform:translate(-1px,-2px);box-shadow:var(--paper-shadow-lift)}.indicators-dimension-nav__item:focus-visible{outline:3px solid rgba(23,127,120,.2);outline-offset:2px}.indicators-dimension-nav__item.is-active{color:var(--indicators-ink);border-color:var(--dimension-color);box-shadow:inset 0 -4px 0 var(--dimension-color),var(--paper-shadow)}.indicators-dimension-nav__icon{display:grid;width:2.35rem;height:2.35rem;margin-bottom:.75rem;place-items:center;color:var(--dimension-color);font-size:1.25rem}.indicators-dimension-nav__text{display:block;min-width:0}.indicators-dimension-nav__text small,.indicators-dimension-nav__text strong{display:block}.indicators-dimension-nav__text small{margin-bottom:.2rem;font-size:.74rem;font-weight:800;letter-spacing:.01em}.indicators-dimension-nav__text strong{overflow:hidden;font-size:.78rem;line-height:1.25;text-overflow:ellipsis}
+.indicators-dimension-panel{overflow:hidden;background:#fff;border:1px solid var(--indicators-line);border-top:5px solid var(--dimension-color);border-radius:var(--radius-md);box-shadow:var(--paper-shadow)}.indicators-dimension-panel__header{display:flex;gap:1.25rem;align-items:center;padding:clamp(1.5rem,4vw,2.5rem);background:#fff;border-bottom:1px solid var(--indicators-line)}.indicators-dimension-panel__icon{color:var(--dimension-color)}.indicators-dimension-panel__header>div:nth-child(2){flex:1}.indicators-dimension-panel__header span{color:var(--dimension-color);font-family:var(--font-hand);font-size:1.3rem;font-weight:700;line-height:1.1}.indicators-dimension-panel__header h3{margin:.25rem 0 .4rem;color:var(--indicators-ink);font-size:clamp(1.4rem,3vw,2rem);font-weight:800}.indicators-dimension-panel__header p{max-width:48rem;margin:0;color:var(--indicators-muted);line-height:1.55}.indicators-dimension-panel__count{flex:0 0 auto;min-width:92px;padding:.85rem;text-align:center;background:var(--paper);border-radius:var(--radius-md)}.indicators-dimension-panel__count strong,.indicators-dimension-panel__count span{display:block}.indicators-dimension-panel__count strong{color:var(--dimension-color);font-size:1.8rem;line-height:1}.indicators-dimension-panel__count span{margin-top:.35rem;color:var(--indicators-muted);font-size:.65rem}
+.indicators-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--indicators-line)}.indicators-list__item{display:grid;grid-template-columns:auto 1fr;gap:1rem;min-height:128px;padding:1.45rem;background:#fff}.indicators-list__code{display:grid;width:2.45rem;height:2.45rem;place-items:center;color:var(--dimension-color);font-family:var(--font-display);font-variant-numeric:tabular-nums;font-size:.8rem;font-weight:700;background:var(--paper);border-radius:var(--radius-sm)}.indicators-list h4{margin:0 0 .45rem;color:var(--indicators-ink);font-size:1rem;font-weight:800;line-height:1.35}.indicators-list p{margin:0;color:var(--indicators-muted);font-size:.85rem;line-height:1.5}.indicators-list p span{color:var(--indicators-ink);font-weight:700}
+@media(min-width:768px){.indicators-list__item:last-child:nth-child(odd){grid-column:1/-1}}@media(max-width:1199.98px){.indicators-dimension-nav{grid-template-columns:repeat(4,minmax(0,1fr))}.indicators-vision__grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:767.98px){.indicators-page section+section{margin-top:3.5rem}.indicators-overview{grid-template-columns:1fr;padding:1.6rem}.indicators-journey{grid-template-columns:1fr}.indicators-journey::before{display:none}.indicators-vision{padding:1.4rem}.indicators-principles{align-items:flex-start;flex-direction:column}.indicators-principles>div{justify-content:flex-start}.indicators-dimension-nav{grid-template-columns:repeat(2,minmax(0,1fr))}.indicators-dimension-panel__header{align-items:flex-start;flex-wrap:wrap}.indicators-dimension-panel__count{display:flex;gap:.5rem;align-items:baseline;min-width:0;text-align:left}.indicators-list{grid-template-columns:1fr}}@media(max-width:479.98px){.indicators-stats{grid-template-columns:1fr}.indicators-stat,.indicators-stat--year{grid-column:auto;min-height:auto}.indicators-vision__grid{grid-template-columns:1fr}.indicators-vision__card{min-height:0}.indicators-dimension-nav{grid-template-columns:repeat(2,minmax(0,1fr));gap:0.45rem}.indicators-dimension-nav__item{padding:0.65rem 0.5rem;min-height:44px}.indicators-dimension-nav__item:last-child:nth-child(odd){grid-column:1/-1}.indicators-dimension-nav__icon{width:1.85rem;height:1.85rem;margin-bottom:0.35rem;font-size:0.9rem}.indicators-dimension-nav__text small{font-size:0.625rem}.indicators-dimension-nav__text strong{font-size:0.72rem}.indicators-list__item{min-height:0;padding:1.15rem}}@media(prefers-reduced-motion:reduce){.indicators-dimension-nav__item{transition:none}}
+
+/* ============================================================
+   Motion — plays once as each block scrolls into view.
+   data-reveal comes from useScrollReveal: "armed" holds the start pose,
+   "shown" runs the keyframes. The keyframes fill backwards only, so once
+   they end the normal rules (and their hover states) take over again.
+   Without layout or with reduced motion the attribute is never set and
+   everything is simply there.
+   ============================================================ */
+
+/* Journey 01 → 03: the rail draws, the steps rise one by one, their icons
+   pop, then a pulse travels the rail from the first step to the last. */
+.indicators-journey::before { transform-origin: left center; }
+.indicators-journey[data-reveal="armed"]::before,
+.indicators-journey[data-reveal="armed"] .indicators-journey__step { opacity: 0; }
+.indicators-journey[data-reveal="shown"]::before { animation: ind-draw 1.1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards; }
+.indicators-journey[data-reveal="shown"] .indicators-journey__step {
+  animation: ind-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.15s + var(--i, 0) * 0.18s);
+}
+.indicators-journey[data-reveal="shown"] .indicators-journey__icon {
+  animation: ind-pop 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation-delay: calc(0.4s + var(--i, 0) * 0.18s);
+}
+
+.indicators-journey__pulse {
+  position: absolute;
+  top: calc(2.1rem - 4px);
+  right: 14%;
+  left: 14%;
+  z-index: -1;
+  height: 9px;
+  pointer-events: none;
+}
+.indicators-journey[data-reveal="shown"] .indicators-journey__pulse::after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--cp2b-lima);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--cp2b-lima) 30%, transparent), 0 0 16px var(--cp2b-lima);
+  opacity: 0;
+  content: '';
+  animation: ind-travel 1.8s cubic-bezier(0.65, 0, 0.35, 1) 1.1s;
+}
+
+.indicators-journey__step { transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease; }
+.indicators-journey__step:hover {
+  border-color: var(--brand-secondary, #157f78);
+  box-shadow: 0 14px 32px rgba(23, 54, 68, 0.09);
+  transform: translateY(-3px);
+}
+.indicators-journey__icon { transition: transform 250ms ease, background-color 250ms ease, color 250ms ease; }
+.indicators-journey__step:hover .indicators-journey__icon {
+  color: #fff;
+  background: var(--brand-secondary, #157f78);
+  transform: rotate(-6deg) scale(1.06);
+}
+
+/* Vision 2035: the cards rise in sequence, then the principles. */
+.indicators-vision[data-reveal="armed"] .indicators-vision__card,
+.indicators-vision[data-reveal="armed"] .indicators-principles span { opacity: 0; }
+.indicators-vision[data-reveal="shown"] .indicators-vision__card {
+  animation: ind-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.1s + var(--i, 0) * 0.12s);
+}
+.indicators-vision[data-reveal="shown"] .indicators-principles span {
+  animation: ind-fade 0.5s ease-out backwards;
+  animation-delay: calc(0.6s + var(--i, 0) * 0.06s);
+}
+.indicators-vision__card { transition: transform 200ms ease, box-shadow 200ms ease; }
+.indicators-vision__card i { transition: transform 300ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.indicators-vision__card:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(23, 54, 68, 0.1); }
+.indicators-vision__card:hover i { transform: translateY(-3px) rotate(-8deg) scale(1.1); }
+
+/* Dimension picker: one bar slides to whichever dimension is chosen and
+   takes its colour on the way (Framer layout animation), in place of the
+   static inset underline. */
+.indicators-dimension-nav__item { position: relative; }
+.indicators-dimension-nav__item.is-active { box-shadow: 0 12px 28px rgba(23, 54, 68, 0.08); }
+.indicators-dimension-nav__bar {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  left: -1px;
+  height: 4px;
+  border-radius: 0 0 15px 15px;
+  background: var(--dimension-color);
+}
+
+/* Signals: a tint of the dimension's colour follows the pointer. */
+.indicators-list__item { transition: background-color 200ms ease; }
+.indicators-list__item:hover { background: color-mix(in srgb, var(--dimension-color) 6%, #fff); }
+.indicators-list__code { transition: background-color 200ms ease, color 200ms ease, transform 250ms cubic-bezier(0.34, 1.56, 0.64, 1); }
+.indicators-list__item:hover .indicators-list__code { color: #fff; background: var(--dimension-color); transform: scale(1.08); }
+
+/* The counters are spans inside <strong>, and the older ".indicators-stat
+   span" / ".indicators-dimension-panel__count span" label rules would
+   otherwise shrink them to label size: they take the number's look. */
+.indicators-stat strong > .count-up,
+.indicators-dimension-panel__count strong > .count-up {
+  display: inline;
+  margin: 0;
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes ind-rise { from { opacity: 0; transform: translateY(18px); } }
+@keyframes ind-fade { from { opacity: 0; } }
+@keyframes ind-draw { from { transform: scaleX(0); } }
+@keyframes ind-pop { from { transform: scale(0.6); } }
+@keyframes ind-travel {
+  0% { left: 0; opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { left: calc(100% - 9px); opacity: 0; }
+}
+
+@media (max-width: 767.98px) {
+  .indicators-journey__pulse { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .indicators-journey__step,
+  .indicators-journey__icon,
+  .indicators-vision__card,
+  .indicators-vision__card i,
+  .indicators-list__item,
+  .indicators-list__code { transition: none; }
+  .indicators-journey__step:hover,
+  .indicators-vision__card:hover,
+  .indicators-vision__card:hover i,
+  .indicators-journey__step:hover .indicators-journey__icon,
+  .indicators-list__item:hover .indicators-list__code { transform: none; }
+}
+
+/* Source line under the overview lead: where the panel's numbers come from
+   (the Manus benchmark flagged "metric without source"). Smaller and quieter
+   than the lead it follows. */
+.indicators-overview__copy > p.indicators-source {
+  max-width: 40rem;
+  margin-top: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.78rem;
+  line-height: 1.5;
+}

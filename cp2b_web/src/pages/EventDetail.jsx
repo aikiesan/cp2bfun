@@ -1,0 +1,338 @@
+import { useState, useEffect, useRef } from 'react';
+import { Container, Row, Col, Badge, Spinner, Button } from 'react-bootstrap';
+import { useParams, useLocation, Link } from 'react-router-dom';
+import DOMPurify from 'dompurify';
+import { fetchEventBySlug, fetchGallery } from '../services/api';
+import { useLanguage } from '../context/LanguageContext';
+import SeoHead from '../components/SeoHead';
+import NotFound from './NotFound';
+import CountUp from '../components/CountUp';
+import useScrollReveal from '../hooks/useScrollReveal';
+import { safeHref } from '../utils/safeUrl';
+import { getEventCountdown } from '../utils/eventCountdown';
+import './EventDetail.css';
+
+// Programação do evento, num componente próprio para que os hooks de entrada
+// montem junto com a lista (no corpo da página montariam com o spinner e nunca
+// a veriam). As linhas entram em sequência na primeira vez em que a lista
+// aparece (ver EventDetail.css). A entrada dispara assim que a borda de cima
+// aparece ('some'), qualquer que seja o tamanho da lista: uma fração dela
+// (20%, por exemplo) pode nunca caber na janela, seja por serem muitos itens,
+// seja por zoom alto (400% deixa a janela com 320x256), e a programação
+// ficaria presa escondida.
+const EventSchedule = ({ items, title, language }) => {
+  const listRef = useRef(null);
+  const reveal = useScrollReveal(listRef, { amount: 'some' });
+
+  return (
+    <section className="mb-5">
+      <h2 className="h4 fw-bold mb-4">{title}</h2>
+      <div ref={listRef} className="d-flex flex-column gap-3 event-schedule" data-reveal={reveal}>
+        {items.map((item, i) => (
+          <div
+            key={i}
+            className="d-flex gap-3 p-3 bg-white rounded-4 shadow-sm event-schedule__item"
+            // A partir da 9ª linha o atraso para de crescer: lista longa não espera.
+            style={{ '--i': Math.min(i, 8) }}
+          >
+            <div
+              className="fw-bold flex-shrink-0 text-center event-schedule__time"
+              style={{ fontFamily: 'var(--font-mono)', color: 'var(--cp2b-petrol)', minWidth: '5rem' }}
+            >
+              {item.time}
+            </div>
+            <div>
+              <div className="fw-bold">
+                {language === 'pt' ? item.title_pt : (item.title_en || item.title_pt)}
+              </div>
+              {item.speaker && <div className="text-muted small">{item.speaker}</div>}
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+// Selo da contagem regressiva, logo abaixo da data. O número de dias entra
+// contando (CountUp); os demais estados são só texto. A contagem parte de 2,
+// o menor número que o texto no plural ("Faltam N dias") admite: partindo de
+// 0, o selo passaria por "Faltam 0 dias" e "Faltam 1 dias".
+const EventCountdown = ({ countdown, labels }) => (
+  <span className={`event-countdown event-countdown--${countdown.kind}`}>
+    <i className={`bi ${countdown.kind === 'days' || countdown.kind === 'tomorrow' ? 'bi-hourglass-split' : 'bi-calendar-event'}`} aria-hidden="true" />
+    {countdown.kind === 'days' ? (
+      <span style={{ '--digits': String(countdown.days).length }}>
+        {labels.daysBefore}
+        <CountUp value={countdown.days} from={2} duration={1.2} className="event-countdown__num" />
+        {labels.daysAfter}
+      </span>
+    ) : (
+      <span>{labels[countdown.kind]}</span>
+    )}
+  </span>
+);
+
+const EventDetail = () => {
+  const { slug } = useParams();
+  const { pathname } = useLocation();
+  const { language } = useLanguage();
+  const [event, setEvent] = useState(null);
+  const [albums, setAlbums] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const labels = {
+    pt: {
+      back: 'Eventos',
+      register: 'Inscrever-se',
+      about: 'Sobre o evento',
+      schedule: 'Programação',
+      gallery: 'Galeria do evento',
+      date: 'Data',
+      location: 'Local',
+      organizer: 'Organização',
+      photos: 'fotos',
+      photo: 'foto',
+      statusLabels: { upcoming: 'Em breve', ongoing: 'Acontecendo agora', completed: 'Realizado', cancelled: 'Cancelado' },
+      countdown: { daysBefore: 'Faltam ', daysAfter: ' dias', tomorrow: 'É amanhã', today: 'É hoje', ongoing: 'Acontecendo agora' },
+    },
+    en: {
+      back: 'Events',
+      register: 'Register',
+      about: 'About the event',
+      schedule: 'Schedule',
+      gallery: 'Event gallery',
+      date: 'Date',
+      location: 'Location',
+      organizer: 'Organizer',
+      photos: 'photos',
+      photo: 'photo',
+      statusLabels: { upcoming: 'Upcoming', ongoing: 'Happening now', completed: 'Completed', cancelled: 'Cancelled' },
+      countdown: { daysBefore: '', daysAfter: ' days to go', tomorrow: "It's tomorrow", today: "It's today", ongoing: 'Happening now' },
+    },
+  }[language];
+
+  const typeLabels = {
+    workshop: 'Workshop',
+    forum: language === 'pt' ? 'Fórum' : 'Forum',
+    conference: language === 'pt' ? 'Conferência' : 'Conference',
+    meeting: language === 'pt' ? 'Reunião' : 'Meeting',
+    webinar: 'Webinar',
+    course: language === 'pt' ? 'Curso' : 'Course',
+  };
+
+  const locationTypeLabels = {
+    'in-person': language === 'pt' ? 'Presencial' : 'In Person',
+    'online': 'Online',
+    'hybrid': language === 'pt' ? 'Híbrido' : 'Hybrid',
+  };
+
+  useEffect(() => {
+    let mounted = true;
+    const load = async () => {
+      setLoading(true);
+      const data = await fetchEventBySlug(slug);
+      if (!mounted) return;
+      setEvent(data);
+
+      const albumIds = Array.isArray(data?.gallery_album_ids) ? data.gallery_album_ids : [];
+      if (albumIds.length > 0) {
+        const photos = await fetchGallery();
+        if (!mounted) return;
+        const counts = photos.reduce((acc, p) => {
+          if (!p.is_cover && p.album_id) acc[p.album_id] = (acc[p.album_id] || 0) + 1;
+          return acc;
+        }, {});
+        setAlbums(
+          photos
+            .filter((p) => p.is_cover && albumIds.includes(p.album_id))
+            .map((a) => ({ ...a, photoCount: counts[a.album_id] || 0 }))
+        );
+      }
+      setLoading(false);
+    };
+    load();
+    return () => { mounted = false; };
+  }, [slug]);
+
+  if (loading) {
+    return <Container className="py-5 text-center"><Spinner animation="border" /></Container>;
+  }
+
+  if (!event) {
+    return <NotFound />;
+  }
+
+  const title = language === 'pt' ? event.title_pt : (event.title_en || event.title_pt);
+  const description = language === 'pt' ? event.description_pt : (event.description_en || event.description_pt);
+  const content = language === 'pt' ? event.content_pt : (event.content_en || event.content_pt);
+  const locale = language === 'pt' ? 'pt-BR' : 'en-US';
+  const startDate = new Date(event.start_date);
+  const endDate = new Date(event.end_date || event.start_date);
+  const multiDay = startDate.toDateString() !== endDate.toDateString();
+  const isUpcoming = endDate >= new Date() && event.status !== 'cancelled';
+  const schedule = Array.isArray(event.schedule) ? event.schedule : [];
+  // Contagem por dia de calendário local (ver utils/eventCountdown.js). Evento
+  // cancelado, ou já dado como realizado no painel, não ganha contagem.
+  const countdown = event.status === 'cancelled' || event.status === 'completed'
+    ? null
+    : getEventCountdown(event.start_date, event.end_date || event.start_date, new Date());
+
+  const formatDate = (d) =>
+    d.toLocaleDateString(locale, { day: '2-digit', month: 'long', year: 'numeric' });
+
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Event',
+    name: event.title_pt,
+    startDate: event.start_date,
+    endDate: event.end_date || event.start_date,
+    eventStatus: event.status === 'cancelled'
+      ? 'https://schema.org/EventCancelled'
+      : 'https://schema.org/EventScheduled',
+    eventAttendanceMode: {
+      'in-person': 'https://schema.org/OfflineEventAttendanceMode',
+      'online': 'https://schema.org/OnlineEventAttendanceMode',
+      'hybrid': 'https://schema.org/MixedEventAttendanceMode',
+    }[event.location_type] || 'https://schema.org/OfflineEventAttendanceMode',
+    ...(event.location ? { location: { '@type': 'Place', name: event.location } } : {}),
+    ...(event.description_pt ? { description: event.description_pt } : {}),
+    ...(event.image ? { image: event.image } : {}),
+    organizer: {
+      '@type': 'Organization',
+      name: event.organizer || 'CP2b - Centro Paulista de Estudos em Biogás e Bioprodutos',
+      url: 'https://cp2b.unicamp.br',
+    },
+  };
+
+  return (
+    <>
+      <SeoHead
+        title={title}
+        description={description || title}
+        path={pathname}
+        image={event.image}
+        type="article"
+        language={language}
+        jsonLd={jsonLd}
+      />
+
+      <div className="page-hero">
+        <Container>
+          <nav aria-label="breadcrumb">
+            <Link to="/eventos" className="eyebrow eyebrow--light text-decoration-none">
+              ← {labels.back}
+            </Link>
+          </nav>
+          <div className="d-flex flex-wrap gap-2 mt-3 mb-2">
+            <Badge bg="info">{typeLabels[event.event_type]}</Badge>
+            <Badge bg="secondary">{locationTypeLabels[event.location_type]}</Badge>
+            {event.status && (
+              <Badge bg={event.status === 'cancelled' ? 'danger' : 'success'}>
+                {labels.statusLabels[event.status]}
+              </Badge>
+            )}
+          </div>
+          <h1>{title}</h1>
+          {description && <p className="page-hero-sub">{description}</p>}
+        </Container>
+      </div>
+
+      <Container className="py-5">
+        <Row className="g-4 g-lg-5">
+          <Col lg={8}>
+            {event.image && (
+              <img
+                src={event.image}
+                alt={title}
+                className="img-fluid w-100 mb-4"
+                style={{ borderRadius: 'var(--cp2b-radius)', maxHeight: '480px', objectFit: 'cover' }}
+              />
+            )}
+
+            {content && (
+              <section className="mb-5">
+                <h2 className="h4 fw-bold mb-3">{labels.about}</h2>
+                <div
+                  className="article-content"
+                  dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
+                />
+              </section>
+            )}
+
+            {schedule.length > 0 && (
+              <EventSchedule items={schedule} title={labels.schedule} language={language} />
+            )}
+
+            {albums.length > 0 && (
+              <section>
+                <h2 className="h4 fw-bold mb-4">{labels.gallery}</h2>
+                <div className="album-grid">
+                  {albums.map((album) => (
+                    <Link key={album.id} to={`/galeria/${album.album_id}`} className="album-card">
+                      <img src={album.url} alt={album.title} loading="lazy" />
+                      <span className="album-overlay">
+                        <span className="album-title">{album.title}</span>
+                        <span className="album-meta">
+                          {album.photoCount > 0 && (
+                            <span>
+                              <i className="bi bi-images me-1"></i>
+                              {album.photoCount} {album.photoCount === 1 ? labels.photo : labels.photos}
+                            </span>
+                          )}
+                        </span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            )}
+          </Col>
+
+          <Col lg={4}>
+            {/* O sticky só passou a prender com o overflow-x: clip do body
+                (index.css): antes o body virava contêiner de rolagem. */}
+            <div className="bg-white rounded-4 shadow-sm p-4 position-sticky" style={{ top: '110px' }}>
+              <dl className="mb-0">
+                <dt className="card-meta mb-1">{labels.date}</dt>
+                <dd className="fw-semibold mb-3">
+                  {formatDate(startDate)}
+                  {multiDay && <> — {formatDate(endDate)}</>}
+                  {countdown && <EventCountdown countdown={countdown} labels={labels.countdown} />}
+                </dd>
+
+                {event.location && (
+                  <>
+                    <dt className="card-meta mb-1">{labels.location}</dt>
+                    <dd className="fw-semibold mb-3">{event.location}</dd>
+                  </>
+                )}
+
+                {event.organizer && (
+                  <>
+                    <dt className="card-meta mb-1">{labels.organizer}</dt>
+                    <dd className="fw-semibold mb-3">{event.organizer}</dd>
+                  </>
+                )}
+              </dl>
+
+              {isUpcoming && event.registration_url && (
+                <Button
+                  variant="primary"
+                  href={safeHref(event.registration_url)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-100 mt-2"
+                >
+                  {labels.register}
+                </Button>
+              )}
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </>
+  );
+};
+
+export default EventDetail;

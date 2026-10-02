@@ -1,0 +1,37 @@
+/* ============================================================
+   ARTICLE LAYOUT — motion layer for the opening photo
+   The editorial layout itself stays in index.css (FAPESP article
+   block); this file only adds the photo's slow settle on arrival.
+   Tokens only.
+   ============================================================ */
+
+/* The frame crops the photo while it is scaled, so the box never grows. */
+.article-hero-frame {
+  overflow: hidden;
+}
+
+/* The photo starts a touch closer and eases back to its framing once, when
+   it has loaded (data-loaded is set by the img's load event). Until then it
+   waits in the starting pose, so a slow photo never shows at rest and then
+   jumps. The keyframes fill backwards only: once settled, no transform is
+   left on the image. */
+.article-hero-frame:not([data-loaded]) .article-fapesp-hero {
+  transform: scale(1.06);
+}
+
+.article-hero-frame[data-loaded] .article-fapesp-hero {
+  animation: article-hero-settle 1.6s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+}
+
+@keyframes article-hero-settle {
+  from { transform: scale(1.06); }
+}
+
+/* Reduced motion: no zoom at all, neither the pose nor the settle. */
+@media (prefers-reduced-motion: reduce) {
+  .article-hero-frame:not([data-loaded]) .article-fapesp-hero,
+  .article-hero-frame[data-loaded] .article-fapesp-hero {
+    transform: none;
+    animation: none;
+  }
+}

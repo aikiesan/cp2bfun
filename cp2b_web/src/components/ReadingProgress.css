@@ -1,0 +1,30 @@
+/* ============================================================
+   READING PROGRESS — 3px rule across the top of the window
+   One step above the shrunk, fixed navbar (z-index 1030 in
+   index.css), so the menu never covers it, and below Bootstrap's
+   offcanvas and modals (1045+) and the skip link (2000). At 3px
+   it only overlaps the navbar's own top padding. Tokens only.
+   ============================================================ */
+
+.reading-progress {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 1031;
+  height: 3px;
+  background: linear-gradient(90deg, var(--cp2b-verde-escuro), var(--cp2b-lima));
+  /* Framer drives scaleX from the scroll; it grows from the left edge. */
+  transform-origin: left center;
+  pointer-events: none;
+}
+
+.reading-progress[data-idle] {
+  visibility: hidden;
+}
+
+@media print {
+  .reading-progress {
+    display: none;
+  }
+}

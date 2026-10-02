@@ -22,23 +22,40 @@ const FeaturedContent = ({ itemA, itemB, itemC }) => {
     const title = language === 'pt' ? item.title_pt : item.title_en || item.title_pt;
     const description = language === 'pt' ? item.description_pt : item.description_en || item.description_pt;
 
-    // Determine link path based on content type
-    const linkPath = item.content_type === 'project'
-      ? `/projetos/${item.slug}`
-      : `/noticias/${item.slug}`;
+    // Destino do clique por tipo de conteúdo.
+    //
+    // Boletim e podcast levam à listagem, não a uma página de detalhe: o
+    // conteúdo deles vive no PDF e no Spotify, e não há artigo no site para
+    // onde apontar. Por isso o `slug` dessas duas carrega o id, que a rota usa
+    // só para gravar a posição.
+    const linkPaths = {
+      project: `/entrevistas/${item.slug}`,
+      microscopio: `/microscopio/${item.slug}`,
+      opportunity: `/oportunidades/${item.slug}`,
+      event: `/eventos/${item.slug}`,
+      boletim: '/boletins',
+      podcast: '/podcast',
+    };
+    const linkPath = linkPaths[item.content_type] || `/noticias/${item.slug}`;
 
     return (
-      <Link to={linkPath} className="text-decoration-none">
+      <Link to={linkPath} className="text-decoration-none d-block h-100">
         <motion.div
           className={`featured-headline featured-headline-${size}`}
-          style={{
-            backgroundImage: `url(${item.image})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
+          style={{ backgroundColor: item.image ? undefined : '#2d3748' }}
           transition={{ duration: 0.3 }}
         >
-          <div className="featured-headline-overlay" />
+          {item.image && (
+            <img
+              src={item.image}
+              alt=""
+              aria-hidden="true"
+              className="featured-image-bg"
+              style={{ objectPosition: item.image_position || 'center' }}
+              loading="eager"
+            />
+          )}
+          {item.image && <div className="featured-headline-overlay" />}
           <div className="featured-headline-content">
             {item.badge && (
               <Badge bg={item.badge_color || 'primary'} className="mb-2">

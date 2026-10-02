@@ -1,5 +1,19 @@
 const API_URL = import.meta.env.VITE_API_URL || '/api';
 
+// ---- Admin authentication (token stored per browser) ----
+const ADMIN_TOKEN_KEY = 'cp2b_admin_token';
+
+export const adminAuth = {
+  getToken: () => localStorage.getItem(ADMIN_TOKEN_KEY),
+  setToken: (token) => localStorage.setItem(ADMIN_TOKEN_KEY, token),
+  clearToken: () => localStorage.removeItem(ADMIN_TOKEN_KEY),
+};
+
+const getAuthHeader = () => {
+  const token = adminAuth.getToken();
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
 class ApiClient {
   constructor(baseUrl) {
     this.baseUrl = baseUrl;
@@ -10,6 +24,7 @@ class ApiClient {
     const config = {
       headers: {
         'Content-Type': 'application/json',
+        ...getAuthHeader(),
         ...options.headers,
       },
       ...options,
@@ -24,6 +39,10 @@ class ApiClient {
     const response = await fetch(url, config);
 
     if (!response.ok) {
+      if (response.status === 401 && !endpoint.startsWith('/auth/')) {
+        // Token missing/expired: let the admin shell show the login screen.
+        window.dispatchEvent(new Event('cp2b-admin-unauthorized'));
+      }
       const error = await response.json().catch(() => ({ error: 'Request failed' }));
       const err = new Error(error.error || 'Request failed');
       err.response = { status: response.status, data: error };
@@ -53,6 +72,8 @@ class ApiClient {
 const api = new ApiClient(API_URL);
 
 export default api;
+
+
 
 // Utility functions for common data fetching patterns
 export const fetchNews = async () => {
@@ -104,6 +125,8 @@ export const updateFeaturedNews = async (positionA, positionB, positionC) => {
     throw error;
   }
 };
+
+
 
 export const fetchTeam = async () => {
   try {
@@ -263,6 +286,25 @@ export const createPublication = async (data) => {
   return response.data;
 };
 
+// Page settings (maintenance mode)
+export const fetchPageSettings = async () => {
+  try {
+    const response = await api.get('/page-settings');
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching page settings:', error);
+    return [];
+  }
+};
+
+export const togglePageStatus = async (pageKey, isEnabled) => {
+  const response = await api.request(`/page-settings/${pageKey}`, {
+    method: 'PATCH',
+    body: { is_enabled: isEnabled },
+  });
+  return response.data;
+};
+
 export const updatePublication = async (id, data) => {
   const response = await api.put(`/publications/${id}`, data);
   return response.data;
@@ -273,73 +315,29 @@ export const deletePublication = async (id) => {
   return response.data;
 };
 
-// Events API functions
-export const fetchEvents = async (filters = {}) => {
+// Microscopio API functions (article-based, slug-keyed)
+export const fetchMicroscopia = async () => {
   try {
-    const queryParams = new URLSearchParams();
-    if (filters.status) queryParams.append('status', filters.status);
-    if (filters.type) queryParams.append('type', filters.type);
-    if (filters.from) queryParams.append('from', filters.from);
-    if (filters.to) queryParams.append('to', filters.to);
-
-    const queryString = queryParams.toString();
-    const endpoint = queryString ? `/events?${queryString}` : '/events';
-    const response = await api.get(endpoint);
+    const response = await api.get('/microscopio');
     return response.data;
   } catch (error) {
-    console.error('Error fetching events:', error);
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching microscopio articles:', error);
+    }
     return null;
   }
 };
 
-export const fetchEvent = async (id) => {
+export const fetchMicroscopio = async (slug) => {
   try {
-    const response = await api.get(`/events/${id}`);
+    const response = await api.get(`/microscopio/${slug}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching event:', error);
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching microscopio article:', error);
+    }
     return null;
   }
-};
-
-export const fetchUpcomingEvents = async () => {
-  try {
-    const response = await api.get('/events/upcoming');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching upcoming events:', error);
-    return [];
-  }
-};
-
-export const fetchFeaturedEvents = async () => {
-  try {
-    const response = await api.get('/events/featured');
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching featured events:', error);
-    return [];
-  }
-};
-
-export const createEvent = async (data) => {
-  const response = await api.post('/events', data);
-  return response.data;
-};
-
-export const updateEvent = async (id, data) => {
-  const response = await api.put(`/events/${id}`, data);
-  return response.data;
-};
-
-export const updateEventParticipants = async (id, current_participants) => {
-  const response = await api.put(`/events/${id}/participants`, { current_participants });
-  return response.data;
-};
-
-export const deleteEvent = async (id) => {
-  const response = await api.delete(`/events/${id}`);
-  return response.data;
 };
 
 // Projects API functions (duplicate of news API)
@@ -520,6 +518,46 @@ export const createMeetupRequest = (data) => api.post('/meetup-requests', data).
 export const getMyMeetups = (email) => api.get(`/meetup-requests/my?email=${encodeURIComponent(email)}`).then(r => r.data);
 export const confirmMeetup = (token) => api.get(`/meetup-requests/confirm?token=${encodeURIComponent(token)}`).then(r => r.data);
 
+// Opportunities API functions
+export const fetchOpportunities = async () => {
+  try {
+    const response = await api.get('/opportunities');
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching opportunities:', error);
+    }
+    return null;
+  }
+};
+
+export const fetchOpportunity = async (slug) => {
+  try {
+    const response = await api.get(`/opportunities/${slug}`);
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) {
+      console.error('Error fetching opportunity:', error);
+    }
+    return null;
+  }
+};
+
+export const createOpportunity = async (data) => {
+  const response = await api.post('/opportunities', data);
+  return response.data;
+};
+
+export const updateOpportunity = async (slug, data) => {
+  const response = await api.put(`/opportunities/${slug}`, data);
+  return response.data;
+};
+
+export const deleteOpportunity = async (slug) => {
+  const response = await api.delete(`/opportunities/${slug}`);
+  return response.data;
+};
+
 // Admin: Forum Paulista
 export const fetchAllParticipants = () => api.get('/participants').then(r => r.data);
 export const deleteParticipant   = (id) => api.delete(`/participants/${id}`).then(r => r.data);
@@ -530,3 +568,155 @@ export const fetchAllMeetupRequests = () => api.get('/meetup-requests/all').then
 export const cancelMeetupRequest = (id) => api.put(`/meetup-requests/${id}/cancel`, {}).then(r => r.data);
 export const deleteMeetupRequest = (id) => api.delete(`/meetup-requests/${id}`).then(r => r.data);
 export const confirmMeetupAdmin = (id) => api.put(`/meetup-requests/${id}/confirm-admin`, {}).then(r => r.data);
+
+// ============================================================
+// Gallery API
+// ============================================================
+
+export const fetchGallery = async () => {
+  try {
+    const response = await api.get('/gallery');
+    // photo.url is already a same-origin-relative path (e.g. "/uploads/gallery/xyz.jpg").
+    // The dev proxy and the production Apache/Nginx config both forward /uploads to the
+    // backend, so it must NOT be prefixed with a hardcoded host — doing so breaks the
+    // gallery for every visitor whose browser isn't the developer's own machine.
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) console.error('Error fetching gallery:', error);
+    return [];
+  }
+};
+
+export const uploadGalleryPhoto = async (formData) => (await api.post('/gallery', formData)).data;
+export const deleteGalleryPhoto = async (id) => (await api.delete(`/gallery/${id}`)).data;
+export const deleteGalleryAlbum = async (albumId) => (await api.delete(`/gallery/album/${albumId}`)).data;
+export const fetchGalleryStorage = async () => {
+  try {
+    return (await api.get('/gallery/storage')).data;
+  } catch {
+    return null;
+  }
+};
+
+// ============================================================
+// Press Kit API
+// ============================================================
+
+export const fetchPressKitItems = async () => {
+  try {
+    const res = await api.get('/press-kit');
+    return res.data;
+  } catch (error) {
+    if (error.response?.status >= 500) console.error('Error fetching press kit items:', error);
+    return [];
+  }
+};
+
+export const createPressKitItem = async (data) => (await api.post('/press-kit', data)).data;
+export const updatePressKitItem = async (id, data) => (await api.put(`/press-kit/${id}`, data)).data;
+export const deletePressKitItem = async (id) => (await api.delete(`/press-kit/${id}`)).data;
+
+// ============================================================
+// Podcast API
+// ============================================================
+
+export const fetchPodcastEpisodes = async () => {
+  try {
+    const res = await api.get('/podcast');
+    return res.data;
+  } catch (error) {
+    if (error.response?.status >= 500) console.error('Error fetching podcast episodes:', error);
+    return [];
+  }
+};
+
+export const createPodcastEpisode = async (data) => (await api.post('/podcast', data)).data;
+export const updatePodcastEpisode = async (id, data) => (await api.put(`/podcast/${id}`, data)).data;
+export const deletePodcastEpisode = async (id) => (await api.delete(`/podcast/${id}`)).data;
+
+// ============================================================
+// Boletins API
+// ============================================================
+
+export const fetchBoletins = async () => {
+  try {
+    const res = await api.get('/boletins');
+    return res.data;
+  } catch (error) {
+    if (error.response?.status >= 500) console.error('Error fetching boletins:', error);
+    return [];
+  }
+};
+
+// Inclui os inativos — só o admin usa.
+export const fetchAllBoletins = async () => {
+  try {
+    const res = await api.get('/boletins/all');
+    return res.data;
+  } catch (error) {
+    if (error.response?.status >= 500) console.error('Error fetching all boletins:', error);
+    return [];
+  }
+};
+
+export const createBoletim = async (data) => (await api.post('/boletins', data)).data;
+export const updateBoletim = async (id, data) => (await api.put(`/boletins/${id}`, data)).data;
+export const deleteBoletim = async (id) => (await api.delete(`/boletins/${id}`)).data;
+
+// ---- Events calendar ----
+export const fetchEvents = async () => {
+  try {
+    const response = await api.get('/events');
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) console.error('Error fetching events:', error);
+    return [];
+  }
+};
+
+export const fetchEventBySlug = async (slug) => {
+  try {
+    const response = await api.get(`/events/${slug}`);
+    return response.data;
+  } catch (error) {
+    if (error.response?.status && error.response.status >= 500) console.error('Error fetching event:', error);
+    return null;
+  }
+};
+
+// ---- Site settings (contact, social, footer) ----
+let siteSettingsCache = null;
+
+export const fetchSiteSettings = async () => {
+  if (siteSettingsCache) return siteSettingsCache;
+  try {
+    const response = await api.get('/settings');
+    siteSettingsCache = response.data || {};
+    return siteSettingsCache;
+  } catch {
+    return {};
+  }
+};
+
+export const saveSiteSettings = async (settings) => {
+  const response = await api.put('/settings', settings);
+  siteSettingsCache = response.data;
+  return response.data;
+};
+
+
+export const fetchAuthStatus = async () => {
+  try {
+    const response = await api.get('/auth/status');
+    return response.data; // { required: boolean }
+  } catch {
+    // API unreachable: don't lock the UI; requests will fail visibly anyway.
+    return { required: false };
+  }
+};
+
+export const adminLogin = async (password) => {
+  const response = await api.post('/auth/login', { password });
+  adminAuth.setToken(response.data.token);
+  return response.data;
+};

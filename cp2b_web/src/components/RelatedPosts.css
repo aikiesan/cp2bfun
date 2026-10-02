@@ -1,0 +1,30 @@
+/* ============================================================
+   RELATED POSTS ("Leia também") — entrance only
+   The cards' layout stays in index.css. data-reveal comes from
+   useScrollReveal: "armed" holds the start pose, "shown" runs the
+   keyframes once. They fill backwards only, so once the cards land
+   the normal rules (and the photo's hover zoom) apply again. Without
+   layout or with reduced motion the attribute is never set and the
+   cards are simply there. Tokens only.
+   ============================================================ */
+
+.article-related-grid[data-reveal="armed"] .article-related-card {
+  opacity: 0;
+}
+
+.article-related-grid[data-reveal="shown"] .article-related-card {
+  animation: related-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.05s + var(--i, 0) * 0.12s);
+}
+
+@keyframes related-rise {
+  from { opacity: 0; transform: translateY(18px); }
+}
+
+/* Reduced motion switched on while the row is armed: show it at once. */
+@media (prefers-reduced-motion: reduce) {
+  .article-related-grid[data-reveal] .article-related-card {
+    animation: none;
+    opacity: 1;
+  }
+}

@@ -1,0 +1,505 @@
+/* Detalhamento dos eixos — seletor 01–08 e painel mestre-detalhe: resumo do
+   eixo à esquerda, atividades em lista compacta à direita. Mesma linguagem da
+   figura do topo: numerais em traço leve, filetes finos, cor forte só no
+   estado ativo. Nenhuma parte rola na horizontal, em nenhuma largura. */
+
+.axx {
+  --axx-ink: var(--cp2b-verde-escuro);
+  --axx-hair: color-mix(in srgb, var(--cp2b-verde-escuro) 12%, white);
+  --axx-tint: color-mix(in srgb, var(--cp2b-verde) 4%, white);
+  --axx-pad: clamp(1rem, 0.5rem + 2vw, 2.25rem);
+}
+
+.axx-head__kicker,
+.axx-head__label,
+.axx-row__kicker,
+.axx-pager__kicker {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--axis, var(--cp2b-verde));
+}
+
+.axx-head__kicker i { font-size: 0.8rem; margin-right: 0.15rem; }
+
+/* ---------- seletor 01–08 ---------- */
+.axx-rail {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.axx-tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+  min-width: 0;
+  padding: 0.8rem 0.65rem 0.85rem;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-top: 2px solid var(--gray-200);
+  border-radius: 0;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.axx-tab__top { display: flex; align-items: center; justify-content: space-between; width: 100%; }
+.axx-tab__icon { font-size: 0.95rem; color: color-mix(in srgb, var(--axis) 55%, white); }
+.axx-tab.is-active .axx-tab__icon,
+.axx-tab:hover .axx-tab__icon { color: var(--axis); }
+
+.axx-tab__num {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+  /* Número grande (24px) pede 3:1; o cinza-400 dava 1,8:1. */
+  color: color-mix(in srgb, var(--gray-600) 75%, white);
+}
+
+.axx-tab__label {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  font-size: 0.75rem;
+  line-height: 1.3;
+}
+
+.axx-tab { border-top-color: color-mix(in srgb, var(--axis) 22%, white); }
+.axx-tab:hover { border-top-color: var(--axis); color: var(--text-primary); }
+.axx-tab:hover .axx-tab__num { color: var(--axis); }
+
+.axx-tab.is-active {
+  border-top: 3px solid var(--axis);
+  padding-top: calc(0.8rem - 1px);
+  color: var(--axx-ink);
+}
+
+.axx-tab.is-active .axx-tab__num { color: var(--axis); }
+.axx-tab.is-active .axx-tab__label { font-weight: 600; }
+.axx-tab:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+
+/* ---------- painel ---------- */
+.axx-panel {
+  display: grid;
+  grid-template-columns: minmax(17rem, 23rem) minmax(0, 1fr);
+  margin-top: 0.85rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 24px 50px -34px rgb(30 62 76 / .35);
+  overflow: hidden;
+}
+
+/* ---------- resumo do eixo (coluna esquerda) ---------- */
+.axx-head {
+  padding: var(--axx-pad);
+  background:
+    radial-gradient(28rem 16rem at 0% 0%, color-mix(in srgb, var(--axis, var(--cp2b-lima)) 10%, transparent), transparent 70%),
+    color-mix(in srgb, var(--axis, var(--cp2b-verde)) 4%, white);
+  border-right: 1px solid var(--axx-hair);
+  border-top: 3px solid var(--axis, transparent);
+}
+
+.axx-head__top {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.1rem;
+}
+
+.axx-head__num {
+  flex-shrink: 0;
+  font-family: var(--font-sans);
+  font-size: 4.25rem;
+  font-weight: 100;
+  line-height: 0.82;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+  color: var(--axis, var(--axx-ink));
+  padding-right: 1rem;
+  border-right: 1px solid var(--axx-hair);
+}
+
+.axx-head__kicker span { color: var(--gray-400); margin: 0 0.15rem; }
+
+.axx-head__title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: var(--tracking-tight);
+  color: var(--axx-ink);
+  margin: 0.35rem 0 0;
+  text-wrap: balance;
+}
+
+.axx-head__text p {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 0.55rem;
+}
+
+.axx-head__text p:last-child { margin-bottom: 0; }
+
+/* "Ler mais" do texto do eixo: só existe no mobile (ver abaixo). */
+.axx-head__more {
+  display: none;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--cp2b-verde);
+  cursor: pointer;
+}
+
+.axx-head__more i { font-size: 0.7rem; }
+
+.axx-head__sdgs {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--axx-hair);
+}
+
+.axx-sdgs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
+}
+
+.axx-sdgs img { width: 2.6rem; height: 2.6rem; border-radius: 4px; display: block; }
+
+/* ---------- atividades (coluna direita) ---------- */
+.axx-main {
+  min-width: 0;
+  padding: var(--axx-pad);
+}
+
+/* Controle segmentado: as abas dividem a largura, então cabem em qualquer
+   tela sem rolagem lateral. */
+.axx-branches {
+  display: grid;
+  grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  background: var(--paper-soft);
+  border-radius: 0.75rem;
+}
+
+.axx-branch {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.55rem 0.6rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.55rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.axx-branch i { color: var(--gray-500); }
+
+.axx-branch__count {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 0.7rem;
+  color: var(--gray-500);
+}
+
+.axx-branch:hover { color: var(--text-primary); }
+
+.axx-branch.is-active {
+  background: var(--bg-surface);
+  color: var(--axx-ink);
+  box-shadow: 0 1px 3px rgb(0 0 0 / .08), 0 0 0 1px var(--axx-hair);
+}
+
+.axx-branch.is-active i,
+.axx-branch.is-active .axx-branch__count { color: var(--axis, var(--cp2b-verde)); }
+.axx-branch:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+/* ---------- lista de itens ---------- */
+.axx-list {
+  list-style: none;
+  margin: 0.9rem 0 0;
+  padding: 0;
+}
+
+.axx-row { border-bottom: 1px solid var(--border-divider); }
+
+.axx-row__head {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  padding: 0.85rem 0.35rem;
+  background: none;
+  border: none;
+  text-align: left;
+  color: inherit;
+}
+
+button.axx-row__head { cursor: pointer; }
+a.axx-row__head { text-decoration: none; }
+a.axx-row__head:hover .axx-row__title { color: var(--axis, var(--cp2b-verde)); }
+a.axx-row__head:hover .axx-row__icon { color: #fff; background: var(--axis, var(--axx-ink)); border-color: var(--axis, var(--axx-ink)); }
+a.axx-row__head:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+button.axx-row__head:hover .axx-row__title { color: var(--axis, var(--cp2b-verde)); }
+button.axx-row__head:hover .axx-row__icon { color: var(--axis, var(--cp2b-verde)); border-color: currentColor; }
+button.axx-row__head:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+
+.axx-row__main { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.2rem; }
+
+.axx-row__title {
+  font-size: 0.93rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--axx-ink);
+}
+
+.axx-row__meta { font-size: 0.8rem; color: var(--text-secondary); }
+
+.axx-row__tag {
+  flex-shrink: 0;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid color-mix(in srgb, var(--cp2b-verde) 45%, white);
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: 0.66rem;
+  font-weight: 700;
+  color: var(--axx-ink);
+  white-space: nowrap;
+}
+
+.axx-row__icon {
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 1px solid var(--border-default);
+  border-radius: 50%;
+  font-size: 0.8rem;
+  color: var(--gray-500);
+}
+
+.axx-row.is-open .axx-row__icon {
+  rotate: 45deg;
+  background: var(--axis, var(--axx-ink));
+  border-color: var(--axis, var(--axx-ink));
+  color: #fff;
+}
+
+.axx-row__body {
+  padding: 0 3rem 1.1rem 0.35rem;
+}
+
+.axx-row__body p {
+  margin: 0;
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: var(--text-secondary);
+  max-width: 72ch;
+}
+
+.axx-row__body .axx-row__foot {
+  margin-top: 0.65rem;
+  font-size: 0.78rem;
+  line-height: 1.45;
+}
+
+.axx-row__foot i { color: var(--cp2b-verde); margin-right: 0.15rem; }
+
+.axx-empty { margin: 0; color: var(--text-secondary); }
+
+.axx-showall {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 1rem;
+  padding: 0.5rem 1.05rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--axx-ink);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--axx-ink);
+  cursor: pointer;
+}
+
+.axx-showall:hover { background: var(--axx-ink); color: #fff; }
+
+/* ---------- anterior / próximo ---------- */
+.axx-pager {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--axx-hair);
+}
+
+.axx-pager__btn {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  min-width: 0;
+  padding: 1rem var(--axx-pad);
+  background: none;
+  border: none;
+  text-align: left;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.axx-pager__btn--next {
+  justify-content: flex-end;
+  text-align: right;
+  border-left: 1px solid var(--axx-hair);
+}
+
+.axx-pager__btn--solo { grid-column: 1 / -1; border-left: none; }
+
+.axx-pager__btn > i { flex-shrink: 0; font-size: 1.05rem; color: var(--axis, var(--cp2b-verde)); }
+.axx-pager__txt { min-width: 0; }
+
+.axx-pager__title {
+  display: block;
+  margin-top: 0.15rem;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--axx-ink);
+}
+
+.axx-pager__btn:hover { background: var(--axx-tint); }
+.axx-pager__btn:focus-visible { outline: none; box-shadow: inset var(--focus-ring); }
+
+/* ---------- tablet: painel em uma coluna, seletor em 4×2 ---------- */
+@media (max-width: 991.98px) {
+  .axx-rail { grid-template-columns: repeat(4, minmax(0, 1fr)); row-gap: 0.15rem; }
+
+  .axx-panel { grid-template-columns: minmax(0, 1fr); }
+
+  .axx-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    column-gap: 1.5rem;
+    border-right: none;
+    border-bottom: 1px solid var(--axx-hair);
+  }
+
+  .axx-head__top { grid-column: 1 / -1; }
+  .axx-head__sdgs { margin-top: 0; padding: 0 0 0 1.5rem; border-top: none; border-left: 1px solid var(--axx-hair); max-width: 12rem; }
+}
+
+/* ---------- mobile: tudo empilhado e compacto ---------- */
+@media (max-width: 575.98px) {
+  /* Seletor: só os numerais, em quadros. O título do eixo ativo aparece logo
+     abaixo, no cabeçalho do painel; o nome completo fica no aria-label. */
+  .axx-rail { gap: 0.35rem; }
+
+  .axx-tab {
+    align-items: center;
+    padding: 0.55rem 0;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+  }
+
+  .axx-tab.is-active {
+    padding-top: 0.55rem;
+    border: 1px solid var(--axis);
+    background: var(--axis);
+  }
+
+  .axx-tab { border-top-width: 3px; border-top-color: color-mix(in srgb, var(--axis) 45%, white); }
+  .axx-tab__top { justify-content: center; gap: 0.3rem; }
+  .axx-tab__icon { font-size: 0.8rem; }
+  .axx-tab.is-active .axx-tab__icon { color: #fff; }
+
+  .axx-tab.is-active .axx-tab__num { color: #fff; }
+  .axx-tab__num { font-size: 1.3rem; }
+  .axx-tab__label { display: none; }
+
+  .axx-head { display: block; }
+  .axx-head__top { margin-bottom: 0.8rem; gap: 0.85rem; }
+  .axx-head__num { font-size: 3rem; padding-right: 0.85rem; }
+  .axx-head__title { font-size: 1.12rem; }
+
+  /* Texto do eixo recolhido em ~4 linhas, com "ler mais". */
+  .axx-head__text:not(.is-open) {
+    max-height: 6.2em;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(#000 55%, transparent);
+    mask-image: linear-gradient(#000 55%, transparent);
+  }
+
+  .axx-head__more { display: inline-flex; }
+
+  .axx-head__sdgs { max-width: none; margin-top: 0.9rem; padding: 0.8rem 0 0; border-left: none; border-top: 1px solid var(--axx-hair); }
+  .axx-sdgs img { width: 2.25rem; height: 2.25rem; }
+
+  /* Abas: ícone some, rótulo e contagem empilham para caber em 3 colunas. */
+  .axx-branch { flex-direction: column; gap: 0.05rem; padding: 0.45rem 0.25rem; font-size: 0.78rem; }
+  .axx-branch i { display: none; }
+  .axx-branch__label { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .axx-row__head { gap: 0.75rem; padding: 0.8rem 0.1rem; }
+  .axx-row__title { font-size: 0.88rem; }
+  .axx-row__body { padding: 0 0.1rem 1rem; }
+
+  .axx-pager__btn { padding: 0.85rem 1rem; gap: 0.6rem; }
+  .axx-pager__title { font-size: 0.8rem; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .axx-tab,
+  .axx-branch,
+  .axx-showall,
+  .axx-pager__btn {
+    transition: border-color var(--duration-base) var(--ease-standard),
+      background var(--duration-base) var(--ease-standard),
+      color var(--duration-base) var(--ease-standard),
+      box-shadow var(--duration-base) var(--ease-standard);
+  }
+  .axx-tab__num,
+  .axx-row__title { transition: color var(--duration-base) var(--ease-standard); }
+  .axx-row__icon { transition: rotate var(--duration-base) var(--ease-standard), background var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard), border-color var(--duration-base) var(--ease-standard); }
+}
+
+/* ---------- cabeçalho da seção na página /eixos ---------- */
+.research-explore { margin-top: clamp(2.5rem, 1.5rem + 4vw, 5rem); }
+
+.research-explore__head { margin-bottom: clamp(1rem, 0.75rem + 1.25vw, 1.75rem); }
+.research-explore__head .eyebrow { color: var(--cp2b-verde-escuro); margin-bottom: 0.6rem; }
+
+.research-explore__head h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-2);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  color: var(--cp2b-verde-escuro);
+  margin: 0 0 0.4rem;
+}
+
+.research-explore__head p { color: var(--text-secondary); margin: 0; font-size: 1.02rem; }

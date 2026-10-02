@@ -1,0 +1,470 @@
+/* ============================================================
+   DO RESÍDUO À ENERGIA — scroll-told biogas chain on /eixos
+   A full-bleed petrol band between the axis figure and the axis
+   details, so the page gets one strong change of tone. Tokens only.
+   ============================================================ */
+
+/* overflow: clip, never hidden: hidden would make the band a scroll
+   container and the stage below would stop sticking. The margin is the
+   same step /eixos uses between its other sections. The solid
+   background-color comes first as a fallback: a browser without
+   color-mix() (Safari < 16.2, Chrome < 111) drops the whole shorthand
+   below, and the white text would sit on the light page background. */
+.w2e {
+  position: relative;
+  overflow: clip;
+  margin-top: clamp(2.5rem, 1.5rem + 4vw, 5rem);
+  padding: var(--section-y) 0;
+  color: var(--cp2b-branco);
+  background-color: var(--cp2b-petrol-900);
+  background:
+    radial-gradient(40rem 28rem at 88% 8%, color-mix(in srgb, var(--cp2b-lima) 14%, transparent), transparent 70%),
+    radial-gradient(36rem 30rem at 0% 100%, color-mix(in srgb, var(--cp2b-verde) 22%, transparent), transparent 70%),
+    linear-gradient(165deg, var(--cp2b-petrol-900) 0%, color-mix(in srgb, var(--cp2b-petrol-900) 75%, var(--cp2b-verde-escuro)) 100%);
+}
+
+.w2e-head {
+  max-width: 44rem;
+  margin-bottom: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+}
+
+.w2e-title {
+  margin: 0.4rem 0 0;
+  font-size: var(--fs-display-2);
+  font-weight: var(--weight-bold);
+  color: var(--cp2b-branco);
+}
+
+.w2e-subtitle {
+  margin: 0.75rem 0 0;
+  font-size: 1.05rem;
+  color: color-mix(in srgb, var(--cp2b-branco) 78%, transparent);
+}
+
+.w2e-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+  gap: clamp(2rem, 1rem + 4vw, 5rem);
+  align-items: start;
+}
+
+/* ---------- Pinned stage ---------- */
+
+.w2e-stage {
+  position: sticky;
+  top: 7.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.w2e-stage-card {
+  position: relative;
+  width: min(100%, 58vh);
+  aspect-ratio: 1;
+  border-radius: var(--radius-2xl);
+  border: 1px solid color-mix(in srgb, var(--cp2b-branco) 12%, transparent);
+  background:
+    radial-gradient(closest-side, color-mix(in srgb, var(--cp2b-branco) 12%, transparent), transparent),
+    color-mix(in srgb, var(--cp2b-branco) 5%, transparent);
+  overflow: hidden;
+}
+
+.w2e-stage-art {
+  position: absolute;
+  inset: 12%;
+  width: 76%;
+  height: 76%;
+  object-fit: contain;
+  opacity: 0;
+  transform: scale(0.9) translateY(4%);
+  transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.w2e-stage-art.is-active {
+  opacity: 1;
+  transform: none;
+}
+
+/* Remounted on every change of step (keyed in the JSX), so this plays
+   once per step, never on a loop. */
+.w2e-stage-num {
+  position: absolute;
+  top: var(--space-5);
+  left: var(--space-6);
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 1.5rem + 2.5vw, 4rem);
+  font-weight: var(--weight-black);
+  line-height: 1;
+  color: var(--cp2b-lima);
+  animation: w2e-num-in 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.w2e-stage-kicker {
+  position: absolute;
+  top: calc(var(--space-5) + 0.4rem);
+  right: var(--space-6);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--cp2b-branco) 78%, transparent);
+}
+
+/* ---------- Pipe rail ---------- */
+
+.w2e-rail {
+  position: relative;
+  width: min(100%, 58vh);
+}
+
+/* The track runs from the centre of the first node to the centre of the
+   last: with one grid column per step, that is half a column in from each
+   side. */
+.w2e-rail-track {
+  position: absolute;
+  top: 6px;
+  left: calc(50% / var(--w2e-steps, 5));
+  right: calc(50% / var(--w2e-steps, 5));
+  height: 4px;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--cp2b-branco) 14%, transparent);
+  overflow: hidden;
+  transform-origin: left center;
+}
+
+/* Filled up to the current node, dashed like gas in a pipe. The dashes
+   stand still: the fill only moves when the step changes. */
+.w2e-rail-fill {
+  position: absolute;
+  inset: 0;
+  transform: scaleX(var(--w2e-progress, 0));
+  transform-origin: left center;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--cp2b-lima) 0 12px,
+    color-mix(in srgb, var(--cp2b-lima) 45%, transparent) 12px 20px
+  );
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.w2e-rail-nodes {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(var(--w2e-steps, 5), minmax(0, 1fr));
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w2e-rail-nodes li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  text-align: center;
+}
+
+.w2e-rail-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--cp2b-branco) 40%, transparent);
+  background: var(--cp2b-petrol-900);
+  transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+.w2e-rail-nodes li.is-reached .w2e-rail-dot {
+  border-color: var(--cp2b-lima);
+  background: var(--cp2b-lima);
+}
+
+.w2e-rail-label {
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.01em;
+  color: color-mix(in srgb, var(--cp2b-branco) 55%, transparent);
+  transition: color 0.4s ease;
+}
+
+.w2e-rail-nodes li.is-reached .w2e-rail-label {
+  color: var(--cp2b-branco);
+}
+
+/* ---------- Steps ---------- */
+
+.w2e-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* The steps that are not the current one recede, but only so far: 0.75
+   is the floor that keeps their text at AA on the petrol band (the body
+   copy, white at 82%, stays above 5:1 and the lime step number above
+   4.5:1; at the old 0.35 both fell to about 2.3:1). */
+.w2e-step {
+  --w2e-step-dim: 0.75;
+  display: flex;
+  align-items: center;
+  min-height: 62vh;
+  opacity: var(--w2e-step-dim);
+  transition: opacity 0.4s ease;
+}
+
+.w2e-step:first-child {
+  min-height: 48vh;
+  align-items: flex-start;
+}
+
+.w2e-step.is-active,
+.w2e-step:focus-within {
+  opacity: 1;
+}
+
+/* Where :has() exists, only keyboard focus keeps a step lit: the focus a
+   mouse click leaves on a chip no longer holds that step up while another
+   one is current. Without :has() the whole rule is dropped and the
+   :focus-within above still applies. */
+.w2e-step:not(.is-active):focus-within:not(:has(:focus-visible)) {
+  opacity: var(--w2e-step-dim);
+}
+
+.w2e-step-art {
+  display: none;
+}
+
+.w2e-step-body {
+  min-width: 0;
+}
+
+.w2e-step-num {
+  display: block;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0;
+  color: var(--cp2b-lima);
+  line-height: 1.1;
+}
+
+.w2e-step-title {
+  margin: var(--space-3) 0 var(--space-3);
+  font-size: var(--fs-title);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  color: var(--cp2b-branco);
+}
+
+.w2e-step-text {
+  max-width: 34rem;
+  margin: 0 0 var(--space-5);
+  font-size: 1.05rem;
+  line-height: var(--leading-normal);
+  color: color-mix(in srgb, var(--cp2b-branco) 82%, transparent);
+}
+
+.w2e-step-axes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.w2e-step-axes li {
+  max-width: 100%;
+}
+
+/* A long axis name wraps inside its chip instead of pushing the row wider
+   than a phone screen. */
+.w2e-axis-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  max-width: 100%;
+  min-height: 36px;
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-full);
+  border: 1px solid color-mix(in srgb, var(--cp2b-lima) 45%, transparent);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-semibold);
+  color: var(--cp2b-branco);
+  text-decoration: none;
+  transition: background-color var(--duration-base) var(--ease-standard),
+    border-color var(--duration-base) var(--ease-standard),
+    color var(--duration-base) var(--ease-standard);
+}
+
+.w2e-axis-chip:hover,
+.w2e-axis-chip:focus-visible {
+  border-color: var(--cp2b-lima);
+  background: var(--cp2b-lima);
+  color: var(--cp2b-petrol-900);
+}
+
+.w2e-axis-chip-num {
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.01em;
+  color: var(--cp2b-lima);
+  transition: color var(--duration-base) var(--ease-standard);
+  font-variant-numeric: tabular-nums;
+}
+
+.w2e-axis-chip:hover .w2e-axis-chip-num,
+.w2e-axis-chip:focus-visible .w2e-axis-chip-num {
+  color: var(--cp2b-petrol-900);
+}
+
+/* ============================================================
+   Arrival — plays once, the first time each block scrolls into view.
+   data-reveal comes from useScrollReveal: "armed" holds the start pose,
+   "shown" runs the keyframes. They fill backwards only, so once they end
+   the normal rules take over again. Without layout or with reduced motion
+   the attribute is never set and everything is simply there.
+   ============================================================ */
+
+/* Heading: the eyebrow rule draws, then title and subtitle rise. */
+.w2e-head[data-reveal="armed"] > * {
+  opacity: 0;
+}
+
+.w2e-head[data-reveal="shown"] > * {
+  animation: w2e-rise 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.w2e-head[data-reveal="shown"] .eyebrow::before {
+  transform-origin: left center;
+  animation: w2e-draw 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+}
+
+.w2e-head[data-reveal="shown"] .w2e-title { animation-delay: 0.12s; }
+.w2e-head[data-reveal="shown"] .w2e-subtitle { animation-delay: 0.26s; }
+
+/* Stage: the card settles in, the pipe draws from the first node and the
+   nodes light up one after another. */
+.w2e-stage[data-reveal="armed"] .w2e-stage-card,
+.w2e-stage[data-reveal="armed"] .w2e-rail-track,
+.w2e-stage[data-reveal="armed"] .w2e-rail-nodes li {
+  opacity: 0;
+}
+
+.w2e-stage[data-reveal="shown"] .w2e-stage-card {
+  animation: w2e-settle 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+}
+
+.w2e-stage[data-reveal="shown"] .w2e-rail-track {
+  animation: w2e-draw 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.3s backwards;
+}
+
+.w2e-stage[data-reveal="shown"] .w2e-rail-nodes li {
+  animation: w2e-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.35s + var(--i, 0) * 0.09s);
+}
+
+@keyframes w2e-rise {
+  from { opacity: 0; transform: translateY(16px); }
+}
+
+@keyframes w2e-draw {
+  from { transform: scaleX(0); }
+}
+
+@keyframes w2e-settle {
+  from { opacity: 0; transform: scale(0.96); }
+}
+
+@keyframes w2e-num-in {
+  from { opacity: 0; transform: translateY(40%); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Narrow screens: no stage, the steps carry the pictures ---------- */
+
+@media (max-width: 991.98px) {
+  .w2e-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .w2e-stage {
+    display: none;
+  }
+
+  .w2e-steps {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .w2e-step,
+  .w2e-step:first-child {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-4);
+    min-height: 0;
+    padding: var(--space-5);
+    border-radius: var(--radius-xl);
+    border: 1px solid color-mix(in srgb, var(--cp2b-branco) 12%, transparent);
+    background: color-mix(in srgb, var(--cp2b-branco) 5%, transparent);
+    /* Every step is a card of its own here: none recedes. */
+    --w2e-step-dim: 1;
+    opacity: 1;
+  }
+
+  /* Square box reserved before the lazy image arrives, so the card does
+     not jump when it loads. */
+  .w2e-step-art {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    object-fit: contain;
+  }
+
+  .w2e-step-title {
+    margin: var(--space-2) 0;
+  }
+
+  .w2e-step-text {
+    font-size: var(--text-base);
+    margin-bottom: var(--space-4);
+  }
+}
+
+@media (max-width: 479.98px) {
+  .w2e-step,
+  .w2e-step:first-child {
+    grid-template-columns: minmax(0, 1fr);
+    padding: var(--space-4);
+  }
+
+  .w2e-step-art {
+    width: 5rem;
+  }
+}
+
+/* Reduced motion: no arrival and no number slide; the step changes swap
+   in place (the global rule in design-system.css shortens the transitions).
+   useScrollReveal does not arm under reduced motion; the [data-reveal]
+   selectors also cover a visitor who switches the setting mid-visit. */
+@media (prefers-reduced-motion: reduce) {
+  .w2e-stage-num,
+  .w2e-head[data-reveal] > *,
+  .w2e-head[data-reveal] .eyebrow::before,
+  .w2e-stage[data-reveal] .w2e-stage-card,
+  .w2e-stage[data-reveal] .w2e-rail-track,
+  .w2e-stage[data-reveal] .w2e-rail-nodes li {
+    animation: none;
+  }
+
+  .w2e-stage-art {
+    transform: none;
+  }
+}

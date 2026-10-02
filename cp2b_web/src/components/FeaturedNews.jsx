@@ -29,9 +29,8 @@ const FeaturedNews = ({ newsA, newsB, newsC }) => {
           style={{
             backgroundImage: `url(${news.image})`,
             backgroundSize: 'cover',
-            backgroundPosition: 'center'
+            backgroundPosition: news.image_position || '50% 50%'
           }}
-          whileHover={{ scale: 1.02 }}
           transition={{ duration: 0.3 }}
         >
           <div className="featured-headline-overlay" />

@@ -2,20 +2,21 @@ import { Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useLanguage } from '../context/LanguageContext';
+import SeoHead from '../components/SeoHead';
 
 const Others = () => {
   const { language } = useLanguage();
 
   const labels = {
     pt: {
-      tag: 'EM BREVE',
+      tag: 'Em breve',
       title: 'Outros',
       description: 'Materiais institucionais, apresentações e recursos complementares.',
       cta: 'Fique atento às novidades',
       ctaLink: '/contato',
     },
     en: {
-      tag: 'COMING SOON',
+      tag: 'Coming soon',
       title: 'Others',
       description: 'Institutional materials, presentations and supplementary resources.',
       cta: 'Stay tuned for updates',
@@ -24,6 +25,17 @@ const Others = () => {
   }[language];
 
   return (
+    <>
+      {/* Placeholder ("em breve") with no real content yet — noindex until it has
+          something to rank for, so it does not sit in the "crawled, not indexed"
+          bucket. Drop noIndex once the page is filled in. */}
+      <SeoHead
+        title={labels.title}
+        description={labels.description}
+        path="/outros"
+        language={language}
+        noIndex
+      />
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -45,6 +57,7 @@ const Others = () => {
         </Row>
       </Container>
     </motion.div>
+    </>
   );
 };
 

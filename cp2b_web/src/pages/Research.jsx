@@ -1,9 +1,18 @@
 import { useState, useEffect } from 'react';
-import { Container, Accordion, Row, Col } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { motion } from 'framer-motion';
-import { researchAxes, sdgMap, menuLabels } from '../data/content';
+import { researchAxes, wasteToEnergyFlow } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchAxes } from '../services/api';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../data/content';
+import SeoHead from '../components/SeoHead';
+import PageHero from '../components/PageHero';
+import AxisExplorer from '../components/AxisExplorer';
+import AxisConstellation from '../components/AxisConstellation';
+import WasteToEnergy from '../components/WasteToEnergy';
+import { stripAxisPrefix } from '../utils/teamGroups';
+import { axisDetails } from '../data/generated/axisDetails';
 
 const transformApiAxes = (apiAxes, lang) =>
   apiAxes.map((row) => {
@@ -11,8 +20,11 @@ const transformApiAxes = (apiAxes, lang) =>
     if (row.coordinator) {
       coordinators.push({ name: row.coordinator, role: 'Coord.', photo: row.coordinator_image || null });
     }
+    // 'Coord.' nos dois: o ANEXO 11 (migration 039) extinguiu o cargo de
+    // Coordenador Adjunto, e `sub_coordinator` guarda o segundo coordenador em
+    // pé de igualdade — o nome da coluna é só herança do esquema.
     if (row.sub_coordinator) {
-      coordinators.push({ name: row.sub_coordinator, role: 'Adj.', photo: row.sub_coordinator_image || null });
+      coordinators.push({ name: row.sub_coordinator, role: 'Coord.', photo: row.sub_coordinator_image || null });
     }
     return {
       id: String(row.axis_number),
@@ -20,13 +32,44 @@ const transformApiAxes = (apiAxes, lang) =>
       coordinators,
       content: lang === 'pt' ? row.content_pt : (row.content_en || row.content_pt),
       sdgs: row.sdgs || [],
+      // O backend ainda não expõe `details` (migration 025) — quando expuser,
+      // preferir row.details aqui e cair para o axisDetails estático abaixo.
+      details: row.details || null,
     };
   });
 
 const Research = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.research[language] || pageSeo.research.pt;
   const [apiAxes, setApiAxes] = useState(null);
-  const t = menuLabels[language];
+
+  // Links como /eixos?eixo=3#explorar-eixos (das fichas de laboratório e
+  // dos chips da cadeia do biogás, nesta mesma página) abrem direto no
+  // detalhamento. Adiado um quadro: o ScrollToTop do App roda depois deste
+  // efeito e levaria a página de volta ao topo. A chave da navegação entra
+  // nas dependências porque, de um chip para outro, o hash não muda: sem
+  // ela o segundo clique trocaria o eixo sem rolar até ele.
+  //
+  // O foco vai junto, para a aba do eixo aberto: o <Link> impede a navegação
+  // de fragmento do navegador, e sem isso o foco ficaria no chip, lá na faixa
+  // escura (o próximo Tab levaria a página de volta para cima). A aba, e não
+  // o título da seção, porque o leitor de tela anuncia nela o que abriu
+  // ("Eixo 4: …, guia, selecionada, 4 de 8"); o título diria só "Conheça os
+  // Eixos". Dali o Tab segue para o painel e as setas trocam de eixo.
+  // preventScroll: a rolagem acabou de ser feita, até o topo da seção.
+  const { hash, key: locationKey } = useLocation();
+  useEffect(() => {
+    if (hash !== '#explorar-eixos') return undefined;
+    const id = requestAnimationFrame(() => {
+      const el = document.getElementById('explorar-eixos');
+      if (!el) return;
+      if (el.scrollIntoView) el.scrollIntoView({ block: 'start' });
+      const tab = el.querySelector('.axx-tab.is-active');
+      if (tab) tab.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(id);
+  }, [hash, locationKey]);
 
   useEffect(() => {
     fetchAxes().then((data) => {
@@ -35,102 +78,110 @@ const Research = () => {
   }, []);
 
   const axes = apiAxes ? transformApiAxes(apiAxes, language) : researchAxes[language];
+  // Os chips da cadeia do biogás levam o nome de cada eixo sem o prefixo
+  // "Eixo N – ", que o chip já mostra à parte.
+  const axisNames = Object.fromEntries(axes.map((axis) => [axis.id, stripAxisPrefix(axis.title)]));
+  const flow = wasteToEnergyFlow[language] || wasteToEnergyFlow.pt;
 
   const labels = {
     pt: {
-      tag: 'Estrutura de Pesquisa',
-      subtitle: 'A atuação do CP2b está organizada em oito eixos temáticos integrados, cobrindo desde o inventário de resíduos até políticas públicas.',
       details: 'Conheça os Eixos',
       axis: 'EIXO',
-      sdgs: 'ODS Relacionados:'
+      sdgs: 'ODS Relacionados:',
+      activities: 'Atividades Desenvolvidas',
+      mindmapHint: 'Escopo, competências, projetos e infraestrutura de cada eixo.',
+      detailsEyebrow: 'Detalhamento',
+      sdgsTitle: 'ODS relacionados',
+      axesNav: 'Eixos temáticos',
+      readMore: 'Ler mais',
+      readLess: 'Ler menos',
+      showAll: 'Ver todos os',
+      showLess: 'Mostrar menos',
+      allAxes: 'Todos os eixos',
+      noDetails: 'Detalhamento em preparação para este eixo.',
+      overview: {
+        eyebrow: 'Estrutura Temática',
+        title: 'Eixos de Atuação do CP2b',
+        subtitle: 'Integração científica e tecnológica para a valorização de resíduos e o desenvolvimento sustentável.',
+        axis: 'EIXO',
+        coordination: 'Coordenação',
+        vacancy: 'Vaga temporariamente em aberto',
+        hubCaption: 'Centro Paulista de Estudos em Biogás e Bioprodutos',
+        details: 'Ver detalhes',
+        hint: 'Clique em um eixo para ver escopo, competências e projetos.',
+      },
     },
     en: {
-      tag: 'Research Structure',
-      subtitle: 'CP2b\'s activities are organized into eight integrated thematic axes, covering from waste inventory to public policies.',
       details: 'Discover the Axes',
       axis: 'AXIS',
-      sdgs: 'Related SDGs:'
+      sdgs: 'Related SDGs:',
+      activities: 'Activities',
+      mindmapHint: 'Scope, competencies, projects and infrastructure for each axis.',
+      detailsEyebrow: 'In detail',
+      sdgsTitle: 'Related SDGs',
+      axesNav: 'Thematic axes',
+      readMore: 'Read more',
+      readLess: 'Read less',
+      showAll: 'See all',
+      showLess: 'Show less',
+      allAxes: 'All axes',
+      noDetails: 'Detailed breakdown in preparation for this axis.',
+      overview: {
+        eyebrow: 'Thematic Structure',
+        title: 'CP2b Thematic Axes',
+        subtitle: 'Scientific and technological integration for waste valorization and sustainable development.',
+        axis: 'AXIS',
+        coordination: 'Coordination',
+        vacancy: 'Position temporarily open',
+        hubCaption: 'São Paulo Center for Biogas and Bioproducts Studies',
+        details: 'See details',
+        hint: 'Click an axis to see its scope, competencies and projects.',
+      },
     }
   }[language];
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-    <Container className="py-5">
-      <Row className="mb-5">
-        <Col lg={8}>
-          <span className="mono-label text-success text-uppercase">{t.axes}</span>
-          <h1 className="display-5 fw-bold mb-4">{labels.tag}</h1>
-          <p className="lead text-muted">
-            {labels.subtitle}
-          </p>
-        </Col>
-      </Row>
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
+    {/* O cabeçalho da página é o da figura dos eixos: antes ele se repetia
+        no topo do infográfico, empurrando os eixos para baixo. */}
+    <PageHero
+      eyebrow={labels.overview.eyebrow}
+      title={labels.overview.title}
+      subtitle={labels.overview.subtitle}
+      photo={{ src: '/assets/fotos/eixos-pesquisadores.webp', width: 700, height: 500 }}
+      className="page-hero--overlap"
+    />
+    <Container>
+      {/* Primeira coisa da página: a figura integrativa dos oito eixos, com
+          coordenação e vice. Ela sobe sobre o hero e cada card leva ao mapa
+          mental logo abaixo, já com o eixo aberto. */}
+      <AxisConstellation axes={axes} labels={labels.overview} targetId="explorar-eixos" />
+    </Container>
 
-      <div className="border-top border-dark pt-5">
-        <h3 className="fw-bold mb-4">{labels.details}</h3>
-        <Accordion flush alwaysOpen>
-          {axes.map((axis) => (
-            <Accordion.Item eventKey={axis.id} key={axis.id} className="border-bottom border-dark bg-transparent">
-              <Accordion.Header>
-                <div className="py-2">
-                    <span className="d-block mono-label text-muted mb-1">{labels.axis} {axis.id}</span>
-                    <span className="fw-bold fs-5">{axis.title.split('–')[1] || axis.title}</span>
-                </div>
-              </Accordion.Header>
-              <Accordion.Body className="pb-4 pt-0">
-                {axis.coordinators && axis.coordinators.length > 0 && (
-                  <div className="d-flex flex-wrap gap-3 mb-4">
-                    {axis.coordinators.map((person) => (
-                      <div key={person.name} className="d-flex align-items-center gap-2">
-                        {person.photo ? (
-                          <img
-                            src={person.photo}
-                            alt={person.name}
-                            style={{ width: 96, height: 96, borderRadius: '50%', objectFit: 'cover', flexShrink: 0 }}
-                          />
-                        ) : (
-                          <div style={{
-                            width: 96, height: 96, borderRadius: '50%', backgroundColor: '#e0e0e0',
-                            display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            fontSize: '0.85rem', fontWeight: 700, color: '#555', flexShrink: 0
-                          }}>
-                            {person.name.split(' ').filter(w => w.length > 2).slice(0, 2).map(w => w[0]).join('')}
-                          </div>
-                        )}
-                        <div>
-                          <div className="fw-semibold" style={{ fontSize: '0.82rem', lineHeight: 1.2 }}>{person.name}</div>
-                          <div className="text-success" style={{ fontSize: '0.72rem', fontWeight: 600 }}>{person.role}</div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
-                <p className="text-muted mb-4" style={{ whiteSpace: 'pre-line' }}>{axis.content}</p>
-                
-                {/* SDG Images */}
-                {axis.sdgs && axis.sdgs.length > 0 && (
-                  <div>
-                    <span className="mono-label text-muted d-block mb-2">{labels.sdgs}</span>
-                    <div className="d-flex flex-wrap gap-2">
-                      {axis.sdgs.map((sdgId) => (
-                        <img 
-                          key={sdgId} 
-                          src={sdgMap[sdgId]} 
-                          alt={`ODS ${sdgId}`} 
-                          title={`Sustainable Development Goal ${sdgId}`}
-                          style={{ width: '60px', height: '60px', borderRadius: '8px' }} 
-                        />
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </Accordion.Body>
-            </Accordion.Item>
-          ))}
-        </Accordion>
-      </div>
+    {/* Faixa escura de largura total, fora do Container: a cadeia do biogás
+        em cinco etapas, e os eixos que trabalham em cada uma. Cada chip abre
+        o eixo no detalhamento logo abaixo. */}
+    <WasteToEnergy copy={flow} axisNames={axisNames} />
+
+    <Container className="pb-4 pb-md-5">
+      <section id="explorar-eixos" className="research-explore" aria-labelledby="explorar-eixos-title">
+        <header className="research-explore__head">
+          <span className="eyebrow">{labels.detailsEyebrow}</span>
+          <h2 id="explorar-eixos-title">{labels.details}</h2>
+          <p>{labels.mindmapHint}</p>
+        </header>
+        <AxisExplorer
+          axes={axes}
+          detailsById={axisDetails}
+          language={language}
+          labels={labels}
+        />
+      </section>
     </Container>
     </motion.div>
+    </>
   );
 };
 

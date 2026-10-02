@@ -33,3 +33,12 @@ window.IntersectionObserver = IntersectionObserverMock;
 
 // Mock scrollTo
 window.scrollTo = () => {};
+
+// Mock URL.createObjectURL & URL.revokeObjectURL for jsdom
+if (typeof window.URL.createObjectURL !== 'function') {
+  window.URL.createObjectURL = () => 'blob:mock-url';
+}
+if (typeof window.URL.revokeObjectURL !== 'function') {
+  window.URL.revokeObjectURL = () => {};
+}
+

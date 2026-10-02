@@ -1,0 +1,71 @@
+/* ============================================================
+   EVENTO — selo da contagem regressiva e entrada da programação
+   O resto da página continua nas classes do Bootstrap e do
+   design-system.css; este arquivo só acrescenta o selo novo e
+   o movimento. Só tokens.
+   ============================================================ */
+
+/* ---------- Contagem regressiva, logo abaixo da data ---------- */
+.event-countdown {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  width: fit-content;
+  margin-top: 0.5rem;
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--cp2b-lima) 24%, var(--cp2b-branco));
+  color: var(--cp2b-verde-escuro);
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.event-countdown .bi { font-size: 0.9em; }
+
+/* No dia (ou com o evento em curso) o selo ganha a cor cheia da marca. */
+.event-countdown--today,
+.event-countdown--ongoing {
+  background: var(--cp2b-verde-escuro);
+  color: var(--cp2b-branco);
+}
+
+/* O número conta a partir de 2: a vaga já tem a largura final (--digits,
+   com algarismos de largura fixa), para o selo não crescer enquanto conta. */
+.event-countdown__num {
+  display: inline-block;
+  min-width: calc(var(--digits, 1) * 1ch);
+  text-align: end;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Programação: as linhas entram em sequência ----------
+   data-reveal vem do useScrollReveal: "armed" segura a pose inicial e
+   "shown" roda os keyframes uma vez. Eles preenchem só para trás
+   (backwards): terminada a entrada, valem as regras normais. Sem layout
+   ou com movimento reduzido o atributo nem aparece. */
+.event-schedule[data-reveal="armed"] .event-schedule__item { opacity: 0; }
+
+.event-schedule[data-reveal="shown"] .event-schedule__item {
+  animation: event-row-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.05s + var(--i, 0) * 0.09s);
+}
+
+/* O horário chega um instante depois da sua linha, vindo da esquerda. */
+.event-schedule[data-reveal="shown"] .event-schedule__time {
+  animation: event-time-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.2s + var(--i, 0) * 0.09s);
+}
+
+@keyframes event-row-rise { from { opacity: 0; transform: translateY(14px); } }
+@keyframes event-time-in { from { opacity: 0; transform: translateX(-8px); } }
+
+/* Se o visitante ligar o movimento reduzido com a lista já armada, ela
+   aparece de uma vez, sem os atrasos que a regra global deixaria. */
+@media (prefers-reduced-motion: reduce) {
+  .event-schedule[data-reveal] .event-schedule__item,
+  .event-schedule[data-reveal] .event-schedule__time {
+    animation: none;
+    opacity: 1;
+  }
+}

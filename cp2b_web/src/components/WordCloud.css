@@ -1,0 +1,192 @@
+/* Nuvem de palavras — mesma linguagem das demais seções: filetes finos,
+   tons da marca, nada rolando na horizontal. */
+
+.wcloud {
+  --wc-ink: var(--cp2b-verde-escuro);
+  --wc-hair: color-mix(in srgb, var(--cp2b-verde-escuro) 12%, white);
+  margin-top: clamp(2.5rem, 1.5rem + 3vw, 4rem);
+}
+
+.wcloud__head { max-width: 46rem; margin-bottom: clamp(1rem, 0.75rem + 1vw, 1.5rem); }
+.wcloud__head .eyebrow { color: var(--wc-ink); margin-bottom: 0.6rem; }
+
+.wcloud__head h2 {
+  margin: 0 0 0.45rem;
+  font-family: var(--font-display);
+  font-size: var(--fs-display-2);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  color: var(--wc-ink);
+}
+
+.wcloud__head p { margin: 0; color: var(--text-secondary); font-size: 0.98rem; }
+
+.wcloud__body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+}
+
+.wcloud__label {
+  margin: 0 0 0.9rem;
+  font-family: var(--font-hand);
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  color: var(--cp2b-verde-escuro);
+  line-height: 1.1;
+}
+
+/* ---------- nuvem ---------- */
+.wcloud__cloud-wrap {
+  padding: clamp(1.25rem, 1rem + 1.5vw, 2rem);
+  background:
+    radial-gradient(60% 70% at 50% 55%, color-mix(in srgb, var(--cp2b-lima) 14%, transparent), transparent 75%),
+    color-mix(in srgb, var(--cp2b-verde) 3%, white);
+  border-right: 1px solid var(--wc-hair);
+}
+
+.wcloud__cloud {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 0.15rem 0.85rem;
+  list-style: none;
+  margin: 0;
+  padding: 0.5rem 0;
+}
+
+.wcloud__word {
+  position: relative;
+  font-size: calc(var(--size, 1) * var(--wc-scale, 1) * 1rem);
+  font-family: var(--font-display);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  cursor: default;
+  outline: none;
+  border-radius: var(--radius-sm);
+}
+
+.wcloud__word.is-top { font-weight: 700; color: var(--wc-ink); }
+.wcloud__word.is-mid { font-weight: 700; color: var(--cp2b-verde); }
+.wcloud__word.is-low { font-weight: 400; color: color-mix(in srgb, var(--cp2b-azul-petroleo) 75%, white); }
+
+.wcloud__word:hover,
+.wcloud__word:focus-visible { color: var(--cp2b-ambar); }
+.wcloud__word:focus-visible { box-shadow: var(--focus-ring); }
+
+/* Contagem ao passar o mouse ou focar pelo teclado. */
+.wcloud__word::after {
+  content: attr(data-count);
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% - 0.1em);
+  translate: -50% 0;
+  padding: 0.1rem 0.45rem;
+  border-radius: var(--radius-full);
+  background: var(--wc-ink);
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: 0;
+  color: #fff;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.wcloud__word:hover::after,
+.wcloud__word:focus-visible::after { opacity: 1; }
+
+/* ---------- expressões ---------- */
+.wcloud__expr-wrap { padding: clamp(1.25rem, 1rem + 1.5vw, 2rem); }
+
+.wcloud__expr { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.55rem; }
+
+.wcloud__expr li {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 2.2rem;
+  grid-template-areas: 'term n' 'bar bar';
+  row-gap: 0.25rem;
+  align-items: baseline;
+}
+
+.wcloud__expr-term { grid-area: term; font-size: 0.86rem; font-weight: 600; color: var(--text-primary); }
+.wcloud__expr-n { grid-area: n; text-align: right; font-size: 0.78rem; font-weight: 700; color: var(--wc-ink); font-variant-numeric: tabular-nums; }
+
+.wcloud__expr-bar {
+  grid-area: bar;
+  display: block;
+  height: 5px;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--cp2b-verde) 12%, white);
+  overflow: hidden;
+}
+
+.wcloud__expr-bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--cp2b-verde-escuro), var(--cp2b-verde));
+}
+
+@media (max-width: 991.98px) {
+  .wcloud__body { grid-template-columns: minmax(0, 1fr); }
+  .wcloud__cloud-wrap { border-right: none; border-bottom: 1px solid var(--wc-hair); }
+}
+
+@media (max-width: 575.98px) {
+  .wcloud__cloud { gap: 0.1rem 0.6rem; }
+  /* No celular a nuvem encolhe um pouco para caber sem rolar. */
+  .wcloud { --wc-scale: 0.8; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .wcloud__word { transition: color var(--duration-fast) var(--ease-standard); }
+  .wcloud__word::after { transition: opacity var(--duration-fast) var(--ease-standard); }
+}
+
+/* ---------- Movimento de entrada ----------
+   Mesmo esquema do resumo de publicações (useScrollReveal + keyframes que
+   preenchem só para trás): as palavras surgem da mais frequente para a
+   menos frequente e as barras das expressões crescem da esquerda. */
+
+.wcloud[data-reveal="armed"] .wcloud__word,
+.wcloud[data-reveal="armed"] .wcloud__expr-bar span { opacity: 0; }
+
+.wcloud[data-reveal="shown"] .wcloud__word {
+  animation: wc-in 0.6s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.1s + min(var(--rank, 0), 30) * 0.035s);
+}
+
+.wcloud__expr-bar span { transform-origin: left center; }
+.wcloud[data-reveal="shown"] .wcloud__expr-bar span {
+  animation: wc-grow 0.9s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.3s + var(--i, 0) * 0.07s);
+}
+
+@keyframes wc-in { from { opacity: 0; transform: translateY(10px) scale(0.92); } }
+@keyframes wc-grow { from { transform: scaleX(0); } }
+
+/* Reação ao ponteiro e ao teclado: apontar para uma palavra apaga as outras,
+   para ela se destacar junto com a contagem. */
+.wcloud__cloud:has(.wcloud__word:hover) .wcloud__word:not(:hover),
+.wcloud__cloud:has(.wcloud__word:focus-visible) .wcloud__word:not(:focus-visible) { opacity: 0.35; }
+
+.wcloud__expr li:hover .wcloud__expr-term { color: var(--cp2b-verde-escuro); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .wcloud__word {
+    transition: color var(--duration-fast) var(--ease-standard),
+      opacity var(--duration-slow) var(--ease-standard),
+      transform var(--duration-slow) var(--ease-standard);
+  }
+  .wcloud__word:hover,
+  .wcloud__word:focus-visible { transform: scale(1.06); }
+}

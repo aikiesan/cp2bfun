@@ -17,6 +17,12 @@ if (!fs.existsSync(newsImagesDir)) {
   fs.mkdirSync(newsImagesDir, { recursive: true });
 }
 
+// Ensure press-kit subdirectory exists
+const pressKitDir = path.join(uploadsDir, 'press-kit');
+if (!fs.existsSync(pressKitDir)) {
+  fs.mkdirSync(pressKitDir, { recursive: true });
+}
+
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
@@ -28,10 +34,11 @@ const storage = multer.diskStorage({
   }
 });
 
+// Extensão e tipo conferidos por inteiro: sem as âncoras, "foto.xpngx" ou um
+// tipo qualquer que contivesse "png" passavam.
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = /jpeg|jpg|png|gif|webp/;
-  const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = allowedTypes.test(file.mimetype);
+  const extname = /^\.(jpe?g|png|gif|webp)$/.test(path.extname(file.originalname).toLowerCase());
+  const mimetype = /^image\/(jpeg|png|gif|webp)$/.test(file.mimetype);
 
   if (extname && mimetype) {
     return cb(null, true);
@@ -82,9 +89,43 @@ router.post('/news-image', newsImageUpload.single('image'), (req, res) => {
   res.json({ imageUrl });
 });
 
+// Upload press kit file (PDF, ZIP, PPTX, etc.)
+const pressKitFileFilter = (req, file, cb) => {
+  // Sem âncoras, .docm e .pptm (com macros) passavam por conter "doc" e "ppt".
+  const extname = /^\.(pdf|zip|pptx?|docx?)$/.test(path.extname(file.originalname).toLowerCase());
+  if (extname) return cb(null, true);
+  cb(new Error('Only document files are allowed (PDF, ZIP, PPTX, DOCX)'));
+};
+
+const pressKitStorage = multer.diskStorage({
+  destination: (req, file, cb) => { cb(null, pressKitDir); },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+
+const pressKitUpload = multer({
+  storage: pressKitStorage,
+  fileFilter: pressKitFileFilter,
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
+});
+
+router.post('/file', pressKitUpload.single('file'), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  res.json({ url: `/uploads/press-kit/${req.file.filename}`, filename: req.file.filename });
+});
+
 // Delete image
 router.delete('/image/:filename', (req, res) => {
   const { filename } = req.params;
+  // Só um nome de arquivo, nunca um caminho: "..%2F..%2Farquivo" chegava
+  // decodificado e apagava fora de uploads/.
+  if (path.basename(filename) !== filename || filename.startsWith('.')) {
+    return res.status(400).json({ error: 'Invalid filename' });
+  }
   const filepath = path.join(uploadsDir, filename);
 
   if (!fs.existsSync(filepath)) {

@@ -4,9 +4,17 @@ import { transparencyContent } from '../../data/content';
 import { useLanguage } from '../../context/LanguageContext';
 import { fetchPageContent } from '../../services/api';
 import { motion } from 'framer-motion';
+import { useLocation } from 'react-router-dom';
+import { pageSeo } from '../../data/content';
+import SeoHead from '../../components/SeoHead';
+import PageHero from '../../components/PageHero';
+import AboutSubnav from '../../components/AboutSubnav';
+import { safeHref } from '../../utils/safeUrl';
 
 const Transparency = () => {
   const { language } = useLanguage();
+  const { pathname } = useLocation();
+  const seo = pageSeo.transparency[language] || pageSeo.transparency.pt;
   const staticContent = transparencyContent[language];
   const [content, setContent] = useState({
     title: staticContent.title,
@@ -49,32 +57,28 @@ const Transparency = () => {
   }, [language]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ duration: 0.5 }}
-    >
-      <Container className="py-5">
-        <Row className="mb-5">
-          <Col lg={8}>
-            <span className="mono-label text-success">CP2b</span>
-            <h1 className="display-4 fw-bold mb-4">{content.title}</h1>
-            <p className="lead text-muted">{content.description}</p>
-          </Col>
-        </Row>
-
-        {/* FAPESP Process */}
-        <Row className="mb-5">
+    <>
+      <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
+      <PageHero eyebrow="CP2b" title={content.title} subtitle={content.description} />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Container className="py-4 py-md-5">
+          <AboutSubnav />
+          {/* FAPESP Process */}
+        <Row className="mb-4 mb-md-5">
           <Col md={12}>
             <Card className="border-0 shadow-sm">
-              <Card.Body className="p-4">
+              <Card.Body className="p-3 p-md-4">
                 <h3 className="fw-bold mb-3">{content.sections.fapesp.title}</h3>
                 <p className="text-muted mb-3">
                   <strong>{language === 'pt' ? 'Número:' : 'Number:'}</strong> {content.sections.fapesp.number}
                 </p>
                 <Button
                   variant="outline-success"
-                  href={content.sections.fapesp.link}
+                  href={safeHref(content.sections.fapesp.link)}
                   target="_blank"
                   size="sm"
                 >
@@ -86,16 +90,35 @@ const Transparency = () => {
         </Row>
 
         {/* Annual Reports */}
-        <Row className="mb-5">
+        <Row className="mb-4 mb-md-5">
           <Col md={12}>
-            <h3 className="fw-bold mb-4">{content.sections.reports.title}</h3>
+            <h3 className="fw-bold mb-3 mb-md-4">{content.sections.reports.title}</h3>
             {content.sections.reports.description && (
               <p className="text-muted mb-3">{content.sections.reports.description}</p>
             )}
             {content.sections.reports.items.length > 0 ? (
-              <div>
-                {/* Render report cards */}
-              </div>
+              <Row className="g-3">
+                {content.sections.reports.items.map((report) => (
+                  <Col md={6} key={report.id}>
+                    <Card className="border-0 shadow-sm h-100">
+                      <Card.Body className="p-3 p-md-4">
+                        <h5 className="fw-bold mb-1">{report.title}</h5>
+                        {report.period && (
+                          <p className="mono-label text-muted mb-2">{report.period}</p>
+                        )}
+                        {report.description && (
+                          <p className="text-muted small mb-3">{report.description}</p>
+                        )}
+                        {report.link && (
+                          <Button variant="outline-success" href={safeHref(report.link)} target="_blank" size="sm">
+                            {language === 'pt' ? 'Ver processo FAPESP' : 'View FAPESP process'}
+                          </Button>
+                        )}
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))}
+              </Row>
             ) : (
               <p className="text-muted">
                 {language === 'pt'
@@ -107,9 +130,9 @@ const Transparency = () => {
         </Row>
 
         {/* Financial Information */}
-        <Row className="bg-light p-4 rounded-3">
+        <Row className="bg-light p-3 p-md-4 rounded-3">
           <Col md={12}>
-            <h3 className="fw-bold mb-4">{content.sections.financials.title}</h3>
+            <h3 className="fw-bold mb-3 mb-md-4">{content.sections.financials.title}</h3>
             <p className="text-muted" style={{ whiteSpace: 'pre-line' }}>
               {content.sections.financials.content}
             </p>
@@ -117,6 +140,7 @@ const Transparency = () => {
         </Row>
       </Container>
     </motion.div>
+    </>
   );
 };
 

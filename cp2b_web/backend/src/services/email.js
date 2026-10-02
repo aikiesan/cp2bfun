@@ -15,14 +15,21 @@ const transporter = nodemailer.createTransport({
 
 const FROM = process.env.SMTP_FROM || 'Forum Paulista CP2b <forucp2b@unicamp.br>';
 
+// Nomes vêm do visitante (formulário da newsletter, inscrição no Fórum) e
+// entram no HTML do e-mail: sem escapar, qualquer um mandava um e-mail com
+// link e formatação a seu gosto, saindo de um remetente da Unicamp.
+const esc = (value) => String(value ?? '')
+  .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
 export async function sendMeetupInvitation(inviteeEmail, inviteeName, requesterName, slot, tableNumber, confirmLink) {
   const subject = `Convite de reunião — Forum Paulista CP2b`;
   const html = `
-    <p>Olá, <strong>${inviteeName}</strong>!</p>
-    <p><strong>${requesterName}</strong> quer se encontrar com você no Forum Paulista CP2b.</p>
+    <p>Olá, <strong>${esc(inviteeName)}</strong>!</p>
+    <p><strong>${esc(requesterName)}</strong> quer se encontrar com você no Forum Paulista CP2b.</p>
     <ul>
-      <li><strong>Horário:</strong> ${slot.label}</li>
-      <li><strong>Mesa:</strong> ${tableNumber}</li>
+      <li><strong>Horário:</strong> ${esc(slot.label)}</li>
+      <li><strong>Mesa:</strong> ${esc(tableNumber)}</li>
     </ul>
     <p>Para confirmar, clique no link abaixo:</p>
     <p><a href="${confirmLink}">${confirmLink}</a></p>
@@ -36,11 +43,11 @@ export async function sendMeetupInvitation(inviteeEmail, inviteeName, requesterN
 export async function sendMeetupConfirmation(toEmail, toName, otherName, slot, tableNumber) {
   const subject = `Reunião confirmada — Forum Paulista CP2b`;
   const html = `
-    <p>Olá, <strong>${toName}</strong>!</p>
-    <p>Sua reunião com <strong>${otherName}</strong> foi confirmada.</p>
+    <p>Olá, <strong>${esc(toName)}</strong>!</p>
+    <p>Sua reunião com <strong>${esc(otherName)}</strong> foi confirmada.</p>
     <ul>
-      <li><strong>Horário:</strong> ${slot.label}</li>
-      <li><strong>Mesa:</strong> ${tableNumber}</li>
+      <li><strong>Horário:</strong> ${esc(slot.label)}</li>
+      <li><strong>Mesa:</strong> ${esc(tableNumber)}</li>
     </ul>
     <p>Até lá!</p>
     <hr/>
@@ -51,7 +58,7 @@ export async function sendMeetupConfirmation(toEmail, toName, otherName, slot, t
 
 export async function sendNewsletterConfirmation(toEmail, toName, unsubscribeLink) {
   const subject = `Inscrição confirmada — Newsletter CP2b`;
-  const greeting = toName ? `Olá, <strong>${toName}</strong>!` : 'Olá!';
+  const greeting = toName ? `Olá, <strong>${esc(toName)}</strong>!` : 'Olá!';
   const html = `
     <p>${greeting}</p>
     <p>Sua inscrição na newsletter do <strong>Centro Paulista de Estudos em Biogas e Bioprodutos (CP2b)</strong> foi confirmada.</p>
@@ -67,7 +74,7 @@ export async function sendNewsletterConfirmation(toEmail, toName, unsubscribeLin
 
 export async function sendNewsletterBroadcast(subscribers, subject, htmlContent) {
   for (const subscriber of subscribers) {
-    const greeting = subscriber.name ? `<p>Olá, <strong>${subscriber.name}</strong>!</p>` : '';
+    const greeting = subscriber.name ? `<p>Olá, <strong>${esc(subscriber.name)}</strong>!</p>` : '';
     const footer = `
       <hr/>
       <p style="color:#888;font-size:12px">
@@ -88,7 +95,7 @@ export async function sendNewsletterBroadcast(subscribers, subject, htmlContent)
 export async function sendWelcomeEmail(toEmail, toName) {
   const subject = `Cadastro confirmado — Forum Paulista CP2b`;
   const html = `
-    <p>Olá, <strong>${toName}</strong>!</p>
+    <p>Olá, <strong>${esc(toName)}</strong>!</p>
     <p>Seu cadastro no Forum Paulista CP2b foi realizado com sucesso.</p>
     <p>Em breve você receberá mais informações sobre o evento.</p>
     <hr/>

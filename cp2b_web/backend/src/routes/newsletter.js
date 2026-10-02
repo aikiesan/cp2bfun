@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import pool from '../db/connection.js';
 import { sendNewsletterConfirmation, sendNewsletterBroadcast } from '../services/email.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -8,9 +9,12 @@ const BASE_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 
 // POST /api/newsletter/subscribe — public
 router.post('/subscribe', async (req, res) => {
-  const { email, name } = req.body;
+  const { email, name } = req.body || {};
 
-  if (!email?.trim()) {
+  if (typeof email !== 'string' || (name != null && typeof name !== 'string')) {
+    return res.status(400).json({ error: 'E-mail inválido.' });
+  }
+  if (!email.trim()) {
     return res.status(400).json({ error: 'E-mail é obrigatório.' });
   }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -78,7 +82,7 @@ router.get('/unsubscribe', async (req, res) => {
 });
 
 // GET /api/newsletter/subscribers — admin
-router.get('/subscribers', async (req, res) => {
+router.get('/subscribers', requireAdmin, async (req, res) => {
   try {
     const result = await pool.query(
       `SELECT id, email, name, subscribed_at, active FROM newsletter_subscribers ORDER BY subscribed_at DESC`

@@ -143,7 +143,9 @@ const AxesEditor = () => {
               </Row>
 
               <Form.Group className="mb-3">
-                <Form.Label><strong>Coordenador(es)</strong></Form.Label>
+                {/* Os dois campos têm o mesmo peso: o ANEXO 11 extinguiu o
+                    adjunto. `sub_coordinator` é só o nome herdado da coluna. */}
+                <Form.Label><strong>Coordenação — primeiro nome</strong></Form.Label>
                 <Form.Control
                   type="text"
                   value={axis.coordinator || ''}
@@ -153,11 +155,11 @@ const AxesEditor = () => {
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label><strong>Foto do Coordenador</strong></Form.Label>
+                <Form.Label><strong>Foto (primeiro nome)</strong></Form.Label>
                 <ImageUploadField
                   value={axis.coordinator_image || ''}
                   onChange={(url) => handleChange(axis.axis_number, 'coordinator_image', url)}
-                  label="Foto do Coordenador"
+                  label="Foto (primeiro nome)"
                 />
                 <Form.Text className="text-muted">
                   Imagem quadrada recomendada (mín. 200x200px)
@@ -165,7 +167,7 @@ const AxesEditor = () => {
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label><strong>Sub-Coordenador(es)</strong> <small className="text-muted">(Opcional)</small></Form.Label>
+                <Form.Label><strong>Coordenação — segundo nome</strong> <small className="text-muted">(opcional)</small></Form.Label>
                 <Form.Control
                   type="text"
                   value={axis.sub_coordinator || ''}
@@ -175,11 +177,11 @@ const AxesEditor = () => {
               </Form.Group>
 
               <Form.Group className="mb-3">
-                <Form.Label><strong>Foto do Sub-Coordenador</strong></Form.Label>
+                <Form.Label><strong>Foto (segundo nome)</strong></Form.Label>
                 <ImageUploadField
                   value={axis.sub_coordinator_image || ''}
                   onChange={(url) => handleChange(axis.axis_number, 'sub_coordinator_image', url)}
-                  label="Foto do Sub-Coordenador"
+                  label="Foto (segundo nome)"
                 />
                 <Form.Text className="text-muted">
                   Imagem quadrada recomendada (mín. 200x200px)

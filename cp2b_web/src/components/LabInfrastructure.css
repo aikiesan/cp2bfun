@@ -1,0 +1,571 @@
+/* Infraestrutura laboratorial — régua de TRL, painel dos laboratórios de
+   bioprocessos e laboratórios de políticas públicas. Mesma linguagem de
+   /eixos (AxisConstellation, AxisExplorer): numerais em traço leve, filetes
+   finos, cor forte só no estado ativo, nada rolando na horizontal. */
+
+.lab-map,
+.lab-section {
+  --lab-ink: var(--cp2b-verde-escuro);
+  --lab-hair: color-mix(in srgb, var(--cp2b-verde-escuro) 12%, white);
+  --lab-tint: color-mix(in srgb, var(--cp2b-verde) 4%, white);
+  --lab-pad: clamp(1rem, 0.5rem + 2vw, 2.25rem);
+}
+
+.lab-kicker,
+.lab-facts dt {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--cp2b-verde);
+}
+
+/* ---------- cabeçalhos de seção ---------- */
+.lab-head { text-align: center; max-width: 44rem; margin: 0 auto clamp(1.5rem, 1rem + 2vw, 2.5rem); }
+.lab-head--left { text-align: left; margin-left: 0; margin-bottom: clamp(1rem, 0.75rem + 1.25vw, 1.75rem); }
+.lab-head .eyebrow { color: var(--lab-ink); margin-bottom: 0.6rem; }
+
+.lab-head h2 {
+  font-family: var(--font-display);
+  font-size: var(--fs-display-2);
+  font-weight: 700;
+  letter-spacing: var(--tracking-tight);
+  line-height: var(--leading-tight);
+  color: var(--lab-ink);
+  margin: 0 0 0.45rem;
+}
+
+.lab-head p { color: var(--text-secondary); margin: 0; font-size: 1.02rem; }
+
+.lab-section { margin-top: clamp(2.5rem, 1.5rem + 4vw, 5rem); }
+
+/* ---------- régua: painel sobre o hero ---------- */
+.lab-map {
+  position: relative;
+  z-index: 2;
+  margin-top: clamp(-4.5rem, -3rem - 2vw, -2.5rem);
+  padding: clamp(1.75rem, 1rem + 3vw, 3rem) clamp(1rem, 0.5rem + 2.5vw, 3rem);
+  background:
+    radial-gradient(circle, color-mix(in srgb, var(--cp2b-verde-escuro) 7%, transparent) 1px, transparent 1.4px) 0 0 / 22px 22px,
+    var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--paper-shadow);
+  overflow: visible;
+}
+
+/* Um pedaço de fita crepe prende o painel à página (no lugar do filete). */
+.lab-map::before {
+  content: '';
+  position: absolute;
+  top: -0.7rem;
+  left: 50%;
+  z-index: 1;
+  width: 7rem;
+  height: 1.4rem;
+  background: var(--paper-tape);
+  transform: translateX(-50%) rotate(-2deg);
+  pointer-events: none;
+}
+
+.lab-trl { max-width: 60rem; margin: 0 auto; }
+
+.lab-trl__line {
+  display: grid;
+  grid-template-columns: minmax(8rem, 11rem) minmax(0, 1fr);
+  column-gap: 1.25rem;
+  align-items: center;
+}
+
+/* Trilha de 9 colunas com um filete vertical por nível. */
+.lab-trl__track {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  background: linear-gradient(to right, var(--lab-hair) 1px, transparent 1px) 0 0 / calc(100% / 9) 100%;
+  border-right: 1px solid var(--lab-hair);
+}
+
+.lab-trl__track--phases { background: none; border-right: none; gap: 3px; }
+
+.lab-trl__phase {
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.5rem 0.5rem 0 0;
+  background: color-mix(in srgb, var(--cp2b-lima) 12%, white);
+}
+
+.lab-trl__phase:nth-child(2) { background: color-mix(in srgb, var(--cp2b-verde) 12%, white); }
+.lab-trl__phase:nth-child(3) { background: var(--paper-soft); }
+
+.lab-trl__phase-range {
+  display: block;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--cp2b-verde);
+}
+
+.lab-trl__phase:nth-child(3) .lab-trl__phase-range { color: var(--gray-500); }
+.lab-trl__phase-name { display: block; margin-top: 0.1rem; font-size: 0.78rem; font-weight: 600; line-height: 1.3; color: var(--lab-ink); }
+.lab-trl__phase:nth-child(3) .lab-trl__phase-name { color: var(--text-secondary); }
+
+.lab-trl__line--nums { border-bottom: 1px solid var(--lab-hair); }
+
+.lab-trl__num {
+  padding: 0.45rem 0;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 1.05rem;
+  font-weight: 300;
+  font-variant-numeric: tabular-nums;
+  color: var(--gray-500);
+}
+
+.lab-trl__row {
+  width: 100%;
+  padding: 0;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--lab-hair);
+  text-align: left;
+  color: inherit;
+  cursor: pointer;
+}
+
+.lab-trl__row .lab-trl__label { padding: 0.8rem 0; }
+.lab-trl__row .lab-trl__track { align-self: stretch; align-items: center; padding: 0.55rem 0; }
+
+.lab-trl__acr {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--lab-ink);
+}
+
+.lab-trl__inst { display: block; font-size: 0.74rem; color: var(--text-secondary); }
+
+.lab-trl__bar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 1.9rem;
+  margin: 0 4px;
+  background: color-mix(in srgb, var(--cp2b-verde) 15%, white);
+  border: 1px solid color-mix(in srgb, var(--cp2b-verde) 45%, white);
+  border-radius: var(--radius-full);
+}
+
+
+.lab-trl__focus {
+  position: absolute;
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--lab-ink);
+  box-shadow: 0 0 0 3px var(--bg-surface), 0 0 0 5px color-mix(in srgb, var(--cp2b-lima) 70%, transparent);
+}
+
+.lab-trl__row:hover { background: var(--lab-tint); }
+.lab-trl__row:hover .lab-trl__bar,
+.lab-trl__row.is-active .lab-trl__bar {
+  background: color-mix(in srgb, var(--cp2b-verde) 26%, white);
+  border-color: var(--lab-ink);
+}
+
+.lab-trl__row.is-active .lab-trl__acr { color: var(--cp2b-verde); }
+.lab-trl__row:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--radius-sm); }
+
+.lab-trl__legend {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1.25rem;
+  margin-top: 0.9rem;
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+}
+
+.lab-trl__legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
+.lab-trl__key { display: inline-block; }
+
+.lab-trl__key--range {
+  width: 1.5rem;
+  height: 0.7rem;
+  border-radius: var(--radius-full);
+  background: color-mix(in srgb, var(--cp2b-verde) 15%, white);
+  border: 1px solid color-mix(in srgb, var(--cp2b-verde) 45%, white);
+}
+
+.lab-trl__key--focus { width: 10px; height: 10px; border-radius: 50%; background: var(--lab-ink); }
+
+/* ---------- seletor dos laboratórios ---------- */
+.lab-rail {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.35rem;
+}
+
+.lab-rail__tab {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  min-width: 0;
+  padding: 0.8rem 0.7rem 0.85rem;
+  background: transparent;
+  border: none;
+  border-top: 2px solid var(--gray-200);
+  text-align: left;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.lab-rail__acr { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--gray-500); }
+.lab-rail__meta { font-size: 0.75rem; }
+
+.lab-rail__tab:hover { border-top-color: var(--cp2b-lima); }
+.lab-rail__tab:hover .lab-rail__acr { color: var(--cp2b-verde); }
+.lab-rail__tab.is-active { border-top: 3px solid var(--lab-ink); padding-top: calc(0.8rem - 1px); color: var(--lab-ink); }
+.lab-rail__tab.is-active .lab-rail__acr { color: var(--lab-ink); }
+.lab-rail__tab:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+/* ---------- painel ---------- */
+.lab-panel {
+  display: grid;
+  grid-template-columns: minmax(17rem, 22rem) minmax(0, 1fr);
+  margin-top: 0.85rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 24px 50px -34px rgb(30 62 76 / .35);
+  overflow: hidden;
+}
+
+.lab-aside {
+  padding: var(--lab-pad);
+  background:
+    radial-gradient(28rem 16rem at 0% 0%, color-mix(in srgb, var(--cp2b-lima) 11%, transparent), transparent 70%),
+    var(--lab-tint);
+  border-right: 1px solid var(--lab-hair);
+}
+
+.lab-aside__acr {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--lab-ink);
+  margin: 0.3rem 0 0;
+}
+
+.lab-aside__name { margin: 0.3rem 0 0; font-size: 0.92rem; color: var(--text-secondary); }
+
+.lab-facts { margin: 1.1rem 0 0; }
+.lab-facts > div { padding: 0.75rem 0; border-top: 1px solid var(--lab-hair); }
+.lab-facts dd { margin: 0.35rem 0 0; font-size: 0.88rem; line-height: 1.5; color: var(--text-primary); }
+
+.lab-chips { display: inline-flex; flex-wrap: wrap; gap: 0.35rem; }
+
+.lab-chip {
+  display: inline-flex;
+  padding: 0.2rem 0.65rem;
+  border: 1px solid var(--lab-hair);
+  border-radius: var(--radius-full);
+  background: var(--bg-surface);
+  font-size: 0.76rem;
+  font-weight: 600;
+  color: var(--lab-ink);
+  text-decoration: none;
+}
+
+.lab-chip:hover { background: var(--lab-ink); border-color: var(--lab-ink); color: #fff; }
+
+.lab-meter__cells { display: grid; grid-template-columns: repeat(9, minmax(0, 1.6rem)); gap: 3px; }
+
+.lab-meter__cell {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: var(--paper-soft);
+  font-size: 0.66rem;
+  font-weight: 600;
+  color: var(--gray-400);
+}
+
+.lab-meter__cell.is-on { background: color-mix(in srgb, var(--cp2b-verde) 22%, white); color: var(--lab-ink); }
+.lab-meter__cell.is-focus { background: var(--lab-ink); color: #fff; }
+.lab-meter__caption { display: block; margin-top: 0.4rem; font-size: 0.76rem; color: var(--text-secondary); }
+
+.lab-equip { display: flex; flex-wrap: wrap; gap: 0.35rem; list-style: none; margin: 0; padding: 0; }
+
+.lab-equip li {
+  padding: 0.25rem 0.6rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  font-size: 0.78rem;
+}
+
+.lab-services-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background: var(--bg-surface);
+  border: 1px solid var(--lab-ink);
+  border-radius: var(--radius-full);
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--lab-ink);
+  cursor: pointer;
+}
+
+.lab-services-link:hover { background: var(--lab-ink); color: #fff; }
+
+.lab-main { min-width: 0; padding: var(--lab-pad); }
+
+.lab-seg {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  background: var(--paper-soft);
+  border-radius: 0.75rem;
+}
+
+.lab-seg__btn {
+  min-width: 0;
+  padding: 0.55rem 0.5rem;
+  background: transparent;
+  border: none;
+  border-radius: 0.55rem;
+  font-size: 0.86rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.lab-seg__btn:hover { color: var(--text-primary); }
+
+.lab-seg__btn.is-active {
+  background: var(--bg-surface);
+  color: var(--lab-ink);
+  box-shadow: 0 1px 3px rgb(0 0 0 / .08), 0 0 0 1px var(--lab-hair);
+}
+
+.lab-seg__btn:focus-visible { outline: none; box-shadow: var(--focus-ring); }
+
+.lab-note { margin: 0.75rem 0 0; font-size: 0.78rem; color: var(--text-secondary); }
+.lab-note i { color: var(--cp2b-verde); margin-right: 0.2rem; }
+
+.lab-tab { margin-top: 1.35rem; }
+.lab-tab > .lab-kicker { margin-bottom: 0.6rem; }
+
+.lab-lead { margin: 0 0 0.8rem; font-size: 0.98rem; line-height: 1.65; color: var(--gray-700); max-width: 70ch; }
+.lab-text { margin: 0 0 0.8rem; font-size: 0.9rem; line-height: 1.65; color: var(--text-secondary); max-width: 70ch; }
+
+.lab-text.is-clamped {
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.lab-kicker--sep { margin: 1.5rem 0 0.8rem; }
+
+/* Lista numerada em colunas: critérios de competência e papel estratégico. */
+.lab-criteria {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 13.5rem), 1fr));
+  gap: 1.25rem;
+  list-style: none;
+  margin: 0.5rem 0 0;
+  padding: 0;
+}
+
+.lab-criteria li { padding-top: 0.85rem; border-top: 1px solid var(--lab-hair); }
+
+.lab-criteria__num {
+  font-family: var(--font-sans);
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--cp2b-verde);
+}
+
+.lab-criteria h4 { margin: 0.45rem 0 0.35rem; font-size: 0.93rem; font-weight: 700; line-height: 1.3; color: var(--lab-ink); }
+.lab-criteria p { margin: 0; font-size: 0.85rem; line-height: 1.6; color: var(--text-secondary); }
+
+/* Justificativa por nível de TRL. */
+.lab-levels { list-style: none; margin: 0; padding: 0; }
+
+.lab-levels li {
+  display: grid;
+  grid-template-columns: 4rem minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--lab-hair);
+}
+
+.lab-levels__num {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-sans);
+  font-size: 2.1rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--gray-400);
+}
+
+.lab-levels__num span { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; margin-bottom: 0.2rem; }
+.lab-levels li.is-focus .lab-levels__num { color: var(--lab-ink); }
+
+.lab-levels h4 { margin: 0 0 0.35rem; font-size: 0.95rem; font-weight: 700; color: var(--lab-ink); }
+.lab-levels p { margin: 0; font-size: 0.87rem; line-height: 1.6; color: var(--text-secondary); }
+
+.lab-levels__focus {
+  display: inline-block;
+  margin-left: 0.5rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: var(--radius-full);
+  background: var(--lab-ink);
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  vertical-align: 0.15em;
+  color: #fff;
+}
+
+#laboratorios,
+#servicos { scroll-margin-top: 6rem; }
+
+/* O catálogo recebe o foco quando um botão "Ver os N serviços" leva até ele;
+   é destino de navegação, não controle, e dispensa o contorno. */
+#servicos:focus { outline: none; }
+
+/* ---------- tablet ---------- */
+@media (max-width: 991.98px) {
+  .lab-panel { grid-template-columns: minmax(0, 1fr); }
+  .lab-aside { border-right: none; border-bottom: 1px solid var(--lab-hair); }
+}
+
+/* ---------- mobile ---------- */
+@media (max-width: 575.98px) {
+  /* Como em /eixos: no celular a régua deixa de ser painel sobre o hero e
+     vira seção comum, com cabeçalho à esquerda. */
+  .lab-map {
+    margin-top: 1.75rem;
+    padding: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
+  }
+
+  .lab-map::before { display: none; }
+  .lab-map .lab-head { text-align: left; margin: 0 0 1.25rem; }
+
+  .lab-trl__line { grid-template-columns: minmax(0, 1fr); row-gap: 0.25rem; }
+  .lab-trl__line--head .lab-trl__label,
+  .lab-trl__line--nums .lab-trl__label { display: none; }
+  .lab-trl__phase { padding: 0.4rem 0.45rem; }
+  .lab-trl__phase-name { display: none; }
+  .lab-trl__phase-range { font-size: 0.625rem; letter-spacing: 0.06em; }
+  .lab-trl__row .lab-trl__label { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.7rem 0 0; }
+  .lab-trl__row .lab-trl__track { padding: 0.4rem 0 0.7rem; }
+  .lab-trl__bar { height: 1.5rem; margin: 0 2px; }
+  .lab-trl__legend { justify-content: flex-start; }
+
+  .lab-rail__tab {
+    align-items: center;
+    padding: 0.55rem 0.25rem;
+    border: 1px solid var(--border-default);
+    border-radius: var(--radius-md);
+    background: var(--bg-surface);
+    text-align: center;
+  }
+
+  .lab-rail__tab.is-active { padding-top: 0.55rem; border: 1px solid var(--lab-ink); background: var(--lab-ink); }
+  .lab-rail__tab.is-active .lab-rail__acr,
+  .lab-rail__tab.is-active .lab-rail__meta { color: #fff; }
+  .lab-rail__acr { font-size: 0.95rem; }
+  .lab-rail__meta { font-size: 0.68rem; }
+  .lab-rail__inst { display: none; }
+
+  .lab-aside__acr { font-size: 1.7rem; }
+  .lab-seg__btn { font-size: 0.76rem; padding: 0.5rem 0.25rem; }
+
+  .lab-levels li { grid-template-columns: 3rem minmax(0, 1fr); gap: 0.75rem; }
+  .lab-levels__num { font-size: 1.7rem; }
+}
+
+/* Até ~420px as três abas não cabem inteiras numa linha: "Competência"
+   virava "Competê…" e "Papel estratégico", "Papel estr…". O rótulo passa a
+   quebrar em duas linhas, sem reticências. */
+@media (max-width: 419.98px) {
+  .lab-seg__btn { white-space: normal; text-overflow: clip; line-height: 1.2; font-size: 0.72rem; padding: 0.45rem 0.15rem; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .lab-trl__row,
+  .lab-trl__bar,
+  .lab-rail__tab,
+  .lab-seg__btn,
+  .lab-chip,
+  .lab-services-link {
+    transition: background var(--duration-base) var(--ease-standard),
+      border-color var(--duration-base) var(--ease-standard),
+      color var(--duration-base) var(--ease-standard),
+      box-shadow var(--duration-base) var(--ease-standard);
+  }
+}
+
+/* ---------- Movimento de entrada da régua ----------
+   Mesmo esquema de /publicacoes e /sobre/indicadores: data-reveal vem do
+   useScrollReveal, "armed" segura a pose inicial e "shown" roda os keyframes
+   uma vez. Eles preenchem só para trás (backwards): terminada a entrada,
+   valem as regras normais e o hover das linhas. Sem layout ou com movimento
+   reduzido o atributo nem aparece e a régua já está pronta.
+   Ordem: as fases e os números surgem, cada barra cresce da própria ponta
+   esquerda até ocupar a sua faixa, um laboratório depois do outro, e o
+   marcador de foco aparece por último, com um pequeno salto. */
+
+.lab-trl__bar { transform-origin: left center; }
+
+.lab-map[data-reveal="armed"] .lab-trl__phase,
+.lab-map[data-reveal="armed"] .lab-trl__line--nums,
+.lab-map[data-reveal="armed"] .lab-trl__bar,
+.lab-map[data-reveal="armed"] .lab-trl__focus { opacity: 0; }
+
+.lab-map[data-reveal="shown"] .lab-trl__phase {
+  animation: lab-fade 0.6s ease-out backwards;
+  animation-delay: calc(var(--i, 0) * 0.1s);
+}
+
+.lab-map[data-reveal="shown"] .lab-trl__line--nums { animation: lab-fade 0.6s ease-out 0.2s backwards; }
+
+/* --i vem da linha do laboratório e é herdado pela barra e pelo marcador. */
+.lab-map[data-reveal="shown"] .lab-trl__bar {
+  animation: lab-grow 0.8s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+  animation-delay: calc(0.35s + var(--i, 0) * 0.22s);
+}
+
+/* O marcador se centra com "translate"; o salto usa "transform", que se
+   soma a ele sem tirá-lo do lugar. */
+.lab-map[data-reveal="shown"] .lab-trl__focus {
+  animation: lab-pop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) backwards;
+  animation-delay: calc(1.05s + var(--i, 0) * 0.22s);
+}
+
+@keyframes lab-fade { from { opacity: 0; } }
+@keyframes lab-grow { from { transform: scaleX(0); } }
+@keyframes lab-pop { from { opacity: 0; transform: scale(0.3); } }
