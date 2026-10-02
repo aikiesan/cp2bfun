@@ -139,7 +139,7 @@ const Header = () => {
                   target = '_blank'
                   rel = 'noopener noreferrer'
                   className = "text-muted social-icon-top"
-                  arial-label = "Spotify"
+                  aria-label = "Spotify"
                 >
                   <FaSpotify size = {14}/>
                 </a>
