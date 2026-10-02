@@ -31,6 +31,7 @@ import authRoutes from './routes/auth.js';
 import { adminGate, adminLocked, authEnabled, PUBLIC_WRITES } from './middleware/auth.js';
 import { applyTrustProxy } from './middleware/trustProxy.js';
 import { initializeDatabase } from './db/init.js';
+import { startNewsletterReportScheduler } from './jobs/newsletterReport.js';
 
 dotenv.config();
 
@@ -137,9 +138,11 @@ async function startServer() {
     }
   }
 
-  return app.listen(PORT, () => {
+  const server = app.listen(PORT, () => {
     console.log(`CP2b Backend running on port ${PORT}`);
   });
+  startNewsletterReportScheduler();
+  return server;
 }
 
 startServer();

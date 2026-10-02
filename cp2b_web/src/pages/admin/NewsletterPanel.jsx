@@ -13,6 +13,7 @@ const NewsletterPanel = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
   const [alert, setAlert] = useState(null);
+  const [sendingReport, setSendingReport] = useState(false);
 
   const fetchSubscribers = async () => {
     try {
@@ -55,6 +56,19 @@ const NewsletterPanel = () => {
     }
   };
 
+  // A mesma planilha que sai sozinha toda segunda às 08h30 (backend/src/jobs/newsletterReport.js).
+  const handleSendReport = async () => {
+    setSendingReport(true);
+    try {
+      const res = await api.post('/newsletter/report');
+      setAlert({ variant: 'success', msg: res.data.message });
+    } catch (err) {
+      setAlert({ variant: 'danger', msg: err.response?.data?.error || 'Erro ao enviar a planilha.' });
+    } finally {
+      setSendingReport(false);
+    }
+  };
+
   const activeCount = subscribers.filter(s => s.active).length;
 
   return (
@@ -76,6 +90,16 @@ const NewsletterPanel = () => {
       <Tabs defaultActiveKey="subscribers" className="mb-4">
         {/* — Subscribers tab — */}
         <Tab eventKey="subscribers" title={<><i className="bi bi-people me-2"></i>Inscritos</>}>
+          <div className="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+            <p className="text-muted small mb-0">
+              <i className="bi bi-calendar-week me-1"></i>
+              Toda segunda-feira, às 08h30, a lista completa vai em planilha (.xlsx) para o e-mail do marketing.
+            </p>
+            <Button variant="outline-primary" size="sm" onClick={handleSendReport} disabled={sendingReport}>
+              <i className="bi bi-file-earmark-spreadsheet me-1"></i>
+              {sendingReport ? 'Enviando...' : 'Enviar planilha agora'}
+            </Button>
+          </div>
           <Card>
             <Card.Body className="p-0">
               {loading ? (

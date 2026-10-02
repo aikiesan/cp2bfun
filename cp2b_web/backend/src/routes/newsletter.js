@@ -2,6 +2,7 @@ import { Router } from 'express';
 import pool from '../db/connection.js';
 import { sendNewsletterConfirmation, sendNewsletterBroadcast } from '../services/email.js';
 import { requireAdmin } from '../middleware/auth.js';
+import { sendWeeklyReport } from '../jobs/newsletterReport.js';
 
 const router = Router();
 
@@ -123,6 +124,18 @@ router.post('/send', async (req, res) => {
   } catch (error) {
     console.error('Error sending newsletter:', error);
     res.status(500).json({ error: 'Erro ao enviar newsletter.' });
+  }
+});
+
+// POST /api/newsletter/report — admin
+// Envia agora a planilha do relatório semanal (o mesmo das segundas, 08h30).
+router.post('/report', requireAdmin, async (req, res) => {
+  try {
+    const result = await sendWeeklyReport();
+    res.json({ message: `Planilha enviada para ${result.to}.`, to: result.to, total: result.counts.total });
+  } catch (error) {
+    console.error('Error sending newsletter report:', error);
+    res.status(500).json({ error: 'Erro ao enviar a planilha. Verifique a configuração de e-mail (SMTP) do servidor.' });
   }
 });
 
