@@ -7,7 +7,7 @@ import { fetchVideos, deleteVideo } from '../../services/api';
 
 const VideosList = () => {
   const navigate = useNavigate();
-  const { showToast } = useToast();
+  const { success, error: showError } = useToast();
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -42,10 +42,10 @@ const VideosList = () => {
 
     try {
       await deleteVideo(videoToDelete.id);
-      showToast('Vídeo excluído com sucesso!', 'success');
+      success('Vídeo excluído com sucesso!');
       loadVideos(); // Reload list
     } catch (err) {
-      showToast('Erro ao excluir vídeo', 'error');
+      showError('Erro ao excluir vídeo');
       console.error(err);
     } finally {
       setShowDeleteDialog(false);

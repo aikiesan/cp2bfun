@@ -9,7 +9,7 @@ const PageStatusManager = () => {
   const [error, setError] = useState(false);
   const [confirmModal, setConfirmModal] = useState({ show: false, page: null, newStatus: null });
   const [saving, setSaving] = useState(false);
-  const { showToast } = useToast();
+  const { success, warning, error: showError } = useToast();
 
   const fetchPages = async () => {
     try {
@@ -19,7 +19,7 @@ const PageStatusManager = () => {
       setPages(data);
     } catch {
       setError(true);
-      showToast('Erro ao carregar status das páginas', 'danger');
+      showError('Erro ao carregar status das páginas');
     } finally {
       setLoading(false);
     }
@@ -48,14 +48,10 @@ const PageStatusManager = () => {
         body: { is_enabled: newStatus },
       });
       setPages(prev => prev.map(p => p.page_key === page.page_key ? data : p));
-      showToast(
-        newStatus
-          ? `"${page.label}" ativada com sucesso`
-          : `"${page.label}" colocada em manutenção`,
-        newStatus ? 'success' : 'warning'
-      );
+      if (newStatus) success(`"${page.label}" ativada com sucesso`);
+      else warning(`"${page.label}" colocada em manutenção`);
     } catch {
-      showToast('Erro ao atualizar status da página', 'danger');
+      showError('Erro ao atualizar status da página');
     } finally {
       setSaving(false);
       setConfirmModal({ show: false, page: null, newStatus: null });

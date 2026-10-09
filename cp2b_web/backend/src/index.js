@@ -28,7 +28,7 @@ import boletinsRoutes from './routes/boletins.js';
 import pageSettingsRoutes from './routes/pageSettings.js';
 import settingsRoutes from './routes/settings.js';
 import authRoutes from './routes/auth.js';
-import { adminGate, adminLocked, authEnabled, PUBLIC_WRITES } from './middleware/auth.js';
+import { adminGate, adminLocked, authEnabled, isAdminRequest, PUBLIC_WRITES } from './middleware/auth.js';
 import { applyTrustProxy } from './middleware/trustProxy.js';
 import { initializeDatabase } from './db/init.js';
 import { startNewsletterReportScheduler } from './jobs/newsletterReport.js';
@@ -52,7 +52,14 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:5173',
   credentials: true
 }));
-app.use(express.json());
+// Corpo JSON. O padrão do Express é 100 KB, e o HTML que sai do editor de
+// texto do painel passa disso com folga — basta uma imagem colada no texto,
+// que o Quill guarda em base64. A notícia voltava 500 "Something went wrong!"
+// e o editor perdia o envio. O limite maior vale só para quem pode editar: as
+// rotas públicas de escrita (contato, newsletter) seguem com os 100 KB.
+const adminJson = express.json({ limit: '25mb' });
+const publicJson = express.json();
+app.use((req, res, next) => (isAdminRequest(req) ? adminJson : publicJson)(req, res, next));
 app.use('/uploads', express.static('uploads'));
 
 // Rate-limit the handful of routes an unauthenticated visitor can write to
@@ -115,6 +122,17 @@ app.get('/api/health', (req, res) => {
 
 // Error handling
 app.use((err, req, res, next) => {
+  // Corpo grande demais ou JSON malformado é erro do pedido, não do servidor:
+  // devolve o motivo para o painel mostrar a quem está editando.
+  if (err.type === 'entity.too.large') {
+    return res.status(413).json({
+      error: 'O conteúdo é grande demais para salvar. Se houver imagens coladas no texto, '
+        + 'remova-as e insira-as pelo botão de imagem do editor.',
+    });
+  }
+  if (err.type === 'entity.parse.failed') {
+    return res.status(400).json({ error: 'Requisição inválida: o corpo não é um JSON válido.' });
+  }
   console.error(err.stack);
   res.status(500).json({ error: 'Something went wrong!' });
 });

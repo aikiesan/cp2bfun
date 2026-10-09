@@ -53,6 +53,7 @@ const PressKitAdmin = () => {
   const openNew = () => {
     setEditingItem(null);
     setForm(EMPTY_FORM);
+    setError(null);
     setShowModal(true);
   };
 
@@ -67,6 +68,7 @@ const PressKitAdmin = () => {
       sort_order: item.sort_order ?? 0,
       active: item.active !== false,
     });
+    setError(null);
     setShowModal(true);
   };
 
@@ -81,7 +83,7 @@ const PressKitAdmin = () => {
       const res = await api.post('/upload/file', formData);
       setForm(prev => ({ ...prev, file_url: res.data.url }));
     } catch (err) {
-      setError('Erro ao fazer upload do arquivo');
+      setError(`Erro ao fazer upload do arquivo: ${err.message}`);
       console.error(err);
     } finally {
       setUploading(false);
@@ -105,7 +107,7 @@ const PressKitAdmin = () => {
       }
       setShowModal(false);
     } catch (err) {
-      setError('Erro ao salvar item');
+      setError(`Erro ao salvar item: ${err.message}`);
       console.error(err);
     } finally {
       setSaving(false);
@@ -143,7 +145,7 @@ const PressKitAdmin = () => {
         </Button>
       </div>
 
-      {error && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
+      {error && !showModal && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
 
       {items.length === 0 ? (
         <Alert variant="info">Nenhum item cadastrado no press kit.</Alert>
@@ -203,6 +205,10 @@ const PressKitAdmin = () => {
           <Modal.Title>{editingItem ? 'Editar Item' : 'Novo Item'}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {/* O alerta da página fica atrás do fundo do diálogo: sem este, um
+              upload recusado ou um campo obrigatório vazio pareciam não fazer
+              nada. */}
+          {error && <Alert variant="danger" dismissible onClose={() => setError(null)}>{error}</Alert>}
           <Row className="g-3">
             <Col md={6}>
               <Form.Group>

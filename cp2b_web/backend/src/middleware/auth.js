@@ -74,7 +74,7 @@ const ADMIN_READS = [
   /^\/contact\/?$/i,
   /^\/participants(\/|$)/i,
   /^\/meetup-requests\/(all|my)/i,
-  /^\/(boletins|podcast|press-kit)\/all/i,
+  /^\/(boletins|podcast|press-kit|partners)\/all/i,
   /^\/videos\/?$/i,
 ];
 
@@ -111,10 +111,16 @@ export function adminGate(req, res, next) {
 }
 
 /**
+ * O pedido vem de quem pode editar o site: login válido, ou painel aberto em
+ * desenvolvimento (sem ADMIN_PASSWORD e fora de produção).
+ */
+export const isAdminRequest = (req) => !adminLocked() && (!authEnabled() || hasValidToken(req));
+
+/**
  * Para montar na própria rota: exige login sem depender de lista de caminhos.
  */
 export function requireAdmin(req, res, next) {
   if (adminLocked()) return locked(res);
-  if (!authEnabled() || hasValidToken(req)) return next();
+  if (isAdminRequest(req)) return next();
   return res.status(401).json({ error: 'Authentication required' });
 }

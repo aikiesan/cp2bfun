@@ -5,8 +5,11 @@ import { adminLogin } from '../../services/api';
 /**
  * Full-screen login gate shown when the backend requires authentication
  * (ADMIN_PASSWORD set) and this browser has no valid token yet.
+ *
+ * `embedded` renders only the form, for the dialog AdminLayout opens when the
+ * session expires in the middle of an edit.
  */
-const AdminLogin = ({ onSuccess }) => {
+const AdminLogin = ({ onSuccess, embedded = false }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const [submitting, setSubmitting] = useState(false);
@@ -24,6 +27,32 @@ const AdminLogin = ({ onSuccess }) => {
       setSubmitting(false);
     }
   };
+
+  const form = (
+    <>
+      {error && <Alert variant="danger">{error}</Alert>}
+
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3" controlId="admin-password">
+          <Form.Label>Senha</Form.Label>
+          <Form.Control
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            autoFocus
+            required
+            autoComplete="current-password"
+          />
+        </Form.Group>
+        <Button type="submit" variant="primary" className="w-100" disabled={submitting || !password}>
+          {submitting ? <Spinner size="sm" animation="border" className="me-2" /> : <i className="bi bi-unlock me-2"></i>}
+          Entrar
+        </Button>
+      </Form>
+    </>
+  );
+
+  if (embedded) return form;
 
   return (
     <div
@@ -43,25 +72,7 @@ const AdminLogin = ({ onSuccess }) => {
             <p className="text-muted small mb-0">Digite a senha de administração para continuar.</p>
           </div>
 
-          {error && <Alert variant="danger">{error}</Alert>}
-
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="admin-password">
-              <Form.Label>Senha</Form.Label>
-              <Form.Control
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                autoFocus
-                required
-                autoComplete="current-password"
-              />
-            </Form.Group>
-            <Button type="submit" variant="primary" className="w-100" disabled={submitting || !password}>
-              {submitting ? <Spinner size="sm" animation="border" className="me-2" /> : <i className="bi bi-unlock me-2"></i>}
-              Entrar
-            </Button>
-          </Form>
+          {form}
 
           <p className="text-muted text-center mt-4 mb-0" style={{ fontSize: '0.78rem' }}>
             Esqueceu a senha? Ela é definida pela variável <code>ADMIN_PASSWORD</code> no

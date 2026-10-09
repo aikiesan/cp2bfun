@@ -52,12 +52,22 @@ const GalleryUpload = () => {
     setIsCompressing(true);
     setProgress({ current: 0, total: rawFiles.length });
     const compressed = [];
-    for (let i = 0; i < rawFiles.length; i++) {
-      const result = await imageCompression(rawFiles[i], options);
-      compressed.push(result);
-      setProgress({ current: i + 1, total: rawFiles.length });
+    // finally: se uma foto falha (um .heic no Chrome, por exemplo), a barra
+    // "Preparando imagens" não pode ficar presa na tela.
+    try {
+      for (let i = 0; i < rawFiles.length; i++) {
+        let result;
+        try {
+          result = await imageCompression(rawFiles[i], options);
+        } catch {
+          throw new Error(`Não foi possível processar "${rawFiles[i].name}". Use JPG, PNG, GIF ou WebP.`);
+        }
+        compressed.push(result);
+        setProgress({ current: i + 1, total: rawFiles.length });
+      }
+    } finally {
+      setIsCompressing(false);
     }
-    setIsCompressing(false);
     return compressed;
   };
 
@@ -106,7 +116,9 @@ const GalleryUpload = () => {
       setProgress({ current: 0, total: 0 });
     } catch (err) {
       console.error('Erro ao enviar fotos:', err);
-      error('Ocorreu um erro ao enviar o álbum. Tente novamente.');
+      // A mensagem do servidor diz o motivo (limite de fotos, 10 MB por
+      // arquivo, espaço da galeria); a genérica escondia isso.
+      error(`Não foi possível enviar o álbum: ${err.message}`);
     } finally {
       setIsSubmitting(false);
     }

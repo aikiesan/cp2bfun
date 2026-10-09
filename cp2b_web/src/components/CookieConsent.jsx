@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import api from '../services/api';
 
@@ -41,11 +42,15 @@ const CookieConsent = () => {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
 
+  const { pathname } = useLocation();
+
   useEffect(() => {
     if (!localStorage.getItem(STORAGE_KEY)) setVisible(true);
   }, []);
 
-  if (!visible) return null;
+  // O painel não é parte do site público: lá a faixa só cobria o formulário
+  // de edição (como o SocialSidebar, ela fica fora de /admin).
+  if (!visible || pathname.startsWith('/admin')) return null;
 
   const save = async (consent) => {
     const payload = { consent, timestamp: new Date().toISOString() };

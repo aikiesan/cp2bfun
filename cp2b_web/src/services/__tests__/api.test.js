@@ -194,4 +194,54 @@ describe('ApiClient', () => {
       await expect(api.get('/broken')).rejects.toThrow('Request failed');
     });
   });
+
+  // ── Admin token ──────────────────────────────────────────────────────────────
+
+  describe('admin token', () => {
+    afterEach(() => localStorage.removeItem('cp2b_admin_token'));
+
+    // Regressão: o upload de imagem passava `headers: {}`, que substituía o
+    // objeto de headers inteiro e levava junto o Authorization. Sem token o
+    // servidor respondia 401 e o painel deslogava no meio da edição.
+    it('keeps Authorization when the caller passes its own headers', async () => {
+      localStorage.setItem('cp2b_admin_token', 'tok-123');
+      const fetchMock = vi.fn().mockResolvedValue(makeFetchResponse());
+      vi.stubGlobal('fetch', fetchMock);
+
+      await api.request('/upload/image', { method: 'POST', body: new FormData(), headers: {} });
+
+      const [, options] = fetchMock.mock.calls[0];
+      expect(options.headers.Authorization).toBe('Bearer tok-123');
+      expect(options.headers['Content-Type']).toBeUndefined();
+      expect(options.method).toBe('POST');
+    });
+
+    it('sends Authorization on FormData uploads made with post()', async () => {
+      localStorage.setItem('cp2b_admin_token', 'tok-123');
+      const fetchMock = vi.fn().mockResolvedValue(makeFetchResponse());
+      vi.stubGlobal('fetch', fetchMock);
+
+      await api.post('/upload/news-image', new FormData());
+
+      const [, options] = fetchMock.mock.calls[0];
+      expect(options.headers.Authorization).toBe('Bearer tok-123');
+    });
+  });
+
+  // ── PATCH ────────────────────────────────────────────────────────────────────
+
+  describe('patch()', () => {
+    it('calls fetch with PATCH method and serialized body', async () => {
+      const fetchMock = vi.fn().mockResolvedValue(makeFetchResponse({ body: { id: 2 } }));
+      vi.stubGlobal('fetch', fetchMock);
+
+      const { data } = await api.patch('/gallery/2', { caption: 'Legenda' });
+
+      const [url, options] = fetchMock.mock.calls[0];
+      expect(url).toContain('/gallery/2');
+      expect(options.method).toBe('PATCH');
+      expect(options.body).toBe(JSON.stringify({ caption: 'Legenda' }));
+      expect(data).toEqual({ id: 2 });
+    });
+  });
 });

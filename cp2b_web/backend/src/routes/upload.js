@@ -43,7 +43,21 @@ const fileFilter = (req, file, cb) => {
   if (extname && mimetype) {
     return cb(null, true);
   }
-  cb(new Error('Only image files are allowed'));
+  cb(new Error('Formato não aceito. Use JPG, PNG, GIF ou WebP.'));
+};
+
+// Erro do multer (arquivo grande demais, formato recusado) vira 400 com o
+// motivo, como já faz a galeria. Sem isto ele seguia para o handler global do
+// index.js, que responde 500 genérico — o painel não tinha como dizer ao
+// editor que a foto passava do limite.
+const withUploadErrors = (middleware, maxMb) => (req, res, next) => {
+  middleware(req, res, (err) => {
+    if (!err) return next();
+    if (err.code === 'LIMIT_FILE_SIZE') {
+      return res.status(400).json({ error: `Arquivo grande demais: o limite é ${maxMb} MB.` });
+    }
+    return res.status(400).json({ error: err.message || 'Falha ao processar o arquivo.' });
+  });
 };
 
 const upload = multer({
@@ -70,7 +84,7 @@ const newsImageUpload = multer({
 });
 
 // Upload single image
-router.post('/image', upload.single('image'), (req, res) => {
+router.post('/image', withUploadErrors(upload.single('image'), 5), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
@@ -80,7 +94,7 @@ router.post('/image', upload.single('image'), (req, res) => {
 });
 
 // Upload news image (for rich text editor)
-router.post('/news-image', newsImageUpload.single('image'), (req, res) => {
+router.post('/news-image', withUploadErrors(newsImageUpload.single('image'), 10), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }
@@ -94,7 +108,7 @@ const pressKitFileFilter = (req, file, cb) => {
   // Sem âncoras, .docm e .pptm (com macros) passavam por conter "doc" e "ppt".
   const extname = /^\.(pdf|zip|pptx?|docx?)$/.test(path.extname(file.originalname).toLowerCase());
   if (extname) return cb(null, true);
-  cb(new Error('Only document files are allowed (PDF, ZIP, PPTX, DOCX)'));
+  cb(new Error('Formato não aceito. Use PDF, ZIP, PPT, PPTX, DOC ou DOCX.'));
 };
 
 const pressKitStorage = multer.diskStorage({
@@ -111,7 +125,7 @@ const pressKitUpload = multer({
   limits: { fileSize: 50 * 1024 * 1024 }, // 50MB
 });
 
-router.post('/file', pressKitUpload.single('file'), (req, res) => {
+router.post('/file', withUploadErrors(pressKitUpload.single('file'), 50), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: 'No file uploaded' });
   }

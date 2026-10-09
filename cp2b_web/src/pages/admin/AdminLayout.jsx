@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Nav, Badge, Collapse, Offcanvas } from 'react-bootstrap';
+import { Nav, Badge, Collapse, Offcanvas, Modal } from 'react-bootstrap';
 import api, { adminAuth, fetchAuthStatus } from '../../services/api';
 import { ToastProvider } from '../../components/admin';
 import Breadcrumbs from '../../components/admin/Breadcrumbs';
@@ -10,6 +10,11 @@ const AdminLayout = () => {
   // null = checking; afterwards mirrors GET /api/auth/status
   const [authRequired, setAuthRequired] = useState(null);
   const [authed, setAuthed] = useState(() => Boolean(adminAuth.getToken()));
+  // A sessão caiu com o painel aberto (token vencido, senha trocada no
+  // servidor). O login abre num diálogo por cima da página, em vez de
+  // substituí-la: um formulário de notícia preenchido continua montado e
+  // pode ser salvo depois de entrar de novo.
+  const [sessionExpired, setSessionExpired] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [newsCount, setNewsCount] = useState(0);
   const [participantCount, setParticipantCount] = useState(0);
@@ -46,6 +51,7 @@ const AdminLayout = () => {
     const onUnauthorized = () => {
       adminAuth.clearToken();
       setAuthed(false);
+      setSessionExpired(true);
     };
     window.addEventListener('cp2b-admin-unauthorized', onUnauthorized);
     return () => window.removeEventListener('cp2b-admin-unauthorized', onUnauthorized);
@@ -53,11 +59,16 @@ const AdminLayout = () => {
 
   const handleLogout = () => {
     adminAuth.clearToken();
+    setSessionExpired(false);
     setAuthed(false);
   };
 
-  // Fetch counts for badges
+  // Fetch counts for badges — só depois do login. Antes disso as chamadas
+  // voltavam 401 ainda na tela de senha, e os contadores só apareciam no
+  // próximo ciclo de 30 s depois de entrar.
+  const canFetch = authRequired === false || (authRequired === true && authed);
   useEffect(() => {
+    if (!canFetch) return undefined;
     const fetchCounts = async () => {
       try {
         const [messagesRes, newsRes, participantsRes] = await Promise.all([
@@ -75,7 +86,7 @@ const AdminLayout = () => {
     fetchCounts();
     const interval = setInterval(fetchCounts, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [canFetch]);
 
   const toggleCategory = (category) => {
     setCollapsed(prev => ({ ...prev, [category]: !prev[category] }));
@@ -242,7 +253,7 @@ const AdminLayout = () => {
     );
   }
 
-  if (authRequired && !authed) {
+  if (authRequired && !authed && !sessionExpired) {
     return <AdminLogin onSuccess={() => setAuthed(true)} />;
   }
 
@@ -289,6 +300,25 @@ const AdminLayout = () => {
           </div>
         </div>
       </div>
+
+      <Modal show={Boolean(authRequired && !authed)} backdrop="static" keyboard={false} centered>
+        <Modal.Header>
+          <Modal.Title as="h2" className="h5">Sessão expirada</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p className="text-muted small">
+            Entre de novo para continuar. O que você estava editando continua
+            nesta página: depois de entrar, salve outra vez.
+          </p>
+          <AdminLogin
+            embedded
+            onSuccess={() => {
+              setSessionExpired(false);
+              setAuthed(true);
+            }}
+          />
+        </Modal.Body>
+      </Modal>
     </ToastProvider>
   );
 };
