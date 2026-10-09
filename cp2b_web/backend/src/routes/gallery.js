@@ -129,6 +129,9 @@ router.post('/', (req, res, next) => {
 
   // CORREÇÃO 1: req.files agora é um objeto
   if (!req.files || !req.files.cover || !req.files.images) {
+    // As fotos que vieram já estão no disco: sem apagar, cada envio
+    // recusado deixava arquivos órfãos em uploads/gallery.
+    clearPartialUpload(req);
     return res.status(400).json({ error: 'É obrigatório enviar a foto de capa e as imagens internas.' });
   }
 
