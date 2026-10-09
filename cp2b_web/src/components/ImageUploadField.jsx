@@ -4,6 +4,11 @@ import PropTypes from 'prop-types';
 import api from '../services/api';
 import ImagePositionPicker from './admin/ImagePositionPicker';
 
+// Os mesmos formatos que o backend aceita (backend/src/routes/upload.js).
+// Com accept="image/*", um .heic do celular, um .svg ou um .bmp passavam aqui
+// e só eram recusados pelo servidor, com uma mensagem genérica.
+const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
+
 const ImageUploadField = ({ label, value, onChange, helperText, positionValue, onPositionChange }) => {
   const [uploading, setUploading] = useState(false);
   const [preview, setPreview] = useState(value);
@@ -11,11 +16,14 @@ const ImageUploadField = ({ label, value, onChange, helperText, positionValue, o
 
   const handleFileSelect = async (e) => {
     const file = e.target.files[0];
+    // Limpa o campo: sem isso, escolher de novo o mesmo arquivo depois de um
+    // erro (sessão expirada, rede) não dispara onChange e nada acontece.
+    e.target.value = '';
     if (!file) return;
 
     // Validate file type
-    if (!file.type.startsWith('image/')) {
-      setError('Por favor, selecione um arquivo de imagem válido');
+    if (!ACCEPTED_TYPES.includes(file.type)) {
+      setError('Formato não aceito. Use JPG, PNG, GIF ou WebP.');
       return;
     }
 
@@ -32,17 +40,14 @@ const ImageUploadField = ({ label, value, onChange, helperText, positionValue, o
     formData.append('image', file);
 
     try {
-      const response = await api.request('/upload/image', {
-        method: 'POST',
-        body: formData,
-        headers: {}, // Let browser set Content-Type for multipart
-      });
+      // O cliente da API já tira o Content-Type quando o corpo é FormData.
+      const response = await api.post('/upload/image', formData);
 
       const imageUrl = response.data.url;
       setPreview(imageUrl);
       onChange(imageUrl);
     } catch (err) {
-      setError('Erro ao fazer upload da imagem. Tente novamente.');
+      setError(`Erro ao fazer upload da imagem: ${err.message}`);
       console.error('Upload error:', err);
     } finally {
       setUploading(false);
@@ -79,7 +84,7 @@ const ImageUploadField = ({ label, value, onChange, helperText, positionValue, o
 
       <Form.Control
         type="file"
-        accept="image/*"
+        accept={ACCEPTED_TYPES.join(',')}
         onChange={handleFileSelect}
         disabled={uploading}
       />

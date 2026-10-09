@@ -84,7 +84,7 @@ const PartnersEditor = () => {
       website: partner.website || '',
       description_pt: partner.description_pt || '',
       description_en: partner.description_en || '',
-      sort_order: partner.sort_order || 10,
+      sort_order: partner.sort_order ?? 10,
       active: partner.active !== undefined ? partner.active : true
     });
     setErrors({});
@@ -121,8 +121,11 @@ const PartnersEditor = () => {
     if (formData.website && !isValidUrl(formData.website)) {
       newErrors.website = 'URL inválida';
     }
-    if (formData.logo && !isValidUrl(formData.logo)) {
-      newErrors.logo = 'URL inválida';
+    // O logo aceita caminho do próprio site (começando com /), que é
+    // como estão todos os logos cadastrados: exigir URL absoluta impedia
+    // salvar qualquer edição de um parceiro existente.
+    if (formData.logo && !formData.logo.startsWith('/') && !isValidUrl(formData.logo)) {
+      newErrors.logo = 'Use um endereço completo (https://...) ou um caminho do site começando com /';
     }
 
     setErrors(newErrors);
@@ -504,13 +507,18 @@ const PartnersEditor = () => {
                         URL do Logo
                         <HelpTooltip text="Link para imagem do logo (PNG, JPG, SVG)" />
                       </Form.Label>
+                      {/* type="text", não "url": o navegador recusava em
+                          silêncio o caminho relativo (começando com /) que todos
+                          os logos usam, e o formulário não enviava. O formato
+                          é conferido em validate(). */}
                       <Form.Control
-                        type="url"
+                        type="text"
+                        inputMode="url"
                         name="logo"
                         value={formData.logo}
                         onChange={handleChange}
                         isInvalid={!!errors.logo}
-                        placeholder="https://..."
+                        placeholder="https://... ou /uploads/logo.png"
                       />
                       <Form.Control.Feedback type="invalid">
                         {errors.logo}

@@ -13,7 +13,10 @@ const router = Router();
  * projeta nessa forma — a próxima seção destacável é uma entrada a mais, não
  * uma migração.
  *
- *  key    coluna que identifica o item ao gravar a posição.
+ *  key    expressão SQL (texto) que identifica o item: é o `slug` que o GET
+ *         devolve e o que o PUT recebe. Evento tem slug opcional, e a página
+ *         /eventos/:slug aceita também o id — por isso COALESCE. Comparando só
+ *         o slug, um evento sem slug "salvava" e o destaque ficava vazio.
  *  image  coluna da imagem do card.
  *  badge  expressão SQL do rótulo; um literal quando a tabela não tem badge.
  *  date   expressão SQL da data exibida; NULL quando não há o que mostrar.
@@ -23,11 +26,11 @@ const TYPES = {
   project:     { table: 'projects',        key: 'slug', image: 'image',       badge: 'badge', badgeColor: 'badge_color', date: 'date_display' },
   microscopio: { table: 'microscopio',     key: 'slug', image: 'image',       badge: 'badge', badgeColor: 'badge_color', date: 'date_display' },
   opportunity: { table: 'opportunities',   key: 'slug', image: 'image',       badge: 'badge', badgeColor: 'badge_color', date: 'date_display' },
-  event:       { table: 'events',          key: 'slug', image: 'image',       badge: "'Evento'",  badgeColor: "'#00573A'", date: 'NULL' },
+  event:       { table: 'events',          key: 'COALESCE(slug, id::text)', image: 'image',       badge: "'Evento'",  badgeColor: "'#00573A'", date: 'NULL' },
   // Sem slug: o clique leva à listagem, porque o conteúdo vive no PDF e no
   // Spotify, não numa página do site.
-  boletim:     { table: 'boletins',        key: 'id',   image: 'cover_image', badge: "'Boletim'", badgeColor: "'#1E3E4C'", date: 'NULL' },
-  podcast:     { table: 'podcast_episodes', key: 'id',  image: 'image',       badge: "'Podcast'", badgeColor: "'#5CA032'", date: 'NULL' },
+  boletim:     { table: 'boletins',        key: 'id::text', image: 'cover_image', badge: "'Boletim'", badgeColor: "'#1E3E4C'", date: 'NULL' },
+  podcast:     { table: 'podcast_episodes', key: 'id::text', image: 'image',       badge: "'Podcast'", badgeColor: "'#5CA032'", date: 'NULL' },
 };
 
 // GET unified featured content
@@ -36,7 +39,7 @@ router.get('/', async (req, res) => {
     const queries = Object.entries(TYPES).map(([type, t]) =>
       pool.query(
         `SELECT id,
-                ${t.key === 'slug' ? 'slug' : 'id::text AS slug'},
+                ${t.key} AS slug,
                 title_pt, title_en, description_pt, description_en,
                 ${t.image} AS image,
                 ${t.badge} AS badge,
@@ -69,13 +72,18 @@ router.get('/', async (req, res) => {
 router.put('/', async (req, res) => {
   const { positionA, positionB, positionC } = req.body;
 
+  // Transação num cliente só. Com pool.query cada comando podia ir para uma
+  // conexão diferente do pool: o BEGIN numa, os UPDATEs em outras (fora da
+  // transação) e o COMMIT numa terceira — e a conexão do BEGIN voltava ao pool
+  // com a transação aberta.
+  const client = await pool.connect();
   try {
-    await pool.query('BEGIN');
+    await client.query('BEGIN');
 
     // Limpa todas as posições antes de gravar as novas: um mesmo item pode
     // trocar de posição, e duas tabelas não podem disputar a mesma letra.
     for (const t of Object.values(TYPES)) {
-      await pool.query(
+      await client.query(
         `UPDATE ${t.table} SET featured_position = NULL WHERE featured_position IS NOT NULL`
       );
     }
@@ -87,18 +95,20 @@ router.put('/', async (req, res) => {
       const identifier = data.slug;
       if (identifier === undefined || identifier === null || identifier === '') continue;
 
-      await pool.query(
-        `UPDATE ${t.table} SET featured_position = $1 WHERE ${t.key}::text = $2`,
+      await client.query(
+        `UPDATE ${t.table} SET featured_position = $1 WHERE ${t.key} = $2`,
         [pos, String(identifier)]
       );
     }
 
-    await pool.query('COMMIT');
+    await client.query('COMMIT');
     res.json({ success: true, message: 'Featured positions updated' });
   } catch (error) {
-    await pool.query('ROLLBACK');
+    await client.query('ROLLBACK').catch(() => {});
     console.error('Error updating featured positions:', error);
     res.status(500).json({ error: 'Failed to update featured positions' });
+  } finally {
+    client.release();
   }
 });
 

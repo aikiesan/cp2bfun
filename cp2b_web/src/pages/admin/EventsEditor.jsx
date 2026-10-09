@@ -421,7 +421,9 @@ const EventsEditor = () => {
             </Card>
 
             <div className="d-grid gap-2">
-              <Button type="submit" variant="primary" size="lg" disabled={saving}>
+              {/* Desabilitado também depois do sucesso: durante a espera do
+                  redirecionamento um segundo clique criava uma duplicata. */}
+              <Button type="submit" variant="primary" size="lg" disabled={saving || success}>
                 {saving ? <Spinner size="sm" animation="border" className="me-2" /> : <i className="bi bi-check-lg me-2"></i>}
                 {isEditing ? 'Salvar alterações' : 'Criar evento'}
               </Button>

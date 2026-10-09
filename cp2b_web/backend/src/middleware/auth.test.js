@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { authEnabled, createToken, verifyToken, verifyPassword, adminGate, requireAdmin, adminLocked } from './auth.js';
+import { authEnabled, createToken, verifyToken, verifyPassword, adminGate, requireAdmin, adminLocked, isAdminRequest } from './auth.js';
 
 const withPassword = (password, fn) => {
   const prev = process.env.ADMIN_PASSWORD;
@@ -199,4 +199,27 @@ test('without ADMIN_PASSWORD in production the admin is locked, not open', () =>
     if (prevEnv === undefined) delete process.env.NODE_ENV;
     else process.env.NODE_ENV = prevEnv;
   }
+});
+
+// Decide o limite do corpo JSON (index.js): 25 MB para quem edita, os 100 KB
+// padrão para o visitante.
+test('isAdminRequest is true only for a valid token, or an open dev panel', () => {
+  withPassword('test-password-123', () => {
+    const { token } = createToken();
+    assert.equal(isAdminRequest(mockReqRes({ method: 'POST', token }).req), true);
+    assert.equal(isAdminRequest(mockReqRes({ method: 'POST', token: 'garbage' }).req), false);
+    assert.equal(isAdminRequest(mockReqRes({ method: 'POST', path: '/contact' }).req), false);
+  });
+  withPassword(undefined, () => {
+    const prevEnv = process.env.NODE_ENV;
+    try {
+      process.env.NODE_ENV = 'development';
+      assert.equal(isAdminRequest(mockReqRes({ method: 'POST' }).req), true);
+      process.env.NODE_ENV = 'production';
+      assert.equal(isAdminRequest(mockReqRes({ method: 'POST' }).req), false);
+    } finally {
+      if (prevEnv === undefined) delete process.env.NODE_ENV;
+      else process.env.NODE_ENV = prevEnv;
+    }
+  });
 });

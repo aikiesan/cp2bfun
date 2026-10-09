@@ -40,7 +40,13 @@ router.get('/:number', async (req, res) => {
 router.put('/:number', async (req, res) => {
   try {
     const { number } = req.params;
-    const { title_pt, title_en, coordinator, content_pt, content_en, sdgs } = req.body;
+    // As fotos e o segundo coordenador vêm do mesmo formulário do painel e
+    // aparecem na página /eixos; antes não eram lidos aqui, e o painel dizia
+    // "salvo com sucesso" sem gravá-los.
+    const {
+      title_pt, title_en, coordinator, coordinator_image,
+      sub_coordinator, sub_coordinator_image, content_pt, content_en, sdgs,
+    } = req.body;
 
     const result = await pool.query(
       `UPDATE research_axes SET
@@ -50,10 +56,14 @@ router.put('/:number', async (req, res) => {
          content_pt = COALESCE($4, content_pt),
          content_en = COALESCE($5, content_en),
          sdgs = COALESCE($6, sdgs),
+         coordinator_image = COALESCE($7, coordinator_image),
+         sub_coordinator = COALESCE($8, sub_coordinator),
+         sub_coordinator_image = COALESCE($9, sub_coordinator_image),
          updated_at = NOW()
-       WHERE axis_number = $7
+       WHERE axis_number = $10
        RETURNING *`,
-      [title_pt, title_en, coordinator, content_pt, content_en, sdgs, number]
+      [title_pt, title_en, coordinator, content_pt, content_en, sdgs,
+       coordinator_image, sub_coordinator, sub_coordinator_image, number]
     );
 
     if (result.rows.length === 0) {

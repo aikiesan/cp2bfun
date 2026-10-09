@@ -31,6 +31,7 @@ const PublicationsEditor = () => {
 
   const [loading, setLoading] = useState(isEditing);
   const [saving, setSaving] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [axes, setAxes] = useState([]);
 
   useEffect(() => {
@@ -95,6 +96,7 @@ const PublicationsEditor = () => {
         toast.success('Publicação criada com sucesso!');
       }
 
+      setSaved(true);
       setTimeout(() => navigate('/admin/publications'), 1500);
     } catch (err) {
       toast.error(err.response?.data?.error || 'Erro ao salvar publicação');
@@ -356,7 +358,9 @@ const PublicationsEditor = () => {
             </Card>
 
             <div className="d-grid">
-              <Button type="submit" variant="primary" size="lg" disabled={saving}>
+              {/* Desabilitado também depois do sucesso: durante a espera do
+                  redirecionamento um segundo clique criava uma duplicata. */}
+              <Button type="submit" variant="primary" size="lg" disabled={saving || saved}>
                 {saving ? (
                   <>
                     <Spinner size="sm" className="me-2" />

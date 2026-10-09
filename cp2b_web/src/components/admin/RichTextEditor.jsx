@@ -2,6 +2,7 @@ import { useState, useRef, useMemo } from 'react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { Modal, Button, Form, Spinner } from 'react-bootstrap';
+import api from '../../services/api';
 
 const RichTextEditor = ({ value, onChange, placeholder, height = '400px' }) => {
   const quillRef = useRef(null);
@@ -40,16 +41,10 @@ const RichTextEditor = ({ value, onChange, placeholder, height = '400px' }) => {
 
       try {
         setUploading(true);
-        const response = await fetch('/api/upload/news-image', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (!response.ok) {
-          throw new Error('Erro ao fazer upload da imagem');
-        }
-
-        const data = await response.json();
+        // Pelo cliente da API, e não por um fetch solto: é ele que manda o
+        // token do painel. Sem o token a rota respondia 401 e nenhuma imagem
+        // entrava no texto quando o servidor exige senha (a produção exige).
+        const { data } = await api.post('/upload/news-image', formData);
         const imageUrl = data.imageUrl;
 
         // Insert image into editor
@@ -59,7 +54,7 @@ const RichTextEditor = ({ value, onChange, placeholder, height = '400px' }) => {
         quill.setSelection(range.index + 1);
       } catch (error) {
         console.error('Error uploading image:', error);
-        alert('Erro ao fazer upload da imagem. Tente novamente.');
+        alert(`Erro ao fazer upload da imagem: ${error.message}`);
       } finally {
         setUploading(false);
       }

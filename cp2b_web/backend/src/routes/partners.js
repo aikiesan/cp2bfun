@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import pool from '../db/connection.js';
+import { requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
@@ -16,6 +17,24 @@ router.get('/', async (req, res) => {
     res.json(result.rows);
   } catch (error) {
     console.error('Error fetching partners:', error);
+    res.status(500).json({ error: 'Failed to fetch partners' });
+  }
+});
+
+// Todos os parceiros, inclusive os inativos — a lista do painel. Pela rota
+// pública (só ativos), um parceiro desativado sumia do painel e não havia
+// como reativá-lo; um criado já inativo nem chegava a aparecer.
+router.get('/all', requireAdmin, async (req, res) => {
+  try {
+    const result = await pool.query(
+      `SELECT id, name_pt, name_en, category, location, logo, website,
+              description_pt, description_en, sort_order, active, created_at, updated_at
+       FROM partners
+       ORDER BY category, sort_order, name_pt`
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error fetching all partners:', error);
     res.status(500).json({ error: 'Failed to fetch partners' });
   }
 });

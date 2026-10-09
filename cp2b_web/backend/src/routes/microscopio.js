@@ -3,6 +3,9 @@ import pool from '../db/connection.js';
 
 const router = Router();
 
+const slugTaken = async (slug) =>
+  (await pool.query('SELECT 1 FROM microscopio WHERE slug = $1 LIMIT 1', [slug])).rowCount > 0;
+
 // Get all microscopio articles
 router.get('/', async (req, res) => {
   try {
@@ -53,6 +56,13 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ error: 'slug and title_pt are required' });
     }
 
+    // A coluna não tem índice único em todo banco (ver migração 053): sem
+    // esta checagem um segundo artigo com o mesmo slug era criado, e editar
+    // ou apagar um deles atingia os dois.
+    if (await slugTaken(slug)) {
+      return res.status(400).json({ error: 'An article with this slug already exists' });
+    }
+
     const result = await pool.query(
       `INSERT INTO microscopio (slug, title_pt, title_en, description_pt, description_en,
                            content_pt, content_en, image, image_position, badge, badge_color,
@@ -84,6 +94,10 @@ router.put('/:slug', async (req, res) => {
       date_display, published_at, author, image_caption_pt, image_caption_en, tags,
       new_slug
     } = req.body;
+
+    if (new_slug && new_slug !== slug && await slugTaken(new_slug)) {
+      return res.status(400).json({ error: 'An article with this slug already exists' });
+    }
 
     const result = await pool.query(
       `UPDATE microscopio SET
@@ -119,6 +133,9 @@ router.put('/:slug', async (req, res) => {
     res.json(result.rows[0]);
   } catch (error) {
     console.error('Error updating microscopio article:', error);
+    if (error.code === '23505') {
+      return res.status(400).json({ error: 'An article with this slug already exists' });
+    }
     res.status(500).json({ error: 'Failed to update microscopio article' });
   }
 });

@@ -161,7 +161,9 @@ router.post('/', async (req, res) => {
         description_en,
         thumbnail_url,
         date_display,
-        position,
+        // "Sem posição" chega como '' e o CHECK da coluna só aceita A, B, C
+        // ou NULL: gravado como veio, todo vídeo sem posição dava 500.
+        position || null,
         active,
       ]
     );
@@ -237,7 +239,7 @@ router.put('/:id', async (req, res) => {
         description_en,
         thumbnail_url,
         date_display,
-        position,
+        position || null,
         active,
         id,
       ]

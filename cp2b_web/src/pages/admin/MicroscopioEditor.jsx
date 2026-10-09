@@ -342,7 +342,9 @@ const MicroscopioEditor = () => {
             </Card>
 
             <div className="d-grid">
-              <Button type="submit" variant="primary" size="lg" disabled={saving}>
+              {/* Desabilitado também depois do sucesso: durante a espera do
+                  redirecionamento um segundo clique criava uma duplicata. */}
+              <Button type="submit" variant="primary" size="lg" disabled={saving || success}>
                 {saving ? (
                   <>
                     <Spinner size="sm" className="me-2" />

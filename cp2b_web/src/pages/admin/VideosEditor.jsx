@@ -8,7 +8,7 @@ import { fetchVideo, createVideo, updateVideo } from '../../services/api';
 const VideosEditor = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { showToast } = useToast();
+  const { success, error: showError } = useToast();
   const isEditing = Boolean(id);
 
   const [formData, setFormData] = useState({
@@ -97,13 +97,13 @@ const VideosEditor = () => {
     // Validate YouTube URL
     const videoId = extractYouTubeId(formData.youtube_url);
     if (!videoId) {
-      showToast('URL do YouTube inválida', 'error');
+      showError('URL do YouTube inválida');
       return;
     }
 
     // Validate required fields
     if (!formData.title_pt) {
-      showToast('Título em português é obrigatório', 'error');
+      showError('Título em português é obrigatório');
       return;
     }
 
@@ -111,17 +111,14 @@ const VideosEditor = () => {
     try {
       if (isEditing) {
         await updateVideo(id, formData);
-        showToast('Vídeo atualizado com sucesso!', 'success');
+        success('Vídeo atualizado com sucesso!');
       } else {
         await createVideo(formData);
-        showToast('Vídeo criado com sucesso!', 'success');
+        success('Vídeo criado com sucesso!');
       }
       navigate('/admin/videos');
     } catch (err) {
-      showToast(
-        isEditing ? 'Erro ao atualizar vídeo' : 'Erro ao criar vídeo',
-        'error'
-      );
+      showError(`${isEditing ? 'Erro ao atualizar vídeo' : 'Erro ao criar vídeo'}: ${err.message}`);
       console.error(err);
     } finally {
       setSaving(false);

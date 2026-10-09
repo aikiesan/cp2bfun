@@ -81,7 +81,7 @@ const PodcastEditor = () => {
       }
       navigate('/admin/podcast');
     } catch (err) {
-      setError('Erro ao salvar episódio');
+      setError(`Erro ao salvar episódio: ${err.message}`);
       console.error(err);
     } finally {
       setSaving(false);
@@ -223,6 +223,7 @@ const PodcastEditor = () => {
                   <Form.Control
                     value={form.duration}
                     onChange={e => set('duration', e.target.value)}
+                    maxLength={20}
                     placeholder="ex: 45 min"
                   />
                 </Form.Group>

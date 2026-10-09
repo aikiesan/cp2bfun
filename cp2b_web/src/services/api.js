@@ -21,13 +21,17 @@ class ApiClient {
 
   async request(endpoint, options = {}) {
     const url = `${this.baseUrl}${endpoint}`;
+    // `headers` vem depois do spread de options: se viesse antes, um
+    // options.headers do chamador (o `headers: {}` do upload de imagem, por
+    // exemplo) substituiria o objeto inteiro e levaria junto o Authorization.
+    // Sem token o upload voltava 401 e o painel deslogava no meio da edição.
     const config = {
+      ...options,
       headers: {
         'Content-Type': 'application/json',
         ...getAuthHeader(),
         ...options.headers,
       },
-      ...options,
     };
 
     if (config.body instanceof FormData) {
@@ -62,6 +66,12 @@ class ApiClient {
 
   put(endpoint, data) {
     return this.request(endpoint, { method: 'PUT', body: data });
+  }
+
+  // Usado pela legenda das fotos da galeria (updateGalleryCaption). Sem ele a
+  // chamada lançava "api.patch is not a function" e a legenda nunca salvava.
+  patch(endpoint, data) {
+    return this.request(endpoint, { method: 'PATCH', body: data });
   }
 
   delete(endpoint) {
@@ -184,9 +194,10 @@ export const fetchMessages = async () => {
 };
 
 // Partners API functions
+// Lista do painel: inclui os inativos (o site usa fetchPartnersGrouped).
 export const fetchPartners = async () => {
   try {
-    const response = await api.get('/partners');
+    const response = await api.get('/partners/all');
     return response.data;
   } catch (error) {
     console.error('Error fetching partners:', error);
