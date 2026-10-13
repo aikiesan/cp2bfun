@@ -1,0 +1,91 @@
+/* /metaninho: o cartão de impressão e a transcrição são papéis brancos sobre a
+   mesa, com a mesma sombra curta dos outros cartões. */
+.hq-print,
+.hq-transcript {
+  position: relative;
+  padding: 1.5rem;
+  background: var(--cp2b-branco, #fff);
+  border: 1px solid var(--paper-line);
+  box-shadow: var(--paper-shadow);
+}
+
+.hq-print {
+  padding-right: 9rem;
+}
+
+.hq-print__mascot {
+  position: absolute;
+  right: 1.25rem;
+  bottom: 1rem;
+}
+
+.hq-print__steps {
+  margin-bottom: 1.25rem;
+  padding-left: 1.25rem;
+}
+
+.hq-print__steps li + li {
+  margin-top: 0.35rem;
+}
+
+.hq-print__meta {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 575.98px) {
+  .hq-print { padding-right: 1.5rem; }
+  .hq-print__mascot { display: none; }
+}
+
+.hq-transcript summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  list-style: none;
+}
+
+.hq-transcript summary::-webkit-details-marker {
+  display: none;
+}
+
+.hq-transcript summary .bi {
+  transition: transform var(--duration-base);
+}
+
+.hq-transcript[open] summary .bi {
+  transform: rotate(180deg);
+}
+
+.hq-transcript summary:focus-visible {
+  outline: 2px solid var(--cp2b-verde-escuro);
+  outline-offset: 4px;
+}
+
+.hq-transcript__item {
+  padding: 0.6rem 0;
+  border-top: 1px dashed var(--paper-line);
+}
+
+.hq-transcript__item dt {
+  font-family: var(--font-hand);
+  font-size: 1.2rem;
+  line-height: 1.1;
+}
+
+.hq-transcript__item dd {
+  margin: 0.15rem 0 0;
+  font-size: var(--text-sm);
+}
+
+body.high-contrast .hq-print,
+body.high-contrast .hq-transcript {
+  background: #000;
+  color: #fff;
+  border-color: #fff;
+  box-shadow: none;
+}
