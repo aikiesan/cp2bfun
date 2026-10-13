@@ -263,7 +263,7 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
       expect(opportunities.length).toBeGreaterThanOrEqual(2);
     });
 
-    it('defines all 23 core static routes in the ROUTES table', () => {
+    it('defines all 24 core static routes in the ROUTES table', () => {
       const expectedRoutes = [
         '/',
         '/sobre',
@@ -285,12 +285,13 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
         '/press-kit',
         '/podcast',
         '/boletins',
+        '/metaninho',
         '/newsletter',
         '/forum-paulista',
         '/contato',
       ];
       expect(Object.keys(ROUTES).sort()).toEqual(expectedRoutes.sort());
-      expect(Object.keys(ROUTES).length).toBe(23);
+      expect(Object.keys(ROUTES).length).toBe(24);
     });
   });
 
@@ -327,7 +328,7 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
       }
     });
 
-    it('prerenders 23 static shells + dynamic shells and writes complete sitemap.xml in offline fallback mode', async () => {
+    it('prerenders 24 static shells + dynamic shells and writes complete sitemap.xml in offline fallback mode', async () => {
       const logs = [];
       const result = await generateSeo({
         distDir: tmpDir,
@@ -337,7 +338,7 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
         log: (msg) => logs.push(msg),
       });
 
-      expect(result.prerenderedStatic).toBe(23);
+      expect(result.prerenderedStatic).toBe(24);
       expect(result.prerenderedDynamic).toBeGreaterThanOrEqual(14);
       expect(result.sitemapUrlsCount).toBeGreaterThanOrEqual(35);
 
@@ -390,9 +391,9 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
         log: (msg) => logs.push(msg),
       });
 
-      expect(result.prerenderedStatic).toBe(23);
+      expect(result.prerenderedStatic).toBe(24);
       expect(result.prerenderedDynamic).toBe(0);
-      expect(result.sitemapUrlsCount).toBe(23);
+      expect(result.sitemapUrlsCount).toBe(24);
       expect(logs.some((l) => l.includes('AVISO') && l.includes('/noticias'))).toBe(true);
       const sitemap = await readFile(path.join(tmpDir, 'sitemap.xml'), 'utf8');
       expect(sitemap).not.toContain('/noticias/');

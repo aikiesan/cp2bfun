@@ -50,6 +50,7 @@ const DYNAMIC = [
 const DOWNLOADS = [
   ['/assets/capacitacao/template-oferecimento-curso-cp2b.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'],
   ['/assets/boletins/boletim-cp2b-edicao-1-setembro-2026.pdf', 'application/pdf'],
+  ['/assets/metaninho/hq/metaninho-no-intercocen-para-imprimir.pdf', 'application/pdf'],
 ];
 const SECURITY_HEADERS = [
   'strict-transport-security',

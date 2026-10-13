@@ -30,6 +30,7 @@ export const menuLabels = {
       boletins: 'Boletins',
       gallery: 'Galeria de Fotos',
       pressKit: 'Identidade Visual',
+      metaninho: 'Metaninho',
       newsletter: 'Newsletter',
     },
     team: 'Equipe',
@@ -75,6 +76,7 @@ export const menuLabels = {
       boletins: 'Bulletins',
       gallery: 'Photo Gallery',
       pressKit: 'Visual Identity',
+      metaninho: 'Metaninho',
       newsletter: 'Newsletter',
     },
     team: 'Team',
@@ -1313,6 +1315,16 @@ export const pageSeo = {
       description: 'Issues of the CP2b bulletin on biogas and bioproducts, available for download as PDF.',
     },
   },
+  metaninho: {
+    pt: {
+      title: 'HQ do Metaninho',
+      description: 'Leia online a história em quadrinhos "Metaninho no Intercocen" e baixe a versão para imprimir e dobrar em casa como um mini-gibi.',
+    },
+    en: {
+      title: 'Metaninho Comic',
+      description: 'Read the comic "Metaninho no Intercocen" online and download the print-at-home version, ready to fold into a mini comic book.',
+    },
+  },
   newsletter: {
     pt: {
       title: 'Newsletter CP2b',
@@ -1619,4 +1631,134 @@ export const wasteToEnergyFlow = {
       },
     ],
   },
+};
+
+// HQ "Metaninho no Intercocen" (/metaninho). As páginas do leitor saem do PDF
+// de leitura, uma imagem por página, na ordem do gibi impresso: capa, verso
+// da capa em branco (como na versão para imprimir), as dez páginas da
+// história, o expediente e a contracapa. Sem o verso em branco a página 1
+// cairia à esquerda e a contracapa não fecharia o livro sozinha; com ele, as
+// páginas ímpares ficam à direita, como no papel.
+//
+// Os balões são manuscritos dentro da imagem; o texto de cada página está
+// aqui, transcrito, para servir de alt e de transcrição. A HQ só existe em
+// português, então em inglês a transcrição é uma tradução.
+const hqPage = (n) => `/assets/metaninho/hq/pagina-${String(n).padStart(2, '0')}.webp`;
+
+export const metaninhoHq = {
+  downloadPdf: '/assets/metaninho/hq/metaninho-no-intercocen-para-imprimir.pdf',
+  // Largura × altura das imagens: A4 retrato.
+  pageSize: [1100, 1556],
+  pages: [
+    {
+      src: hqPage(1),
+      label: { pt: 'Capa', en: 'Cover' },
+      alt: {
+        pt: 'Capa: "CP2b apresenta: Metaninho no Intercocen". Metaninho voa de capa de super-herói.',
+        en: 'Cover: "CP2b presents: Metaninho at Intercocen". Metaninho flies wearing a superhero cape.',
+      },
+    },
+    {
+      // Em branco: o leitor desenha só o papel.
+      src: null,
+      label: { pt: 'Verso da capa', en: 'Inside cover' },
+      alt: { pt: '', en: '' },
+    },
+    {
+      src: hqPage(2),
+      label: { pt: 'Página 1', en: 'Page 1' },
+      alt: {
+        pt: 'Metaninho, uma molécula de metano de jaleco e óculos, acena e diz: "Oi! Eu sou o Metaninho! Sou uma molécula de METANO. Quer descobrir onde eu vivo?"',
+        en: 'Metaninho, a methane molecule in a lab coat and glasses, waves and says: "Hi! I\'m Metaninho! I\'m a METHANE molecule. Want to find out where I live?"',
+      },
+    },
+    {
+      src: hqPage(3),
+      label: { pt: 'Página 2', en: 'Page 2' },
+      alt: {
+        pt: 'Metaninho, pensativo, imagina a molécula de metano: um carbono ligado a quatro hidrogênios. Ele diz: "O metano é um gás. Ele não tem cor, nem cheiro e é formado por CARBONO e HIDROGÊNIO." Um balão de pensamento repete: "Sem cor e sem cheiro".',
+        en: 'Metaninho, thoughtful, pictures the methane molecule: one carbon bonded to four hydrogens. He says: "Methane is a gas. It has no colour and no smell, and it is made of CARBON and HYDROGEN." A thought bubble repeats: "No colour and no smell".',
+      },
+    },
+    {
+      src: hqPage(4),
+      label: { pt: 'Página 3', en: 'Page 3' },
+      alt: {
+        pt: 'Metaninho segura um osso e diz: "Eu posso aparecer na natureza, principalmente quando restos de plantas e animais se decompõem sem OXIGÊNIO."',
+        en: 'Metaninho holds a bone and says: "I can show up in nature, especially when the remains of plants and animals decompose without OXYGEN."',
+      },
+    },
+    {
+      src: hqPage(5),
+      label: { pt: 'Página 4', en: 'Page 4' },
+      alt: {
+        pt: 'Metaninho observa microrganismos dentro de um monte de matéria orgânica e diz: "Quando a matéria orgânica fica em um lugar SEM OXIGÊNIO, alguns microrganismos começam a trabalhar."',
+        en: 'Metaninho watches microorganisms inside a pile of organic matter and says: "When organic matter is left somewhere WITHOUT OXYGEN, some microorganisms get to work."',
+      },
+    },
+    {
+      src: hqPage(6),
+      label: { pt: 'Página 5', en: 'Page 5' },
+      alt: {
+        pt: 'Metaninho aponta para pequenos microrganismos aos seus pés e diz: "Seres microscópicos ajudam nessa transformação. E, no final, eles produzem METANO!"',
+        en: 'Metaninho points at tiny microorganisms at his feet and says: "Microscopic beings help with this transformation. And, in the end, they produce METHANE!"',
+      },
+    },
+    {
+      src: hqPage(7),
+      label: { pt: 'Página 6', en: 'Page 6' },
+      alt: {
+        pt: 'Metaninho, preocupado, ao lado de um planeta Terra triste e rachado, diz: "Mas existe um problema: você sabia que, quando o metano vai para a atmosfera, ele contribui para o aquecimento do planeta?"',
+        en: 'A worried Metaninho, next to a sad, cracked planet Earth, says: "But there is a problem: did you know that when methane gets into the atmosphere, it adds to global warming?"',
+      },
+    },
+    {
+      src: hqPage(8),
+      label: { pt: 'Página 7', en: 'Page 7' },
+      alt: {
+        pt: 'Metaninho levanta o dedo, animado, e diz: "Mas, calma! O metano pode ser aproveitado de um jeito inteligente. Em vez de deixar o metano escapar, podemos aproveitar a sua energia!"',
+        en: 'Metaninho raises a finger, excited, and says: "But don\'t worry! Methane can be put to clever use. Instead of letting methane escape, we can harness its energy!"',
+      },
+    },
+    {
+      src: hqPage(9),
+      label: { pt: 'Página 8', en: 'Page 8' },
+      alt: {
+        pt: 'Metaninho comemora de braços abertos, ao lado de uma chama, e diz: "O metano pode ser usado como COMBUSTÍVEL!"',
+        en: 'Metaninho celebrates with open arms, next to a flame, and says: "Methane can be used as FUEL!"',
+      },
+    },
+    {
+      src: hqPage(10),
+      label: { pt: 'Página 9', en: 'Page 9' },
+      alt: {
+        pt: 'Metaninho flutua sobre outros dois Metaninhos e diz: "Quando eu e meus amigos Metaninhos somos bem utilizados, deixamos de fazer mal para o planeta e viramos energia!"',
+        en: 'Metaninho floats above two other Metaninhos and says: "When my Metaninho friends and I are put to good use, we stop harming the planet and become energy!"',
+      },
+    },
+    {
+      src: hqPage(11),
+      label: { pt: 'Página 10', en: 'Page 10' },
+      alt: {
+        pt: 'Metaninho acena em frente a um prédio com a placa "CP2b" e se despede: "Até a próxima aventura do Metaninho!"',
+        en: 'Metaninho waves in front of a building with a "CP2b" sign and says goodbye: "See you on Metaninho\'s next adventure!"',
+      },
+    },
+    {
+      src: hqPage(12),
+      label: { pt: 'Expediente', en: 'Credits' },
+      alt: {
+        pt: 'Expediente. Ilustrações: Pedro Fernandes. Projeto gráfico: Bárbara Castilho. Texto: Sofia Silva. Revisão técnica: Jéssica Nogueira. Uma iniciativa do eixo de Difusão e Divulgação Científica do CP2b em parceria com o NIPE e a Cocen.',
+        en: 'Credits. Illustrations: Pedro Fernandes. Graphic design: Bárbara Castilho. Text: Sofia Silva. Technical review: Jéssica Nogueira. An initiative of the CP2b Scientific Dissemination axis in partnership with NIPE and Cocen.',
+      },
+    },
+    {
+      src: hqPage(13),
+      label: { pt: 'Contracapa', en: 'Back cover' },
+      alt: {
+        pt: 'Contracapa com o símbolo do CP2b.',
+        en: 'Back cover with the CP2b symbol.',
+      },
+    },
+  ],
 };

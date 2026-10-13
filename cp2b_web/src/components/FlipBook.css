@@ -1,0 +1,210 @@
+/* Leitor de livreto (FlipBook.jsx): folhas de papel sobre a mesa kraft, que
+   giram em torno da lombada. */
+.flipbook {
+  --fb-duration: 0.7s;
+  /* Altura que sobra para cabeçalho, controles e respiro: o livro inteiro
+     cabe na tela sem rolar. */
+  --fb-chrome: 330px;
+  position: relative;
+  /* A folha que gira cresce em perspectiva para fora da caixa; aqui ela é
+     cortada antes de abrir rolagem horizontal na página. `hidden` antes é o
+     fallback para Safari < 16, que não conhece `clip`. */
+  overflow: hidden;
+  overflow: clip;
+  padding: 1rem 0 0.5rem;
+}
+
+.flipbook__stage {
+  display: flex;
+  justify-content: center;
+  padding-block: 1.5rem;
+}
+
+.flipbook__book {
+  position: relative;
+  width: min(100%, calc((100vh - var(--fb-chrome)) * var(--fb-ratio) * var(--fb-cols)));
+  width: min(100%, calc((100svh - var(--fb-chrome)) * var(--fb-ratio) * var(--fb-cols)));
+  min-width: min(100%, 260px);
+  cursor: pointer;
+  user-select: none;
+  /* Rolagem vertical continua com o dedo; o deslize lateral é do leitor. */
+  touch-action: pan-y;
+  transition: transform var(--fb-duration) cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+/* Celular deitado passa de 768 px de largura mas tem pouca altura: sem um
+   piso, o livro aberto encolheria a uma tira. Abaixo do piso a página rola. */
+.flipbook--spread .flipbook__book {
+  min-width: min(100%, 480px);
+}
+
+.flipbook__leaf {
+  position: absolute;
+  inset: 0 0 0 50%;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transform: perspective(2600px) rotateY(0deg);
+  /* z-index muda no meio do giro, quando a folha está de perfil: antes, ela
+     tem de ficar por cima das que estão do lado de onde sai; depois, das que
+     estão do lado aonde chega. */
+  transition:
+    transform var(--fb-duration) cubic-bezier(0.45, 0, 0.25, 1),
+    z-index 0s linear calc(var(--fb-duration) / 2);
+}
+
+.flipbook__leaf.is-flipped {
+  transform: perspective(2600px) rotateY(-180deg);
+}
+
+.flipbook--single .flipbook__leaf {
+  inset: 0;
+}
+
+.flipbook__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--cp2b-branco, #fff);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  box-shadow: var(--paper-shadow);
+}
+
+.flipbook__face--back {
+  transform: rotateY(180deg);
+}
+
+.flipbook__face img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+/* A curva do papel junto à lombada: só existe com o livro aberto em duas
+   páginas. */
+.flipbook--spread .flipbook__face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.flipbook--spread .flipbook__face--front::after {
+  background: linear-gradient(to right, rgb(59 42 28 / .16), rgb(59 42 28 / 0) 7%);
+}
+
+.flipbook--spread .flipbook__face--back::after {
+  background: linear-gradient(to left, rgb(59 42 28 / .16), rgb(59 42 28 / 0) 7%);
+}
+
+/* ---------- Controles ---------- */
+.flipbook__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.flipbook__btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border: 1px solid var(--paper-line);
+  border-radius: 50%;
+  background: var(--cp2b-branco, #fff);
+  color: var(--paper-ink);
+  font-size: 1.1rem;
+  box-shadow: var(--paper-shadow);
+  transition: background-color var(--duration-fast), transform var(--duration-fast);
+}
+
+.flipbook__btn--main {
+  width: 3rem;
+  height: 3rem;
+  border-color: var(--brand-primary);
+  background: var(--brand-primary);
+  color: var(--text-on-brand);
+}
+
+.flipbook__btn:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.flipbook__btn--main:hover:not(:disabled) {
+  background: var(--brand-primary-hover);
+}
+
+.flipbook__btn:focus-visible {
+  outline: 2px solid var(--cp2b-verde-escuro);
+  outline-offset: 3px;
+}
+
+.flipbook__btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+  box-shadow: none;
+}
+
+.flipbook__position {
+  min-width: 11rem;
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-hand);
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--paper-ink);
+}
+
+.flipbook__range {
+  display: block;
+  width: min(100%, 26rem);
+  margin: 0.9rem auto 0;
+}
+
+.flipbook__hint {
+  margin: 0.4rem 0 0;
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+}
+
+@media (max-width: 575.98px) {
+  .flipbook { --fb-chrome: 340px; }
+  .flipbook__position { min-width: 0; flex-basis: 100%; order: -1; }
+  .flipbook__btn--fullscreen { display: none; }
+}
+
+/* ---------- Tela cheia: só o livro e os controles, sobre o kraft ---------- */
+.flipbook:fullscreen {
+  --fb-chrome: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
+  background: var(--paper-kraft) var(--paper-grain);
+}
+
+.flipbook:fullscreen .flipbook__hint {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flipbook__book,
+  .flipbook__leaf {
+    transition: none;
+  }
+}
+
+body.high-contrast .flipbook__btn {
+  background: #000;
+  color: #fff;
+  border-color: #fff;
+  box-shadow: none;
+}

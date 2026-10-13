@@ -90,6 +90,7 @@ const Microscopio = lazy(() => import('./pages/Microscopio'));
 const PressKit = lazy(() => import('./pages/PressKit'));
 const Podcast = lazy(() => import('./pages/Podcast'));
 const Boletins = lazy(() => import('./pages/Boletins'));
+const MetaninhoHQ = lazy(() => import('./pages/MetaninhoHQ'));
 const Newsletter = lazy(() => import('./pages/Newsletter'));
 const Others = lazy(() => import('./pages/Others'));
 const ForumPaulista = lazy(() => import('./pages/ForumPaulista'));
@@ -232,6 +233,7 @@ function App() {
                     <Route path="/press-kit" element={<GuardedRoute pageKey="press-kit" element={<PressKit />} />} />
                     <Route path="/podcast" element={<GuardedRoute pageKey="podcast" element={<Podcast />} />} />
                     <Route path="/boletins" element={<GuardedRoute pageKey="boletins" element={<Boletins />} />} />
+                    <Route path="/metaninho" element={<GuardedRoute pageKey="metaninho" element={<MetaninhoHQ />} />} />
                     <Route path="/newsletter" element={<Newsletter />} />
                     <Route path="/outros" element={<Others />} />
                     <Route path="/forum-paulista" element={<GuardedRoute pageKey="forum-paulista" element={<ForumPaulista />} />} />
