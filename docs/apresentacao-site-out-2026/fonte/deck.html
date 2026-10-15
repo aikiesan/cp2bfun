@@ -1,0 +1,757 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<title>Site CP2b — O que mudou (set–out/2026)</title>
+<link rel="stylesheet" href="bootstrap-icons.min.css">
+<style>
+@font-face{font-family:'Neulis Sans';src:url(Neulis_Sans_Regular.woff2) format('woff2');font-weight:400}
+@font-face{font-family:'Neulis Sans';src:url(Neulis_Sans_Medium.woff2) format('woff2');font-weight:500}
+@font-face{font-family:'Neulis Sans';src:url(Neulis_Sans_Semi_Bold.woff2) format('woff2');font-weight:600}
+@font-face{font-family:'Neulis Sans';src:url(Neulis_Sans_Bold.woff2) format('woff2');font-weight:700}
+@font-face{font-family:'Neulis Sans';src:url(Neulis_Sans_Black.woff2) format('woff2');font-weight:900}
+@font-face{font-family:'Neulis Neue';src:url(Neulis_Neue_Bold.woff2) format('woff2');font-weight:700}
+@font-face{font-family:'Neulis Neue';src:url(Neulis_Neue_Black.woff2) format('woff2');font-weight:900}
+@font-face{font-family:'Caveat';src:url(Caveat-Variable.woff2) format('woff2');font-weight:400 700}
+@page{size:1920px 1080px;margin:0}
+:root{
+  --paper:#FBF8F0;--kraft:#F3EAD8;--line:#E6DCC6;--soft:#F3ECDD;--ink:#1B2A33;--muted:#5A5850;
+  --petrol:#1E3E4C;--gd:#00573A;--green:#5CA032;--lime:#B6E03B;--amber:#D37402;
+  --tape:rgba(240,219,164,.92);--shadow:3px 5px 0 rgba(59,42,28,.16);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#777}
+body{font-family:'Neulis Sans',Verdana,sans-serif;color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.slide{width:1920px;height:1080px;position:relative;overflow:hidden;background:var(--paper);page-break-after:always;break-after:page;padding:54px 80px 0}
+.slide:last-child{page-break-after:auto;break-after:auto}
+.grain{position:absolute;inset:0;pointer-events:none;opacity:.55;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .36 0 0 0 0 .26 0 0 0 0 .13 0 0 0 .09 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E")}
+/* ---------- cabeçalho do slide ---------- */
+.head{position:relative;z-index:2;margin-bottom:26px}
+.hand{display:inline-block;position:relative;font-family:'Caveat',cursive;font-weight:700;font-size:34px;line-height:1;color:var(--gd);background:#fff;padding:8px 18px 6px;transform:rotate(-2deg);box-shadow:2px 3px 0 rgba(59,42,28,.14);margin:0 0 14px 8px}
+.hand::before{content:"";position:absolute;left:-16px;top:-10px;width:62px;height:22px;background:var(--tape);transform:rotate(-24deg)}
+h1{font-family:'Neulis Neue','Neulis Sans';font-weight:900;font-size:64px;line-height:1.02;letter-spacing:-.01em;margin:0;color:var(--petrol)}
+h1 .hl{background:linear-gradient(transparent 58%,rgba(182,224,59,.75) 58%,rgba(182,224,59,.75) 92%,transparent 92%);padding:0 6px}
+.sub{font-size:26px;color:var(--muted);margin:12px 0 0;max-width:1500px;line-height:1.3}
+.head .badge{position:absolute;right:0;top:12px}
+/* ---------- rodapé ---------- */
+.foot{position:absolute;left:0;right:0;bottom:0;height:46px;display:flex;align-items:center;justify-content:space-between;padding:0 80px;font-size:17px;color:var(--muted);border-top:2px dashed var(--line);background:var(--paper);z-index:3}
+.foot b{color:var(--petrol)}
+.foot .pg{font-weight:800;color:var(--petrol);font-size:19px}
+.foot .dots{display:flex;gap:6px}.foot .dots i{display:block;width:10px;height:10px;border-radius:50%;background:var(--line)}.foot .dots i.on{background:var(--amber)}
+/* ---------- selos ---------- */
+.badge{display:inline-flex;align-items:center;gap:8px;font-weight:900;font-size:20px;letter-spacing:.06em;padding:8px 16px;border-radius:999px;text-transform:uppercase;white-space:nowrap}
+.b-novo{background:var(--lime);color:var(--petrol)}
+.b-reno{background:var(--amber);color:#fff}
+.b-nome{background:var(--petrol);color:#fff}
+.b-bast{background:#E3DED3;color:var(--petrol)}
+.tag{align-self:flex-start;display:inline-flex;align-items:center;gap:8px;font-weight:900;font-size:19px;letter-spacing:.1em;padding:7px 16px;border-radius:999px;margin-bottom:10px}
+.t-antes{background:#E3DED3;color:#5A5850}
+.t-depois{background:var(--gd);color:#fff}
+/* ---------- prints ---------- */
+.shot{position:relative;background:#fff;border-radius:12px;box-shadow:var(--shadow),0 0 0 1.5px var(--line);overflow:visible}
+.shot .bar{height:34px;background:#EEE6D6;border-radius:12px 12px 0 0;display:flex;align-items:center;gap:7px;padding:0 14px;border-bottom:1.5px solid var(--line)}
+.shot .bar i.d{display:block;width:11px;height:11px;border-radius:50%;background:#D9CFBC}
+.shot .bar .url{margin-left:12px;flex:1;background:#FBF8F0;border-radius:999px;font-size:15px;color:#6b6658;padding:4px 14px;font-weight:600}
+.shot .bar .url b{color:var(--petrol)}
+.shot .iw{position:relative;line-height:0;border-radius:0 0 12px 12px;overflow:hidden}
+.shot .iw img{width:100%;display:block}
+.shot.old{filter:saturate(.9)}
+.shot.noimgbar .iw{border-radius:12px}
+.tape{position:absolute;width:120px;height:30px;background:var(--tape);z-index:4;box-shadow:0 1px 0 rgba(0,0,0,.05)}
+/* ---------- marcadores ---------- */
+.pin{position:absolute;z-index:5;width:48px;height:48px;margin:-24px 0 0 -24px;border-radius:50%;background:var(--amber);color:#fff;font-weight:900;font-size:25px;line-height:1;display:grid;place-items:center;border:3.5px solid #fff;box-shadow:0 3px 0 rgba(0,0,0,.18),0 0 0 7px rgba(211,116,2,.28)}
+.pin.g{background:var(--gd);box-shadow:0 3px 0 rgba(0,0,0,.18),0 0 0 7px rgba(0,87,58,.22)}
+.ring{position:absolute;z-index:4;border:4px solid var(--amber);border-radius:16px;box-shadow:0 0 0 4px rgba(255,255,255,.7)}
+.legend{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:16px}
+.legend li{display:flex;gap:14px;align-items:flex-start;font-size:22px;line-height:1.25;font-weight:600}
+.legend li small{display:block;font-weight:400;color:var(--muted);font-size:18px;margin-top:3px}
+.n{flex:0 0 38px;height:38px;border-radius:50%;background:var(--amber);color:#fff;font-weight:900;font-size:20px;display:grid;place-items:center;box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.n.g{background:var(--gd)}
+/* ---------- seta antes→depois ---------- */
+.arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--amber)}
+.arrow svg{width:74px;height:74px}
+.arrow span{font-family:'Caveat';font-weight:700;font-size:28px;color:var(--amber);transform:rotate(-4deg)}
+/* ---------- utilitários ---------- */
+.row{display:flex;gap:28px}.col{display:flex;flex-direction:column}
+.cap{font-size:18px;color:var(--muted);margin-top:10px;line-height:1.3}
+.cap b{color:var(--petrol)}
+.card{background:#fff;border-radius:14px;box-shadow:var(--shadow),0 0 0 1.5px var(--line);padding:22px 24px;position:relative}
+.big{font-family:'Neulis Neue';font-weight:900;font-size:78px;line-height:.95;color:var(--gd)}
+.big small{font-size:34px}
+.lbl{font-size:20px;font-weight:700;color:var(--petrol);margin-top:6px;line-height:1.2}
+.lbl small{display:block;font-weight:400;color:var(--muted);font-size:16px;margin-top:3px}
+.handnote{font-family:'Caveat';font-weight:700;color:var(--amber);font-size:32px;line-height:1}
+.ico{width:58px;height:58px;border-radius:14px;display:grid;place-items:center;font-size:30px;background:var(--soft);color:var(--gd);flex:0 0 58px}
+.kraft{background:var(--kraft)}
+.torn-bottom{position:absolute;left:0;right:0;height:18px;background:var(--paper);-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='520' height='16' viewBox='0 0 520 16' preserveAspectRatio='none'%3E%3Cpath d='M0 16H520V7L509 5L498 8L488 4L476 7L466 3L455 6L443 4L432 8L421 5L411 7L399 3L388 6L377 4L365 8L355 5L343 7L332 3L321 6L310 4L298 7L288 5L277 8L265 4L254 6L243 3L232 7L221 5L209 8L198 4L187 6L176 3L164 7L153 5L143 8L131 4L120 6L109 3L98 7L87 5L75 8L64 4L53 6L42 3L31 7L20 5L9 8L0 7Z'/%3E%3C/svg%3E") repeat-x;-webkit-mask-size:520px 18px}
+.click{display:inline-flex;align-items:center;gap:12px;background:var(--petrol);color:#fff;font-weight:900;font-size:30px;padding:14px 26px;border-radius:999px;box-shadow:0 4px 0 rgba(0,0,0,.2)}
+.click i{color:var(--lime);font-size:34px}
+.chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;font-size:18px;font-weight:700;color:var(--petrol)}
+.chip i{color:var(--gd)}
+.url{font-family:ui-monospace,Menlo,monospace}
+</style>
+</head>
+<body>
+
+<!-- ============ 1. CAPA ============ -->
+<section class="slide" style="padding:0">
+  <div class="kraft" style="position:absolute;inset:0 0 auto 0;height:720px"></div>
+  <div class="torn-bottom" style="top:704px"></div>
+  <div class="grain"></div>
+  <div style="position:absolute;left:96px;top:86px;z-index:2;width:900px">
+    <img src="img/logo-color.png" style="width:300px;display:block;margin-bottom:40px" alt="">
+    <span class="hand" style="font-size:40px">Relatório visual · outubro de 2026</span>
+    <h1 style="font-size:104px;margin-top:6px">O novo site<br>do <span class="hl">CP2b</span></h1>
+    <p class="sub" style="font-size:32px;margin-top:22px;color:#3d3a33">Tudo o que mudou de <b>15/09</b> a <b>15/10/2026</b>, mostrado com prints reais do <b>antes</b> e do <b>depois</b>.</p>
+  </div>
+  <!-- colagem -->
+  <div style="position:absolute;right:120px;top:90px;width:700px;height:520px;z-index:2">
+    <div class="shot noimgbar" style="position:absolute;left:0;top:40px;width:520px;transform:rotate(-5deg);padding:12px 12px 40px"><div class="iw" style="border-radius:4px"><img src="img/eixos-new.jpg" alt=""></div><div class="tape" style="left:200px;top:-14px;transform:rotate(3deg)"></div></div>
+    <div class="shot noimgbar" style="position:absolute;left:230px;top:200px;width:470px;transform:rotate(4deg);padding:12px 12px 40px"><div class="iw" style="border-radius:4px"><img src="img/pub-ano1.jpg" alt=""></div><div class="tape" style="left:170px;top:-14px;transform:rotate(-4deg)"></div></div>
+  </div>
+  <img src="img/metaninho-feliz.webp" style="position:absolute;right:80px;top:640px;width:230px;z-index:3;transform:rotate(6deg)" alt="">
+  <div style="position:absolute;left:96px;right:96px;bottom:200px;display:flex;gap:22px;z-index:2">
+    <span class="chip" style="font-size:22px;padding:10px 20px"><i class="bi bi-palette-fill"></i> Nova identidade "papel"</span>
+    <span class="chip" style="font-size:22px;padding:10px 20px"><i class="bi bi-emoji-smile"></i> Metaninho, o mascote</span>
+    <span class="chip" style="font-size:22px;padding:10px 20px"><i class="bi bi-plus-circle-fill"></i> 2 páginas novas</span>
+    <span class="chip" style="font-size:22px;padding:10px 20px"><i class="bi bi-arrow-repeat"></i> 5 páginas reformuladas</span>
+    <span class="chip" style="font-size:22px;padding:10px 20px"><i class="bi bi-lightning-charge-fill"></i> Mais leve e seguro</span>
+  </div>
+  <div style="position:absolute;left:96px;bottom:44px;font-size:19px;color:var(--muted);z-index:2">Centro Paulista de Estudos em Biogás e Bioprodutos · <b style="color:var(--petrol)">cp2b.unicamp.br</b></div>
+</section>
+
+<!-- ============ 2. O MÊS EM NÚMEROS ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head"><span class="hand">Visão geral</span><h1>Um mês de mudanças em <span class="hl">um olhar</span></h1></div>
+  <div class="row" style="gap:22px">
+    <div class="card" style="flex:1"><div class="big">19</div><div class="lbl">pacotes de mudança publicados<small>do nº 105 ao 124 no GitHub</small></div></div>
+    <div class="card" style="flex:1"><div class="big">2</div><div class="lbl">páginas novas<small>Cursos e Capacitação · HQ do Metaninho</small></div></div>
+    <div class="card" style="flex:1"><div class="big">5</div><div class="lbl">páginas reformuladas<small>Sobre · Eixos · Soluções · Publicações · Equipe</small></div></div>
+    <div class="card" style="flex:1"><div class="big">20</div><div class="lbl">páginas internas com a nova identidade<small>faixa de papel kraft em todas</small></div></div>
+    <div class="card" style="flex:1"><div class="big" style="color:var(--amber)">0</div><div class="lbl">vulnerabilidades no servidor<small>eram 5 (2 altas)</small></div></div>
+  </div>
+  <!-- linha do tempo -->
+  <div style="position:relative;margin-top:96px;height:450px">
+    <div style="position:absolute;left:0;right:0;top:111px;height:10px;border-radius:8px;background:linear-gradient(90deg,var(--petrol),var(--gd),var(--green),var(--lime))"></div>
+    <div style="display:grid;grid-template-columns:repeat(8,1fr);gap:14px;position:relative">
+      <!-- nó -->
+      <div class="col" style="align-items:center;text-align:center"><div style="font-family:'Caveat';font-weight:700;font-size:40px;color:var(--amber)">15/09</div><div class="ico" style="width:76px;height:76px;font-size:38px;margin-top:14px;background:var(--petrol);color:#fff;border:5px solid var(--paper)"><i class="bi bi-lightning-charge-fill"></i></div><div class="lbl" style="font-size:23px;margin-top:18px">Site mais leve</div><div class="cap" style="font-size:19px;margin-top:6px">carrega só a página aberta</div></div>
+      <div class="col" style="align-items:center;text-align:center"><div style="font-family:'Caveat';font-weight:700;font-size:40px;color:var(--amber)">25/09</div><div class="ico" style="width:76px;height:76px;font-size:38px;margin-top:14px;background:var(--petrol);color:#fff;border:5px solid var(--paper)"><i class="bi bi-grid-3x3-gap-fill"></i></div><div class="lbl" style="font-size:23px;margin-top:18px">Conteúdo novo</div><div class="cap" style="font-size:19px;margin-top:6px">Eixos, Soluções, Publicações e Equipe</div></div>
+      <div class="col" style="align-items:center;text-align:center"><div style="font-family:'Caveat';font-weight:700;font-size:40px;color:var(--amber)">26/09</div><div class="ico" style="width:76px;height:76px;font-size:38px;margin-top:14px;background:var(--gd);color:#fff;border:5px solid var(--paper)"><i class="bi bi-mortarboard-fill"></i></div><div class="lbl" style="font-size:23px;margin-top:18px">Cursos e Capacitação</div><div class="cap" style="font-size:19px;margin-top:6px">+ celular, segurança e Google</div></div>
+      <div class="col" style="align-items:center;text-align:center"><div style="font-family:'Caveat';font-weight:700;font-size:40px;color:var(--amber)">28/09</div><div class="ico" style="width:76px;height:76px;font-size:38px;margin-top:14px;background:var(--gd);color:#fff;border:5px solid var(--paper)"><i class="bi bi-stars"></i></div><div class="lbl" style="font-size:23px;margin-top:18px">Movimento</div><div class="cap" style="font-size:19px;margin-top:6px">animações, filtros e régua de TRL</div></div>
+      <div class="col" style="align-items:center;text-align:center"><div style="font-family:'Caveat';font-weight:700;font-size:40px;color:var(--amber)">29/09</div><div class="ico" style="width:76px;height:76px;font-size:38px;margin-top:14px;background:var(--amber);color:#fff;border:5px solid var(--paper);transform:scale(1.15)"><i class="bi bi-palette-fill"></i></div><div class="lbl" style="font-size:23px;margin-top:18px">Identidade "papel"<br>+ Metaninho</div><div class="cap" style="font-size:19px;margin-top:6px">a grande virada visual</div></div>
+      <div class="col" style="align-items:center;text-align:center"><div style="font-family:'Caveat';font-weight:700;font-size:40px;color:var(--amber)">02/10</div><div class="ico" style="width:76px;height:76px;font-size:38px;margin-top:14px;background:var(--green);color:#fff;border:5px solid var(--paper)"><i class="bi bi-envelope-paper-fill"></i></div><div class="lbl" style="font-size:23px;margin-top:18px">Newsletter e galeria</div><div class="cap" style="font-size:19px;margin-top:6px">planilha semanal, legendas, YouTube/Spotify</div></div>
+      <div class="col" style="align-items:center;text-align:center"><div style="font-family:'Caveat';font-weight:700;font-size:40px;color:var(--amber)">09/10</div><div class="ico" style="width:76px;height:76px;font-size:38px;margin-top:14px;background:var(--green);color:#fff;border:5px solid var(--paper)"><i class="bi bi-shield-check"></i></div><div class="lbl" style="font-size:23px;margin-top:18px">Painel e segurança</div><div class="cap" style="font-size:19px;margin-top:6px">salvar sem erro, sistema atualizado</div></div>
+      <div class="col" style="align-items:center;text-align:center"><div style="font-family:'Caveat';font-weight:700;font-size:40px;color:var(--amber)">13/10</div><div class="ico" style="width:76px;height:76px;font-size:38px;margin-top:14px;background:var(--gd);color:#fff;border:5px solid var(--paper)"><i class="bi bi-book-half"></i></div><div class="lbl" style="font-size:23px;margin-top:18px">HQ do Metaninho</div><div class="cap" style="font-size:19px;margin-top:6px">leitor online + PDF para imprimir</div></div>
+    </div>
+    <div style="position:absolute;left:0;right:0;bottom:30px;display:flex;justify-content:center;gap:44px;font-size:22px;color:var(--muted)">
+      <span><i class="bi bi-circle-fill" style="color:var(--petrol)"></i> conteúdo e base</span>
+      <span><i class="bi bi-circle-fill" style="color:var(--gd)"></i> páginas e experiência</span>
+      <span><i class="bi bi-circle-fill" style="color:var(--amber)"></i> identidade visual</span>
+      <span><i class="bi bi-circle-fill" style="color:var(--green)"></i> painel e bastidores</span>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">02 / 20</span></div>
+</section>
+
+<!-- ============ 3. MAPA DO MENU ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head"><span class="hand">Onde estão as novidades</span><h1>O menu do site, <span class="hl">marcado</span></h1><p class="sub">Cada selo mostra o que é novo ou mudou. Siga as cores nos próximos slides.</p></div>
+  <!-- barra do menu -->
+  <div class="card" style="padding:18px 28px;display:flex;align-items:center;gap:30px;font-weight:700;font-size:24px;color:var(--petrol)">
+    <img src="img/logo-color.png" style="height:56px" alt="">
+    <span>Sobre <i class="bi bi-caret-down-fill" style="font-size:14px"></i></span>
+    <span>Comunicação <i class="bi bi-caret-down-fill" style="font-size:14px"></i></span>
+    <span style="position:relative">Eixos<span class="badge b-reno" style="position:absolute;left:50%;top:-56px;transform:translateX(-50%);font-size:15px;padding:5px 11px">Renovado</span></span>
+    <span style="position:relative;background:var(--soft);padding:6px 12px;border-radius:10px">Infraestrutura e Soluções<span class="badge b-nome" style="position:absolute;left:50%;top:-50px;transform:translateX(-50%);font-size:15px;padding:5px 11px">Nome novo + renovado</span></span>
+    <span style="position:relative;background:var(--soft);padding:6px 12px;border-radius:10px">Publicações<span class="badge b-nome" style="position:absolute;left:50%;top:-50px;transform:translateX(-50%);font-size:15px;padding:5px 11px">Nome curto + renovado</span></span>
+    <span>Fórum Paulista</span>
+    <span style="margin-left:auto;display:flex;gap:10px"><span style="background:var(--gd);color:#fff;border-radius:999px;padding:9px 20px;font-size:20px">PILAR-2b</span><span style="background:var(--petrol);color:#fff;border-radius:999px;padding:9px 20px;font-size:20px">Arqueia</span></span>
+  </div>
+  <div class="row" style="margin-top:30px;gap:30px;align-items:stretch">
+    <!-- Sobre -->
+    <div class="card" style="width:430px;padding:20px 26px">
+      <div class="handnote" style="color:var(--gd);margin-bottom:10px">Sobre ▾</div>
+      <div style="display:flex;flex-direction:column;gap:16px;font-size:24px;font-weight:600">
+        <div style="display:flex;justify-content:space-between;align-items:center">Visão Geral <span class="badge b-reno" style="font-size:14px;padding:4px 10px">Renovado</span></div>
+        <div>Governança</div><div>Indicadores</div><div>Transparência</div><div>Parceiros</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;border-top:1.5px dashed var(--line);padding-top:12px">Equipe <span class="badge b-reno" style="font-size:14px;padding:4px 10px">Renovado</span></div>
+        <div style="border-top:1.5px dashed var(--line);padding-top:12px">Oportunidades</div><div>Eventos</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(182,224,59,.25);margin:0 -12px;padding:8px 12px;border-radius:10px"><b>Cursos e Capacitação</b> <span class="badge b-novo" style="font-size:14px;padding:4px 10px">Novo</span></div>
+      </div>
+    </div>
+    <!-- Comunicação -->
+    <div class="card" style="width:430px;padding:20px 26px">
+      <div class="handnote" style="color:var(--gd);margin-bottom:10px">Comunicação ▾</div>
+      <div style="display:flex;flex-direction:column;gap:16px;font-size:24px;font-weight:600">
+        <div>Notícias</div><div>Microscópio</div><div>Entrevistas</div><div>Podcast</div><div>Boletins</div><div>Galeria</div><div>Press Kit</div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(182,224,59,.25);margin:0 -12px;padding:8px 12px;border-radius:10px"><b>Metaninho (HQ)</b> <span class="badge b-novo" style="font-size:14px;padding:4px 10px">Novo</span></div>
+        <div>Newsletter</div>
+      </div>
+    </div>
+    <!-- legenda -->
+    <div class="col" style="flex:1;gap:18px;padding-top:2px">
+      <div style="display:flex;flex-wrap:wrap;gap:14px 26px">
+        <div style="display:flex;align-items:center;gap:10px"><span class="badge b-novo" style="font-size:16px">Novo</span><span style="font-size:20px">não existia</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span class="badge b-reno" style="font-size:16px">Renovado</span><span style="font-size:20px">refeita por dentro</span></div>
+        <div style="display:flex;align-items:center;gap:10px"><span class="badge b-nome" style="font-size:16px">Nome novo</span><span style="font-size:20px">renomeado no menu</span></div>
+      </div>
+      <div class="card" style="padding:16px 18px">
+        <div style="font-size:15px;font-weight:900;letter-spacing:.08em;color:#8a8577">O MENU REAL · ANTES</div>
+        <div style="position:relative;margin-top:6px"><img src="img/header-old.jpg" style="width:100%;display:block;border-radius:6px;border:1.5px solid var(--line)" alt=""><div class="ring" style="left:49.5%;top:42%;width:20.5%;height:36%;border-radius:10px"></div></div>
+        <div style="font-size:15px;font-weight:900;letter-spacing:.08em;color:var(--gd);margin-top:12px">DEPOIS</div>
+        <div style="position:relative;margin-top:6px"><img src="img/header-new.jpg" style="width:100%;display:block;border-radius:6px;border:1.5px solid var(--line)" alt=""><div class="ring" style="left:46.5%;top:42%;width:23.5%;height:36%;border-radius:10px"></div></div>
+      </div>
+      <div class="card" style="background:var(--petrol);color:#fff;display:flex;gap:18px;align-items:center;padding:16px 22px">
+        <i class="bi bi-brush-fill" style="font-size:40px;color:var(--lime)"></i>
+        <div style="font-size:21px;line-height:1.3"><b>Em todas as páginas:</b> identidade "papel" e rodapé novo. <b>Fora da Home:</b> o Metaninho no rodapé — clique nele!</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;font-size:19px;color:var(--muted)"><i class="bi bi-youtube" style="color:#e00;font-size:28px"></i><i class="bi bi-spotify" style="color:#1DB954;font-size:28px"></i> Links de YouTube e Spotify atualizados no topo, na barra lateral e no rodapé.</div>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">03 / 20</span></div>
+</section>
+
+<!-- ============ 4. IDENTIDADE: ANTES × DEPOIS ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:12px"><span class="hand">Identidade visual</span><h1>Do cinza digital ao <span class="hl">papel recortado</span></h1><p class="sub">O site agora tem a mesma cara dos vídeos educativos do CP2b: papel, fita crepe e letra à mão.</p></div>
+  <div style="display:grid;grid-template-columns:640px 96px 1024px;align-items:start">
+    <div class="col">
+      <span class="tag t-antes"><i class="bi bi-clock-history"></i> ANTES · 15/09</span>
+      <div class="shot old"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">cp2b.unicamp.br/<b>sobre</b></span></div><div class="iw" style="height:344px"><img src="img/sobre-old.jpg" alt=""></div></div>
+      <div class="cap" style="margin-top:14px">Faixa escura em degradê, fundo cinza e botão azul genérico.</div>
+      <div style="margin-top:22px;font-weight:800;font-size:22px;color:var(--petrol)">O que mudou no depois <span class="handnote" style="font-size:28px">(veja os números →)</span></div>
+      <ol class="legend" style="margin-top:14px;gap:11px">
+        <li style="font-size:20px"><span class="n">1</span>Etiqueta escrita à mão, presa com fita</li>
+        <li style="font-size:20px"><span class="n">2</span>Foto real "colada" como cópia impressa</li>
+        <li style="font-size:20px"><span class="n">3</span>Faixa de papel kraft com borda rasgada</li>
+      </ol>
+    </div>
+    <div class="arrow" style="margin-top:300px"><svg viewBox="0 0 64 64"><path d="M8 32h40M34 16l16 16-16 16" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg><span>virou</span></div>
+    <div class="col">
+      <span class="tag t-depois"><i class="bi bi-check2-circle"></i> DEPOIS · HOJE</span>
+      <div class="shot"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">cp2b.unicamp.br/<b>sobre</b></span></div>
+        <div class="iw"><img src="img/sobre-new.jpg" alt="">
+          <span class="pin" style="left:18.5%;top:33%">1</span>
+          <span class="pin" style="left:76%;top:37%">2</span>
+          <span class="pin" style="left:88%;top:84%">3</span>
+          <span class="pin" style="left:61.8%;top:7.5%">4</span>
+          <span class="pin" style="left:84.5%;top:6.5%">5</span>
+          <span class="pin" style="left:21.5%;top:93%">6</span>
+        </div>
+      </div>
+      <ol class="legend" start="4" style="margin-top:12px;flex-direction:row;gap:26px">
+        <li style="font-size:20px;flex:1"><span class="n">4</span>Menu com nomes novos</li>
+        <li style="font-size:20px;flex:1"><span class="n">5</span>Botões PILAR-2b e Arqueia em cor chapada</li>
+        <li style="font-size:20px;flex:1.2"><span class="n">6</span>Mesmo menu agora nas 5 páginas de Sobre</li>
+      </ol>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">04 / 20</span></div>
+</section>
+
+<!-- ============ 5. GLOSSÁRIO DO PAPEL ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head"><span class="hand">Identidade visual</span><h1>As peças do <span class="hl">"papel"</span>, de perto</h1></div>
+  <div style="display:grid;grid-template-columns:1190px 1fr;gap:40px">
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+      <div class="card" style="padding:16px"><div style="height:270px;display:grid;place-items:center;background:var(--kraft);border-radius:8px;overflow:hidden"><img src="img/z-label.jpg" style="width:92%" alt=""></div><div class="lbl" style="margin-top:12px">Etiqueta à mão + fita crepe<small>no lugar dos rótulos em caixa-alta</small></div></div>
+      <div class="card" style="padding:16px"><div style="height:270px;display:grid;place-items:center;background:var(--kraft);border-radius:8px;overflow:hidden"><img src="img/z-photo.jpg" style="height:262px" alt=""></div><div class="lbl" style="margin-top:12px">Foto real "colada"<small>em 11 páginas: Sobre, Equipe, Eixos, Soluções…</small></div></div>
+      <div class="card" style="padding:16px"><div style="height:270px;display:grid;place-items:center;background:var(--paper);border-radius:8px;overflow:hidden"><img src="img/z-card.jpg" style="height:258px" alt=""></div><div class="lbl" style="margin-top:12px">Cartão = folha de papel<small>sombra curta e fita no topo</small></div></div>
+      <div class="card" style="padding:16px"><div style="height:270px;display:grid;place-items:center;background:var(--paper);border-radius:8px;overflow:hidden"><img src="img/z-footer.jpg" style="width:100%" alt=""></div><div class="lbl" style="margin-top:12px">Borda rasgada<small>no fim da faixa de título e no rodapé</small></div></div>
+      <div class="card" style="padding:16px"><div style="height:270px;display:flex;flex-direction:column;justify-content:center;gap:10px;background:var(--paper);border-radius:8px;padding:0 10px"><div style="font-size:14px;font-weight:800;color:#8a8577">ANTES</div><div style="overflow:hidden;border-radius:8px"><img src="img/z-subnav-old.jpg" style="width:170%;display:block" alt=""></div><div style="font-size:14px;font-weight:800;color:var(--gd)">DEPOIS</div><div style="overflow:hidden;border-radius:8px"><img src="img/z-subnav.jpg" style="width:170%;display:block" alt=""></div></div><div class="lbl" style="margin-top:12px">Sai o azul genérico<small>controles em tom de papel</small></div></div>
+      <div class="card" style="padding:16px"><div style="height:270px;display:flex;flex-direction:column;justify-content:center;gap:8px;background:var(--paper);border-radius:8px;padding:0 10px"><div style="font-size:14px;font-weight:800;color:#8a8577">ANTES</div><img src="img/z-pills-old.jpg" style="width:100%" alt=""><div style="font-size:14px;font-weight:800;color:var(--gd)">DEPOIS</div><img src="img/z-pills.jpg" style="width:100%" alt=""></div><div class="lbl" style="margin-top:12px">Degradê vira cor chapada<small>botões em pílula, cores da marca</small></div></div>
+    </div>
+    <div class="col" style="gap:20px">
+      <div class="card">
+        <div class="handnote" style="color:var(--gd);font-size:30px">Paleta</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+          <div style="display:flex;gap:10px;align-items:center"><i style="width:44px;height:44px;border-radius:10px;background:#FBF8F0;border:1.5px solid var(--line)"></i><span style="font-size:17px"><b>Papel</b><br>#FBF8F0</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><i style="width:44px;height:44px;border-radius:10px;background:#F3EAD8;border:1.5px solid var(--line)"></i><span style="font-size:17px"><b>Kraft</b><br>#F3EAD8</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><i style="width:44px;height:44px;border-radius:10px;background:#1E3E4C"></i><span style="font-size:17px"><b>Petróleo</b><br>#1E3E4C</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><i style="width:44px;height:44px;border-radius:10px;background:#00573A"></i><span style="font-size:17px"><b>Verde-escuro</b><br>#00573A</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><i style="width:44px;height:44px;border-radius:10px;background:#B6E03B"></i><span style="font-size:17px"><b>Lima</b><br>#B6E03B</span></div>
+          <div style="display:flex;gap:10px;align-items:center"><i style="width:44px;height:44px;border-radius:10px;background:#D37402"></i><span style="font-size:17px"><b>Âmbar</b><br>#D37402</span></div>
+        </div>
+      </div>
+      <div class="card" style="flex:1;display:flex;flex-direction:column;justify-content:center">
+        <div class="handnote" style="color:var(--gd);font-size:30px">Letras</div>
+        <div style="margin-top:10px;font-family:'Neulis Neue';font-weight:900;font-size:40px;color:var(--petrol);line-height:1">Neulis</div>
+        <div style="font-size:17px;color:var(--muted)">títulos e textos (como antes)</div>
+        <div style="margin-top:14px;font-family:'Caveat';font-weight:700;font-size:46px;color:var(--gd);line-height:1">Caveat, à mão</div>
+        <div style="font-size:17px;color:var(--muted)">só em etiquetas curtas — nunca em texto corrido</div>
+      </div>
+      <div class="card" style="background:var(--soft);box-shadow:none;padding:16px 20px;font-size:19px;line-height:1.35"><i class="bi bi-universal-access" style="color:var(--gd);font-size:22px"></i> O lima fica só nos detalhes (filetes e marca-texto): em letra pequena ele fica difícil de ler.</div>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">05 / 20</span></div>
+</section>
+
+<!-- ============ 6. 404 + RODAPÉ ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:18px"><span class="hand">Rodapé e página de erro</span><h1>Até o "não encontrado" <span class="hl">ganhou vida</span></h1></div>
+  <div style="display:grid;grid-template-columns:650px 70px 650px 1fr;gap:0;align-items:start">
+    <div class="col"><span class="tag t-antes"><i class="bi bi-clock-history"></i> ANTES</span>
+      <div class="shot old"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">cp2b.unicamp.br/<b>pagina-que-nao-existe</b></span></div><div class="iw"><img src="img/404-old.jpg" alt=""></div></div>
+    </div>
+    <div class="arrow" style="margin-top:330px"><svg viewBox="0 0 64 64"><path d="M8 32h40M34 16l16 16-16 16" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="col"><span class="tag t-depois"><i class="bi bi-check2-circle"></i> DEPOIS</span>
+      <div class="shot"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">cp2b.unicamp.br/<b>pagina-que-nao-existe</b></span></div><div class="iw"><img src="img/404-new.jpg" alt="">
+        <span class="pin" style="left:42%;top:19%">1</span>
+        <span class="pin" style="left:30.8%;top:33.7%">2</span>
+        <span class="pin" style="left:84%;top:53%">3</span>
+        <span class="pin" style="left:20.8%;top:57.3%">4</span>
+        <span class="pin" style="left:30.8%;top:75.1%">5</span>
+        <span class="pin" style="left:46%;top:85.3%">6</span>
+      </div></div>
+    </div>
+    <div class="col" style="padding:58px 0 0 34px;gap:28px"><ol class="legend" style="gap:20px">
+      <li><span class="n">1</span><div>Metaninho surpreso<small>recebe quem se perdeu · <i class="bi bi-hand-index-thumb-fill" style="color:var(--amber)"></i> clique nele!</small></div></li>
+      <li><span class="n">2</span><div>Acentos corrigidos<small>"Pagina nao encontrada" → "Página não encontrada"</small></div></li>
+      <li><span class="n">3</span><div>Metaninho sentado no rodapé<small><i class="bi bi-hand-index-thumb-fill" style="color:var(--amber)"></i> clique nele!</small></div></li>
+      <li><span class="n">4</span><div>Borda de papel rasgado</div></li>
+      <li><span class="n">5</span><div>Títulos escritos à mão</div></li>
+      <li><span class="n">6</span><div>Novo link<small>Cursos e Capacitação</small></div></li>
+    </ol>
+    <div class="card" style="display:flex;gap:14px;align-items:center;padding:16px 18px"><i class="bi bi-hand-index-thumb-fill" style="color:var(--amber);font-size:34px"></i><div style="font-size:20px;line-height:1.3">Os dois Metaninhos (<b>1</b> e <b>3</b>) <b>falam quando você clica</b>. Veja no próximo slide.</div></div>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">06 / 20</span></div>
+</section>
+
+<!-- ============ 7. METANINHO ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:14px"><span class="hand">Novo personagem</span><h1>Conheça o <span class="hl">Metaninho</span></h1><p class="sub">A molécula de metano (CH₄) de papel recortado, mascote oficial do CP2b.</p><span class="badge b-novo" style="top:30px"><i class="bi bi-stars"></i> Novo</span></div>
+  <div style="display:grid;grid-template-columns:760px 1fr;gap:44px">
+    <div class="col" style="gap:28px">
+      <div class="card" style="padding:18px 20px">
+        <div class="handnote" style="color:var(--gd);font-size:30px">6 poses de papel recortado</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px;margin-top:10px;text-align:center">
+          <div><img src="img/metaninho-surpreso.webp" style="height:145px" alt=""><div class="lbl" style="font-size:18px;margin:2px 0 0">Surpreso<small>página 404 ou conteúdo inexistente</small></div></div>
+          <div><img src="img/metaninho-curioso.webp" style="height:145px" alt=""><div class="lbl" style="font-size:18px;margin:2px 0 0">Curioso<small>busca ou filtro sem resultado</small></div></div>
+          <div><img src="img/metaninho-feliz.webp" style="height:145px" alt=""><div class="lbl" style="font-size:18px;margin:2px 0 0">Feliz<small>mensagem enviada, inscrição feita</small></div></div>
+          <div><img src="img/metaninho-tranquilo.webp" style="height:145px" alt=""><div class="lbl" style="font-size:18px;margin:2px 0 0">Tranquilo<small>nada publicado ainda · manutenção</small></div></div>
+          <div><img src="img/metaninho-neutro.webp" style="height:145px" alt=""><div class="lbl" style="font-size:18px;margin:2px 0 0">Neutro<small>pose padrão</small></div></div>
+          <div><img src="img/metaninho-em-pe.webp" style="height:145px" alt=""><div class="lbl" style="font-size:18px;margin:2px 0 0">Em pé</div></div>
+        </div>
+      </div>
+      <div class="card" style="display:flex;gap:18px;align-items:center;padding:16px 20px">
+        <div style="flex:0 0 330px"><img src="img/equipe-metaninho2.jpg" style="width:100%;border-radius:8px;border:1.5px solid var(--line)" alt=""></div>
+        <div><div class="handnote" style="font-size:30px">Mais um segredo</div><div style="font-size:21px;line-height:1.3;margin-top:6px">Em <b class="url">/equipe</b>, busque <b>"metaninho"</b>: aparece o cartão do mascote.</div></div>
+      </div>
+    </div>
+    <div class="col" style="gap:38px">
+      <div style="display:flex;align-items:center;gap:22px"><span class="click" style="font-size:34px;padding:16px 30px"><i class="bi bi-hand-index-thumb-fill"></i> Clique no Metaninho!</span><span style="font-size:22px;line-height:1.25;color:var(--muted)">Ele dá um pulinho e<br><b style="color:var(--petrol)">fala uma frase</b> num balão.</span></div>
+      <!-- como funciona -->
+      <div style="display:flex;align-items:center;gap:14px;font-size:20px;font-weight:700;color:var(--petrol)">
+        <span class="n">1</span>Clique (ou tecle Enter) <i class="bi bi-arrow-right" style="color:var(--amber);font-size:24px"></i>
+        <span class="n">2</span>Pulinho <i class="bi bi-arrow-right" style="color:var(--amber);font-size:24px"></i>
+        <span class="n">3</span>Balão com uma frase
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:26px">
+        <div class="col" style="gap:10px">
+          <span class="chip" style="align-self:flex-start;background:var(--petrol);color:#fff;border:0"><i class="bi bi-exclamation-octagon-fill" style="color:var(--lime)"></i> Na página 404</span>
+          <div class="shot noimgbar" style="position:relative"><div class="iw"><img src="img/404-bubble.jpg" alt=""></div>
+            <div class="ring" style="left:30%;top:12%;width:27%;height:84%;border-radius:50%"></div>
+            <i class="bi bi-hand-index-thumb-fill" style="position:absolute;left:46%;top:62%;font-size:66px;line-height:1;color:var(--amber);transform:rotate(-18deg);text-shadow:0 0 6px #fff,0 3px 0 #fff;z-index:6"></i>
+          </div>
+          <div class="cap" style="margin-top:2px">"Essa página virou gás!"</div>
+        </div>
+        <div class="col" style="gap:10px">
+          <span class="chip" style="align-self:flex-start;background:var(--petrol);color:#fff;border:0"><i class="bi bi-layout-text-window-reverse" style="color:var(--lime)"></i> No rodapé de toda página interna</span>
+          <div class="shot noimgbar" style="position:relative"><div class="iw"><img src="img/footer-bubble.jpg" alt=""></div>
+            <div class="ring" style="left:66%;top:16%;width:30%;height:76%;border-radius:50%"></div>
+            <i class="bi bi-hand-index-thumb-fill" style="position:absolute;left:80%;top:56%;font-size:66px;line-height:1;color:var(--amber);transform:rotate(-18deg);text-shadow:0 0 6px #fff,0 3px 0 #fff;z-index:6"></i>
+          </div>
+          <div class="cap" style="margin-top:2px">"Oi! Eu sou o Metaninho: um carbono e quatro hidrogênios."</div>
+        </div>
+      </div>
+      <div class="card" style="display:flex;gap:16px;align-items:center;padding:14px 20px;background:rgba(182,224,59,.22);box-shadow:none;border:1.5px dashed var(--green)"><i class="bi bi-arrow-repeat" style="color:var(--gd);font-size:30px"></i><div style="font-size:20px;line-height:1.3">As frases <b>mudam a cada clique</b> e o balão some sozinho. Funciona também no teclado e no leitor de tela.</div></div>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">07 / 20</span></div>
+</section>
+
+<!-- ============ 8. HQ DO METANINHO ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head"><span class="hand">Página nova · Comunicação → Metaninho</span><h1>HQ <span class="hl">"Metaninho no Intercocen"</span></h1><span class="badge b-novo" style="top:30px"><i class="bi bi-stars"></i> Novo</span></div>
+  <div style="display:grid;grid-template-columns:920px 1fr;gap:50px">
+    <div class="col">
+      <div class="shot"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">cp2b.unicamp.br/<b>metaninho</b></span></div><div class="iw"><img src="img/hq-reader.jpg" alt="">
+        <span class="pin g" style="left:50.5%;top:61.5%">1</span>
+        <span class="pin g" style="left:23.7%;top:86.4%">2</span>
+        <span class="pin g" style="left:77.4%;top:92.3%">3</span>
+      </div></div>
+    </div>
+    <div class="col" style="gap:20px">
+      <ol class="legend" style="gap:18px">
+        <li><span class="n g">1</span><div>Leitor com virada de página<small>2 páginas no computador · 1 no celular</small></div></li>
+        <li><span class="n g">2</span><div>Vire como preferir<small>clique na página, deslize o dedo ou use ← →</small></div></li>
+        <li><span class="n g">3</span><div>Tela cheia e barra de progresso</div></li>
+        <li><span class="n g">4</span><div>Versão para imprimir<small>4 folhas A4 → baixe, dobre e grampeie: vira um gibi de 16 páginas</small></div></li>
+      </ol>
+      <div class="card" style="margin-top:6px;padding:16px">
+        <div style="position:relative;line-height:0"><img src="img/hq-print.jpg" style="width:100%;border-radius:6px" alt=""><span class="pin g" style="left:43%;top:77.6%">4</span></div>
+      </div>
+
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">08 / 20</span></div>
+</section>
+
+<!-- ============ 9. EIXOS ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:16px"><span class="hand">/eixos</span><h1>Os 8 eixos <span class="hl">numa só figura</span></h1><span class="badge b-reno" style="top:30px"><i class="bi bi-arrow-repeat"></i> Renovado</span></div>
+  <div style="display:grid;grid-template-columns:520px 70px 840px 1fr;align-items:start">
+    <div class="col"><span class="tag t-antes"><i class="bi bi-clock-history"></i> ANTES</span>
+      <div class="shot old"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">…/<b>eixos</b></span></div><div class="iw"><img src="img/eixos-old.jpg" alt=""></div></div>
+      <div class="cap">Lista de eixos + mapa mental com texto longo, que rolava para os lados.</div>
+    </div>
+    <div class="arrow" style="margin-top:300px"><svg viewBox="0 0 64 64"><path d="M8 32h40M34 16l16 16-16 16" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="col"><span class="tag t-depois"><i class="bi bi-check2-circle"></i> DEPOIS</span>
+      <div class="shot"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">cp2b.unicamp.br/<b>eixos</b></span></div><div class="iw"><img src="img/eixos-new.jpg" alt="">
+        <span class="pin" style="left:9%;top:45%">1</span>
+        <span class="pin" style="left:50%;top:60%">2</span>
+        <span class="pin" style="left:5.5%;top:86%">3</span>
+        <span class="pin" style="left:68.8%;top:92.2%">4</span>
+      </div></div>
+    </div>
+    <div class="col" style="padding:56px 0 0 30px;gap:22px"><ol class="legend" style="gap:22px">
+      <li><span class="n">1</span><div>Cor e ícone próprios por eixo<small>usados da figura ao detalhamento</small></div></li>
+      <li><span class="n">2</span><div>Logo do CP2b ao centro</div></li>
+      <li><span class="n">3</span><div>Os 2 coordenadores com o mesmo destaque<small>não existe mais "coordenador adjunto"</small></div></li>
+      <li><span class="n">4</span><div>Clique → abre o eixo<small>escopo, ODS, competências e projetos</small></div></li>
+    </ol>
+      <div class="shot noimgbar"><div class="iw"><img src="img/eixos-explorer.jpg" alt=""></div></div><div class="cap" style="margin-top:0">O que abre ao clicar (4): o eixo com escopo, ODS, competências e projetos.</div>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">09 / 20</span></div>
+</section>
+
+<!-- ============ 10. DO RESÍDUO À ENERGIA ============ -->
+<section class="slide" style="background:var(--petrol);color:#fff"><div class="grain" style="opacity:.25"></div>
+  <div class="head"><span class="hand">/eixos · nova faixa</span><h1 style="color:#fff">Do resíduo à energia, <span style="color:var(--lime)">em 5 etapas</span></h1><p class="sub" style="color:#cfdde2">A cadeia do biogás contada passo a passo — e quais eixos do CP2b atuam em cada etapa.</p></div>
+  <div style="display:grid;grid-template-columns:1060px 1fr;gap:50px;align-items:start">
+    <div class="col" style="gap:26px">
+    <div class="shot" style="box-shadow:0 0 0 2px rgba(255,255,255,.15)"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">cp2b.unicamp.br/<b>eixos</b> · role a página</span></div><div class="iw"><img src="img/eixos-w2e.jpg" alt="">
+      <span class="pin" style="left:10.4%;top:26.1%">A</span><span class="pin" style="left:45.3%;top:48.6%">B</span><span class="pin" style="left:42.6%;top:90.5%">C</span></div></div>
+      <ol class="legend" style="flex-direction:row;gap:36px">
+        <li style="flex:1"><span class="n">A</span><div>Ilustração<small style="color:#cfdde2">muda a cada etapa</small></div></li>
+        <li style="flex:1"><span class="n">B</span><div>Etiquetas dos eixos<small style="color:#cfdde2">levam direto ao eixo certo</small></div></li>
+        <li style="flex:1"><span class="n">C</span><div>Trilha das 5 etapas<small style="color:#cfdde2">acompanha a rolagem</small></div></li>
+      </ol>
+    </div>
+    <div class="col" style="gap:18px">
+      <div style="display:flex;align-items:center;gap:16px"><span class="ico" style="background:var(--lime);color:var(--petrol)"><i class="bi bi-geo-alt-fill"></i></span><div><div style="font-family:'Caveat';font-size:28px;color:var(--lime)">01 · Mapear</div><div style="font-size:21px;font-weight:700">Onde está o resíduo</div></div></div>
+      <i class="bi bi-arrow-down" style="font-size:24px;color:var(--amber);margin-left:18px"></i>
+      <div style="display:flex;align-items:center;gap:16px"><span class="ico" style="background:var(--lime);color:var(--petrol)"><i class="bi bi-droplet-fill"></i></span><div><div style="font-family:'Caveat';font-size:28px;color:var(--lime)">02 · Converter</div><div style="font-size:21px;font-weight:700">Digestão anaeróbia</div></div></div>
+      <i class="bi bi-arrow-down" style="font-size:24px;color:var(--amber);margin-left:18px"></i>
+      <div style="display:flex;align-items:center;gap:16px"><span class="ico" style="background:var(--lime);color:var(--petrol)"><i class="bi bi-lightning-charge-fill"></i></span><div><div style="font-family:'Caveat';font-size:28px;color:var(--lime)">03 · Energizar</div><div style="font-size:21px;font-weight:700">Biometano e eletricidade</div></div></div>
+      <i class="bi bi-arrow-down" style="font-size:24px;color:var(--amber);margin-left:18px"></i>
+      <div style="display:flex;align-items:center;gap:16px"><span class="ico" style="background:var(--lime);color:var(--petrol)"><i class="bi bi-recycle"></i></span><div><div style="font-family:'Caveat';font-size:28px;color:var(--lime)">04 · Valorizar</div><div style="font-size:21px;font-weight:700">Nada se perde</div></div></div>
+      <i class="bi bi-arrow-down" style="font-size:24px;color:var(--amber);margin-left:18px"></i>
+      <div style="display:flex;align-items:center;gap:16px"><span class="ico" style="background:var(--lime);color:var(--petrol)"><i class="bi bi-buildings-fill"></i></span><div><div style="font-family:'Caveat';font-size:28px;color:var(--lime)">05 · Escalar</div><div style="font-size:21px;font-weight:700">Da bancada ao território</div></div></div>
+
+    </div>
+  </div>
+  <div class="foot" style="background:var(--petrol);color:#cfdde2;border-top-color:rgba(255,255,255,.2)"><span><b style="color:#fff">CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg" style="color:#fff">10 / 20</span></div>
+</section>
+
+<!-- ============ 11. INFRAESTRUTURA E SOLUÇÕES ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:16px"><span class="hand">/solucoes</span><h1>"Soluções" virou <span class="hl">Infraestrutura e Soluções</span></h1><span class="badge b-nome" style="top:30px">Nome novo + renovado</span></div>
+  <div style="display:grid;grid-template-columns:500px 70px 880px 1fr;align-items:start">
+    <div class="col"><span class="tag t-antes"><i class="bi bi-clock-history"></i> ANTES</span>
+      <div class="shot old"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">…/<b>solucoes</b></span></div><div class="iw"><img src="img/sol-old.jpg" alt=""></div></div>
+      <div class="cap">Um paredão de cartões de texto, sem os laboratórios.</div>
+    </div>
+    <div class="arrow" style="margin-top:300px"><svg viewBox="0 0 64 64"><path d="M8 32h40M34 16l16 16-16 16" fill="none" stroke="currentColor" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+    <div class="col"><span class="tag t-depois"><i class="bi bi-check2-circle"></i> DEPOIS</span>
+      <div class="shot"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">cp2b.unicamp.br/<b>solucoes</b></span></div><div class="iw"><img src="img/sol-new.jpg" alt="">
+        <span class="pin" style="left:2.5%;top:31%">1</span>
+        <span class="pin" style="left:28.5%;top:68%">2</span>
+        <span class="pin" style="left:14%;top:76.7%">3</span>
+        <span class="pin" style="left:75%;top:25.6%">4</span>
+      </div></div>
+    </div>
+    <ol class="legend" style="padding:56px 0 0 30px;gap:22px">
+      <li><span class="n">1</span><div>Título e menu novos</div></li>
+      <li><span class="n">2</span><div>Régua de TRL 1 a 9<small>em 3 fases: conceito, validação, mercado</small></div></li>
+      <li><span class="n">3</span><div>Faixa de cada laboratório<small>CEMARA, CP2b Lab, PPBIOEN · ● = foco</small></div></li>
+      <li><span class="n">4</span><div>Foto real do prédio<small>logo abaixo: a ficha de cada laboratório</small></div></li>
+    </ol>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">11 / 20</span></div>
+</section>
+
+<!-- ============ 12. QUAL É O SEU DESAFIO ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:16px"><span class="hand">/solucoes · novidades</span><h1>Do problema ao <span class="hl">laboratório certo</span></h1></div>
+  <div style="display:grid;grid-template-columns:1010px 1fr;gap:40px">
+    <div class="col">
+      <div class="shot"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">"Qual é o seu desafio?"</span></div><div class="iw"><img src="img/sol-trlmatch.jpg" alt="">
+        <span class="pin" style="left:36.6%;top:27.1%">1</span>
+        <span class="pin" style="left:2.5%;top:55.7%">2</span>
+        <span class="pin" style="left:81%;top:52.6%">3</span>
+        <span class="pin" style="left:76%;top:92%">4</span>
+      </div></div>
+      <div style="display:flex;gap:18px;margin-top:20px;align-items:center;font-size:20px;font-weight:700;color:var(--petrol)">
+        <span class="n">1</span>Escolha o nível de maturidade <i class="bi bi-arrow-right" style="color:var(--amber)"></i>
+        <span class="n">2</span>Veja os laboratórios <i class="bi bi-arrow-right" style="color:var(--amber)"></i>
+        <span class="n">3</span>Abra os serviços <i class="bi bi-arrow-right" style="color:var(--amber)"></i>
+        <span class="n">4</span>Fale com o CP2b
+      </div>
+    </div>
+    <div class="col">
+      <div class="shot noimgbar"><div class="iw"><img src="img/sol-servicos.jpg" alt=""></div></div>
+      <div style="display:flex;gap:16px;align-items:center;margin-top:18px"><div class="big" style="font-size:66px">15</div><div class="lbl" style="font-size:21px;margin:0">serviços técnicos, cada um com ilustração própria<small>descrição abre ao clicar · filtros por laboratório e por TRL</small></div></div>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">12 / 20</span></div>
+</section>
+
+<!-- ============ 13. PUBLICAÇÕES ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:16px"><span class="hand">/publicacoes</span><h1>O Ano 1 da ciência do CP2b, <span class="hl">em números</span></h1><span class="badge b-reno" style="top:30px"><i class="bi bi-arrow-repeat"></i> Renovado</span></div>
+  <div style="display:grid;grid-template-columns:1080px 1fr;gap:40px">
+    <div class="col">
+      <div class="shot"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">cp2b.unicamp.br/<b>publicacoes</b></span></div><div class="iw"><img src="img/pub-ano1.jpg" alt=""></div></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:20px">
+        <div class="card" style="padding:14px 18px"><div class="big" style="font-size:52px">25</div><div class="lbl" style="font-size:17px">publicações em 2025</div></div>
+        <div class="card" style="padding:14px 18px"><div class="big" style="font-size:52px">64%</div><div class="lbl" style="font-size:17px">em periódicos Q1</div></div>
+        <div class="card" style="padding:14px 18px"><div class="big" style="font-size:52px;color:var(--amber)">84%</div><div class="lbl" style="font-size:17px">com pós-graduandos<small>meta era 80% <i class="bi bi-check-circle-fill" style="color:var(--green)"></i></small></div></div>
+        <div class="card" style="padding:14px 18px"><div class="big" style="font-size:52px">76%</div><div class="lbl" style="font-size:17px">coautoria entre instituições</div></div>
+      </div>
+    </div>
+    <div class="col" style="gap:18px">
+      <div class="shot noimgbar"><div class="iw"><img src="img/pub-nuvem.jpg" alt=""></div></div>
+      <div class="lbl" style="font-size:21px;margin:0">Nuvem de palavras <small>35 termos e as 12 expressões mais frequentes</small></div>
+      <div style="display:flex;gap:16px;align-items:flex-start">
+        <div style="flex:0 0 230px"><span class="tag t-antes" style="font-size:14px;padding:5px 12px">ANTES</span><div class="shot old noimgbar"><div class="iw"><img src="img/pub-old.jpg" alt=""></div></div></div>
+        <div class="cap" style="margin-top:42px;font-size:19px">Antes era só a lista. Agora cada número traz <b>fonte e período</b>, e a análise completa abre em "Ler a análise completa".</div>
+      </div>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">13 / 20</span></div>
+</section>
+
+<!-- ============ 14. EQUIPE ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:16px"><span class="hand">/equipe</span><h1>A equipe que <span class="hl">se conta sozinha</span></h1><span class="badge b-reno" style="top:30px"><i class="bi bi-arrow-repeat"></i> Renovado</span></div>
+  <div style="display:grid;grid-template-columns:1080px 1fr;gap:40px">
+    <div class="col">
+      <div class="shot"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">cp2b.unicamp.br/<b>equipe</b></span></div><div class="iw"><img src="img/equipe-num.jpg" alt="">
+        <span class="pin" style="left:68%;top:8%">!</span></div></div>
+      <div class="cap" style="font-size:20px;margin-top:16px"><span class="n" style="display:inline-grid;width:30px;height:30px;font-size:16px;vertical-align:middle">!</span> <b>Calculado do próprio cadastro:</b> quando alguém entra ou sai pelo painel, os números se atualizam sozinhos.</div>
+    </div>
+    <div class="col" style="gap:16px">
+      <div class="row" style="gap:16px">
+        <div class="card" style="flex:1;padding:16px 18px"><div class="big" style="font-size:62px">58</div><div class="lbl" style="font-size:18px">na equipe do CP2b</div></div>
+        <div class="card" style="flex:1;padding:16px 18px"><div class="big" style="font-size:62px">41</div><div class="lbl" style="font-size:18px">na rede externa</div></div>
+      </div>
+      <div class="row" style="gap:16px">
+        <div class="card" style="flex:1;padding:16px 18px"><div class="big" style="font-size:62px;color:var(--amber)">64%</div><div class="lbl" style="font-size:18px">da coordenação dos eixos é feminina<small>9 de 14 pessoas</small></div></div>
+        <div class="card" style="flex:1;padding:16px 18px"><div class="big" style="font-size:62px">84</div><div class="lbl" style="font-size:18px">de 99 com perfil público<small>Lattes, ORCID, Scholar…</small></div></div>
+      </div>
+      <div class="card" style="padding:16px 18px">
+        <div class="handnote" style="font-size:28px;color:var(--gd)">Filtro que vira link</div>
+        <div style="font-size:19px;margin-top:6px;line-height:1.35">Filtre e compartilhe o endereço:<br><span class="url" style="background:var(--soft);padding:3px 8px;border-radius:6px;font-size:18px">/equipe?categoria=eixo-2</span><br>Os cartões <b>deslizam</b> até o novo lugar.</div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:center"><div style="flex:0 0 200px"><span class="tag t-antes" style="font-size:14px;padding:5px 12px">ANTES</span><div class="shot old noimgbar"><div class="iw"><img src="img/equipe-old.jpg" alt=""></div></div></div><div class="cap" style="font-size:18px;margin-top:36px">Antes: só os cartões, sem o retrato da equipe.</div></div>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">14 / 20</span></div>
+</section>
+
+<!-- ============ 15. CAPACITAÇÃO ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:16px"><span class="hand">Página nova · Sobre → Cursos e Capacitação</span><h1>Cursos do <span class="hl">Eixo 6</span>, em uma página</h1><span class="badge b-novo" style="top:30px"><i class="bi bi-stars"></i> Novo</span></div>
+  <div style="display:grid;grid-template-columns:587px 1fr;gap:56px">
+    <div class="shot"><div class="bar"><i class="d"></i><i class="d"></i><i class="d"></i><span class="url">cp2b.unicamp.br/<b>capacitacao</b></span></div><div class="iw"><img src="img/cap-new.jpg" alt="">
+      <span class="pin g" style="left:3%;top:39%">1</span>
+      <span class="pin g" style="left:3%;top:79%">2</span>
+      <span class="pin g" style="left:58.8%;top:92%">3</span>
+    </div></div>
+    <div class="col" style="gap:24px">
+      <ol class="legend" style="gap:22px">
+        <li><span class="n g">1</span><div>Curso-modelo de 16 h<small>"Biogás, Biometano e Bioprodutos para a Transição Energética" · 8 módulos</small></div></li>
+        <li><span class="n g">2</span><div>Chamada para propostas<small>cursos de 4 a 24 h · presencial, online ou híbrido · in company</small></div></li>
+        <li><span class="n g">3</span><div>Template oficial para baixar<small>Word, 13 seções explicadas na própria página</small></div></li>
+      </ol>
+      <div class="card" style="padding:22px 26px">
+        <div class="handnote" style="font-size:30px;color:var(--gd)">Como propor um curso</div>
+        <div style="display:grid;grid-template-columns:1fr 50px 1fr 50px 1fr;align-items:center;margin-top:16px;text-align:center">
+          <div><span class="ico" style="margin:0 auto;background:var(--gd);color:#fff"><i class="bi bi-download"></i></span><div class="lbl" style="font-size:19px">Baixe o template</div></div>
+          <i class="bi bi-arrow-right" style="font-size:30px;color:var(--amber)"></i>
+          <div><span class="ico" style="margin:0 auto;background:var(--gd);color:#fff"><i class="bi bi-pencil-fill"></i></span><div class="lbl" style="font-size:19px">Preencha a proposta</div></div>
+          <i class="bi bi-arrow-right" style="font-size:30px;color:var(--amber)"></i>
+          <div><span class="ico" style="margin:0 auto;background:var(--gd);color:#fff"><i class="bi bi-envelope-fill"></i></span><div class="lbl" style="font-size:19px">Envie à diretoria<small>diretoria@cp2b.unicamp.br</small></div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:center"><div style="flex:0 0 330px"><span class="tag t-antes" style="font-size:14px;padding:5px 12px">ANTES</span><div class="shot old noimgbar"><div class="iw"><img src="img/cap-old.jpg" alt=""></div></div></div><div class="cap" style="font-size:21px;margin-top:36px">O endereço <b class="url">/capacitacao</b> dava<br>"Página não encontrada".</div></div>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">15 / 20</span></div>
+</section>
+
+<!-- ============ 16. MOVIMENTO ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:20px"><span class="hand">Movimento</span><h1>Animações que <span class="hl">explicam</span>, não que distraem</h1></div>
+  <div style="display:grid;grid-template-columns:1060px 1fr;gap:40px">
+    <div class="col" style="gap:26px">
+      <div>
+        <div class="lbl" style="font-size:24px;margin:0 0 10px"><i class="bi bi-book" style="color:var(--gd)"></i> Barra de leitura nas notícias e artigos</div>
+        <div style="position:relative">
+          <div class="shot noimgbar"><div class="iw"><img src="img/progress.jpg" alt=""><div style="position:absolute;left:0;right:0;top:45%;bottom:0;background:linear-gradient(180deg,rgba(251,248,240,0),#FBF8F0 85%)"></div></div></div>
+          <div class="ring" style="left:-8px;top:-9px;width:68%;height:22px;border-radius:8px"></div>
+          <div style="position:absolute;left:69%;top:-14px;background:var(--paper);padding:0 10px" class="handnote">← barra de leitura</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-top:22px">
+          <div><div style="height:12px;border-radius:6px;background:var(--line)"><div style="height:100%;width:12%;border-radius:6px;background:linear-gradient(90deg,var(--gd),var(--lime))"></div></div><div class="cap" style="margin-top:8px">começou a ler</div></div>
+          <div><div style="height:12px;border-radius:6px;background:var(--line)"><div style="height:100%;width:55%;border-radius:6px;background:linear-gradient(90deg,var(--gd),var(--lime))"></div></div><div class="cap" style="margin-top:8px">na metade</div></div>
+          <div><div style="height:12px;border-radius:6px;background:var(--line)"><div style="height:100%;width:100%;border-radius:6px;background:linear-gradient(90deg,var(--gd),var(--lime))"></div></div><div class="cap" style="margin-top:8px">terminou o artigo</div></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:420px 1fr;gap:26px;align-items:center">
+        <div style="position:relative"><img src="img/countdown-card2.png" style="width:100%;display:block;border-radius:12px;box-shadow:var(--shadow),0 0 0 1.5px var(--line)" alt=""><div class="ring" style="left:4%;top:37%;width:36%;height:20%;border-radius:999px"></div></div>
+        <div><div class="lbl" style="font-size:24px;margin:0"><i class="bi bi-hourglass-split" style="color:var(--gd)"></i> Contagem regressiva nos eventos</div><div class="cap" style="font-size:20px">"Faltam 12 dias" · "É amanhã" · "É hoje" · "Acontecendo agora"<br><i>(evento fictício, só para demonstrar)</i></div></div>
+      </div>
+    </div>
+    <div class="col" style="gap:24px">
+      <div class="card" style="display:flex;gap:16px;align-items:center;padding:26px 22px"><span class="ico"><i class="bi bi-type-h1"></i></span><div class="lbl" style="margin:0">Faixa de título viva<small>o título sobe e o papel acompanha o mouse · 18 páginas</small></div></div>
+      <div class="card" style="display:flex;gap:16px;align-items:center;padding:26px 22px"><span class="ico"><i class="bi bi-123"></i></span><div class="lbl" style="margin:0">Números que contam<small>os números sobem do zero · Indicadores e Publicações</small></div></div>
+      <div class="card" style="display:flex;gap:16px;align-items:center;padding:26px 22px"><span class="ico"><i class="bi bi-funnel-fill"></i></span><div class="lbl" style="margin:0">Filtros que deslizam<small>Equipe, Publicações e catálogo de serviços</small></div></div>
+      <div class="card" style="display:flex;gap:16px;align-items:center;padding:26px 22px"><span class="ico"><i class="bi bi-bar-chart-steps"></i></span><div class="lbl" style="margin:0">Régua de TRL que cresce<small>um laboratório depois do outro</small></div></div>
+      <div class="card" style="display:flex;gap:16px;align-items:center;padding:26px 22px;background:var(--petrol);color:#fff"><span class="ico" style="background:var(--lime);color:var(--petrol)"><i class="bi bi-universal-access"></i></span><div class="lbl" style="margin:0;color:#fff">Respeita "reduzir movimento"<small style="color:#cfdde2">quem ativa "reduzir movimento" no celular ou computador vê tudo já parado e pronto</small></div></div>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">16 / 20</span></div>
+</section>
+
+<!-- ============ 17. CELULAR ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:22px"><span class="hand">No celular</span><h1>Revisado <span class="hl">tela por tela</span></h1><p class="sub">Todas as páginas conferidas em 5 tamanhos de celular e tablet, em português e inglês — nada mais vaza para os lados.</p></div>
+  <div style="display:flex;gap:30px;align-items:flex-start;justify-content:center">
+    <div class="col" style="align-items:center"><span class="tag t-antes" style="font-size:15px">ANTES · /sobre</span>
+      <div style="width:318px;border-radius:40px;background:#222;padding:12px;box-shadow:var(--shadow)"><div style="border-radius:28px;overflow:hidden;line-height:0;position:relative"><img src="img/m-old-sobre.jpg" style="width:100%" alt=""><div class="ring" style="left:2%;top:60.6%;width:96%;height:7.6%;border-color:#c0392b;border-radius:10px"></div></div></div>
+      <div class="cap" style="text-align:center;width:318px;font-size:20px">Menu cortado: rolava de lado</div></div>
+    <div class="col" style="align-items:center"><span class="tag t-depois" style="font-size:15px">DEPOIS · /sobre</span>
+      <div style="width:318px;border-radius:40px;background:#222;padding:12px;box-shadow:var(--shadow)"><div style="border-radius:28px;overflow:hidden;line-height:0;position:relative"><img src="img/m-new-sobre.jpg" style="width:100%" alt=""><div class="ring" style="left:2%;top:62.4%;width:96%;height:13.4%;border-radius:10px"></div></div></div>
+      <div class="cap" style="text-align:center;width:318px;font-size:20px">Menu em 2 linhas (3 + 2)</div></div>
+    <div class="col" style="align-items:center"><span class="tag t-depois" style="font-size:15px">/eixos</span>
+      <div style="width:318px;border-radius:40px;background:#222;padding:12px;box-shadow:var(--shadow)"><div style="border-radius:28px;overflow:hidden;line-height:0"><img src="img/m-new-eixos.jpg" style="width:100%" alt=""></div></div>
+      <div class="cap" style="text-align:center;width:318px;font-size:20px">Figura dos eixos em coluna</div></div>
+    <div class="col" style="align-items:center"><span class="tag t-depois" style="font-size:15px">/solucoes</span>
+      <div style="width:318px;border-radius:40px;background:#222;padding:12px;box-shadow:var(--shadow)"><div style="border-radius:28px;overflow:hidden;line-height:0"><img src="img/m-new-solucoes.jpg" style="width:100%" alt=""></div></div>
+      <div class="cap" style="text-align:center;width:318px;font-size:20px">Régua de TRL cabe na tela</div></div>
+    <div class="col" style="align-items:center"><span class="tag t-depois" style="font-size:15px">/publicacoes</span>
+      <div style="width:318px;border-radius:40px;background:#222;padding:12px;box-shadow:var(--shadow)"><div style="border-radius:28px;overflow:hidden;line-height:0"><img src="img/m-new-publicacoes.jpg" style="width:100%" alt=""></div></div>
+      <div class="cap" style="text-align:center;width:318px;font-size:20px">Indicadores em 2 colunas</div></div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">17 / 20</span></div>
+</section>
+
+<!-- ============ 18. DESEMPENHO ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:30px"><span class="hand">Desempenho</span><h1>Mais leve: o site <span class="hl">abre mais rápido</span></h1><p class="sub">Menos dados para baixar, principalmente no celular e na primeira visita.</p></div>
+  <div class="col" style="gap:46px;width:1480px">
+    <div style="display:flex;gap:22px;margin:0 0 -26px 454px;font-size:20px;color:var(--muted)"><span><i style="display:inline-block;width:20px;height:20px;background:#D9D3C6;border-radius:4px;vertical-align:middle"></i> antes</span><span><i style="display:inline-block;width:20px;height:20px;background:var(--gd);border-radius:4px;vertical-align:middle"></i> depois</span></div>
+    <!-- barra -->
+    <div style="display:grid;grid-template-columns:430px 1fr 200px;gap:24px;align-items:center">
+      <div class="lbl" style="font-size:28px;margin:0">Código da primeira tela<small>só a página aberta é baixada</small></div>
+      <div class="col" style="gap:8px"><div style="display:flex;align-items:center;gap:12px"><div style="height:48px;width:100%;background:#D9D3C6;border-radius:6px"></div><span style="font-size:22px;color:var(--muted);white-space:nowrap;width:120px">558 KB</span></div><div style="display:flex;align-items:center;gap:12px"><div style="height:48px;width:28.5%;background:var(--gd);border-radius:6px"></div><span style="font-size:22px;font-weight:800;color:var(--gd);white-space:nowrap">159 KB</span></div></div>
+      <div class="big" style="font-size:76px;color:var(--amber)">−72%</div>
+    </div>
+    <div style="display:grid;grid-template-columns:430px 1fr 200px;gap:24px;align-items:center">
+      <div class="lbl" style="font-size:28px;margin:0">Vídeo institucional (/sobre)<small>e só carrega quando chega na tela</small></div>
+      <div class="col" style="gap:8px"><div style="display:flex;align-items:center;gap:12px"><div style="height:48px;width:100%;background:#D9D3C6;border-radius:6px"></div><span style="font-size:22px;color:var(--muted);white-space:nowrap;width:120px">12,4 MB</span></div><div style="display:flex;align-items:center;gap:12px"><div style="height:48px;width:14.5%;background:var(--gd);border-radius:6px"></div><span style="font-size:22px;font-weight:800;color:var(--gd);white-space:nowrap">1,8 MB · 1,0 MB no celular</span></div></div>
+      <div class="big" style="font-size:76px;color:var(--amber)">−85%</div>
+    </div>
+    <div style="display:grid;grid-template-columns:430px 1fr 200px;gap:24px;align-items:center">
+      <div class="lbl" style="font-size:28px;margin:0">Fontes da marca<small>formato woff2</small></div>
+      <div class="col" style="gap:8px"><div style="display:flex;align-items:center;gap:12px"><div style="height:48px;width:100%;background:#D9D3C6;border-radius:6px"></div><span style="font-size:22px;color:var(--muted);white-space:nowrap;width:120px">945 KB</span></div><div style="display:flex;align-items:center;gap:12px"><div style="height:48px;width:46%;background:var(--gd);border-radius:6px"></div><span style="font-size:22px;font-weight:800;color:var(--gd);white-space:nowrap">437 KB</span></div></div>
+      <div class="big" style="font-size:76px;color:var(--amber)">−54%</div>
+    </div>
+    <div style="display:grid;grid-template-columns:430px 1fr 200px;gap:24px;align-items:center">
+      <div class="lbl" style="font-size:28px;margin:0">Guardado para uso offline<small>o que o navegador baixa na 1ª visita</small></div>
+      <div class="col" style="gap:8px"><div style="display:flex;align-items:center;gap:12px"><div style="height:48px;width:100%;background:#D9D3C6;border-radius:6px"></div><span style="font-size:22px;color:var(--muted);white-space:nowrap;width:120px">2.592 KB</span></div><div style="display:flex;align-items:center;gap:12px"><div style="height:48px;width:57%;background:var(--gd);border-radius:6px"></div><span style="font-size:22px;font-weight:800;color:var(--gd);white-space:nowrap">1.474 KB</span></div></div>
+      <div class="big" style="font-size:76px;color:var(--amber)">−43%</div>
+    </div>
+  </div>
+  <div style="position:absolute;right:70px;top:360px;width:300px;text-align:center">
+    <img src="img/metaninho-feliz.webp" style="width:200px" alt="">
+    
+  </div>
+  <div style="position:absolute;left:80px;bottom:76px;display:flex;gap:26px;align-items:center;font-size:21px;color:var(--petrol)"><span class="chip" style="font-size:19px"><i class="bi bi-puzzle-fill"></i> um pacote por página</span><span class="chip" style="font-size:19px"><i class="bi bi-camera-video-fill"></i> vídeo só quando aparece na tela</span><span class="chip" style="font-size:19px"><i class="bi bi-fonts"></i> fontes comprimidas</span><span class="chip" style="font-size:19px"><i class="bi bi-wifi-off"></i> páginas já visitadas abrem offline</span></div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">18 / 20</span></div>
+</section>
+
+<!-- ============ 19. BASTIDORES ============ -->
+<section class="slide"><div class="grain"></div>
+  <div class="head" style="margin-bottom:22px"><span class="hand">Bastidores</span><h1>O que não se vê, <span class="hl">mas protege</span></h1><span class="badge b-bast" style="top:30px"><i class="bi bi-gear-fill"></i> Bastidores</span></div>
+  <div style="display:grid;grid-template-columns:860px 1fr;gap:30px">
+    <div class="col" style="gap:24px">
+      <div class="card" style="padding:22px 26px">
+        <div style="display:flex;gap:14px;align-items:center"><span class="ico" style="background:var(--petrol);color:#fff"><i class="bi bi-shield-lock-fill"></i></span><div class="lbl" style="font-size:26px;margin:0">Segurança e privacidade</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 26px;margin-top:18px">
+          <div style="display:flex;gap:10px;font-size:20px;line-height:1.25"><i class="bi bi-check-circle-fill" style="color:var(--green)"></i><div><b>0 vulnerabilidades</b> no servidor<small style="display:block;color:var(--muted);font-size:17px">eram 5, sendo 2 altas</small></div></div>
+          <div style="display:flex;gap:10px;font-size:20px;line-height:1.25"><i class="bi bi-check-circle-fill" style="color:var(--green)"></i><div>Dados pessoais <b>só com login</b><small style="display:block;color:var(--muted);font-size:17px">contatos, inscritos, participantes</small></div></div>
+          <div style="display:flex;gap:10px;font-size:20px;line-height:1.25"><i class="bi bi-check-circle-fill" style="color:var(--green)"></i><div>Links e textos do painel <b>filtrados</b></div></div>
+          <div style="display:flex;gap:10px;font-size:20px;line-height:1.25"><i class="bi bi-check-circle-fill" style="color:var(--green)"></i><div>Limite de envios <b>por visitante</b>, não pelo site todo</div></div>
+          <div style="display:flex;gap:10px;font-size:20px;line-height:1.25"><i class="bi bi-check-circle-fill" style="color:var(--green)"></i><div>Cabeçalhos de segurança no servidor</div></div>
+          <div style="display:flex;gap:10px;font-size:20px;line-height:1.25"><i class="bi bi-check-circle-fill" style="color:var(--green)"></i><div>Painel não fica guardado no navegador</div></div>
+        </div>
+      </div>
+      <div class="card" style="padding:22px 26px">
+        <div style="display:flex;gap:14px;align-items:center"><span class="ico" style="background:var(--gd);color:#fff"><i class="bi bi-universal-access"></i></span><div class="lbl" style="font-size:26px;margin:0">Acessibilidade e Google</div></div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px 26px;margin-top:18px">
+          <div style="display:flex;gap:10px;font-size:20px;line-height:1.25"><i class="bi bi-check-circle-fill" style="color:var(--green)"></i><div>Contraste, títulos e textos alternativos<small style="display:block;color:var(--muted);font-size:17px">itens apontados pelo Lighthouse</small></div></div>
+          <div style="display:flex;gap:10px;font-size:20px;line-height:1.25"><i class="bi bi-check-circle-fill" style="color:var(--green)"></i><div>Sitemap só com páginas que existem</div></div>
+          <div style="display:flex;gap:10px;font-size:20px;line-height:1.25"><i class="bi bi-check-circle-fill" style="color:var(--green)"></i><div>Versão nova chega <b>sem apertar F5</b></div></div>
+          <div style="display:flex;gap:10px;font-size:20px;line-height:1.25"><i class="bi bi-check-circle-fill" style="color:var(--green)"></i><div>PDF e .docx abrem direto pelo link</div></div>
+        </div>
+      </div>
+      <div class="card" style="display:flex;gap:16px;align-items:center;padding:16px 22px;background:#FFF4E5;box-shadow:none;border:1.5px dashed var(--amber)"><i class="bi bi-calendar2-x" style="color:var(--amber);font-size:34px"></i><div style="font-size:20px;line-height:1.3"><b>Defeso eleitoral:</b> a seção de parceiros públicos fica oculta até <b>25/10</b> e volta sozinha em <b>26/10</b>.</div></div>
+    </div>
+    <div class="card" style="padding:22px 26px">
+      <div style="display:flex;gap:14px;align-items:center"><span class="ico" style="background:var(--green);color:#fff"><i class="bi bi-sliders"></i></span><div class="lbl" style="font-size:26px;margin:0">Painel administrativo</div></div>
+      <div style="margin-top:18px;border-radius:8px;overflow:hidden;border:1.5px solid var(--line);position:relative;line-height:0"><img src="img/admin-newsletter.jpg" style="width:100%" alt=""><div class="ring" style="left:80%;top:36%;width:18.5%;height:14%;border-radius:999px"></div></div>
+      <div class="handnote" style="margin:10px 0 0 auto;text-align:right;font-size:28px;padding-right:40px">"Enviar planilha agora" ↑</div>
+      <ul class="legend" style="margin-top:12px;gap:16px">
+        <li style="font-size:21px"><i class="bi bi-file-earmark-spreadsheet-fill" style="color:var(--gd);font-size:26px"></i><div>Planilha da newsletter <b>toda segunda, 08h30</b><small>lista completa de inscritos, por e-mail, para o marketing</small></div></li>
+        <li style="font-size:21px"><i class="bi bi-images" style="color:var(--gd);font-size:26px"></i><div>Legenda nas fotos da galeria<small>aparece sob a foto e vira o texto alternativo</small></div></li>
+        <li style="font-size:21px"><i class="bi bi-save-fill" style="color:var(--gd);font-size:26px"></i><div>Sessão expirou? <b>O formulário não se perde</b><small>o login abre por cima e você salva depois</small></div></li>
+        <li style="font-size:21px"><i class="bi bi-cloud-arrow-up-fill" style="color:var(--gd);font-size:26px"></i><div>Upload de capa e imagens corrigido<small>com mensagem de erro clara</small></div></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot"><span><b>CP2b</b> · O que mudou no site · 15/09 → 15/10/2026</span><span class="pg">19 / 20</span></div>
+</section>
+
+<!-- ============ 20. ONDE VER ============ -->
+<section class="slide" style="padding:0">
+  <div class="kraft" style="position:absolute;inset:0"></div><div class="grain"></div>
+  <div style="position:absolute;left:96px;top:70px;right:96px;z-index:2">
+    <span class="hand">Para conferir</span>
+    <h1 style="font-size:72px">Abra o site e <span class="hl">confira você mesmo</span></h1>
+  </div>
+  <div style="position:absolute;left:96px;top:300px;width:1220px;display:grid;grid-template-columns:1fr 1fr;gap:26px;z-index:2">
+    <div class="card" style="display:flex;gap:18px;align-items:center;padding:30px 26px"><span class="badge b-novo" style="font-size:15px;padding:5px 12px">Novo</span><div class="lbl" style="margin:0;font-size:25px"><span class="url">/capacitacao</span><small>Cursos e Capacitação</small></div></div>
+    <div class="card" style="display:flex;gap:18px;align-items:center;padding:30px 26px"><span class="badge b-novo" style="font-size:15px;padding:5px 12px">Novo</span><div class="lbl" style="margin:0;font-size:25px"><span class="url">/metaninho</span><small>HQ do Metaninho</small></div></div>
+    <div class="card" style="display:flex;gap:18px;align-items:center;padding:30px 26px"><span class="badge b-reno" style="font-size:15px;padding:5px 12px">Renovado</span><div class="lbl" style="margin:0;font-size:25px"><span class="url">/eixos</span><small>figura dos 8 eixos + do resíduo à energia</small></div></div>
+    <div class="card" style="display:flex;gap:18px;align-items:center;padding:30px 26px"><span class="badge b-reno" style="font-size:15px;padding:5px 12px">Renovado</span><div class="lbl" style="margin:0;font-size:25px"><span class="url">/solucoes</span><small>régua de TRL + "Qual é o seu desafio?"</small></div></div>
+    <div class="card" style="display:flex;gap:18px;align-items:center;padding:30px 26px"><span class="badge b-reno" style="font-size:15px;padding:5px 12px">Renovado</span><div class="lbl" style="margin:0;font-size:25px"><span class="url">/publicacoes</span><small>Ano 1 em números + nuvem de palavras</small></div></div>
+    <div class="card" style="display:flex;gap:18px;align-items:center;padding:30px 26px"><span class="badge b-reno" style="font-size:15px;padding:5px 12px">Renovado</span><div class="lbl" style="margin:0;font-size:25px"><span class="url">/equipe</span><small>o CP2b em números</small></div></div>
+    <div class="card" style="display:flex;gap:18px;align-items:center;padding:30px 26px"><span class="badge b-reno" style="font-size:15px;padding:5px 12px">Renovado</span><div class="lbl" style="margin:0;font-size:25px"><span class="url">/sobre</span><small>folhas de papel + figura dos eixos</small></div></div>
+    <div class="card" style="display:flex;gap:18px;align-items:center;padding:30px 26px;background:var(--petrol);color:#fff"><i class="bi bi-hand-index-thumb-fill" style="font-size:34px;color:var(--lime)"></i><div class="lbl" style="margin:0;font-size:25px;color:#fff">Clique no Metaninho<small style="color:#cfdde2">no rodapé das páginas internas (e na 404): ele pula e mostra uma mensagem</small></div></div>
+  </div>
+  <div style="position:absolute;right:110px;top:250px;width:470px;text-align:center;z-index:2">
+    <div style="position:relative"><img src="img/metaninho-feliz.webp" style="width:330px" alt=""><div style="position:absolute;left:60px;top:-64px;white-space:nowrap;background:#fff;font-family:'Caveat';font-weight:700;font-size:30px;color:var(--petrol);padding:8px 16px;box-shadow:var(--shadow);transform:rotate(-4deg)">Clica em mim lá no rodapé!</div></div>
+    <div style="font-family:'Caveat';font-weight:700;font-size:40px;color:var(--gd);background:#fff;display:inline-block;padding:10px 22px;transform:rotate(-3deg);box-shadow:var(--shadow);margin-top:10px">Obrigado!</div>
+    <div style="font-size:22px;margin-top:26px;color:var(--petrol);font-weight:700">cp2b.unicamp.br</div>
+  </div>
+  <div style="position:absolute;left:96px;bottom:40px;font-size:17px;color:var(--muted);z-index:2;max-width:1400px">Prints feitos em 15/10/2026 em ambiente local, com o código do site em 15/09 (antes) e em 15/10 (depois). Alguns dados de teste (como o evento de exemplo) servem só para demonstrar as funções.</div>
+</section>
+
+</body>
+</html>
