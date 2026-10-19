@@ -1135,7 +1135,7 @@ export const transparencyContent = {
       fapesp: {
         title: 'Processo FAPESP',
         number: '2024/01112-1',
-        link: 'https://bv.fapesp.br/pt/auxilios/118756/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
+        link: 'https://bv.fapesp.br/pt/auxilios/116427/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
       },
       reports: {
         title: 'Relatórios Anuais',
@@ -1145,7 +1145,7 @@ export const transparencyContent = {
             title: 'Relatório Científico Ano 1',
             period: 'Fevereiro/2025 – Fevereiro/2026',
             description: 'Primeiro relatório científico do CP2b à FAPESP, cobrindo os convênios firmados (MME, LCPE, UnB) e a produção científica do primeiro ano do processo 2024/01112-1.',
-            link: 'https://bv.fapesp.br/pt/auxilios/118756/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
+            link: 'https://bv.fapesp.br/pt/auxilios/116427/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
           }
         ]
       },
@@ -1172,7 +1172,7 @@ Para mais informações sobre o financiamento e recursos, consulte o processo co
       fapesp: {
         title: 'FAPESP Process',
         number: '2024/01112-1',
-        link: 'https://bv.fapesp.br/pt/auxilios/118756/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
+        link: 'https://bv.fapesp.br/pt/auxilios/116427/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
       },
       reports: {
         title: 'Annual Reports',
@@ -1182,7 +1182,7 @@ Para mais informações sobre o financiamento e recursos, consulte o processo co
             title: 'Year 1 Scientific Report',
             period: 'February/2025 – February/2026',
             description: "CP2b's first scientific report to FAPESP, covering the agreements signed (MME, LCPE, UnB) and the scientific output of the first year of process 2024/01112-1.",
-            link: 'https://bv.fapesp.br/pt/auxilios/118756/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
+            link: 'https://bv.fapesp.br/pt/auxilios/116427/centro-paulista-de-estudos-em-biogas-e-bioprodutos-cp2b/'
           }
         ]
       },
