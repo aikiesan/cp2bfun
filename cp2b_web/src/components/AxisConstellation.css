@@ -21,22 +21,8 @@
     var(--bg-surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
-  box-shadow: var(--paper-shadow);
+  box-shadow: var(--shadow-sm);
   overflow: visible;
-}
-
-/* Um pedaço de fita crepe prende o painel à página (no lugar do filete). */
-.axo::before {
-  content: '';
-  position: absolute;
-  top: -0.7rem;
-  left: 50%;
-  z-index: 1;
-  width: 7rem;
-  height: 1.4rem;
-  background: var(--paper-tape);
-  transform: translateX(-50%) rotate(-2deg);
-  pointer-events: none;
 }
 
 .axo__hint {
@@ -290,7 +276,7 @@
      comum da página, com o mesmo cabeçalho à esquerda de "Conheça os Eixos",
      em vez de uma caixa dentro da página com título centralizado. */
   .axo {
-    margin-top: 1.75rem;
+    margin-top: 2rem;
     padding: 0;
     background: none;
     border: none;
@@ -298,8 +284,6 @@
     box-shadow: none;
     overflow: visible;
   }
-
-  .axo::before { display: none; }
   .axo__hint { text-align: left; }
 
   .axo__grid {

@@ -34,8 +34,9 @@ const LABEL = {
   en: "Metaninho, CP2b's mascot",
 };
 
-// Quanto tempo o balão fica aberto depois do último clique.
-const BUBBLE_MS = 4000;
+// Quanto tempo o balão fica aberto depois do último clique (4 s era pouco
+// para ler a frase inteira).
+const BUBBLE_MS = 7000;
 
 const MetaninhoAmigo = ({ pose = 'feliz', size = 120, lines, bubble = 'left', className }) => {
   const { language } = useLanguage();
@@ -45,6 +46,18 @@ const MetaninhoAmigo = ({ pose = 'feliz', size = 120, lines, bubble = 'left', cl
   const timer = useRef(0);
 
   useEffect(() => () => clearTimeout(timer.current), []);
+
+  // Esc fecha o balão.
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKey = (event) => {
+      if (event.key !== 'Escape') return;
+      clearTimeout(timer.current);
+      setOpen(false);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [open]);
 
   const speak = () => {
     setClicks((n) => n + 1);

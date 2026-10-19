@@ -221,7 +221,6 @@ const Events = () => {
         eyebrow={labels.eyebrow}
         title={labels.title}
         subtitle={labels.subtitle}
-        photo={{ src: '/assets/fotos/eventos-mascote.webp', width: 700, height: 500 }}
       />
 
       <Container className="py-4 py-md-5">

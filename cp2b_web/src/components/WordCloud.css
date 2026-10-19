@@ -33,12 +33,13 @@
 
 .wcloud__label {
   margin: 0 0 0.9rem;
-  font-family: var(--font-hand);
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0;
   color: var(--cp2b-verde-escuro);
-  line-height: 1.1;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 /* ---------- nuvem ---------- */

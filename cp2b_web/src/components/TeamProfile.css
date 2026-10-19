@@ -14,34 +14,21 @@
     var(--bg-surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
-  box-shadow: var(--paper-shadow);
+  box-shadow: var(--shadow-sm);
   overflow: visible;
-}
-
-/* Um pedaço de fita crepe prende o painel à página (no lugar do filete). */
-.tprof::before {
-  content: '';
-  position: absolute;
-  top: -0.7rem;
-  left: 50%;
-  z-index: 1;
-  width: 7rem;
-  height: 1.4rem;
-  background: var(--paper-tape);
-  transform: translateX(-50%) rotate(-2deg);
-  pointer-events: none;
 }
 
 .tprof__head { max-width: 44rem; margin-bottom: clamp(1.1rem, 0.8rem + 1vw, 1.6rem); }
 
 .tprof__eyebrow {
   display: block;
-  font-family: var(--font-hand);
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0;
   color: var(--cp2b-verde-escuro);
-  line-height: 1.1;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .tprof__head h2 {
@@ -121,12 +108,13 @@
 
 .tprof-chart__title {
   margin: 0 0 0.8rem;
-  font-family: var(--font-hand);
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0;
   color: var(--cp2b-verde-escuro);
-  line-height: 1.1;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .tprof-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
@@ -178,7 +166,7 @@
 @media (max-width: 575.98px) {
   /* Como nas outras páginas: no celular o painel vira seção comum. */
   .tprof {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     padding: 0;
     background: none;
     border: none;
@@ -186,8 +174,6 @@
     box-shadow: none;
     overflow: visible;
   }
-
-  .tprof::before { display: none; }
   .tprof-stats { gap: 0.5rem; }
   .tprof-stats li { padding: 0.8rem 0.85rem; }
   .tprof-stats__num { font-size: 2rem; }

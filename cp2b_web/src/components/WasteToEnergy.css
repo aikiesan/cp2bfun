@@ -241,12 +241,13 @@
 
 .w2e-step-num {
   display: block;
-  font-family: var(--font-hand);
-  font-size: 1.3rem;
-  font-weight: var(--weight-bold);
-  letter-spacing: 0;
   color: var(--cp2b-lima);
-  line-height: 1.1;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .w2e-step-title {

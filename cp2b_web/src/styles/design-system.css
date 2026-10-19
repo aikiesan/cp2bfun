@@ -13,33 +13,36 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
   letter-spacing: -0.015em;
 }
 
+/* Títulos de página e de seção: Neulis Sans 700 em Azul Petróleo. */
+h1, h2 {
+  font-weight: 700;
+}
+
+::selection {
+  background: rgb(182 224 59 / .45);
+  color: var(--cp2b-azul-petroleo);
+}
+
 /* ---------- Section scaffolding ---------- */
 .section {
   padding-top: var(--section-y);
   padding-bottom: var(--section-y);
 }
 
+/* Etiqueta acima do título: caixa-alta pequena e espaçada, em cinza frio,
+   sem fita nem filete (como no PILAR-2b). */
 .eyebrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  font-family: var(--font-mono);
-  font-size: 0.78rem;
-  font-weight: 700;
+  display: inline-block;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
   letter-spacing: 0.14em;
+  line-height: 1.4;
   text-transform: uppercase;
-  /* Verde-escuro no texto (8,6:1 sobre o claro); o verde claro da marca, com
-     3:1, não passa o AA em texto pequeno e fica só no filete. */
-  color: var(--cp2b-green-700);
+  color: var(--text-secondary);
 }
 
-.eyebrow::before {
-  content: '';
-  width: 2rem;
-  height: 2px;
-  background: linear-gradient(90deg, var(--cp2b-green-500), var(--cp2b-lime-500));
-}
-
+/* Sobre o Azul Petróleo, o Verde Limão pode ser texto (7,4:1). */
 .eyebrow--light {
   color: var(--cp2b-lime-500);
 }
@@ -49,7 +52,7 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
 .mono-label.text-success { color: var(--cp2b-verde-escuro) !important; }
 
 .mono-label {
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
@@ -78,77 +81,51 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
 }
 
 /* ---------- Page hero band (inner pages) ----------
-   Uma tira de papel kraft rasgada na borda de baixo, como as estações de
-   papel dos vídeos educativos do CP2b. O papel mora em ::before (kraft com
-   uma fibra bem leve) e, atrás dele, ::after é a fibra branca que aparece
-   ao longo do rasgo: as duas camadas usam o mesmo recorte, deslocado, então
-   o branco surge só aqui e ali, como num papel rasgado de verdade. O
-   conteúdo não é recortado — só as camadas de fundo. */
+   Faixa clara fria (#F4F7F8) com um fio embaixo, como o cabeçalho de página
+   do PILAR-2b; as folhas do manual ficam à direita (PageHero.jsx/.css). */
 .page-hero {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  color: var(--paper-ink);
-  padding: clamp(3.5rem, 2.5rem + 4vw, 6rem) 0 calc(clamp(3.5rem, 2.5rem + 4vw, 6rem) + 0.75rem);
-}
-
-.page-hero::before,
-.page-hero::after {
-  content: '';
-  position: absolute;
-  pointer-events: none;
-  -webkit-mask:
-    linear-gradient(#000 0 0) top / 100% calc(100% - 15px) no-repeat,
-    var(--torn-edge) var(--tear-shift, 0) 100% / 520px 16px repeat-x;
-  mask:
-    linear-gradient(#000 0 0) top / 100% calc(100% - 15px) no-repeat,
-    var(--torn-edge) var(--tear-shift, 0) 100% / 520px 16px repeat-x;
-}
-
-.page-hero::before {
-  inset: 0 0 5px;
-  z-index: -1;
-  background: var(--paper-grain), var(--paper-kraft);
-}
-
-.page-hero::after {
-  --tear-shift: 173px;
-  inset: 0;
-  z-index: -2;
-  background: var(--cp2b-branco);
+  color: var(--text-primary);
+  background: var(--bg-surface-muted);
+  border-bottom: 1px solid var(--border-default);
+  padding: clamp(2.5rem, 2rem + 2vw, 4rem) 0;
 }
 
 .page-hero h1 {
-  font-size: var(--fs-display-1);
-  font-weight: 900;
-  letter-spacing: -0.02em;
-  color: var(--paper-ink);
-  margin-bottom: 0.5rem;
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 3rem);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  margin-bottom: 0;
 }
 
 .page-hero .page-hero-sub {
-  max-width: 44rem;
-  /* 7,7:1 sobre o kraft. */
-  color: #4A4841;
+  max-width: 42rem;
+  /* 5,6:1 sobre o #F4F7F8. */
+  color: var(--text-secondary);
   font-size: 1.08rem;
+  margin-top: 1rem;
   margin-bottom: 0;
 }
 
 .page-hero .page-hero-sub strong {
-  color: var(--paper-ink);
+  color: var(--text-primary);
 }
 
 .page-hero .eyebrow {
-  margin-bottom: 0.9rem;
+  margin-bottom: 0.75rem;
 }
 
 /* Hero que recebe um painel por cima (/eixos, /solucoes): espaço extra para a
    sobreposição não cobrir o subtítulo. No celular não há sobreposição — o
    painel vira seção comum — e o hero volta ao padrão. */
-.page-hero.page-hero--overlap { padding-bottom: calc(clamp(3.5rem, 2.5rem + 4vw, 6rem) + 3.5rem); }
+.page-hero.page-hero--overlap { padding-bottom: calc(clamp(2.5rem, 2rem + 2vw, 4rem) + 3.5rem); }
 
 @media (max-width: 575.98px) {
-  .page-hero.page-hero--overlap { padding-bottom: clamp(2rem, 1.5rem + 2vw, 5rem); }
+  .page-hero.page-hero--overlap { padding-bottom: clamp(2.5rem, 2rem + 2vw, 4rem); }
 }
 
 /* ---------- Links & buttons ---------- */
@@ -566,31 +543,14 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
 }
 
 /* ---------- Footer ----------
-   Petróleo chapado, sem o brilho radial, e a mesma borda rasgada da faixa
-   de título, agora em cima: o rodapé é outra folha, escura, sob a página.
-   Os títulos das colunas são etiquetas escritas à mão. */
+   Azul Petróleo chapado; títulos e destaques em Verde Limão (7,4:1). */
 .site-footer {
   background: var(--cp2b-petrol-900);
-  color: rgba(255, 255, 255, 0.85);
+  color: #fff;
 }
 
-.site-footer::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -15px;
-  height: 16px;
-  background: var(--cp2b-petrol-900);
-  transform: scaleY(-1);
-  pointer-events: none;
-  -webkit-mask: var(--torn-edge) 0 0 / 520px 16px repeat-x;
-  mask: var(--torn-edge) 0 0 / 520px 16px repeat-x;
-}
-
-/* Metaninho sentado na borda rasgada (só nas páginas internas), inteiro:
-   os hidrogênios de baixo passam um pouco por cima da borda, como se ele
-   estivesse sentado nela. Aparece com um pulinho quando o rodapé entra na
+/* Metaninho sentado na borda de cima do rodapé (só nas páginas internas),
+   inteiro: os hidrogênios de baixo passam um pouco por cima da borda. Aparece com um pulinho quando o rodapé entra na
    tela; um clique e ele fala (MetaninhoAmigo, em Metaninho.css). */
 .footer-metaninho {
   position: absolute;
@@ -622,12 +582,12 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
 body.high-contrast .footer-metaninho { display: none; }
 
 .site-footer h6 {
-  font-family: var(--font-hand);
-  font-size: 1.45rem;
+  font-family: var(--font-sans);
+  font-size: 0.8rem;
   font-weight: 700;
-  line-height: 1.1;
-  letter-spacing: 0;
-  text-transform: none;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--cp2b-lime-500);
   margin-bottom: 1rem;
 }
@@ -642,7 +602,7 @@ body.high-contrast .footer-metaninho { display: none; }
 }
 
 .site-footer .footer-links a {
-  color: rgba(255, 255, 255, 0.8);
+  color: #fff;
   text-decoration: none;
   transition: color 0.2s ease, padding-left 0.2s ease;
   font-size: 0.92rem;
@@ -675,16 +635,17 @@ body.high-contrast .footer-metaninho { display: none; }
 .site-footer .footer-bottom {
   border-top: 1px solid rgba(255, 255, 255, 0.12);
   font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.55);
+  /* 7:1 sobre o Azul Petróleo; o cinza médio não passa. */
+  color: var(--gray-300);
 }
 
-/* ---------- Newsletter ----------
-   O título é uma etiqueta à mão, como os das colunas do rodapé. */
+/* ---------- Newsletter ---------- */
 .newsletter-signup__title {
-  font-family: var(--font-hand);
-  font-size: 1.6rem;
+  font-family: var(--font-sans);
+  font-size: 1.25rem;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.25;
+  letter-spacing: -0.015em;
   color: var(--cp2b-lima);
 }
 
@@ -1269,98 +1230,17 @@ main#main-content,
 }
 
 /* ============================================================
-   PAPEL — páginas internas
-   A identidade dos vídeos educativos do CP2b (papel, fita crepe, letra à
-   mão), contida: vale só dentro de main[data-page="inner"] (ver PageMain em
-   App.jsx). A Home herda apenas a base comum — cores, fontes, botões,
-   cabeçalho e rodapé — e mantém suas seções como estão.
+   Páginas internas: cartões brancos com fio fino; no hover a borda fica
+   Verde Limão (assinatura do CP2b), com sombra suave.
    ============================================================ */
-
-/* Etiqueta de seção: um papelzinho branco escrito à mão, preso por um
-   pedaço de fita crepe, no lugar do rótulo mono em caixa-alta com filete. */
-main[data-page="inner"] .eyebrow {
-  position: relative;
-  display: inline-block;
-  padding: 0.05rem 0.85rem 0.15rem;
-  font-family: var(--font-hand);
-  font-size: 1.45rem;
-  font-weight: 700;
-  line-height: 1.2;
-  letter-spacing: 0;
-  text-transform: none;
-  color: var(--paper-ink);
-  background: var(--cp2b-branco);
-  box-shadow: var(--paper-shadow);
-  transform: rotate(-2deg);
-}
-
-main[data-page="inner"] .eyebrow::before {
-  position: absolute;
-  left: -0.7rem;
-  top: -0.45rem;
-  width: 2.6rem;
-  height: 0.95rem;
-  background: var(--paper-tape);
-  transform: rotate(-28deg);
-}
-
-/* Rótulos menores: a mesma letra à mão, sem o papel. */
-main[data-page="inner"] .mono-label {
-  font-family: var(--font-hand);
-  font-size: 1.3rem;
-  font-weight: 700;
-  line-height: 1.15;
-  letter-spacing: 0;
-  text-transform: none;
-}
-
-/* Rótulo de campo de formulário é função, não enfeite: fica em Neulis. */
-main[data-page="inner"] label.mono-label {
-  font-family: var(--font-sans);
-  font-size: 0.85rem;
-  font-weight: 600;
-  line-height: 1.4;
-}
-
-main[data-page="inner"] .card-meta {
-  font-family: var(--font-sans);
-  letter-spacing: 0.01em;
-  text-transform: none;
-}
-
-/* Cartões: folhas de papel sobre a mesa. Canto pequeno de papel cortado e
-   uma sombra curta e dura; ao passar o mouse a folha só se levanta um
-   pouco da mesa, sem o brilho lima nem a sombra difusa. */
 main[data-page="inner"] .card,
 main[data-page="inner"] .card-editorial {
-  border: 1px solid var(--paper-line);
-  border-radius: var(--radius-md) !important;
-  box-shadow: var(--paper-shadow);
-}
-
-main[data-page="inner"] .card:hover,
-main[data-page="inner"] .card-editorial:hover {
-  transform: translate(-1px, -2px);
-  box-shadow: var(--paper-shadow-lift);
-  border-color: var(--paper-line);
-}
-
-main[data-page="inner"] .shadow-sm,
-main[data-page="inner"] .shadow {
-  box-shadow: var(--paper-shadow) !important;
-}
-
-main[data-page="inner"] .shadow-lg {
-  box-shadow: var(--paper-shadow-lift) !important;
-}
-
-main[data-page="inner"] .rounded-4 {
-  border-radius: var(--radius-md) !important;
+  border: 1px solid var(--border-default);
 }
 
 /* ---------- /solucoes: modalidades e passos ----------
-   O ícone fica solto no papel (sem o círculo em gradiente cinza), o selo de
-   cada modalidade é uma etiqueta à mão e o número de cada passo é um
+   O ícone fica solto (sem o círculo em gradiente cinza), o selo de cada
+   modalidade é uma etiqueta em caixa-alta e o número de cada passo é um
    algarismo grande em âmbar, sem o círculo verde. */
 .solution-modality-icon {
   font-size: 1.6rem;
@@ -1369,10 +1249,12 @@ main[data-page="inner"] .rounded-4 {
 }
 
 .solution-modality-badge {
-  font-family: var(--font-hand);
-  font-size: 1.2rem;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
   font-weight: 700;
-  line-height: 1.1;
+  line-height: 1.3;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
   text-align: right;
   color: var(--cp2b-verde-escuro);
 }
@@ -1404,39 +1286,21 @@ main[data-page="inner"] .rounded-4 {
 .header-pill:hover,
 .header-pill:focus-visible {
   color: #fff;
-  box-shadow: var(--paper-shadow-lift);
+  box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
 
 .header-pill--pilar:hover { background: var(--brand-primary-hover); }
 .header-pill--arqueia:hover { background: color-mix(in srgb, var(--cp2b-azul-petroleo) 85%, black); }
 
-/* ---------- Alto contraste ----------
-   Papel, fita, fibra e recortes saem; fica texto claro sobre preto. */
-body.high-contrast .page-hero::before,
-body.high-contrast .page-hero::after,
-body.high-contrast .site-footer::before,
-body.high-contrast main[data-page="inner"] .eyebrow::before {
-  display: none;
-}
-
+/* ---------- Alto contraste ---------- */
 body.high-contrast .page-hero,
 body.high-contrast .page-hero h1,
 body.high-contrast .page-hero .page-hero-sub,
-body.high-contrast .page-hero .page-hero-sub strong {
+body.high-contrast .page-hero .page-hero-sub strong,
+body.high-contrast .page-hero .eyebrow {
   background: #000;
   color: #fff;
-}
-
-body.high-contrast main[data-page="inner"] .eyebrow {
-  background: #000;
-  color: #fff;
-  border: 1px solid #fff;
-  box-shadow: none;
-}
-
-body.high-contrast main[data-page="inner"] .mono-label {
-  color: #fff !important;
 }
 
 body.high-contrast main[data-page="inner"] .card,

@@ -93,7 +93,7 @@ const Contact = () => {
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
-    <PageHero eyebrow={labels.tag} title={labels.title} photo={{ src: '/assets/fotos/contato-banner.webp', width: 700, height: 500 }} />
+    <PageHero eyebrow={labels.tag} title={labels.title} />
     <Container className="py-4 py-md-5">
 
       <Row className="justify-content-center g-4 g-lg-5">

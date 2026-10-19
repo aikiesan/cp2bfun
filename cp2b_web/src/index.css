@@ -29,7 +29,7 @@ h1, h2, h3, h4, h5, h6 {
   color: var(--cp2b-dark);
 }
 
-/* Botões: pílula de cor chapada, sem sombra difusa (identidade de papel). */
+/* Botões: pílula de cor chapada, sem sombra. */
 .btn {
   border-radius: var(--radius-full) !important;
   font-weight: 600;
@@ -52,7 +52,6 @@ h1, h2, h3, h4, h5, h6 {
 /* Pilar-2b hover convention: solid buttons darken one step — no opacity fade. */
 .btn-primary:hover {
   background: var(--brand-primary-hover);
-  box-shadow: var(--paper-shadow-lift);
 }
 
 .btn-outline-primary {
@@ -83,10 +82,10 @@ h1, h2, h3, h4, h5, h6 {
   border-color: var(--cp2b-lime);
 }
 
-/* Cabeçalho: papel chapado com um fio, no lugar do vidro fosco. */
+/* Cabeçalho: branco chapado com um fio, no lugar do vidro fosco. */
 .navbar {
-  background: var(--paper) !important;
-  border-bottom: 1px solid var(--paper-line);
+  background: var(--bg-surface) !important;
+  border-bottom: 1px solid var(--border-default);
   padding-top: 1.2rem;
   padding-bottom: 1.2rem;
 }
@@ -480,8 +479,8 @@ body.high-contrast .admin-sidebar small {
   z-index: 1030;
   padding-top: 0.25rem !important;
   padding-bottom: 0.25rem !important;
-  background: var(--paper) !important;
-  box-shadow: 0 1px 0 var(--paper-line), var(--paper-shadow) !important;
+  background: var(--bg-surface) !important;
+  box-shadow: 0 1px 0 var(--border-default), var(--shadow-sm) !important;
 }
 
 /* Logo shrink transition */
@@ -636,7 +635,7 @@ body.high-contrast .social-sidebar-item {
 }
 
 .btn-glow:hover {
-  box-shadow: var(--paper-shadow-lift);
+  box-shadow: var(--shadow-md);
   transform: translateY(-1px);
 }
 
@@ -893,7 +892,6 @@ body.high-contrast .navbar .dropdown-item:hover {
   width: 100%;
   min-height: 70vh;
   min-height: 600px;
-  /* O papel da página, como o resto do site (era o cinza #f8f9fa). */
   background: var(--bg-page);
   position: relative;
   padding: 4rem 2rem;
@@ -1018,7 +1016,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 }
 
 .featured-headline-skeleton {
-  background: linear-gradient(90deg, var(--paper-soft) 25%, var(--paper-line) 50%, var(--paper-soft) 75%);
+  background: linear-gradient(90deg, var(--bg-surface-muted) 25%, var(--border-default) 50%, var(--bg-surface-muted) 75%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.5s ease-in-out infinite;
 }
@@ -1286,7 +1284,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 .article-content blockquote {
   margin: 2rem 0;
   padding: 1.5rem;
-  background-color: var(--paper-soft);
+  background-color: var(--bg-surface-muted);
   border-left: 4px solid #0d6efd;
   font-style: italic;
   color: #495057;
@@ -1295,7 +1293,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 
 /* Code blocks */
 .article-content pre {
-  background-color: var(--paper-soft);
+  background-color: var(--bg-surface-muted);
   border: 1px solid #dee2e6;
   border-radius: 0.375rem;
   padding: 1rem;
@@ -1304,7 +1302,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 }
 
 .article-content code {
-  background-color: var(--paper-soft);
+  background-color: var(--bg-surface-muted);
   padding: 0.2rem 0.4rem;
   border-radius: 0.25rem;
   font-family: 'Courier New', monospace;
@@ -1354,12 +1352,12 @@ body.high-contrast .navbar .dropdown-item:hover {
 }
 
 .article-content th {
-  background-color: var(--paper-soft);
+  background-color: var(--bg-surface-muted);
   font-weight: 700;
 }
 
 .article-content tr:nth-child(even) {
-  background-color: var(--paper-soft);
+  background-color: var(--bg-surface-muted);
 }
 
 /* Mobile Responsive */

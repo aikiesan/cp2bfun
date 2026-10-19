@@ -124,7 +124,7 @@ const About = () => {
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       
       {/* 1. Page Hero */}
-      <PageHero eyebrow={labels.tag} title={tTitle} photo={{ src: '/assets/fotos/sobre-reuniao.webp', width: 700, height: 500 }}>
+      <PageHero eyebrow={labels.tag} title={tTitle}>
         <p className="page-hero-sub mb-1">
           <strong>{labels.process}:</strong> {details.number}
         </p>
@@ -155,7 +155,7 @@ const About = () => {
             {/* Missão e visão: duas folhas presas com fita (verde e lima). */}
             <Row className="g-3 g-md-4 mb-4">
               <Col lg={6}>
-                <div className="about-sheet h-100 p-3 p-md-4 p-lg-5 d-flex flex-column" data-tape="verde">
+                <div className="about-sheet h-100 p-3 p-md-4 p-lg-5 d-flex flex-column">
                   <div className="d-flex align-items-center justify-content-between mb-2">
                     <span className="about-label">{mvv.mission?.tag || 'Missão'}</span>
                     <i className="bi bi-compass about-icon" aria-hidden="true" />
@@ -169,7 +169,7 @@ const About = () => {
                 </div>
               </Col>
               <Col lg={6}>
-                <div className="about-sheet h-100 p-3 p-md-4 p-lg-5 d-flex flex-column" data-tape="lima">
+                <div className="about-sheet h-100 p-3 p-md-4 p-lg-5 d-flex flex-column">
                   <div className="d-flex align-items-center justify-content-between mb-2">
                     <span className="about-label">{mvv.vision?.tag || 'Visão'}</span>
                     <i className="bi bi-eye about-icon" aria-hidden="true" />
@@ -264,7 +264,7 @@ const About = () => {
         {/* 6. Objetivos e resultados: duas folhas, fita verde e fita âmbar. */}
         <Row className="g-3 g-md-4 mb-4 mb-md-5">
           <Col md={6}>
-            <div className="about-sheet h-100 p-3 p-md-4 p-lg-5" data-tape="verde">
+            <div className="about-sheet h-100 p-3 p-md-4 p-lg-5">
               <h3 className="about-block-title mb-3">
                 <i className="bi bi-bullseye about-icon" aria-hidden="true" />
                 {labels.goals}
@@ -275,7 +275,7 @@ const About = () => {
             </div>
           </Col>
           <Col md={6}>
-            <div className="about-sheet h-100 p-3 p-md-4 p-lg-5" data-tape="ambar">
+            <div className="about-sheet h-100 p-3 p-md-4 p-lg-5">
               <h3 className="about-block-title mb-3">
                 <i className="bi bi-trophy about-icon" aria-hidden="true" />
                 {labels.results}
@@ -307,7 +307,7 @@ const About = () => {
             </Button>
           </div>
 
-          <div className="about-sheet p-3 p-md-4 mb-4" data-tape="verde">
+          <div className="about-sheet p-3 p-md-4 mb-4">
             <span className="about-label d-block mb-1">{labels.headquarters}</span>
             <h5 className="fw-bold mb-1" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
               {partners.host.name}

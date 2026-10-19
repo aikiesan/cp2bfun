@@ -5,8 +5,8 @@
   position: relative;
   padding: 1.5rem;
   background: var(--cp2b-branco, #fff);
-  border: 1px solid var(--paper-line);
-  box-shadow: var(--paper-shadow);
+  border: 1px solid var(--border-default);
+  box-shadow: var(--shadow-sm);
 }
 
 .hq-print {
@@ -68,13 +68,13 @@
 
 .hq-transcript__item {
   padding: 0.6rem 0;
-  border-top: 1px dashed var(--paper-line);
+  border-top: 1px dashed var(--border-default);
 }
 
 .hq-transcript__item dt {
-  font-family: var(--font-hand);
-  font-size: 1.2rem;
-  line-height: 1.1;
+  font-size: 0.85rem;
+  font-weight: 700;
+  line-height: 1.4;
 }
 
 .hq-transcript__item dd {

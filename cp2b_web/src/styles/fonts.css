@@ -1,5 +1,7 @@
 /* ============================================================
-   PILAR-2b BRAND FONTS — self-hosted (Neulis Sans / Neulis Neue)
+   CP2b BRAND FONT — self-hosted (Neulis Sans)
+   O manual (1.13/1.14) prevê só a Neulis Sans, em títulos e texto; a
+   outra família de títulos e a letra à mão saíram do site.
    Ported from A:\Pilar-2b\PILAR-2b Design System\tokens\fonts.css
    Paths adjusted to this app's /public/assets/fonts/ location.
 
@@ -19,12 +21,3 @@
 @font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Bold.woff2') format('woff2'), url('/assets/fonts/Neulis_Sans_Bold.otf') format('opentype'); font-weight: 700; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Extra_Bold.woff2') format('woff2'), url('/assets/fonts/Neulis_Sans_Extra_Bold.otf') format('opentype'); font-weight: 800; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Neulis Sans'; src: url('/assets/fonts/Neulis_Sans_Black.woff2') format('woff2'), url('/assets/fonts/Neulis_Sans_Black.otf') format('opentype'); font-weight: 900; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Neulis Neue'; src: url('/assets/fonts/Neulis_Neue_Regular.woff2') format('woff2'), url('/assets/fonts/Neulis_Neue_Regular.otf') format('opentype'); font-weight: 400; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Neulis Neue'; src: url('/assets/fonts/Neulis_Neue_Bold.woff2') format('woff2'), url('/assets/fonts/Neulis_Neue_Bold.otf') format('opentype'); font-weight: 700; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Neulis Neue'; src: url('/assets/fonts/Neulis_Neue_Black.woff2') format('woff2'), url('/assets/fonts/Neulis_Neue_Black.otf') format('opentype'); font-weight: 900; font-style: normal; font-display: swap; }
-@font-face { font-family: 'Neulis Neue'; src: url('/assets/fonts/Neulis_Neue_Black_Italic.woff2') format('woff2'), url('/assets/fonts/Neulis_Neue_Black_Italic.otf') format('opentype'); font-weight: 900; font-style: italic; font-display: swap; }
-
-/* Caveat (SIL OFL 1.1, public/assets/fonts/OFL-Caveat.txt): a letra à mão dos
-   vídeos educativos do CP2b, usada só nas etiquetas. Recortada para latim e
-   português (74 KB em woff2, eixo de peso 400–700 inteiro). */
-@font-face { font-family: 'Caveat'; src: url('/assets/fonts/Caveat-Variable.woff2') format('woff2'); font-weight: 400 700; font-style: normal; font-display: swap; }

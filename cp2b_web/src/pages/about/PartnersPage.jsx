@@ -287,7 +287,7 @@ const PartnersPage = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
-      <PageHero eyebrow="CP2b" title={labels.title} subtitle={labels.description} photo={{ src: '/assets/fotos/parceiros-delegacao.webp', width: 700, height: 500 }} />
+      <PageHero eyebrow="CP2b" title={labels.title} subtitle={labels.description} />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}

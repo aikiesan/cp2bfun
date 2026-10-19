@@ -1,37 +1,19 @@
 /* ============================================================
-   /sobre — identidade de papel
-   Folhas de papel sobre a mesa no lugar dos cartões com sombra
-   difusa; rótulos escritos à mão no lugar das pílulas em
-   caixa-alta; ícones soltos no papel, sem o círculo tingido.
+   /sobre
+   Cartões brancos com fio fino e sombra suave; rótulos em
+   caixa-alta pequena; ícones soltos, sem o círculo tingido.
    Só tokens (tokens.css). Os blocos que eram caixa dentro de
    caixa (resumo, parceiros) ficaram sem a caixa de fora.
    ============================================================ */
 
-/* ---------- Folha de papel ---------- */
+/* ---------- Cartão ---------- */
 .about-sheet {
   position: relative;
   background: var(--bg-surface);
-  border: 1px solid var(--paper-line);
+  border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
-  box-shadow: var(--paper-shadow);
+  box-shadow: var(--shadow-sm);
 }
-
-/* Um pedaço de fita colorida prende a folha pela borda de cima, no lugar
-   do filete colorido que antes marcava cada cartão. */
-.about-sheet[data-tape]::before {
-  content: '';
-  position: absolute;
-  top: -0.6rem;
-  left: 1.5rem;
-  width: 4.5rem;
-  height: 1.2rem;
-  transform: rotate(-4deg);
-  background: color-mix(in srgb, var(--tape-color) 55%, transparent);
-}
-
-.about-sheet[data-tape="verde"] { --tape-color: var(--cp2b-verde); }
-.about-sheet[data-tape="lima"] { --tape-color: var(--cp2b-lima); }
-.about-sheet[data-tape="ambar"] { --tape-color: var(--cp2b-ambar); }
 
 .about-sheet__title {
   font-weight: 800;
@@ -45,12 +27,14 @@
   font-style: italic;
 }
 
-/* ---------- Rótulo à mão e ícone solto ---------- */
+/* ---------- Rótulo em caixa-alta e ícone solto ---------- */
 .about-label {
-  font-family: var(--font-hand);
-  font-size: 1.45rem;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
   font-weight: 700;
-  line-height: 1.1;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
   color: var(--cp2b-verde-escuro);
 }
 
@@ -95,32 +79,24 @@
   color: var(--text-secondary);
 }
 
-/* ---------- Selo do vídeo: etiqueta presa com fita ---------- */
+/* ---------- Selo do vídeo: etiqueta em pílula branca ---------- */
 .about-video-tag {
   position: absolute;
   top: 1rem;
   left: 1rem;
   z-index: 2;
   pointer-events: none;
-  padding: 0.1rem 0.85rem 0.2rem;
+  padding: 0.3rem 0.8rem;
   background: var(--cp2b-branco);
-  box-shadow: var(--paper-shadow);
-  transform: rotate(-2deg);
-  font-family: var(--font-hand);
-  font-size: 1.4rem;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
   font-weight: 700;
-  color: var(--paper-ink);
-}
-
-.about-video-tag::before {
-  content: '';
-  position: absolute;
-  left: -0.7rem;
-  top: -0.45rem;
-  width: 2.6rem;
-  height: 0.95rem;
-  background: var(--paper-tape);
-  transform: rotate(-28deg);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-primary);
 }
 
 /* ---------- Listas de parceiros: folhinhas no lugar dos "checks" ---------- */
@@ -138,11 +114,6 @@ body.high-contrast .about-sheet {
   background: #000;
   border-color: #fff;
   box-shadow: none;
-}
-
-body.high-contrast .about-sheet[data-tape]::before,
-body.high-contrast .about-video-tag::before {
-  display: none;
 }
 
 body.high-contrast .about-label,

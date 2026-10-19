@@ -1,5 +1,5 @@
-/* Leitor de livreto (FlipBook.jsx): folhas de papel sobre a mesa kraft, que
-   giram em torno da lombada. */
+/* Leitor de livreto (FlipBook.jsx): folhas que giram em torno da lombada,
+   sobre a faixa clara fria. */
 .flipbook {
   --fb-duration: 0.7s;
   /* Altura que sobra para cabeçalho, controles e respiro: o livro inteiro
@@ -67,7 +67,7 @@
   background: var(--cp2b-branco, #fff);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  box-shadow: var(--paper-shadow);
+  box-shadow: var(--shadow-sm);
 }
 
 .flipbook__face--back {
@@ -115,12 +115,12 @@
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
-  border: 1px solid var(--paper-line);
+  border: 1px solid var(--border-default);
   border-radius: 50%;
   background: var(--cp2b-branco, #fff);
-  color: var(--paper-ink);
+  color: var(--text-primary);
   font-size: 1.1rem;
-  box-shadow: var(--paper-shadow);
+  box-shadow: var(--shadow-sm);
   transition: background-color var(--duration-fast), transform var(--duration-fast);
 }
 
@@ -155,11 +155,12 @@
   min-width: 11rem;
   margin: 0;
   text-align: center;
-  font-family: var(--font-hand);
-  font-size: 1.4rem;
-  font-weight: 700;
-  line-height: 1.1;
-  color: var(--paper-ink);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.4;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-primary);
 }
 
 .flipbook__range {
@@ -181,14 +182,14 @@
   .flipbook__btn--fullscreen { display: none; }
 }
 
-/* ---------- Tela cheia: só o livro e os controles, sobre o kraft ---------- */
+/* ---------- Tela cheia: só o livro e os controles, sobre a faixa clara ---------- */
 .flipbook:fullscreen {
   --fb-chrome: 170px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   padding: 1rem;
-  background: var(--paper-kraft) var(--paper-grain);
+  background: var(--bg-surface-muted);
 }
 
 .flipbook:fullscreen .flipbook__hint {

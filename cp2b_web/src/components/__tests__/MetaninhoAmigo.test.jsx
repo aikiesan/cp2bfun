@@ -27,6 +27,18 @@ describe('MetaninhoAmigo (easter egg)', () => {
     expect(screen.getByRole('status', { hidden: true })).toHaveTextContent('No biogás, eu sou a parte que vira energia.');
 
     act(() => { vi.advanceTimersByTime(4100); });
+    expect(screen.getByRole('status', { hidden: true })).not.toBeEmptyDOMElement();
+
+    act(() => { vi.advanceTimersByTime(3000); });
+    expect(screen.getByRole('status', { hidden: true })).toBeEmptyDOMElement();
+  });
+
+  it('closes the bubble on Escape', () => {
+    renderWithProviders(<MetaninhoAmigo />);
+    fireEvent.click(screen.getByRole('button', { name: 'Metaninho, o mascote do CP2b' }));
+    expect(screen.getByRole('status', { hidden: true })).not.toBeEmptyDOMElement();
+
+    fireEvent.keyDown(document, { key: 'Escape' });
     expect(screen.getByRole('status', { hidden: true })).toBeEmptyDOMElement();
   });
 

@@ -29,17 +29,17 @@
 .svc:hover,
 .svc.is-open {
   border-color: color-mix(in srgb, var(--cp2b-verde) 50%, white);
-  box-shadow: var(--paper-shadow-lift);
+  box-shadow: var(--shadow-md);
 }
 
-/* Quadro da ilustração: papel claro, sem caixa dentro de caixa e sem o
-   brilho da marca — a imagem recortada fica sobre o papel do card. */
+/* Quadro da ilustração: faixa clara fria, sem caixa dentro de caixa e sem
+   o brilho da marca — a imagem recortada fica sobre o fundo do card. */
 .svc__art {
   display: grid;
   place-items: center;
   aspect-ratio: 4 / 3;
   padding: 0.75rem;
-  background: var(--paper);
+  background: var(--bg-surface-muted);
   border-bottom: 1px solid var(--border-divider);
 }
 
@@ -134,7 +134,7 @@
   grid-template-columns: repeat(4, minmax(0, auto));
   gap: 4px;
   padding: 4px;
-  background: var(--paper-soft);
+  background: var(--bg-surface-muted);
   border-radius: 0.75rem;
 }
 

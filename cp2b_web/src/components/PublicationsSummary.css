@@ -19,22 +19,8 @@
     var(--bg-surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
-  box-shadow: var(--paper-shadow);
+  box-shadow: var(--shadow-sm);
   overflow: visible;
-}
-
-/* Um pedaço de fita crepe prende o painel à página (no lugar do filete). */
-.pubs-summary::before {
-  content: '';
-  position: absolute;
-  top: -0.7rem;
-  left: 50%;
-  z-index: 1;
-  width: 7rem;
-  height: 1.4rem;
-  background: var(--paper-tape);
-  transform: translateX(-50%) rotate(-2deg);
-  pointer-events: none;
 }
 
 .pubs-summary__head {
@@ -47,12 +33,13 @@
 
 .pubs-summary__eyebrow {
   display: block;
-  font-family: var(--font-hand);
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0;
   color: var(--cp2b-verde-escuro);
-  line-height: 1.1;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .pubs-summary__title {
@@ -186,12 +173,13 @@
 }
 
 .pubs-sdgs__lbl {
-  font-family: var(--font-hand);
-  font-size: 1.3rem;
-  font-weight: 700;
-  letter-spacing: 0;
   color: var(--cp2b-verde-escuro);
-  line-height: 1.1;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
 .pubs-sdgs ul { display: flex; flex-wrap: wrap; gap: 0.6rem 1.25rem; list-style: none; margin: 0; padding: 0; }
@@ -306,7 +294,7 @@
 @media (max-width: 575.98px) {
   /* Como em /eixos e /solucoes: no celular o painel vira seção comum. */
   .pubs-summary {
-    margin-top: 1.5rem;
+    margin-top: 2rem;
     padding: 0;
     background: none;
     border: none;
@@ -314,8 +302,6 @@
     box-shadow: none;
     overflow: visible;
   }
-
-  .pubs-summary::before { display: none; }
   .pubs-summary__head { gap: 1rem; }
   .pubs-total { width: 5.75rem; height: 5.75rem; }
   .pubs-total__num { font-size: 2.1rem; }

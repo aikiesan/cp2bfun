@@ -124,21 +124,21 @@ export const brandColors = [
 ];
 
 /**
- * Tipografia institucional. Informativo, não distribuível: Neulis Sans e
- * Neulis Neue são fontes comerciais licenciadas ao CP2b — o site as usa para
- * renderizar, mas os arquivos não são oferecidos para download aqui.
+ * Tipografia institucional (manual, seções 1.13 e 1.14). Informativo, não
+ * distribuível: Neulis Sans é fonte comercial licenciada ao CP2b — o site a
+ * usa para renderizar, mas os arquivos não são oferecidos para download aqui.
  */
 export const brandTypography = [
   {
-    family: 'Neulis Neue',
-    role: 'Títulos e display',
-    role_en: 'Headings and display',
+    family: 'Neulis Sans',
+    role: 'Títulos (Extra Bold) e texto (Medium)',
+    role_en: 'Headings (Extra Bold) and body text (Medium)',
     sample: 'Biogás e Bioprodutos',
   },
   {
-    family: 'Neulis Sans',
-    role: 'Texto corrido e interface',
-    role_en: 'Body text and interface',
+    family: 'Verdana',
+    role: 'Fonte de reserva',
+    role_en: 'Fallback typeface',
     sample: 'Centro Paulista de Estudos em Biogás e Bioprodutos',
   },
 ];

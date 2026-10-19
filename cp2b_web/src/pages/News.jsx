@@ -75,7 +75,7 @@ const News = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
-      <PageHero eyebrow={language === 'pt' ? 'Comunicação' : 'Communication'} title={labels.title} photo={{ src: '/assets/fotos/noticias-forum.webp', width: 700, height: 500 }} />
+      <PageHero eyebrow={language === 'pt' ? 'Comunicação' : 'Communication'} title={labels.title} />
       <Container className="py-4 py-md-5">
 
       {/* Featured News - FAPESP Style */}
