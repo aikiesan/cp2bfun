@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Container, Spinner, Button } from 'react-bootstrap';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { Container, Spinner } from 'react-bootstrap';
+import { useParams, useLocation } from 'react-router-dom';
 import { projectsItems } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchProjectArticle, fetchProjects } from '../services/api';
 import ArticleLayout from '../components/ArticleLayout';
 import SeoHead from '../components/SeoHead';
-import Metaninho from '../components/Metaninho';
+import NotFound from './NotFound';
 
 const ProjectsDetail = () => {
   const DOMAIN = 'https://cp2b.unicamp.br';
@@ -19,15 +19,11 @@ const ProjectsDetail = () => {
 
   const labels = {
     pt: {
-      notFound: 'Entrevista não encontrada',
-      backBtn: 'Voltar para Entrevistas',
       back: 'Voltar',
       share: 'Compartilhar',
       interviewedBy: 'Entrevistado por',
     },
     en: {
-      notFound: 'Interview not found',
-      backBtn: 'Back to Interviews',
       back: 'Back',
       share: 'Share',
       interviewedBy: 'Interviewed by',
@@ -104,15 +100,7 @@ const ProjectsDetail = () => {
   }
 
   if (!article) {
-    return (
-      <Container className="py-5 text-center">
-        <Metaninho pose="surpreso" size={140} className="d-block mx-auto mb-3" />
-        <h2>{labels.notFound}</h2>
-        <Button as={Link} to="/entrevistas" variant="primary" className="mt-3">
-          {labels.backBtn}
-        </Button>
-      </Container>
-    );
+    return <NotFound />;
   }
 
   const articleJsonLd = article ? {

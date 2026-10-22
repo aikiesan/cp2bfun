@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Container, Spinner, Button } from 'react-bootstrap';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { Container, Spinner } from 'react-bootstrap';
+import { useParams, useLocation } from 'react-router-dom';
 import { newsItems } from '../data/content';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchNewsArticle, fetchNews } from '../services/api';
 import ArticleLayout from '../components/ArticleLayout';
 import SeoHead from '../components/SeoHead';
-import Metaninho from '../components/Metaninho';
+import NotFound from './NotFound';
 
 const NewsDetail = () => {
   const DOMAIN = 'https://cp2b.unicamp.br';
@@ -19,14 +19,10 @@ const NewsDetail = () => {
 
   const labels = {
     pt: {
-      notFound: 'Notícia não encontrada',
-      backBtn: 'Voltar para Notícias',
       back: 'Voltar',
       share: 'Compartilhar',
     },
     en: {
-      notFound: 'News not found',
-      backBtn: 'Back to News',
       back: 'Back',
       share: 'Share',
     },
@@ -102,15 +98,7 @@ const NewsDetail = () => {
   }
 
   if (!article) {
-    return (
-      <Container className="py-5 text-center">
-        <Metaninho pose="surpreso" size={140} className="d-block mx-auto mb-3" />
-        <h2>{labels.notFound}</h2>
-        <Button as={Link} to="/noticias" variant="primary" className="mt-3">
-          {labels.backBtn}
-        </Button>
-      </Container>
-    );
+    return <NotFound />;
   }
 
   const articleJsonLd = article ? {

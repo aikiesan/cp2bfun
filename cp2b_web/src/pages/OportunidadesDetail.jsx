@@ -1,11 +1,11 @@
 import { useState, useEffect } from 'react';
-import { Container, Spinner, Button } from 'react-bootstrap';
-import { useParams, Link, useLocation } from 'react-router-dom';
+import { Container, Spinner } from 'react-bootstrap';
+import { useParams, useLocation } from 'react-router-dom';
 import { useLanguage } from '../context/LanguageContext';
 import { fetchOpportunity, fetchOpportunities } from '../services/api';
 import ArticleLayout from '../components/ArticleLayout';
 import SeoHead from '../components/SeoHead';
-import Metaninho from '../components/Metaninho';
+import NotFound from './NotFound';
 
 const OportunidadesDetail = () => {
   const DOMAIN = 'https://cp2b.unicamp.br';
@@ -18,14 +18,10 @@ const OportunidadesDetail = () => {
 
   const labels = {
     pt: {
-      notFound: 'Oportunidade não encontrada',
-      backBtn: 'Voltar para Oportunidades',
       back: 'Voltar',
       share: 'Compartilhar',
     },
     en: {
-      notFound: 'Opportunity not found',
-      backBtn: 'Back to Opportunities',
       back: 'Back',
       share: 'Share',
     },
@@ -89,15 +85,7 @@ const OportunidadesDetail = () => {
   }
 
   if (!article) {
-    return (
-      <Container className="py-5 text-center">
-        <Metaninho pose="surpreso" size={140} className="d-block mx-auto mb-3" />
-        <h2>{labels.notFound}</h2>
-        <Button as={Link} to="/oportunidades" variant="primary" className="mt-3">
-          {labels.backBtn}
-        </Button>
-      </Container>
-    );
+    return <NotFound />;
   }
 
   const articleJsonLd = article ? {

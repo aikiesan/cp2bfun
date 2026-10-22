@@ -4,7 +4,7 @@ import { useParams, useLocation, Link } from 'react-router-dom';
 import { fetchGallery } from '../services/api';
 import { useLanguage } from '../context/LanguageContext';
 import SeoHead from '../components/SeoHead';
-import Metaninho from '../components/Metaninho';
+import NotFound from './NotFound';
 
 const AlbumView = () => {
   const { albumId } = useParams();
@@ -17,8 +17,8 @@ const AlbumView = () => {
   const [loading, setLoading] = useState(true);
 
   const labels = {
-    pt: { back: 'Galeria', notFound: 'Álbum não encontrado.', photos: 'fotos', photo: 'foto' },
-    en: { back: 'Gallery', notFound: 'Album not found.', photos: 'photos', photo: 'photo' },
+    pt: { back: 'Galeria', photos: 'fotos', photo: 'foto' },
+    en: { back: 'Gallery', photos: 'photos', photo: 'photo' },
   }[language];
 
   const openLightbox = (index) => {
@@ -66,12 +66,7 @@ const AlbumView = () => {
   }
 
   if (!albumInfo) {
-    return (
-      <Container className="py-5 text-center text-muted">
-        <Metaninho pose="surpreso" size={130} className="d-block mx-auto mb-3" />
-        {labels.notFound}
-      </Container>
-    );
+    return <NotFound />;
   }
 
   const currentPhoto = albumPhotos[currentPhotoIndex];
