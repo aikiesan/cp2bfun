@@ -38,7 +38,28 @@
     # em fila de recrawl por muito mais tempo.
     RewriteRule ^na-midia/?$ - [G,L]
 
-    RewriteRule ^index\.html$ - [L]
+    # Páginas do Fórum de 2026, encerrado: removidas do App.jsx, também sem volta.
+    RewriteRule ^(registro|agenda-meetups|cronograma-evento)/?$ - [G,L]
+
+    # Rotas renomeadas: o endereço antigo leva ao novo, e o Google transfere o
+    # que tinha acumulado nele.
+    RewriteRule ^pesquisa/?$ https://%{HTTP_HOST}/eixos [R=301,L]
+    RewriteRule ^projetos(/[^/]+)?/?$ https://%{HTTP_HOST}/entrevistas$1 [R=301,L]
+
+    # Um endereço só por página. www, barra final e /index.html respondiam 200
+    # com o mesmo conteúdo, e o Search Console os listava como cópias. O destino
+    # leva https explícito: um Location relativo sairia como http:// (ver acima).
+    RewriteCond %{HTTP_HOST} ^www\. [NC]
+    RewriteRule ^(.*)$ https://cp2b.unicamp.br/$1 [R=301,L]
+
+    # THE_REQUEST: só o /index.html pedido pelo visitante, não o das regras abaixo.
+    RewriteCond %{THE_REQUEST} ^[A-Z]+\ /index\.html[\ ?]
+    RewriteRule ^index\.html$ https://%{HTTP_HOST}/ [R=301,L]
+
+    RewriteCond %{REQUEST_URI} !^/(pilar2b|abiove|arqueia)
+    RewriteRule ^(.+)/$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+    RewriteRule ^(index|_spa)\.html$ - [L]
 
     # Serve the prerendered file for an extensionless route, with no redirect.
     # /sobre -> /sobre/index.html (200, not 301)
@@ -49,21 +70,25 @@
     RewriteCond %{DOCUMENT_ROOT}%{REQUEST_URI}/index.html -f
     RewriteRule ^(.*[^/])$ /$1/index.html [L]
 
-    # SPA fallback: anything not on disk is handled by the React router.
+    # SPA fallback, só para rotas que o React Router conhece e que não têm pasta
+    # pré-renderizada: detalhes publicados depois do build, álbuns, o admin e as
+    # páginas rasas. Recebem o _spa.html (sem canonical; o SeoHead emite o
+    # certo) com 200. Uma rota nova no App.jsx que não esteja no ROUTES do
+    # generate-seo.mjs precisa entrar aqui, ou responde 404.
     #
-    # The /pilar2b, /abiove and /arqueia exclusions mirror the vhost's
-    # <Directory> block.
-    # They must be repeated here: mod_rewrite does NOT inherit rules from the
-    # parent context, so these .htaccess rules replace the vhost ones outright.
-    # Without them, a PILAR-2b, ABIOVE or Arqueia URL that reached this
-    # directory would be swallowed by the CP2b SPA.
-    RewriteCond %{REQUEST_URI} !^/pilar2b
-    RewriteCond %{REQUEST_URI} !^/abiove
-    RewriteCond %{REQUEST_URI} !^/arqueia
+    # Antes o fallback era tudo-que-não-existe -> index.html: rotas inventadas
+    # respondiam 200 (soft 404 no Search Console) e, como o index.html é a home
+    # pré-renderizada, declaravam a home como canônica.
+    #
+    # Não há exclusão de /pilar2b, /abiove e /arqueia aqui: o padrão abaixo não
+    # casa com elas, e o 404 do resto não as alcança (o vhost as encaminha).
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteCond %{REQUEST_FILENAME} !-d
-    RewriteRule . /index.html [L]
+    RewriteRule ^((noticias|oportunidades|microscopio|eventos|entrevistas|galeria|gallery)/[^/]+|admin(/.*)?|outros|manutencao|confirmar-meetup)$ /_spa.html [L]
 </IfModule>
+
+# Todo o resto é 404 de verdade, com o shell da SPA como corpo: o visitante vê
+# a página "não encontrada" do site e o Google recebe o status certo.
+ErrorDocument 404 /_spa.html
 
 <IfModule mod_headers.c>
     # Safety net: if anything still emits an http:// Location (mod_dir, mod_alias,

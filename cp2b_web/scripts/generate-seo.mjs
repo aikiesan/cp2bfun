@@ -33,6 +33,8 @@ const DEFAULT_API_URL = process.env.SEO_API_URL || process.env.VITE_API_URL || '
 
 export const SITE_NAME = 'CP2b';
 export const DEFAULT_OG_IMAGE = '/assets/logos/cp2b-logo-og.png';
+// Lido pelo .htaccess e pelo vercel.json; mudar o nome aqui exige mudar lá.
+export const SPA_SHELL = '_spa.html';
 
 export const ROUTES = {
   '/': { seoKey: 'home', priority: '1.0', changefreq: 'weekly', schemaType: 'organization' },
@@ -580,6 +582,13 @@ export async function generateSeo({
   }
   const template = await readFile(templatePath, 'utf8');
   const today = new Date().toISOString().slice(0, 10);
+
+  // 0. Shell neutro para o fallback da SPA (álbuns, slugs publicados depois do
+  //    build, /admin, rotas inexistentes). Antes o fallback servia o index.html,
+  //    que logo abaixo vira a home pré-renderizada: toda URL sem pasta própria
+  //    chegava ao Google com canonical apontando para a home, e o Search Console
+  //    as listava como cópias dela. Sem canonical, vale o que o SeoHead emite.
+  await writeFile(path.join(distDir, SPA_SHELL), template);
 
   // 1. Prerender static route HTML shells with JSON-LD
   let prerenderedCount = 0;

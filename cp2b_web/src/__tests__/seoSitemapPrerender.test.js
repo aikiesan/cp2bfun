@@ -379,6 +379,17 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
       expect(eventHtml).toContain('I Workshop Anual do CP2b');
     });
 
+    // O fallback da SPA serve este arquivo. Se ele herdasse o canonical da
+    // home, toda URL sem pasta própria se declararia cópia da home.
+    it('writes a neutral _spa.html shell with no canonical or JSON-LD', async () => {
+      await generateSeo({ distDir: tmpDir, siteUrl: BASE_URL, apiUrl: '', log: () => {} });
+
+      const shell = await readFile(path.join(tmpDir, '_spa.html'), 'utf8');
+      expect(shell).toBe(SAMPLE_TEMPLATE);
+      expect(shell).not.toContain('rel="canonical"');
+      expect(shell).not.toContain('application/ld+json');
+    });
+
     // As amostras de content.js têm slugs que não existem no banco. Num build
     // de produção sem API elas iam para o sitemap como páginas "não
     // encontradas" — melhor deixar as seções dinâmicas de fora e avisar.

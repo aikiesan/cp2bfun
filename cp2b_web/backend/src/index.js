@@ -74,6 +74,14 @@ const publicWriteLimiter = rateLimit({
   message: { error: 'Muitas requisições. Tente novamente em alguns minutos.' },
 });
 
+// A API é dado para o navegador, não página. O Googlebot a chama ao renderizar
+// o site e deixava os JSON em "rastreada, mas não indexada" no Search Console.
+// O noindex não impede que ele os use para renderizar as páginas.
+app.use('/api', (req, res, next) => {
+  res.set('X-Robots-Tag', 'noindex');
+  next();
+});
+
 app.use('/api', (req, res, next) => {
   const isPublicWrite = PUBLIC_WRITES.some((w) => w.method === req.method && w.pattern.test(req.path));
   if (isPublicWrite) return publicWriteLimiter(req, res, next);
