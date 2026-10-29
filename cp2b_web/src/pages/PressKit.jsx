@@ -5,7 +5,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
-import { pressKitLogos, pressKitDocuments, brandColors, brandTypography } from '../data/pressKitAssets';
+import { pressKitLogos, pressKitBanners, pressKitDocuments, brandColors, brandTypography } from '../data/pressKitAssets';
 import api from '../services/api';
 import { safeHref } from '../utils/safeUrl';
 
@@ -30,6 +30,8 @@ const PressKit = () => {
       download: 'Baixar',
       logosTitle: 'Logotipos',
       logosHint: 'Arquivos vetoriais (SVG), prontos para impressão e web. Clique para baixar.',
+      bannersTitle: 'Banners',
+      bannersHint: 'PNG, 1584 × 396 px — capa do LinkedIn, cabeçalhos de e-mail e apresentações. Clique para baixar.',
       docsTitle: 'Documentos',
       docsHint: 'Diretrizes oficiais de uso da marca.',
       colorsTitle: 'Paleta institucional',
@@ -45,6 +47,8 @@ const PressKit = () => {
       download: 'Download',
       logosTitle: 'Logos',
       logosHint: 'Vector files (SVG), ready for print and web. Click to download.',
+      bannersTitle: 'Banners',
+      bannersHint: 'PNG, 1584 × 396 px — LinkedIn cover, email headers and presentations. Click to download.',
       docsTitle: 'Documents',
       docsHint: 'Official brand usage guidelines.',
       colorsTitle: 'Institutional palette',
@@ -132,6 +136,41 @@ const PressKit = () => {
                         </span>
                       </span>
                       <i className="bi bi-download text-success flex-shrink-0"></i>
+                    </a>
+                  </Col>
+                ))}
+              </Row>
+            </Col>
+          </Row>
+
+          {/* Banners — a prévia é o próprio arquivo, na proporção 4:1. */}
+          <Row className="justify-content-center mt-4 mt-md-5">
+            <Col lg={9}>
+              <h2 className="h5 fw-bold mb-1">{labels.bannersTitle}</h2>
+              <p className="text-muted small mb-3">{labels.bannersHint}</p>
+
+              <Row className="g-3">
+                {pressKitBanners.map((banner) => (
+                  <Col xs={12} md={6} key={banner.file}>
+                    <a
+                      href={banner.file}
+                      download
+                      className="d-block border rounded overflow-hidden text-decoration-none h-100 press-kit-logo"
+                    >
+                      <img
+                        src={banner.file}
+                        alt=""
+                        loading="lazy"
+                        width={1584}
+                        height={396}
+                        className="d-block w-100 h-auto"
+                      />
+                      <span className="d-flex align-items-center gap-3 p-3">
+                        <span className="flex-grow-1 fw-semibold text-body">
+                          {language === 'pt' ? banner.name : banner.name_en}
+                        </span>
+                        <i className="bi bi-download text-success flex-shrink-0"></i>
+                      </span>
                     </a>
                   </Col>
                 ))}

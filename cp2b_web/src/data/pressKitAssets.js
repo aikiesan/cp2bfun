@@ -93,6 +93,34 @@ export const pressKitLogos = [
 ];
 
 /**
+ * Banners horizontais (1584 × 396 px, PNG), servidos de
+ * public/assets/press-kit/banners/. O formato é o da capa do LinkedIn e serve
+ * também para cabeçalhos de e-mail e apresentações.
+ */
+export const pressKitBanners = [
+  {
+    file: '/assets/press-kit/banners/cp2b-banner-petroleo-ambar.png',
+    name: 'Banner — azul petróleo e âmbar',
+    name_en: 'Banner — petrol blue and amber',
+  },
+  {
+    file: '/assets/press-kit/banners/cp2b-banner-ambar.png',
+    name: 'Banner — âmbar',
+    name_en: 'Banner — amber',
+  },
+  {
+    file: '/assets/press-kit/banners/cp2b-banner-petroleo-lima.png',
+    name: 'Banner — azul petróleo e lima',
+    name_en: 'Banner — petrol blue and lime',
+  },
+  {
+    file: '/assets/press-kit/banners/cp2b-banner-claro.png',
+    name: 'Banner — fundo claro',
+    name_en: 'Banner — light background',
+  },
+];
+
+/**
  * Documentos institucionais servidos de public/assets/press-kit/.
  *
  * Ficam no repositório (e não em /uploads) porque são materiais de marca
