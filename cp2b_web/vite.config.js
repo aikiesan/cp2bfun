@@ -73,6 +73,11 @@ export default defineConfig({
         // chunk sob demanda do admin (ver src/AdminApp.jsx). Agrupar todo o
         // node_modules em um "vendor" desfaria esse split.
         manualChunks(id) {
+          // O helper de CommonJS do Rollup é usado pelo React e pelo
+          // Bootstrap. Solto, o Rollup às vezes o põe no bootstrap-vendor, e
+          // os dois chunks passam a importar um do outro: o React chega
+          // undefined e o site não abre ("reading 'createContext'", 25/11/2026).
+          if (id.includes('commonjsHelpers')) return 'react-vendor';
           if (!id.includes('node_modules')) return;
           if (/[\\/]node_modules[\\/](react|react-dom|scheduler|react-router|react-router-dom)[\\/]/.test(id)) {
             return 'react-vendor';
