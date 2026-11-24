@@ -42,7 +42,11 @@ fi
 
 echo "==> [3/7] Instalando dependências..."
 cd "$WEB_DIR"
-npm install
+# npm ci instala exatamente o package-lock. O npm install podia subir versões
+# dentro das faixas do package.json e gerar um build diferente do testado
+# (25/11/2026: chunks com import circular e o site em branco).
+# --include=dev: o vite é devDependency e o NODE_ENV da VM pode ser production.
+npm ci --include=dev
 # O backend também: sem isto, as atualizações de segurança das dependências
 # dele (nodemailer, express...) só chegavam à VM se alguém instalasse à mão.
 (cd "$WEB_DIR/backend" && npm ci --omit=dev)
