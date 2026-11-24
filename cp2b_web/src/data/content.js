@@ -1531,6 +1531,37 @@ export const homeContent = {
   },
 };
 
+// Faixa do PILAR-2b na home e em /eixos. Os rótulos dos links dizem o que a
+// página do outro lado tem ("potencial de biogás por município"), não só
+// "PILAR-2b": é o texto do link que conta ao Google do que trata a página de
+// destino. `path` é relativo ao idioma da plataforma (/pilar2b/<idioma>).
+export const pilarBand = {
+  pt: {
+    locale: 'pt-BR',
+    eyebrow: 'Plataforma de dados abertos',
+    title: 'PILAR-2b: o potencial de biogás de cada município',
+    lead: 'Plataforma aberta do CP2b que estima, município a município, o potencial de biogás e bioprodutos de resíduos agrícolas, pecuários e urbanos. Base completa para o estado de São Paulo; Minas Gerais em validação.',
+    links: [
+      { path: '/municipalities', label: 'Potencial de biogás por município', hint: 'O perfil de cada cidade, por setor e por resíduo' },
+      { path: '/map', label: 'Mapa interativo do biogás', hint: 'Camadas, temas e análise multicritério' },
+      { path: '/data', label: 'Catálogo de dados de resíduos', hint: 'Potencial metanogênico e caracterização de cada resíduo' },
+    ],
+    cta: 'Abrir o PILAR-2b',
+  },
+  en: {
+    locale: 'en',
+    eyebrow: 'Open data platform',
+    title: 'PILAR-2b: the biogas potential of every municipality',
+    lead: 'CP2b open platform that estimates, municipality by municipality, the biogas and bioproduct potential of agricultural, livestock and urban residues. Full coverage of São Paulo state; Minas Gerais in validation.',
+    links: [
+      { path: '/municipalities', label: 'Biogas potential by municipality', hint: 'Each town profiled by sector and residue' },
+      { path: '/map', label: 'Interactive biogas map', hint: 'Layers, themes and multi-criteria analysis' },
+      { path: '/data', label: 'Residue data catalog', hint: 'Methane potential and characterization of each residue' },
+    ],
+    cta: 'Open PILAR-2b',
+  },
+};
+
 // HQ "Metaninho no Intercocen" (/metaninho). As páginas do leitor saem do PDF
 // de leitura, uma imagem por página, na ordem do gibi impresso: capa, verso
 // da capa em branco (como na versão para imprimir), as dez páginas da

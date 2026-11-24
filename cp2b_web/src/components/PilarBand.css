@@ -1,0 +1,92 @@
+/* Faixa do PILAR-2b: o mesmo painel escuro da chamada de soluções da home,
+   em largura total, com os três atalhos da plataforma ao lado do texto. */
+
+.pilar-band__panel {
+  display: grid;
+  gap: var(--space-6);
+  padding: var(--space-8) var(--space-6);
+  border-radius: var(--radius-2xl);
+  background:
+    radial-gradient(34rem 22rem at -10% 120%, color-mix(in srgb, var(--cp2b-lime) 16%, transparent), transparent 60%),
+    linear-gradient(150deg, var(--cp2b-petrol-900) 0%, var(--cp2b-verde-escuro) 100%);
+  color: var(--cp2b-white);
+  box-shadow: var(--shadow-lg);
+}
+
+@media (min-width: 992px) {
+  .pilar-band__panel {
+    grid-template-columns: 1.1fr 1fr;
+    align-items: center;
+    gap: var(--space-8);
+    padding: var(--space-10, 3rem) var(--space-8);
+  }
+}
+
+.pilar-band__title {
+  font-size: var(--fs-title);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-snug);
+  color: var(--cp2b-white);
+  margin: var(--space-3) 0;
+}
+
+.pilar-band__lead {
+  font-size: var(--text-base, 1rem);
+  line-height: var(--leading-normal);
+  color: color-mix(in srgb, var(--cp2b-white) 82%, transparent);
+  margin-bottom: var(--space-6);
+  max-width: 40rem;
+}
+
+.pilar-band__links {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+
+.pilar-band__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: var(--space-4) var(--space-8) var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--cp2b-white) 8%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cp2b-white) 16%, transparent);
+  color: var(--cp2b-white);
+  text-decoration: none;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.pilar-band__link:hover,
+.pilar-band__link:focus-visible {
+  background: color-mix(in srgb, var(--cp2b-white) 14%, transparent);
+  border-color: var(--cp2b-lime-500);
+  color: var(--cp2b-white);
+}
+
+.pilar-band__link-label {
+  font-weight: var(--weight-semibold);
+  line-height: var(--leading-snug);
+}
+
+.pilar-band__link-hint {
+  font-size: var(--text-sm);
+  line-height: var(--leading-snug);
+  color: color-mix(in srgb, var(--cp2b-white) 75%, transparent);
+}
+
+.pilar-band__link-arrow {
+  position: absolute;
+  right: var(--space-5);
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--cp2b-lime-500);
+  transition: transform 0.2s ease;
+}
+
+.pilar-band__link:hover .pilar-band__link-arrow {
+  transform: translate(3px, -50%);
+}

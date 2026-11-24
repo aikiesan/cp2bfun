@@ -18,6 +18,7 @@ import Timeline from '../components/Timeline';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
+import PilarBand from '../components/PilarBand';
 
 // Reveal shared by every institutional block. The global
 // prefers-reduced-motion rule in design-system.css neutralises the
@@ -242,6 +243,10 @@ const Home = () => {
           )}
         </Container>
       </section>
+
+      {/* PILAR-2b logo depois das notícias: é a vitrine dos resultados de
+          pesquisa, e os links levam o Google às páginas da plataforma. */}
+      <PilarBand language={language} />
 
       {/* Featured Videos Section */}
       {(featuredVideos.A || featuredVideos.B || featuredVideos.C) && (
