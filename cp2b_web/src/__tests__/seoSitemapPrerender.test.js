@@ -1,5 +1,6 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { mkdtemp, rm, writeFile, readFile } from 'node:fs/promises';
+import { existsSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import {
@@ -20,6 +21,9 @@ import {
   getOpportunitiesFallback,
   generateSitemapXml,
   generateSeo,
+  htmlToParagraphs,
+  summarize,
+  renderBody,
 } from '../../scripts/generate-seo.mjs';
 
 describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
@@ -439,6 +443,94 @@ describe('Milestone M3: SEO, Schema.org JSON-LD, Sitemap & Meta Tags', () => {
       } finally {
         vi.unstubAllGlobals();
       }
+    });
+
+    // O corpo pré-renderizado: texto e links sem depender de JS.
+    const API = 'https://api.mock.test';
+    const ARTICLE = {
+      slug: 'quando-o-lodo', title_pt: 'Quando o lodo deixa de ser apenas lodo?', description_pt: '',
+      author: 'Autora Exemplo', content_pt: '<p>Primeiro parágrafo sobre <strong>lodo</strong> &amp; biogás.</p><p>Segundo parágrafo.</p><script>alert(1)</script>',
+    };
+    const apiFetch = (lists) => vi.fn(async (url) => {
+      const pathname = url.replace(API, '');
+      const [, section, slug] = pathname.split('/');
+      const list = lists[`/${section}`] || [];
+      if (!slug) return { ok: true, json: async () => list.map(({ content_pt: _content, ...rest }) => rest) };
+      const found = list.find((i) => i.slug === decodeURIComponent(slug));
+      return found ? { ok: true, json: async () => found } : { ok: false, json: async () => ({}) };
+    });
+
+    it('writes the article text, a description taken from it and the site navigation into the body', async () => {
+      vi.stubGlobal('fetch', apiFetch({ '/microscopio': [ARTICLE] }));
+      try {
+        await generateSeo({ distDir: tmpDir, siteUrl: BASE_URL, apiUrl: API, log: () => {} });
+        const html = await readFile(path.join(tmpDir, 'microscopio', 'quando-o-lodo', 'index.html'), 'utf8');
+        expect(html).toContain('<div id="root"><div class="prerender">');
+        expect(html).toContain('<h1>Quando o lodo deixa de ser apenas lodo?</h1>');
+        expect(html).toContain('<p>Primeiro parágrafo sobre lodo &amp; biogás.</p>');
+        expect(html).not.toContain('alert(1)');
+        expect(html).not.toContain('<strong>');
+        expect(html).toContain('<meta name="description" content="Primeiro parágrafo sobre lodo &amp; biogás. Segundo parágrafo." />');
+        expect(html).toContain('<a href="/pilar2b/pt-BR">');
+        const home = await readFile(path.join(tmpDir, 'index.html'), 'utf8');
+        expect(home).toContain('<a href="/microscopio/quando-o-lodo">');
+        expect(home).toContain('<a href="/pilar2b/pt-BR/municipalities">');
+        const eixos = await readFile(path.join(tmpDir, 'eixos', 'index.html'), 'utf8');
+        expect(eixos).toContain('<h3>Eixo 1');
+      } finally {
+        vi.unstubAllGlobals();
+      }
+    });
+
+    it('can run again on the same dist/ without stacking tags, and drops pages of deleted items', async () => {
+      const second = { ...ARTICLE, slug: 'outro-artigo', title_pt: 'Outro artigo' };
+      vi.stubGlobal('fetch', apiFetch({ '/microscopio': [ARTICLE, second] }));
+      try {
+        await generateSeo({ distDir: tmpDir, siteUrl: BASE_URL, apiUrl: API, log: () => {} });
+        vi.stubGlobal('fetch', apiFetch({ '/microscopio': [ARTICLE] }));
+        await generateSeo({ distDir: tmpDir, siteUrl: BASE_URL, apiUrl: API, log: () => {} });
+      } finally {
+        vi.unstubAllGlobals();
+      }
+      const home = await readFile(path.join(tmpDir, 'index.html'), 'utf8');
+      expect(home.match(/rel="canonical"/g)).toHaveLength(1);
+      expect(home.match(/class="prerender"/g)).toHaveLength(1);
+      expect(home.match(/application\/ld\+json/g)).toHaveLength(1);
+      expect(await readFile(path.join(tmpDir, '_spa.html'), 'utf8')).toBe(SAMPLE_TEMPLATE);
+      expect(existsSync(path.join(tmpDir, 'microscopio', 'quando-o-lodo', 'index.html'))).toBe(true);
+      expect(existsSync(path.join(tmpDir, 'microscopio', 'outro-artigo'))).toBe(false);
+      expect(home).not.toContain('Outro artigo');
+    });
+
+    it('keeps existing item pages when the API is down', async () => {
+      vi.stubGlobal('fetch', apiFetch({ '/microscopio': [ARTICLE] }));
+      try {
+        await generateSeo({ distDir: tmpDir, siteUrl: BASE_URL, apiUrl: API, log: () => {} });
+      } finally {
+        vi.unstubAllGlobals();
+      }
+      await generateSeo({ distDir: tmpDir, siteUrl: BASE_URL, apiUrl: 'http://127.0.0.1:59999', log: () => {} });
+      expect(existsSync(path.join(tmpDir, 'microscopio', 'quando-o-lodo', 'index.html'))).toBe(true);
+    });
+  });
+
+  describe('6. Body content helpers', () => {
+    it('turns stored HTML into plain paragraphs, decoding entities and dropping scripts', () => {
+      expect(htmlToParagraphs('<p>Um &quot;teste&quot; &#233; <em>bom</em></p><script>x()</script><p>Dois<br>linhas</p>'))
+        .toEqual(['Um "teste" é bom', 'Dois linhas']);
+      expect(htmlToParagraphs('')).toEqual([]);
+      expect(htmlToParagraphs(null)).toEqual([]);
+    });
+
+    it('summarizes at a word boundary', () => {
+      const s = summarize(['palavra '.repeat(40)], 50);
+      expect(s.length).toBeLessThanOrEqual(50);
+      expect(s.endsWith('…')).toBe(true);
+      expect(summarize(['curto'])).toBe('curto');
+    });
+
+    it('leaves a template without an empty root untouched', () => {
+      expect(renderBody('<div id="app"></div>', '<p>x</p>')).toBe('<div id="app"></div>');
     });
   });
 });

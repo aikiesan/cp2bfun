@@ -8,6 +8,13 @@
  * 2. Generates dist/sitemap.xml containing all static routes AND the dynamic
  *    slugs (news, events, opportunities, interviews, microscópio) read from the API.
  * 3. Prerenders HTML shells for those dynamic slugs.
+ * 4. Writes the page's text and links inside <div id="root"> (title, summary,
+ *    lists, the article body, the site navigation), so the HTML carries real
+ *    content without JS. React's createRoot replaces it on load.
+ *
+ * Re-runnable on an existing dist/ (the backend re-runs it after something is
+ * published, see backend/src/services/seoRegen.js): the template then comes
+ * from _spa.html, since index.html is already the prerendered home.
  *
  * Env:
  *   SITE_URL            canonical origin (default https://cp2b.unicamp.br)
@@ -19,11 +26,11 @@
  *                       production they went into the sitemap as "not found"
  *                       pages while the real articles were left out.
  */
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, readdir, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { pageSeo, researchAxes, newsItems, projectsItems } from '../src/data/content.js';
+import { pageSeo, researchAxes, newsItems, projectsItems, pilarBand } from '../src/data/content.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -98,6 +105,122 @@ export const escapeHtml = (s = '') =>
     .replaceAll('"', '&quot;');
 
 export const escapeXml = escapeHtml;
+
+// ---------- Conteúdo pré-renderizado no corpo da página ----------
+
+export const ROOT_EMPTY = '<div id="root"></div>';
+
+const NAMED_ENTITIES = { amp: '&', lt: '<', gt: '>', quot: '"', apos: "'", nbsp: ' ' };
+
+const decodeEntities = (s) =>
+  s.replace(/&(#x[0-9a-f]+|#[0-9]+|[a-z]+);/gi, (match, e) => {
+    if (e[0] === '#') {
+      const code = e[1] === 'x' || e[1] === 'X' ? parseInt(e.slice(2), 16) : parseInt(e.slice(1), 10);
+      return Number.isFinite(code) && code > 0 && code < 0x110000 ? String.fromCodePoint(code) : ' ';
+    }
+    return NAMED_ENTITIES[e.toLowerCase()] ?? match;
+  });
+
+// O HTML que vem do banco (content_pt) vira só texto, em parágrafos: nenhuma
+// tag dele chega ao arquivo, e o texto sai escapado por quem o usa.
+export function htmlToParagraphs(html = '') {
+  return String(html || '')
+    .replace(/<(script|style)\b[\s\S]*?<\/\1\s*>/gi, ' ')
+    .replace(/<br\s*\/?>/gi, '\n')
+    .split(/<\/(?:p|h[1-6]|li|div|blockquote|tr)\s*>|\n\s*\n/i)
+    .map((chunk) => decodeEntities(chunk.replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim())
+    .filter(Boolean);
+}
+
+// Resumo para a meta description quando o item não tem um: o começo do texto,
+// cortado numa palavra.
+export function summarize(paragraphs, max = 160) {
+  const text = paragraphs.join(' ').replace(/\s+/g, ' ').trim();
+  if (text.length <= max) return text;
+  const cut = text.slice(0, max - 1);
+  const space = cut.lastIndexOf(' ');
+  return `${(space > max * 0.6 ? cut.slice(0, space) : cut).replace(/[\s,;:.–-]+$/, '')}…`;
+}
+
+const a = (href, text) => `<a href="${escapeHtml(href)}">${escapeHtml(text)}</a>`;
+const p = (text) => `<p>${escapeHtml(text)}</p>`;
+
+const routeTitle = (route) => ROUTE_TITLES_PT[route === '/' ? '' : route.split('/').pop()] || route;
+
+const PRERENDER_STYLE =
+  '    <style>.prerender{max-width:60rem;margin:0 auto;padding:1.5rem 1rem;line-height:1.6}' +
+  '.prerender nav ul,.prerender ul{padding-left:1.2rem}</style>\n';
+
+export function renderBody(html, inner) {
+  if (!inner || !html.includes(ROOT_EMPTY)) return html;
+  return html
+    .replace('</head>', `${PRERENDER_STYLE}  </head>`)
+    .replace(ROOT_EMPTY, `<div id="root"><div class="prerender">\n${inner}\n</div></div>`);
+}
+
+export function buildSiteNav() {
+  const items = Object.keys(ROUTES).map((route) => `<li>${a(route, routeTitle(route))}</li>`);
+  const pilar = pilarBand.pt;
+  items.push(`<li>${a(`/pilar2b/${pilar.locale}`, 'PILAR-2b — potencial de biogás por município')}</li>`);
+  return `<nav aria-label="Site"><ul>\n${items.join('\n')}\n</ul></nav>`;
+}
+
+export function buildPilarBlock() {
+  const t = pilarBand.pt;
+  const base = `/pilar2b/${t.locale}`;
+  return [
+    `<section><h2>${escapeHtml(t.title)}</h2>`,
+    p(t.lead),
+    '<ul>',
+    ...t.links.map((l) => `<li>${a(`${base}${l.path}`, l.label)}: ${escapeHtml(l.hint)}</li>`),
+    `</ul><p>${a(base, t.cta)}</p></section>`,
+  ].join('\n');
+}
+
+export function buildAxesBlock({ full = false } = {}) {
+  const axes = researchAxes.pt || [];
+  if (!full) {
+    return `<section><h2>Eixos temáticos</h2><ul>\n${axes.map((x) => `<li>${a('/eixos', x.title)}</li>`).join('\n')}\n</ul></section>`;
+  }
+  return `<section><h2>Eixos temáticos</h2>\n${axes.map((x) => {
+    const who = (x.coordinators || []).map((c) => c.name).join(', ');
+    return `<article><h3>${escapeHtml(x.title)}</h3>\n${htmlToParagraphs(x.content).map(p).join('\n')}${who ? `\n${p(`Coordenação: ${who}`)}` : ''}</article>`;
+  }).join('\n')}\n</section>`;
+}
+
+const itemTitleOf = (item) => item.title || item.title_pt || '';
+const itemDescOf = (item) => item.description || item.description_pt || '';
+
+export function buildListBlock(heading, prefix, items, limit = 50) {
+  const shown = (items || []).filter((i) => i.slug && itemTitleOf(i)).slice(0, limit);
+  if (shown.length === 0) return '';
+  return `<section><h2>${escapeHtml(heading)}</h2><ul>\n${shown.map((i) => {
+    const desc = itemDescOf(i);
+    return `<li>${a(`${prefix}/${i.slug}`, itemTitleOf(i))}${desc ? ` — ${escapeHtml(desc)}` : ''}</li>`;
+  }).join('\n')}\n</ul></section>`;
+}
+
+const formatDate = (iso) => {
+  if (!iso) return '';
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric', timeZone: 'UTC' });
+};
+
+export function buildDetailBody(item, { prefix, sectionTitle, paragraphs }) {
+  const meta = [
+    item.author,
+    item.date_display || formatDate(item.published_at || item.start_date),
+    item.location,
+  ].filter(Boolean).join(' · ');
+  const body = paragraphs.length > 0 ? paragraphs : [itemDescOf(item)].filter(Boolean);
+  return [
+    `<article><h1>${escapeHtml(itemTitleOf(item))}</h1>`,
+    meta ? p(meta) : '',
+    ...body.map(p),
+    `</article><p>${a(prefix, `Mais em ${sectionTitle}`)}</p>`,
+    buildSiteNav(),
+  ].filter(Boolean).join('\n');
+}
 
 export function buildOrganizationJsonLd(baseUrl = DEFAULT_SITE_URL) {
   return {
@@ -580,7 +703,13 @@ export async function generateSeo({
   if (!existsSync(templatePath)) {
     throw new Error(`generate-seo: ${templatePath} not found — run vite build first.`);
   }
-  const template = await readFile(templatePath, 'utf8');
+  const spaPath = path.join(distDir, SPA_SHELL);
+  const indexHtml = await readFile(templatePath, 'utf8');
+  // Numa segunda rodada sobre o mesmo dist/, o index.html já é a home
+  // pré-renderizada (com canonical e conteúdo); o modelo limpo é o _spa.html.
+  const template = indexHtml.includes('rel="canonical"') && existsSync(spaPath)
+    ? await readFile(spaPath, 'utf8')
+    : indexHtml;
   const today = new Date().toISOString().slice(0, 10);
 
   // 0. Shell neutro para o fallback da SPA (álbuns, slugs publicados depois do
@@ -588,9 +717,59 @@ export async function generateSeo({
   //    que logo abaixo vira a home pré-renderizada: toda URL sem pasta própria
   //    chegava ao Google com canonical apontando para a home, e o Search Console
   //    as listava como cópias dela. Sem canonical, vale o que o SeoHead emite.
-  await writeFile(path.join(distDir, SPA_SHELL), template);
+  await writeFile(spaPath, template);
 
-  // 1. Prerender static route HTML shells with JSON-LD
+  // 1. Conteúdo dinâmico da API (ou das amostras, só com allowFallback). Vem
+  //    antes das páginas estáticas porque as listas delas usam esses itens.
+  const dynamicSources = [
+    { endpoint: '/news', prefix: '/noticias', priority: '0.7', changefreq: 'weekly', type: 'news', getFallback: getNewsFallback },
+    { endpoint: '/microscopio', prefix: '/microscopio', priority: '0.6', changefreq: 'weekly', type: 'microscopio', getFallback: getMicroscopioFallback },
+    { endpoint: '/opportunities', prefix: '/oportunidades', priority: '0.6', changefreq: 'weekly', type: 'opportunity', getFallback: getOpportunitiesFallback },
+    { endpoint: '/projects', prefix: '/entrevistas', priority: '0.7', changefreq: 'weekly', type: 'project', getFallback: getProjectsFallback },
+    { endpoint: '/events', prefix: '/eventos', priority: '0.7', changefreq: 'weekly', type: 'event', getFallback: getEventsFallback },
+  ];
+
+  const itemsByPrefix = {};
+  for (const source of dynamicSources) {
+    const { endpoint, prefix, getFallback } = source;
+    // Uma lista vazia é resposta válida (hoje /api/events devolve []): vira
+    // zero páginas, não amostras. Só a API fora do ar cai nas amostras, e só
+    // com allowFallback; sem ele a seção fica de fora do sitemap.
+    let items = await fetchJson(apiUrl, endpoint);
+    source.fromApi = Array.isArray(items);
+    if (source.fromApi) {
+      log(`generate-seo: fetched ${items.length} dynamic items from ${endpoint}`);
+    } else if (allowFallback) {
+      items = getFallback();
+      log(`generate-seo: using static fallback for ${prefix} (${items.length} items)`);
+    } else {
+      items = [];
+      log(`generate-seo: AVISO: ${apiUrl ? `API indisponível em ${apiUrl}${endpoint}` : 'SEO_API_URL não definido'}; ${prefix} fica fora do sitemap`);
+    }
+    itemsByPrefix[prefix] = items;
+  }
+
+  // 2. Páginas estáticas: cabeçalho, JSON-LD e o texto da página no corpo.
+  const listFor = {
+    '/noticias': () => buildListBlock('Notícias', '/noticias', itemsByPrefix['/noticias']),
+    '/microscopio': () => buildListBlock('Microscópio de Ideias', '/microscopio', itemsByPrefix['/microscopio']),
+    '/oportunidades': () => buildListBlock('Oportunidades', '/oportunidades', itemsByPrefix['/oportunidades']),
+    '/entrevistas': () => buildListBlock('Entrevistas e Projetos', '/entrevistas', itemsByPrefix['/entrevistas']),
+    '/eventos': () => buildListBlock('Eventos', '/eventos', itemsByPrefix['/eventos']),
+  };
+  const staticExtras = (route) => {
+    if (route === '/') {
+      return [
+        buildListBlock('Notícias recentes', '/noticias', itemsByPrefix['/noticias'], 6),
+        buildPilarBlock(),
+        buildAxesBlock(),
+        buildListBlock('Microscópio de Ideias', '/microscopio', itemsByPrefix['/microscopio'], 6),
+      ];
+    }
+    if (route === '/eixos') return [buildAxesBlock({ full: true }), buildPilarBlock()];
+    return [listFor[route]?.()];
+  };
+
   let prerenderedCount = 0;
   for (const [route, config] of Object.entries(ROUTES)) {
     const meta = pageSeo[config.seoKey]?.pt;
@@ -614,7 +793,7 @@ export async function generateSeo({
       jsonLd = buildBreadcrumbJsonLd(route, meta.title, siteUrl);
     }
 
-    const html = renderHead(template, {
+    const head = renderHead(template, {
       title: meta.title,
       description: meta.description,
       url,
@@ -622,6 +801,12 @@ export async function generateSeo({
       injectCanonical: true,
       siteUrl,
     });
+    const html = renderBody(head, [
+      `<h1>${escapeHtml(meta.title)}</h1>`,
+      p(meta.description),
+      ...staticExtras(route),
+      buildSiteNav(),
+    ].filter(Boolean).join('\n'));
 
     if (route === '/') {
       await writeFile(templatePath, html);
@@ -632,9 +817,9 @@ export async function generateSeo({
     }
     prerenderedCount += 1;
   }
-  log(`generate-seo: prerendered metadata and JSON-LD for ${prerenderedCount} static routes`);
+  log(`generate-seo: prerendered metadata, JSON-LD and content for ${prerenderedCount} static routes`);
 
-  // 2. Fetch or fallback dynamic content
+  // 3. Páginas de cada item e sitemap.
   const sitemapUrls = Object.entries(ROUTES).map(([route, config]) => ({
     loc: `${siteUrl}${route === '/' ? '/' : route}`,
     lastmod: today,
@@ -642,34 +827,21 @@ export async function generateSeo({
     changefreq: config.changefreq,
   }));
 
-  const dynamicSources = [
-    { endpoint: '/news', prefix: '/noticias', priority: '0.7', changefreq: 'weekly', type: 'news', getFallback: getNewsFallback },
-    { endpoint: '/microscopio', prefix: '/microscopio', priority: '0.6', changefreq: 'weekly', type: 'microscopio', getFallback: getMicroscopioFallback },
-    { endpoint: '/opportunities', prefix: '/oportunidades', priority: '0.6', changefreq: 'weekly', type: 'opportunity', getFallback: getOpportunitiesFallback },
-    { endpoint: '/projects', prefix: '/entrevistas', priority: '0.7', changefreq: 'weekly', type: 'project', getFallback: getProjectsFallback },
-    { endpoint: '/events', prefix: '/eventos', priority: '0.7', changefreq: 'weekly', type: 'event', getFallback: getEventsFallback },
-  ];
-
   let dynamicShellsCount = 0;
 
-  for (const { endpoint, prefix, priority, changefreq, type, getFallback } of dynamicSources) {
-    // Uma lista vazia é resposta válida (hoje /api/events devolve []): vira
-    // zero páginas, não amostras. Só a API fora do ar cai nas amostras, e só
-    // com allowFallback; sem ele a seção fica de fora do sitemap.
-    let items = await fetchJson(apiUrl, endpoint);
-    if (Array.isArray(items)) {
-      log(`generate-seo: fetched ${items.length} dynamic items from ${endpoint}`);
-    } else if (allowFallback) {
-      items = getFallback();
-      log(`generate-seo: using static fallback for ${prefix} (${items.length} items)`);
-    } else {
-      items = [];
-      log(`generate-seo: AVISO: ${apiUrl ? `API indisponível em ${apiUrl}${endpoint}` : 'SEO_API_URL não definido'}; ${prefix} fica fora do sitemap`);
-    }
+  for (const { endpoint, prefix, priority, changefreq, type, fromApi } of dynamicSources) {
+    const items = itemsByPrefix[prefix];
+    const slugs = new Set();
 
-    for (const item of items) {
-      const slug = item.slug;
+    for (const listItem of items) {
+      const slug = listItem.slug;
       if (!slug) continue;
+      slugs.add(slug);
+
+      // A lista da API não traz o texto; o detalhe traz (content_pt).
+      const detail = fromApi ? await fetchJson(apiUrl, `${endpoint}/${encodeURIComponent(slug)}`) : null;
+      const item = detail && typeof detail === 'object' && !Array.isArray(detail) ? { ...listItem, ...detail } : listItem;
+
       const route = `${prefix}/${slug}`;
       const itemUrl = `${siteUrl}${route}`;
       const itemLastmod = (item.updated_at || item.published_at || item.created_at || item.date_iso || today).slice(0, 10);
@@ -684,8 +856,11 @@ export async function generateSeo({
       // Build JSON-LD structured data for dynamic item
       let dynamicJsonLd = null;
       let pageType = 'website';
-      const itemTitle = item.title || item.title_pt || '';
-      const itemDesc = item.description || item.description_pt || itemTitle;
+      const itemTitle = itemTitleOf(item);
+      const paragraphs = htmlToParagraphs(item.content_pt || item.content || '');
+      // Sem resumo cadastrado (vários artigos do Microscópio), a description
+      // era o próprio título; o começo do texto descreve melhor a página.
+      const itemDesc = itemDescOf(item) || summarize(paragraphs) || itemTitle;
       const itemImage = item.image || DEFAULT_OG_IMAGE;
 
       if (type === 'news' || type === 'microscopio') {
@@ -703,7 +878,7 @@ export async function generateSeo({
         dynamicJsonLd = buildBreadcrumbJsonLd(route, itemTitle, siteUrl);
       }
 
-      const shellHtml = renderHead(template, {
+      const shellHtml = renderBody(renderHead(template, {
         title: itemTitle,
         description: itemDesc,
         url: itemUrl,
@@ -712,18 +887,33 @@ export async function generateSeo({
         jsonLd: dynamicJsonLd,
         injectCanonical: true,
         siteUrl,
-      });
+      }), buildDetailBody(item, { prefix, sectionTitle: routeTitle(prefix), paragraphs }));
 
       const dir = path.join(distDir, prefix.slice(1), slug);
       await mkdir(dir, { recursive: true });
       await writeFile(path.join(dir, 'index.html'), shellHtml);
       dynamicShellsCount += 1;
     }
+
+    // Item apagado ou despublicado desde a última rodada: a pasta dele
+    // continuaria respondendo 200 com o texto antigo. Só quando a lista veio
+    // da API — com a API fora do ar, nada é apagado.
+    if (fromApi) {
+      const sectionDir = path.join(distDir, prefix.slice(1));
+      if (existsSync(sectionDir)) {
+        for (const entry of await readdir(sectionDir, { withFileTypes: true })) {
+          if (entry.isDirectory() && !slugs.has(entry.name)) {
+            await rm(path.join(sectionDir, entry.name), { recursive: true, force: true });
+            log(`generate-seo: removed ${prefix}/${entry.name} (no longer in the API)`);
+          }
+        }
+      }
+    }
   }
 
   log(`generate-seo: prerendered ${dynamicShellsCount} dynamic HTML shells`);
 
-  // 3. Write Sitemap XML
+  // 4. Write Sitemap XML
   const sitemapXml = generateSitemapXml(sitemapUrls);
   await writeFile(path.join(distDir, 'sitemap.xml'), sitemapXml);
   log(`generate-seo: sitemap.xml written with ${sitemapUrls.length} URLs`);

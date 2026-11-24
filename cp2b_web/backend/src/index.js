@@ -32,6 +32,7 @@ import { adminGate, adminLocked, authEnabled, isAdminRequest, PUBLIC_WRITES } fr
 import { applyTrustProxy } from './middleware/trustProxy.js';
 import { initializeDatabase } from './db/init.js';
 import { startNewsletterReportScheduler } from './jobs/newsletterReport.js';
+import { createSeoRegen, SEO_REGEN_PATHS } from './services/seoRegen.js';
 
 dotenv.config();
 
@@ -91,6 +92,11 @@ app.use('/api', (req, res, next) => {
 // Authentication: login/status are public; everything after passes the gate.
 app.use('/api/auth', authRoutes);
 app.use('/api', adminGate);
+
+// Publicou, editou ou apagou conteúdo com página própria: refaz o sitemap e
+// as páginas pré-renderizadas do dist/ (ver services/seoRegen.js). Depois do
+// adminGate, para só escritas autenticadas contarem.
+app.use(SEO_REGEN_PATHS, createSeoRegen().middleware);
 if (adminLocked()) {
   console.error('⛔ ADMIN_PASSWORD is not set and NODE_ENV=production — the admin API is locked until it is set.');
 } else if (!authEnabled()) {
