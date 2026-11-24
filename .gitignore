@@ -17,7 +17,7 @@ dist-ssr
 .vscode/*
 !.vscode/extensions.json
 .idea
-.claude
+.claude/
 .DS_Store
 *.suo
 *.ntvs
@@ -74,3 +74,6 @@ ehthumbs.db
 Desktop.ini
 $RECYCLE.BIN/
 
+
+# Multi-agent scratch state
+.agents/
