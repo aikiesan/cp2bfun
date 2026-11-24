@@ -2,4 +2,13 @@ User-agent: *
 Allow: /
 Disallow: /admin
 
+# PILAR-2b (/pilar2b). O Google só lê o robots.txt da raiz do domínio: o
+# /pilar2b/robots.txt da plataforma não vale, por isso as regras dela estão aqui.
+Disallow: /pilar2b/api/
+Disallow: /pilar2b/pt-BR/dashboard
+Disallow: /pilar2b/en/dashboard
+Disallow: /pilar2b/pt-BR/settings
+Disallow: /pilar2b/en/settings
+
 Sitemap: https://cp2b.unicamp.br/sitemap.xml
+Sitemap: https://cp2b.unicamp.br/pilar2b/sitemap.xml
