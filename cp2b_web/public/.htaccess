@@ -46,6 +46,13 @@
     RewriteRule ^pesquisa/?$ https://%{HTTP_HOST}/eixos [R=301,L]
     RewriteRule ^projetos(/[^/]+)?/?$ https://%{HTTP_HOST}/entrevistas$1 [R=301,L]
 
+    # Endereços do PILAR-2b sem o /pilar2b. Um link do perfil do município
+    # pulava o basePath e apontava para /pt-BR/municipalities/<cidade> na raiz,
+    # que é deste site: o Google aprendeu milhares desses endereços e os lista
+    # como 404 (nov/2026). O link foi corrigido no PILAR-2b; o 301 devolve cada
+    # um à página certa. O CP2b não tem rota em /pt-BR nem em /en.
+    RewriteRule ^(pt-BR|en)(/.*)?$ https://%{HTTP_HOST}/pilar2b/$1$2 [R=301,L]
+
     # Um endereço só por página. www, barra final e /index.html respondiam 200
     # com o mesmo conteúdo, e o Search Console os listava como cópias. O destino
     # leva https explícito: um Location relativo sairia como http:// (ver acima).
