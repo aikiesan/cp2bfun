@@ -424,7 +424,11 @@ acrescenta ao CSV, que guarda o histórico para sempre.
 é pedido quando a pessoa chega de fora (Google, link compartilhado, endereço
 digitado); quem navega por dentro só chama a API.
 
-- **Chegadas (`arrivals`):** pedidos do HTML. As colunas `src_*` dizem de onde
+- **Chegadas (`arrivals`):** pedidos do HTML feitos por um navegador que rodou
+  o site, isto é, que também chamou a API no mesmo dia (toda página chama
+  `/api/page-settings` ao abrir). Varreduras da internet pedem só o HTML, muitas
+  vezes com user agent de um Chrome antigo, e ficam de fora: antes dessa regra
+  eram quase 9 de cada 10 "chegadas" da home. As colunas `src_*` dizem de onde
   vieram e somam o total de chegadas. WhatsApp no celular quase sempre chega
   sem referer e cai em "direto"; só aparece como WhatsApp com `utm_source`.
 - **Visualizações (`views`):** chamadas da API que só aquela página faz (a home,

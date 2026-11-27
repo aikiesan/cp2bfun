@@ -32,6 +32,10 @@
 #   counted_by   api: views conta as chamadas exclusivas da página
 #                html: a página não tem chamada exclusiva; views fica vazia
 #   arrivals     pedidos do HTML da página (chegadas de fora, e abas novas)
+#                feitos por um navegador que rodou o site: o mesmo IP + user
+#                agent chamou a API no mesmo dia (toda página do site chama
+#                /api/page-settings ao abrir). Varreduras que só baixam o HTML,
+#                muitas com user agent de Chrome antigo, ficam de fora
 #   views        chamadas exclusivas da API (inclui as chegadas, que também
 #                chamam a API); vazio quando counted_by = html
 #   browsers     navegadores distintos (IP + user agent) na base da contagem
@@ -47,7 +51,8 @@
 #                other: qualquer outro site ou utm_source
 #   mobile, desktop  divisão da base da contagem (views se api, arrivals se html)
 #
-# Ficam de fora: tudo que não é GET com 200/304, robôs, o próprio servidor
+# Ficam de fora: tudo que não é GET com 200/304, robôs, pedidos do HTML de
+# quem não rodou o site (ver arrivals), o próprio servidor
 # (127.0.0.1: o gerador do sitemap chama a API), /admin e /api/auth (e as
 # chamadas da API feitas de dentro do /admin), arquivos estáticos, os outros
 # apps (/pilar2b, /arqueia, ABIOVE) e as sondas de teste da Microsoft
@@ -265,20 +270,29 @@ LINHAS=$(zcat -f $LOGS | awk -F'"' -v dias="$ALVO" '
     if (path ~ /^\/api\//) {
       # O painel /admin usa as mesmas rotas públicas para editar: não é visita.
       if (ref ~ /^https?:\/\/[^\/]+\/admin/) next
+      js[dia SUBSEP ip SUBSEP ua] = 1   # este navegador rodou o site hoje
       if (!api_page(path, q)) next
       k = dia SUBSEP T SUBSEP P
       tipo[k] = T; pag[k] = P; vis[k]++
       if (tem_api(T, P)) conta_base(k, ip, ua, lua)
     } else {
       if (!html_page(path)) next
-      k = dia SUBSEP T SUBSEP P
-      tipo[k] = T; pag[k] = P; che[k]++
-      src[k SUBSEP origem(lua, q, ref)]++
-      if (!tem_api(T, P)) conta_base(k, ip, ua, lua)
+      # Só conta no fim, quando já se sabe se este navegador chamou a API.
+      n_ch++
+      ch_dia[n_ch] = dia; ch_t[n_ch] = T; ch_p[n_ch] = P; ch_ip[n_ch] = ip
+      ch_ua[n_ch] = ua; ch_src[n_ch] = origem(lua, q, ref)
     }
   }
 
   END {
+    for (i = 1; i <= n_ch; i++) {
+      if (!((ch_dia[i] SUBSEP ch_ip[i] SUBSEP ch_ua[i]) in js)) continue
+      T = ch_t[i]; P = ch_p[i]
+      k = ch_dia[i] SUBSEP T SUBSEP P
+      tipo[k] = T; pag[k] = P; che[k]++
+      src[k SUBSEP ch_src[i]]++
+      if (!tem_api(T, P)) conta_base(k, ch_ip[i], ch_ua[i], tolower(ch_ua[i]))
+    }
     for (k in tipo) {
       split(k, kk, SUBSEP)
       p = pag[k]; gsub(/[,"]/, "_", p)
