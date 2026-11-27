@@ -329,7 +329,7 @@ const Solucoes = () => {
             <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end mb-4 gap-3">
               <div>
                 <span className="mono-label text-success d-block mb-1">{t.servicesSection.tag}</span>
-                <h2 id="servicos-title" className="fw-bold fs-2 mb-2">{t.servicesSection.title}</h2>
+                <h2 id="servicos-title" className="fw-semibold fs-2 mb-2">{t.servicesSection.title}</h2>
                 <p className="text-muted small mb-0">{t.servicesSection.subtitle}</p>
               </div>
 
@@ -396,7 +396,7 @@ const Solucoes = () => {
           <section className="mb-4 mb-md-5 pb-3 pb-md-4">
             <div className="text-center max-w-3xl mx-auto mb-4 mb-md-5">
               <span className="mono-label text-success d-block mb-2">{t.modalitiesSection.tag}</span>
-              <h2 className="fw-bold fs-2 mb-2 mb-md-3">{t.modalitiesSection.title}</h2>
+              <h2 className="fw-semibold fs-2 mb-2 mb-md-3">{t.modalitiesSection.title}</h2>
               <p className="text-muted lead fs-6">{t.modalitiesSection.subtitle}</p>
             </div>
 
@@ -418,7 +418,7 @@ const Solucoes = () => {
                       <i className={`bi ${mod.icon} solution-modality-icon`} aria-hidden="true" />
                       <span className="solution-modality-badge">{mod.badge}</span>
                     </div>
-                    <h3 className="fw-bold mb-1 mb-md-2 fs-5 mobile-compact-title" style={{ color: 'var(--text-primary)' }}>
+                    <h3 className="fw-semibold mb-1 mb-md-2 fs-5 mobile-compact-title" style={{ color: 'var(--text-primary)' }}>
                       {mod.title}
                     </h3>
                     <p className="text-muted small mb-0 solution-modality-copy" style={{ lineHeight: 1.5 }}>
@@ -439,7 +439,7 @@ const Solucoes = () => {
           <section className="mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top">
             <div className="text-center max-w-3xl mx-auto mb-4 mb-md-5">
               <span className="mono-label text-success d-block mb-2">{t.funnelSection.tag}</span>
-              <h2 className="fw-bold fs-2 mb-2 mb-md-3">{t.funnelSection.title}</h2>
+              <h2 className="fw-semibold fs-2 mb-2 mb-md-3">{t.funnelSection.title}</h2>
               <p className="text-muted lead fs-6">{t.funnelSection.subtitle}</p>
             </div>
 
@@ -455,7 +455,7 @@ const Solucoes = () => {
                   >
                     <div className="d-flex align-items-center gap-3 mb-3">
                       <span className="solution-step-number">{st.number}</span>
-                      <h4 className="fw-bold fs-6 mb-0" style={{ color: 'var(--text-primary)' }}>
+                      <h4 className="fw-semibold fs-6 mb-0" style={{ color: 'var(--text-primary)' }}>
                         {st.title}
                       </h4>
                     </div>
@@ -469,15 +469,15 @@ const Solucoes = () => {
           </section>
 
           {/* Section 6: CTA Section */}
-          <section className="text-center py-4 py-md-5 px-3 px-md-4 rounded-4" style={{ background: 'linear-gradient(135deg, var(--cp2b-azul-petroleo) 0%, var(--cp2b-verde-escuro) 100%)', color: '#fff' }}>
+          <section className="text-center py-4 py-md-5 px-3 px-md-4 rounded-4" style={{ background: 'var(--cp2b-azul-petroleo)', color: '#fff' }}>
             <Container className="max-w-2xl py-2 py-md-3">
-              <h2 className="fw-bold fs-2 mb-3 text-white">{t.ctaSection.title}</h2>
+              <h2 className="fw-semibold fs-2 mb-3 text-white">{t.ctaSection.title}</h2>
               <p className="lead fs-6 mb-4 text-white-50">{t.ctaSection.lead}</p>
               <Button
                 as={Link}
                 to="/contato"
                 size="lg"
-                className="btn-glow px-4 px-md-5 py-2 py-md-3 rounded-pill fw-bold"
+                className="btn-glow px-4 px-md-5 py-2 py-md-3 rounded-pill fw-semibold"
                 style={{
                   background: 'var(--cp2b-verde)',
                   border: 'none',

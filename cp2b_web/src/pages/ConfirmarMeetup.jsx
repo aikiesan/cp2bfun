@@ -68,7 +68,7 @@ const ConfirmarMeetup = () => {
     <Container className="py-5">
       <Row className="justify-content-center">
         <Col md={6} className="text-center">
-          <h1 className="fw-bold mb-4">{t.title}</h1>
+          <h1 className="fw-semibold mb-4">{t.title}</h1>
 
           {state.loading && (
             <div className="py-5">

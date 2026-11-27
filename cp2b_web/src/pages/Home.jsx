@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from 'react';
 import { Container, Row, Col, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { timelineData, homeContent, researchAxes, teamMembers } from '../data/content';
+import { homeContent, researchAxes } from '../data/content';
 import { laboratories } from '../data/generated/laboratories';
 
 // "Laboratórios centrais" são os de bioprocessos (os que têm faixa de TRL e
@@ -14,11 +14,12 @@ import { useLanguage } from '../context/LanguageContext';
 import api, { fetchFeaturedContent, fetchFeaturedVideos } from '../services/api';
 import FeaturedContent from '../components/FeaturedContent';
 import FeaturedVideos from '../components/FeaturedVideos';
-import Timeline from '../components/Timeline';
 import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PilarBand from '../components/PilarBand';
+import useTeamRoster from '../hooks/useTeamRoster';
+import { computeTeamProfile } from '../utils/teamProfile';
 
 // Reveal shared by every institutional block. The global
 // prefers-reduced-motion rule in design-system.css neutralises the
@@ -29,17 +30,11 @@ const reveal = {
   viewport: { once: true, amount: 0.2 },
 };
 
-// "Eixo 3 – Engenharia de Processos" -> "Engenharia de Processos".
-// The number is already shown in its own badge, so repeating the prefix
-// in the card title only costs horizontal space.
-const stripAxisPrefix = (title) => title.split('–').slice(1).join('–').trim() || title;
-
 const Home = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
   const seo = pageSeo.home[language] || pageSeo.home.pt;
   const t = homeContent[language] || homeContent.pt;
-  const axes = researchAxes[language] || researchAxes.pt;
   const [featuredContent, setFeaturedContent] = useState({ A: null, B: null, C: null });
   const [featuredVideos, setFeaturedVideos] = useState({ A: null, B: null, C: null });
   const [loadingFeatured, setLoadingFeatured] = useState(true);
@@ -48,23 +43,26 @@ const Home = () => {
 
   // Every figure in the stats band is derived from the datasets that already
   // drive /equipe, /eixos and /solucoes — never hardcoded, so the numbers
-  // cannot drift away from the pages they summarise.
+  // cannot drift away from the pages they summarise. People come from the
+  // same roster as /equipe (database, static list as fallback): "team" is
+  // the figure /equipe shows as "na equipe do CP2b".
+  const { members: roster } = useTeamRoster(language);
   const stats = useMemo(() => {
-    const people = teamMembers.flatMap((category) => category.members);
+    const profile = computeTeamProfile(roster);
     const institutions = new Set(
-      people
+      roster
         .map((member) => (member.institution || '').trim())
         .filter((institution) => institution && institution !== '-')
     );
 
     return [
       { key: 'axes', value: researchAxes.pt.length, label: t.stats.axes },
-      { key: 'researchers', value: people.length, label: t.stats.researchers },
+      { key: 'researchers', value: profile.team, label: t.stats.researchers },
       { key: 'institutions', value: institutions.size, label: t.stats.institutions },
       { key: 'laboratories', value: coreLaboratories.length, label: t.stats.laboratories },
       { key: 'services', value: technicalServices.length, label: t.stats.services },
     ];
-  }, [t]);
+  }, [t, roster]);
 
   useEffect(() => {
     const loadFeaturedContent = async () => {
@@ -95,7 +93,9 @@ const Home = () => {
         const response = await api.get('/news');
         const sorted = (response.data || [])
           .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
-          .slice(0, 3);
+          // Seis, e não três: as que entram nos Destaques saem da lista de
+          // Notícias logo abaixo, e a lista ainda precisa de três.
+          .slice(0, 6);
         setLatestNews(sorted);
       } catch {
         setLatestNews([]);
@@ -125,9 +125,27 @@ const Home = () => {
     }
   }[language];
 
-  // Map API news items to the shape the cards expect
+  // Destaques: o que a equipe marcou no painel, com as vagas que sobraram
+  // preenchidas pelas notícias mais recentes que ainda não estão em
+  // destaque — nunca uma caixa cinza dizendo "Nenhum conteúdo em destaque".
+  // Só some se não houver nem destaque nem notícia nenhuma.
+  const featuredSlots = useMemo(() => {
+    const picked = [featuredContent.A, featuredContent.B, featuredContent.C];
+    const used = new Set(picked.filter(Boolean).map((item) => item.slug));
+    const spare = latestNews
+      .filter((item) => !used.has(item.slug))
+      .map((item) => ({ ...item, content_type: 'news' }));
+    const slots = picked.map((item) => item || spare.shift() || null);
+    return slots.some(Boolean) ? slots : null;
+  }, [featuredContent, latestNews]);
+
+  // Map API news items to the shape the cards expect, leaving out the ones
+  // already shown in Destaques above.
+  const inHighlights = new Set(
+    (featuredSlots || []).filter((item) => item?.content_type === 'news').map((item) => item.slug)
+  );
   const displayNews = latestNews.length > 0
-    ? latestNews.map((item) => ({
+    ? latestNews.filter((item) => !inHighlights.has(item.slug)).slice(0, 3).map((item) => ({
         id: item.id,
         title: language === 'pt' ? item.title_pt : (item.title_en || item.title_pt),
         badge: item.badge,
@@ -155,9 +173,11 @@ const Home = () => {
         transition={{ duration: 0.5 }}
       >
       {/* Featured News Headlines Section — the page opens on the newsroom */}
-      <section className="position-relative overflow-hidden mb-5">
-        {loadingFeatured ? (
+      {(loadingFeatured || loadingNews || featuredSlots) && (
+      <section className="position-relative overflow-hidden">
+        {loadingFeatured || loadingNews ? (
           <div className="featured-news-section featured-news-skeleton">
+            <Container>
             <div className="featured-news-container">
               <div className="featured-news-main">
                 <div className="featured-headline featured-headline-large featured-headline-skeleton" />
@@ -171,15 +191,17 @@ const Home = () => {
                 </div>
               </div>
             </div>
+            </Container>
           </div>
         ) : (
           <FeaturedContent
-            itemA={featuredContent.A}
-            itemB={featuredContent.B}
-            itemC={featuredContent.C}
+            itemA={featuredSlots[0]}
+            itemB={featuredSlots[1]}
+            itemC={featuredSlots[2]}
           />
         )}
       </section>
+      )}
 
       {/* News — 3 most recent from API */}
       <section className="section bg-light-gray">
@@ -213,7 +235,7 @@ const Home = () => {
                         {item.image ? (
                           <img src={item.image} alt={item.title} loading="lazy" />
                         ) : (
-                          <div className="w-100 h-100" style={{ background: 'linear-gradient(135deg, var(--cp2b-petrol) 0%, #2d3748 100%)' }} />
+                          <div className="w-100 h-100" style={{ background: 'var(--bg-surface-muted)' }} />
                         )}
                       </Link>
                       <div className="p-3 p-md-4 d-flex flex-column flex-grow-1">
@@ -223,7 +245,7 @@ const Home = () => {
                             <span className={`badge bg-${item.badgeColor} bg-opacity-10 text-${item.badgeColor} rounded-pill`}>{item.badge}</span>
                           )}
                         </div>
-                        <h3 className="h5 fw-bold mb-2 mb-md-3">
+                        <h3 className="h5 fw-semibold mb-2 mb-md-3">
                           <Link to={item.link} className="text-decoration-none" style={{ color: 'var(--cp2b-dark)' }}>
                             {item.title}
                           </Link>
@@ -254,7 +276,7 @@ const Home = () => {
           <Container>
             <div className="text-center section-head">
               <span className="eyebrow justify-content-center">{language === 'pt' ? 'Multimídia' : 'Multimedia'}</span>
-              <h2 className="fw-bold mt-2">{labels.videosTitle}</h2>
+              <h2 className="fw-semibold mt-2">{labels.videosTitle}</h2>
             </div>
           </Container>
           <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
@@ -283,82 +305,6 @@ const Home = () => {
         </Container>
       </section>
 
-      {/* Structure and capabilities in a single band: the axis index on the
-          left, the doorway into /solucoes as a dark panel on the right.
-          These were two full-width sections; the laboratory cards moved out
-          entirely, since their competency text belongs on /solucoes. */}
-      <section className="section bg-light-gray">
-        <Container>
-          <Row className="g-4 g-lg-5 align-items-start">
-            <Col lg={7}>
-              <div className="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
-                <div>
-                  <span className="eyebrow">{t.axes.eyebrow}</span>
-                  <h2 className="home-band-title">{t.axes.title}</h2>
-                </div>
-                <Link to="/eixos" className="arrow-link">
-                  {t.axes.cta} <span className="arrow">→</span>
-                </Link>
-              </div>
-              <div className="home-axis-grid">
-                {axes.map((axis, index) => (
-                  <motion.div
-                    key={axis.id}
-                    {...reveal}
-                    transition={{ duration: 0.45, delay: Math.min(index, 4) * 0.05 }}
-                  >
-                    <Link to="/eixos" className="home-axis-card">
-                      <span className="home-axis-num">{axis.id}</span>
-                      <h3 className="home-axis-title">{stripAxisPrefix(axis.title)}</h3>
-                    </Link>
-                  </motion.div>
-                ))}
-              </div>
-            </Col>
-
-            <Col lg={5}>
-              <motion.div className="home-solutions-panel" {...reveal} transition={{ duration: 0.5 }}>
-                <span className="eyebrow eyebrow--light">{t.solutions.eyebrow}</span>
-                <h2 className="home-solutions-panel-title">{t.solutions.title}</h2>
-                <p className="home-solutions-panel-lead">{t.solutions.subtitle}</p>
-
-                <dl className="home-solutions-metrics">
-                  <div className="home-solutions-metric">
-                    <dt className="home-solutions-metric-value">{technicalServices.length}</dt>
-                    <dd className="home-solutions-metric-label">{t.solutions.servicesLabel}</dd>
-                  </div>
-                  <div className="home-solutions-metric">
-                    <dt className="home-solutions-metric-value">{coreLaboratories.length}</dt>
-                    <dd className="home-solutions-metric-label">{t.solutions.labsLabel}</dd>
-                  </div>
-                  <div className="home-solutions-metric">
-                    <dt className="home-solutions-metric-value">{t.solutions.trlValue}</dt>
-                    <dd className="home-solutions-metric-label">{t.solutions.trlLabel}</dd>
-                  </div>
-                </dl>
-
-                <Link to="/solucoes" className="btn-hero btn-hero--primary">
-                  {t.solutions.cta} <i className="bi bi-arrow-right" aria-hidden="true"></i>
-                </Link>
-              </motion.div>
-            </Col>
-          </Row>
-        </Container>
-      </section>
-
-      {/* Research Timeline Section */}
-      <section className="section home-band-tinted">
-        <Container>
-          <div className="text-center section-head">
-            <span className="eyebrow justify-content-center">
-              {language === 'pt' ? 'Nossa Trajetória' : 'Our Journey'}
-            </span>
-            <h2 className="fw-bold mt-2">{language === 'pt' ? 'Marcos e Projetos em Destaque' : 'Milestones and Featured Projects'}</h2>
-          </div>
-          <Timeline items={timelineData[language]} />
-        </Container>
-      </section>
-
       {/* Partners Image Section */}
       <section className="section partners-section">
         <Container>
@@ -366,9 +312,9 @@ const Home = () => {
             <span className="eyebrow justify-content-center">
               {language === 'pt' ? 'Rede' : 'Network'}
             </span>
-            <h2 className="fw-bold mt-2">{labels.partnersTitle}</h2>
+            <h2 className="fw-semibold mt-2">{labels.partnersTitle}</h2>
           </div>
-          <div className="text-center bg-white p-3 p-md-5 rounded-5 shadow-sm">
+          <div className="text-center bg-white p-3 p-md-4 rounded-5 shadow-sm">
             <img
                 src="/assets/parceiros.png"
                 alt="Partners"

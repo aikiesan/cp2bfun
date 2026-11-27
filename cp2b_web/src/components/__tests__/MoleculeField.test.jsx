@@ -47,12 +47,19 @@ describe('MoleculeField', () => {
     getContext.mockRestore();
   });
 
-  it('renders the same decorative canvas on a non-Home route, at lower density', () => {
-    // Density itself lives inside the animation loop and isn't observable
-    // from the DOM, but the component must still mount cleanly off Home —
-    // that's the whole point of moving it into the shared layout.
-    const { container } = renderAt('/equipe');
+  it('renders on the Comunicação pages too', () => {
+    for (const path of ['/noticias', '/podcast', '/newsletter']) {
+      const { container, unmount } = renderAt(path);
+      expect(container.querySelector('canvas.molecule-field'), path).not.toBeNull();
+      unmount();
+    }
+  });
 
-    expect(container.querySelector('canvas.molecule-field')).not.toBeNull();
+  it('renders nothing on any other page', () => {
+    for (const path of ['/equipe', '/sobre', '/eixos', '/noticias/alguma-noticia']) {
+      const { container, unmount } = renderAt(path);
+      expect(container.querySelector('canvas'), path).toBeNull();
+      unmount();
+    }
   });
 });

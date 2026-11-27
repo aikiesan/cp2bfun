@@ -766,7 +766,7 @@ export async function generateSeo({
         buildListBlock('Microscópio de Ideias', '/microscopio', itemsByPrefix['/microscopio'], 6),
       ];
     }
-    if (route === '/eixos') return [buildAxesBlock({ full: true }), buildPilarBlock()];
+    if (route === '/eixos') return [buildAxesBlock({ full: true })];
     return [listFor[route]?.()];
   };
 

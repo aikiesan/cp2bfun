@@ -110,7 +110,7 @@ const Podcast = () => {
                               </Badge>
                             )}
                             <div className="flex-grow-1">
-                              <h5 className="fw-bold mb-1">{getTitle(ep)}</h5>
+                              <h5 className="fw-semibold mb-1">{getTitle(ep)}</h5>
                               <div className="d-flex gap-3 text-muted small">
                                 {ep.duration && (
                                   <span><i className="bi bi-clock me-1"></i>{ep.duration}</span>

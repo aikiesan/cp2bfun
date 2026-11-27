@@ -75,7 +75,7 @@ const Newsletter = () => {
             </Col>
 
             <Col lg={5}>
-              <h2 className="h5 fw-bold mb-3">{labels.whatYouGet}</h2>
+              <h2 className="h5 fw-semibold mb-3">{labels.whatYouGet}</h2>
               <ul className="list-unstyled d-flex flex-column gap-3">
                 {labels.items.map((item) => (
                   <li key={item} className="d-flex gap-3">

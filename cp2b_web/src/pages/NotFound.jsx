@@ -40,7 +40,7 @@ const NotFound = () => {
       />
     <Container className="py-5 text-center" style={{ minHeight: '60vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
       <MetaninhoAmigo pose="surpreso" size={180} lines={NOT_FOUND_LINES} bubble="right" className="mb-2" />
-      <h1 className="display-1 fw-bold text-muted">{labels.title}</h1>
+      <h1 className="display-1 fw-semibold text-muted">{labels.title}</h1>
       <h2 className="mb-3">{labels.message}</h2>
       <p className="text-muted mb-4">{labels.description}</p>
       <Link to="/" className="btn btn-primary px-4 py-2">

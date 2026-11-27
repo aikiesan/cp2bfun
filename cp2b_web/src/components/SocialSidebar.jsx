@@ -34,7 +34,6 @@ const SocialSidebar = () => {
             rel="noopener noreferrer"
             aria-label={social.label}
             className="social-sidebar-item"
-            whileHover={{ scale: 1.1, x: 5 }}
             whileTap={{ scale: 0.95 }}
             style={{ '--social-color': social.color }}
           >

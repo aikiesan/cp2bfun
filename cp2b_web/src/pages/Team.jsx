@@ -1,15 +1,11 @@
-import { useState, useEffect, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { Container, Row, Col, Card, Form, InputGroup } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import { teamMembers as staticTeamMembers, menuLabels, pageSeo } from '../data/content';
-import { groupTeamByAxis, isCoordinator } from '../utils/teamGroups';
+import { menuLabels, pageSeo } from '../data/content';
 import { getTeamPhoto } from '../data/teamPhotos';
-import { teamByAxis } from '../data/generated/teamByAxis';
-import { getResearcherProfile } from '../data/generated/researcherProfiles';
-import { nameKey } from '../utils/nameKey';
+import { groupTeamByAxis, isCoordinator } from '../utils/teamGroups';
 import { useLanguage } from '../context/LanguageContext';
-import { fetchTeam } from '../services/api';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import Avatar from '../components/Avatar';
@@ -17,13 +13,10 @@ import ResearcherModal from '../components/ResearcherModal';
 import TeamProfile from '../components/TeamProfile';
 import ListPresence from '../components/ListPresence';
 import { computeTeamProfile } from '../utils/teamProfile';
+import useTeamRoster from '../hooks/useTeamRoster';
 import { useUrlChoice, useUrlText } from '../hooks/useUrlFilters';
 import useListMotion, { listItemMotion } from '../hooks/useListMotion';
 import Metaninho from '../components/Metaninho';
-
-// The API still stores people under the old ranks; the page no longer
-// renders them as ranks, so this is only used to walk the response.
-const apiCategories = ['coordinators', 'principals', 'associates', 'support', 'students'];
 
 // "Coordenação" em vez de "Coordenador"/"Coordenadora": o rótulo é gerado a
 // partir do número do eixo, e derivar o gênero do nome da pessoa seria
@@ -47,133 +40,19 @@ const coordinatorPillStyle = {
   lineHeight: 1.25,
 };
 
-// Keep former members out of both API-backed and static-fallback results. The
-// database migration removes the rows permanently; this also protects the
-// public page while an older API response is still cached or being upgraded.
-const removedTeamMemberKeys = new Set([
-  nameKey('Marlon Fernandes de Souza'),
-  nameKey('Gustavo Mockaitis'),
-]);
-
-// Identifiers and bio, in the profile shape ResearcherModal expects.
-//
-// The database has a column per identifier and is the editable source; the
-// generated spreadsheet file fills in whoever the database does not carry yet.
-// Called with just a `{ name }` for the static fallback, where the sheet is
-// the only source there is.
-const resolveProfile = (row) => {
-  const sheet = getResearcherProfile(row.name);
-
-  return {
-    orcid: row.orcid || sheet.orcid,
-    lattes: row.lattes || sheet.lattes,
-    scholar: row.scholar || sheet.scholar,
-    scopus: row.scopus || sheet.scopus,
-    wos: row.wos || sheet.wos,
-    bvFapesp: row.bv_fapesp || sheet.bvFapesp,
-    institutional: row.institutional_url || sheet.institutional,
-    bioPt: row.bio_pt || sheet.bioPt,
-    bioEn: row.bio_en || sheet.bioEn,
-    // Só o banco tem as áreas de atuação: a planilha gerada carrega
-    // identificadores, não conteúdo redigido.
-    researchAreasPt: row.research_areas_pt || null,
-    researchAreasEn: row.research_areas_en || null,
-  };
-};
-
-// Flatten the static fallback, merging content.js and teamByAxis.js
-const flattenStatic = (groups, language) => {
-  const seen = new Set();
-  const list = groups.flatMap((group) =>
-    (group.members || []).map((m) => {
-      seen.add(nameKey(m.name));
-      return {
-        name: m.name,
-        role: m[language] || m.role,
-        // O cargo em português é o que a classificação de vínculo lê: em
-        // inglês, `role` chega traduzido.
-        role_pt: m.role,
-        institution: m.institution,
-        photo: m.photo || getTeamPhoto(m.name),
-        axes: m.axes,
-        membership: m.membership,
-        profile: resolveProfile(m),
-      };
-    })
-  );
-
-  for (const person of teamByAxis) {
-    if (!seen.has(nameKey(person.name))) {
-      list.push({
-        name: person.name,
-        role: person.role || person.level || (language === 'pt' ? 'Pesquisador(a)' : 'Researcher'),
-        role_pt: person.role || person.level,
-        institution: person.institution,
-        photo: getTeamPhoto(person.name),
-        axes: person.axes,
-        is_director: person.direction,
-        profile: resolveProfile(person),
-      });
-    }
-  }
-
-  return list;
-};
-
 const Team = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
   const seo = pageSeo.team[language] || pageSeo.team.pt;
   const t = menuLabels[language];
 
-  const [apiMembers, setApiMembers] = useState(null);
   // A busca vive no link (?busca=), para poder ser compartilhada. A categoria
   // também, mais abaixo: ela só pode ser validada depois dos grupos montados.
   const [searchQuery, setSearchQuery] = useUrlText('busca');
   // One modal for the whole page, holding whichever person was clicked.
   const [selectedMember, setSelectedMember] = useState(null);
 
-  useEffect(() => {
-    const loadTeam = async () => {
-      try {
-        const apiData = await fetchTeam();
-        if (apiData && typeof apiData === 'object' && Object.keys(apiData).length > 0) {
-          // Flatten out of the stored rank buckets: the page regroups by
-          // axis, so the ranks are just how the rows happen to be indexed.
-          const flat = apiCategories
-            .filter((cat) => Array.isArray(apiData[cat]))
-            .flatMap((cat) =>
-              apiData[cat].map((m) => ({
-                name: m.name,
-                role: language === 'pt' ? (m.role_pt || m.role) : (m.role_en || m.role_pt || m.role),
-                role_pt: m.role_pt || m.role,
-                institution: m.institution,
-                photo: m.photo || m.photo_url || getTeamPhoto(m.name) || null,
-                axes: m.axes,
-                is_director: m.is_director,
-                membership: m.membership,
-                profile: resolveProfile(m),
-              }))
-            );
-          if (flat.length > 0) {
-            setApiMembers(flat);
-          }
-        }
-      } catch {
-        // Fallback already in place with the static list
-      }
-    };
-
-    loadTeam();
-  }, [language]);
-
-  // A lista de pessoas da página, já sem ex-integrantes. Dela saem os cartões
-  // (agrupados por eixo) e o perfil da equipe no topo — os dois sempre batem.
-  const members = useMemo(
-    () => (apiMembers || flattenStatic(staticTeamMembers, language))
-      .filter((member) => !removedTeamMemberKeys.has(nameKey(member.name))),
-    [apiMembers, language]
-  );
+  const { members, source: listSource } = useTeamRoster(language);
   const teamProfile = useMemo(() => computeTeamProfile(members), [members]);
 
   // Group horizontally by Eixo, not by rank — see utils/teamGroups.
@@ -259,7 +138,6 @@ const Team = () => {
   const listRef = useRef(null);
   const animateList = useListMotion(listRef);
   const layoutKey = `${selectedCategory}|${searchQuery.trim().toLowerCase()}`;
-  const listSource = apiMembers ? 'api' : 'static';
 
   return (
     <>
@@ -409,8 +287,8 @@ const Team = () => {
                 >
                   <div className="d-flex align-items-baseline justify-content-between border-bottom pb-2 mb-3 mb-md-4">
                     <h3
-                      className="fw-bold mb-0 text-uppercase fs-6"
-                      style={{ letterSpacing: '1px', color: 'var(--text-primary)' }}
+                      className="fw-semibold mb-0 fs-5"
+                      style={{ color: 'var(--text-primary)' }}
                     >
                       {group.title}
                     </h3>
@@ -464,7 +342,7 @@ const Team = () => {
                               />
                               <div style={{ minWidth: 0 }} className="flex-grow-1">
                                 <h4
-                                  className="fw-bold mb-1 team-member-name"
+                                  className="fw-semibold mb-1 team-member-name"
                                   title={member.name}
                                   style={{
                                     color: 'var(--text-primary, #222)',
@@ -539,8 +417,8 @@ const Team = () => {
                 >
                   <div className="d-flex align-items-baseline justify-content-between border-bottom pb-2 mb-3 mb-md-4">
                     <h3
-                      className="fw-bold mb-0 text-uppercase fs-6"
-                      style={{ letterSpacing: '1px', color: 'var(--text-primary)' }}
+                      className="fw-semibold mb-0 fs-5"
+                      style={{ color: 'var(--text-primary)' }}
                     >
                       {language === 'pt' ? 'Mascote' : 'Mascot'}
                     </h3>
@@ -551,7 +429,7 @@ const Team = () => {
                         <div className="d-flex align-items-center gap-2 gap-sm-3 team-member-inner">
                           <Metaninho pose="feliz" size={64} className="team-mascot__img" />
                           <div style={{ minWidth: 0 }} className="flex-grow-1">
-                            <h4 className="fw-bold mb-1 team-member-name" style={{ fontSize: '0.92rem', lineHeight: 1.25 }}>
+                            <h4 className="fw-semibold mb-1 team-member-name" style={{ fontSize: '0.92rem', lineHeight: 1.25 }}>
                               Metaninho
                             </h4>
                             <div

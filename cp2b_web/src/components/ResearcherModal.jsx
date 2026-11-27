@@ -97,7 +97,7 @@ const ResearcherModal = ({ member, show, onHide }) => {
   return (
     <Modal show={show} onHide={onHide} centered size="lg" scrollable>
       <Modal.Header closeButton>
-        <Modal.Title as="h2" className="fs-5 fw-bold mb-0">
+        <Modal.Title as="h2" className="fs-5 fw-semibold mb-0">
           {member.name}
         </Modal.Title>
       </Modal.Header>

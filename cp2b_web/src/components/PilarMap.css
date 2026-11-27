@@ -1,0 +1,192 @@
+/* Mapa do PILAR-2b na faixa da home. Cores do vídeo
+   institucional v3: rampa de verdes da marca, linhas em azul-petróleo,
+   gasodutos em âmbar, plantas no verde-escuro com anel lima. Sem fundo: a
+   página aparece por trás. */
+
+.pilar-map {
+  --pm-land: #E6E9E3;
+  --pm-gap: var(--bg-page, #F7F7F4);
+  --pm-t0: #E3EDD9;
+  --pm-t1: #C4E07A;
+  --pm-t2: #7FBB3F;
+  --pm-t3: #2F7D32;
+  --pm-t4: var(--cp2b-verde-escuro, #00573A);
+  --pm-ink: var(--cp2b-azul-petroleo, #1E3E4C);
+  --pm-amber: var(--cp2b-ambar, #D37402);
+  --pm-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  margin: 0;
+}
+
+.pilar-map__frame {
+  aspect-ratio: 1000 / 720;
+  width: 100%;
+}
+
+.pilar-map__svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.pilar-map__land {
+  fill: var(--pm-land);
+  stroke: var(--pm-gap);
+  stroke-width: 0.6;
+}
+
+.pilar-map__muni {
+  stroke: var(--pm-gap);
+  stroke-width: 0.6;
+}
+
+.pilar-map__muni--t0 { fill: var(--pm-t0); background: var(--pm-t0); }
+.pilar-map__muni--t1 { fill: var(--pm-t1); background: var(--pm-t1); }
+.pilar-map__muni--t2 { fill: var(--pm-t2); background: var(--pm-t2); }
+.pilar-map__muni--t3 { fill: var(--pm-t3); background: var(--pm-t3); }
+.pilar-map__muni--t4 { fill: var(--pm-t4); background: var(--pm-t4); }
+
+.pilar-map__line {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1 1;
+  stroke-dashoffset: 0;
+}
+
+.pilar-map__line--transmission {
+  stroke: var(--pm-ink);
+  stroke-opacity: 0.5;
+  stroke-width: 1.1;
+}
+
+.pilar-map__line--gas {
+  stroke: var(--pm-amber);
+  stroke-width: 2.2;
+}
+
+.pilar-map__substation {
+  fill: var(--pm-gap);
+  stroke: var(--pm-ink);
+  stroke-width: 1.2;
+}
+
+.pilar-map__plant {
+  fill: var(--pm-t4);
+  stroke: var(--cp2b-lime-500, #B6E03B);
+  stroke-width: 3;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+
+/* ---------- Animação, uma vez ----------
+   Só existe com .is-armed (o navegador não pediu menos movimento). Fica
+   parada no primeiro quadro até .is-playing, quando o mapa entra na tela. */
+
+.pilar-map.is-armed .pilar-map__muni {
+  animation: pm-fill 0.7s var(--pm-ease) both;
+  animation-delay: calc(var(--k) * 2.6s);
+}
+
+.pilar-map.is-armed .pilar-map__line--transmission {
+  animation: pm-draw 1.6s var(--pm-ease) 2.9s both;
+}
+
+.pilar-map.is-armed .pilar-map__line--gas {
+  animation: pm-draw 1.4s var(--pm-ease) 3.7s both;
+}
+
+.pilar-map.is-armed .pilar-map__substation {
+  animation: pm-fade 0.4s ease-out both;
+  animation-delay: calc(4.5s + var(--i) * 0.04s);
+}
+
+.pilar-map.is-armed .pilar-map__plant {
+  animation: pm-pop 0.5s var(--pm-ease) both;
+  animation-delay: calc(5s + var(--i) * 0.07s);
+}
+
+.pilar-map.is-armed .pilar-map__svg * {
+  animation-play-state: paused;
+}
+
+.pilar-map.is-armed.is-playing .pilar-map__svg * {
+  animation-play-state: running;
+}
+
+@keyframes pm-fill {
+  from { fill-opacity: 0; }
+  to { fill-opacity: 1; }
+}
+
+@keyframes pm-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes pm-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pm-pop {
+  from { opacity: 0; transform: scale(0.4); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ---------- Legenda ---------- */
+
+.pilar-map__legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2) var(--space-5);
+  margin-top: var(--space-3);
+  font-size: var(--text-xs);
+  color: var(--text-secondary, #5F6368);
+}
+
+.pilar-map__ramp {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.pilar-map__ramp > span:first-child { margin-right: var(--space-2); }
+.pilar-map__ramp > span:last-child { margin-left: var(--space-2); }
+
+.pilar-map__swatch {
+  display: inline-block;
+  width: 18px;
+  height: 8px;
+}
+
+.pilar-map__key {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.pilar-map__key::before {
+  content: '';
+  display: inline-block;
+}
+
+.pilar-map__key--transmission::before {
+  width: 16px;
+  border-top: 1.5px solid color-mix(in srgb, var(--pm-ink) 60%, transparent);
+}
+
+.pilar-map__key--gas::before {
+  width: 16px;
+  border-top: 2.5px solid var(--pm-amber);
+  border-radius: 2px;
+}
+
+.pilar-map__key--plant::before {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--pm-t4);
+  box-shadow: 0 0 0 2px var(--cp2b-lime-500, #B6E03B);
+}

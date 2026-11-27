@@ -14,6 +14,10 @@
 // aplicado à mão sobre a geração — troca de eixo de Priscila (2→3),
 // Ana Beatriz (2→3) e Fabiane (3→2), rótulos de coordenação e a inclusão
 // de Carlos Eduardo Driemeier. O cargo de Coordenador Adjunto foi extinto.
+//
+// 27/11/2026: inclusão de Maria Eduarda Simões Dias, pós-doc no Eixo 2
+// (migration 056). Cargo de pós-doc para Lucas Nakamura Cerejo, Ana Beatriz,
+// Fabiane e Luciana Lenhari (migration 057).
 // Refletir essas mudanças na planilha de origem antes da próxima geração.
 export const teamByAxis = [
   {
@@ -43,7 +47,7 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "NIPE/UNICAMP",
-    "role": "Coordenadora do Eixo 3",
+    "role": "Pós-Doutoranda",
     "level": "Pós-Doc"
   },
   {
@@ -144,7 +148,7 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "NIPE/UNICAMP",
-    "role": "Coordenadora do Eixo 2",
+    "role": "Pós-Doutoranda",
     "level": "Pós-Doc"
   },
   {
@@ -254,7 +258,7 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "NIPE/UNICAMP",
-    "role": "Coordenador do Eixo 1",
+    "role": "Pós-Doutorando",
     "level": "Pós-Doc"
   },
   {
@@ -274,7 +278,7 @@ export const teamByAxis = [
     ],
     "direction": false,
     "institution": "NIPE/UNICAMP",
-    "role": null,
+    "role": "Pós-Doutoranda",
     "level": "Pós-Doc"
   },
   {
@@ -356,6 +360,16 @@ export const teamByAxis = [
     "institution": "ESALQ/USP",
     "role": "Coordenadora do Eixo 7",
     "level": null
+  },
+  {
+    "name": "Maria Eduarda Simões Dias",
+    "axes": [
+      "2"
+    ],
+    "direction": false,
+    "institution": "USP",
+    "role": null,
+    "level": "Pós-Doc"
   },
   {
     "name": "Mariana Conceição da Costa",

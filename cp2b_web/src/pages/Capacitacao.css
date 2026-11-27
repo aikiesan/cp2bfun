@@ -18,7 +18,7 @@
   padding: 0.6rem 1.35rem;
   border: 0;
   border-radius: var(--radius-full);
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   font-size: 0.95rem;
   line-height: 1.2;
   text-align: center;
@@ -74,7 +74,7 @@
   position: absolute;
   inset: 0 0 auto;
   height: 3px;
-  background: linear-gradient(90deg, var(--cap-axis), var(--cp2b-ambar) 45%, var(--cp2b-lima));
+  background: var(--cap-axis);
 }
 
 .cap-course__head {
@@ -114,7 +114,7 @@
   background: var(--bg-surface-muted);
   color: var(--text-secondary);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   line-height: 1.4;
 }
 
@@ -124,7 +124,7 @@
   margin: 0;
   font-family: var(--font-display);
   font-size: var(--fs-title);
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   line-height: 1.2;
   color: var(--cap-ink);
   text-wrap: balance;
@@ -164,7 +164,7 @@
   .cap-course__hours-unit {
     margin-top: 0.2rem;
     font-size: 0.72rem;
-    font-weight: 700;
+    font-weight: var(--weight-semibold);
     letter-spacing: 0.01em;
     color: var(--cap-axis);
   }
@@ -193,7 +193,7 @@
   color: var(--cap-axis);
   font-family: var(--font-sans);
   font-size: 0.75rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   letter-spacing: 0.14em;
   line-height: 1.4;
   text-transform: uppercase;
@@ -250,7 +250,7 @@
   flex-shrink: 0;
   font-family: var(--font-display);
   font-size: 0.78rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   color: var(--cap-axis);
   font-variant-numeric: tabular-nums;
 }
@@ -347,7 +347,7 @@
   margin: 0 0 1rem;
   font-family: var(--font-display);
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   color: var(--cap-ink);
 }
 
@@ -384,7 +384,7 @@
   color: #fff;
   font-family: var(--font-display);
   font-variant-numeric: tabular-nums;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
 }
 
 .cap-step__body { padding-top: 0.3rem; }
@@ -392,7 +392,7 @@
 .cap-step__text { margin: 0; color: var(--text-secondary); line-height: 1.5; }
 
 .cap-email {
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   color: var(--cp2b-verde-escuro);
   overflow-wrap: anywhere;
 }
@@ -428,7 +428,7 @@
   margin: 0 0 0.6rem;
   font-family: var(--font-display);
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   line-height: 1.25;
   color: var(--cap-ink);
 }
@@ -498,7 +498,7 @@
   min-width: 1.75rem;
   font-family: var(--font-display);
   font-size: 0.95rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   line-height: 1.5;
   color: var(--cap-axis);
   font-variant-numeric: tabular-nums;
@@ -510,7 +510,7 @@
   margin: 0 0 0.2rem;
   font-family: var(--font-display);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   line-height: 1.35;
   color: var(--text-primary);
 }
@@ -526,7 +526,7 @@
   margin-top: clamp(2.5rem, 1.75rem + 3vw, 4.5rem);
   padding: clamp(1.5rem, 1rem + 3vw, 3rem);
   border-radius: var(--radius-2xl);
-  background: linear-gradient(135deg, var(--cp2b-azul-petroleo) 0%, var(--cp2b-verde-escuro) 100%);
+  background: var(--cp2b-azul-petroleo);
   color: #fff;
 }
 
@@ -559,7 +559,7 @@
   align-items: center;
   gap: 0.4rem;
   min-height: 44px;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   color: var(--cp2b-lima);
   text-decoration: none;
 }
@@ -571,7 +571,7 @@
   margin: 0 0 0.5rem;
   font-family: var(--font-display);
   font-size: var(--fs-title);
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   color: #fff;
 }
 

@@ -8,6 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
+import { getCategoryColor } from '../utils/categoryColor';
 
 const News = () => {
   const { language } = useLanguage();
@@ -87,35 +88,35 @@ const News = () => {
             </div>
           </Col>
           <Col lg={5} className="p-3 p-md-4 p-lg-5 d-flex flex-column justify-content-center">
-            <span className={`text-${featured.badgeColor} fw-bold text-uppercase small mb-2`}>{featured.badge}</span>
-            <h2 className="fw-bold mb-2 mb-md-3 display-6 mobile-featured-title">
+            <span className="eyebrow mb-2" style={{ color: getCategoryColor(featured.badgeColor) }}>{featured.badge}</span>
+            <h2 className="fw-semibold mb-2 mb-md-3 display-6 mobile-featured-title">
               <Link to={featured.link} className="text-decoration-none text-dark hover-blue">{featured.title}</Link>
             </h2>
             <p className="text-muted mb-3 mb-md-4">{featured.description}</p>
             <div className="mt-auto d-flex justify-content-between align-items-center">
               <span className="small text-muted">{featured.date}</span>
-              <Link to={featured.link} className="fw-bold text-primary text-decoration-none">{labels.readMore} +</Link>
+              <Link to={featured.link} className="fw-semibold text-primary text-decoration-none">{labels.readMore} +</Link>
             </div>
           </Col>
         </Row>
       </section>
 
       {/* Others Grid */}
-      <h4 className="fw-bold mb-3 mb-md-4 text-muted text-uppercase small" style={{ letterSpacing: '2px' }}>{labels.latest}</h4>
+      <h2 className="eyebrow d-block mb-3 mb-md-4">{labels.latest}</h2>
       <Row className="g-3 g-md-4">
         {others.map((item) => (
           <Col md={6} lg={4} key={item.id}>
             <Card className="h-100 border-0 bg-transparent" style={{ overflow: 'visible' }}>
               <div className="overflow-hidden rounded-4 mb-3 news-card-media">
-                <img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover hover-scale" />
+                <img src={item.image} alt={item.title} className="w-100 h-100 object-fit-cover" />
               </div>
               <Card.Body className="p-0 px-2">
-                <span className={`text-${item.badgeColor} fw-bold text-uppercase x-small d-block mb-2`} style={{ fontSize: '0.7rem' }}>{item.badge}</span>
-                <Card.Title className="fw-bold mb-2 fs-5">
+                <span className="eyebrow d-block mb-2" style={{ color: getCategoryColor(item.badgeColor) }}>{item.badge}</span>
+                <Card.Title className="fw-semibold mb-2 fs-5">
                   <Link to={item.link} className="text-decoration-none text-dark hover-blue">{item.title}</Link>
                 </Card.Title>
                 <div className="d-flex justify-content-between align-items-center mt-3">
-                   <span className="x-small text-muted" style={{ fontSize: '0.75rem' }}>{item.date}</span>
+                   <span className="small text-muted">{item.date}</span>
                 </div>
               </Card.Body>
             </Card>

@@ -41,7 +41,7 @@ class ErrorBoundary extends Component {
       return (
         <Container className="py-5 text-center">
           <i className="bi bi-exclamation-triangle text-warning" style={{ fontSize: '3rem' }}></i>
-          <h2 className="fw-bold mt-3 mb-2">{labels.title}</h2>
+          <h2 className="fw-semibold mt-3 mb-2">{labels.title}</h2>
           <p className="text-muted mb-4">{labels.message}</p>
           <button
             className="btn btn-dark px-4"

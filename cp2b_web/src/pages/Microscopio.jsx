@@ -86,10 +86,7 @@ const Microscopio = () => {
           <Row className="g-3 g-md-4">
             {items.map((item) => (
               <Col lg={4} md={6} key={item.slug}>
-                <Card className="h-100 border-0 shadow-sm" style={{ transition: 'transform 0.2s' }}
-                  onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
-                  onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}
-                >
+                <Card className="h-100 border-0 shadow-sm">
                   {item.image && (
                     <Card.Img
                       variant="top"
@@ -103,7 +100,7 @@ const Microscopio = () => {
                         {item.badge}
                       </Badge>
                     )}
-                    <Card.Title className="fw-bold">
+                    <Card.Title className="fw-semibold">
                       {language === 'pt' ? item.title_pt : (item.title_en || item.title_pt)}
                     </Card.Title>
                     <Card.Text className="text-muted flex-grow-1" style={{ fontSize: '0.9rem' }}>

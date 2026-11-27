@@ -232,7 +232,7 @@ const Events = () => {
           <>
             {/* Upcoming Events */}
             <section className="mb-4 mb-md-5">
-              <h2 className="h3 fw-bold mb-3 mb-md-4">{labels.upcoming}</h2>
+              <h2 className="h3 fw-semibold mb-3 mb-md-4">{labels.upcoming}</h2>
               {upcomingEvents.length > 0 ? (
                 <Row>{upcomingEvents.map(renderEventCard)}</Row>
               ) : (
@@ -249,7 +249,7 @@ const Events = () => {
             {pastEvents.length > 0 && (
               <section>
                 <div className="d-flex justify-content-between align-items-center mb-4">
-                  <h2 className="h3 fw-bold mb-0">{labels.past}</h2>
+                  <h2 className="h3 fw-semibold mb-0">{labels.past}</h2>
                   <Button variant="outline-secondary" size="sm" onClick={() => setShowPast(!showPast)}>
                     {showPast ? labels.hide : labels.show} ({pastEvents.length})
                   </Button>

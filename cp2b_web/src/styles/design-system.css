@@ -15,7 +15,7 @@ h1, h2, h3, .display-1, .display-2, .display-3, .display-4, .display-5, .display
 
 /* Títulos de página e de seção: Neulis Sans 700 em Azul Petróleo. */
 h1, h2 {
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
 }
 
 ::selection {
@@ -53,10 +53,10 @@ h1, h2 {
 
 .mono-label {
   font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: var(--weight-semibold);
   text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  letter-spacing: 0.14em;
   color: var(--text-secondary);
 }
 
@@ -66,7 +66,7 @@ h1, h2 {
 
 .section-head h2 {
   font-size: var(--fs-display-2);
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   margin-top: 0.4rem;
   margin-bottom: 0;
   color: var(--cp2b-dark);
@@ -95,7 +95,7 @@ h1, h2 {
 
 .page-hero h1 {
   font-size: clamp(2rem, 1.6rem + 1.6vw, 3rem);
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   line-height: 1.15;
   letter-spacing: -0.015em;
   color: var(--text-primary);
@@ -133,7 +133,7 @@ h1, h2 {
   display: inline-flex;
   align-items: center;
   gap: 0.4rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   color: var(--cp2b-petrol-700);
   text-decoration: none;
 }
@@ -200,9 +200,8 @@ h1, h2 {
   flex-direction: column;
 }
 
-/* Signature Pilar-2b card interaction: lime border + shadow lift on hover. */
+/* Hover: borda lima e sombra um pouco maior, sem elevar o cartão. */
 .card-editorial:hover {
-  transform: translateY(-4px);
   box-shadow: var(--shadow-md);
   border-color: var(--cp2b-lime);
 }
@@ -218,10 +217,6 @@ h1, h2 {
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
-}
-
-.card-editorial:hover .card-media img {
-  transform: scale(1.05);
 }
 
 .card-meta {
@@ -262,7 +257,6 @@ h1, h2 {
 }
 
 .album-card:hover {
-  transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
 }
 
@@ -271,10 +265,6 @@ h1, h2 {
   height: 100%;
   object-fit: cover;
   transition: transform 0.5s ease;
-}
-
-.album-card:hover img {
-  transform: scale(1.06);
 }
 
 .album-card .album-overlay {
@@ -290,7 +280,7 @@ h1, h2 {
 
 .album-card .album-title {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   font-size: 1.1rem;
   margin-bottom: 0.25rem;
 }
@@ -308,7 +298,7 @@ h1, h2 {
 .gallery-year-label {
   font-family: var(--font-display);
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   color: var(--cp2b-petrol-700);
   display: flex;
   align-items: center;
@@ -350,7 +340,6 @@ h1, h2 {
 }
 
 .photo-masonry .photo-item:hover img {
-  transform: scale(1.03);
   filter: brightness(1.05);
 }
 
@@ -401,9 +390,8 @@ h1, h2 {
   transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
 }
 
-/* Signature Pilar-2b card interaction: lime border + shadow lift on hover. */
+/* Hover: borda lima e sombra um pouco maior, sem elevar o cartão. */
 .event-card:hover {
-  transform: translateY(-4px);
   box-shadow: var(--shadow-md);
   border-color: var(--cp2b-lime);
 }
@@ -412,7 +400,7 @@ h1, h2 {
   position: relative;
   aspect-ratio: 16 / 9;
   overflow: hidden;
-  background: linear-gradient(135deg, var(--cp2b-petrol-700), var(--cp2b-green-700));
+  background: var(--bg-surface-muted);
 }
 
 .event-card .event-media img {
@@ -436,7 +424,7 @@ h1, h2 {
 .event-date-badge .day {
   font-family: var(--font-display);
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   color: var(--cp2b-petrol-700);
   display: block;
 }
@@ -460,7 +448,7 @@ h1, h2 {
 
 .event-card .event-title {
   font-family: var(--font-display);
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   font-size: 1.15rem;
   color: var(--cp2b-dark);
   margin: 0.25rem 0;
@@ -504,7 +492,7 @@ h1, h2 {
   background: transparent;
   font-family: var(--font-mono);
   font-size: 0.72rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   letter-spacing: 0.08em;
   padding: 0.25rem 0.7rem;
   color: var(--cp2b-ink-soft);
@@ -583,8 +571,8 @@ body.high-contrast .footer-metaninho { display: none; }
 
 .site-footer h6 {
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: var(--weight-semibold);
   line-height: 1.4;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -622,14 +610,13 @@ body.high-contrast .footer-metaninho { display: none; }
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.25);
   color: #fff;
-  transition: all 0.25s ease;
+  transition: color 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
 }
 
 .site-footer .footer-social a:hover {
   background: var(--cp2b-lime-500);
   border-color: var(--cp2b-lime-500);
   color: var(--cp2b-petrol-900);
-  transform: translateY(-2px);
 }
 
 .site-footer .footer-bottom {
@@ -643,7 +630,7 @@ body.high-contrast .footer-metaninho { display: none; }
 .newsletter-signup__title {
   font-family: var(--font-sans);
   font-size: 1.25rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   line-height: 1.25;
   letter-spacing: -0.015em;
   color: var(--cp2b-lima);
@@ -653,7 +640,7 @@ body.high-contrast .footer-metaninho { display: none; }
 
 /* ---------- Newsletter band ---------- */
 .newsletter-band {
-  background: linear-gradient(120deg, var(--cp2b-green-700), var(--cp2b-petrol-700));
+  background: var(--cp2b-azul-petroleo);
   border-radius: var(--cp2b-radius);
   color: #fff;
 }
@@ -697,7 +684,7 @@ body.high-contrast .footer-metaninho { display: none; }
   gap: var(--space-2);
   padding: var(--space-3) var(--space-6);
   border-radius: var(--radius-full);
-  font-weight: var(--weight-bold);
+  font-weight: var(--weight-semibold);
   text-decoration: none;
   border: 2px solid transparent;
   transition: transform var(--duration-base) var(--ease-standard),
@@ -721,7 +708,6 @@ body.high-contrast .footer-metaninho { display: none; }
 .btn-hero--primary:hover {
   background: var(--cp2b-white);
   color: var(--cp2b-petrol-900);
-  transform: translateY(-2px);
 }
 
 /* ---------- Números do centro ---------- */
@@ -744,7 +730,6 @@ body.high-contrast .footer-metaninho { display: none; }
 }
 
 .home-stat:hover {
-  transform: translateY(-4px);
   box-shadow: var(--shadow-lg);
 }
 
@@ -752,7 +737,7 @@ body.high-contrast .footer-metaninho { display: none; }
   display: block;
   font-family: var(--font-display);
   font-size: clamp(2rem, 1.5rem + 1.6vw, 2.75rem);
-  font-weight: var(--weight-bold);
+  font-weight: var(--weight-semibold);
   line-height: 1;
   color: var(--cp2b-petrol-900);
 }
@@ -760,140 +745,11 @@ body.high-contrast .footer-metaninho { display: none; }
 .home-stat-label {
   display: block;
   margin-top: var(--space-3);
-  font-family: var(--font-mono);
-  font-size: var(--text-xs);
-  font-weight: var(--weight-bold);
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  letter-spacing: 0;
   color: var(--text-secondary);
-}
-
-/* ---------- Grade de eixos ---------- */
-
-.home-axis-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-  gap: var(--space-3);
-}
-
-/* Row, not stack: the number sits beside the title so each card is one
-   line tall instead of three. */
-.home-axis-card {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  height: 100%;
-  padding: var(--space-4);
-  background: var(--bg-surface);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-xl);
-  text-decoration: none;
-  transition: transform var(--duration-base) var(--ease-standard),
-    box-shadow var(--duration-base) var(--ease-standard),
-    border-color var(--duration-base) var(--ease-standard);
-}
-
-.home-axis-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--cp2b-green-500);
-  box-shadow: var(--shadow-lg);
-}
-
-.home-axis-num {
-  flex-shrink: 0;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 2rem;
-  height: 2rem;
-  border-radius: var(--radius-md);
-  background: var(--cp2b-green-100);
-  color: var(--cp2b-green-700);
-  font-family: var(--font-mono);
-  font-weight: var(--weight-bold);
-  font-size: var(--text-sm);
-}
-
-.home-axis-title {
-  min-width: 0;
-  margin: 0;
-  font-size: var(--text-sm);
-  font-weight: var(--weight-semibold);
-  line-height: var(--leading-snug);
-  color: var(--cp2b-dark);
-  overflow-wrap: break-word;
-}
-
-
-/* ---------- Chamada de soluções (painel ao lado dos eixos) ----------
-   Dark panel against the light axis grid: one band carries both the
-   scientific structure and the commercial doorway. */
-
-.home-band-title {
-  font-size: var(--fs-title);
-  font-weight: var(--weight-bold);
-  margin: 0.4rem 0 0;
-  color: var(--cp2b-dark);
-}
-
-.home-solutions-panel {
-  position: relative;
-  overflow: hidden;
-  padding: var(--space-8) var(--space-6);
-  border-radius: var(--radius-2xl);
-  background:
-    radial-gradient(30rem 20rem at 110% -10%, color-mix(in srgb, var(--cp2b-lime) 18%, transparent), transparent 60%),
-    linear-gradient(150deg, var(--cp2b-petrol-900) 0%, var(--cp2b-verde-escuro) 100%);
-  color: var(--cp2b-white);
-  box-shadow: var(--shadow-lg);
-}
-
-.home-solutions-panel-title {
-  font-size: var(--fs-title);
-  font-weight: var(--weight-bold);
-  line-height: var(--leading-snug);
-  color: var(--cp2b-white);
-  margin: var(--space-3) 0 var(--space-3);
-}
-
-.home-solutions-panel-lead {
-  font-size: var(--text-sm);
-  line-height: var(--leading-normal);
-  color: color-mix(in srgb, var(--cp2b-white) 78%, transparent);
-  margin-bottom: var(--space-6);
-}
-
-.home-solutions-metrics {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
-  margin: 0 0 var(--space-8);
-  padding-top: var(--space-5);
-  border-top: 1px solid color-mix(in srgb, var(--cp2b-white) 18%, transparent);
-}
-
-.home-solutions-metric {
-  display: flex;
-  align-items: baseline;
-  gap: var(--space-3);
-}
-
-.home-solutions-metric-value {
-  flex-shrink: 0;
-  min-width: 4.5rem;
-  font-family: var(--font-display);
-  font-size: var(--text-2xl);
-  font-weight: var(--weight-bold);
-  line-height: 1;
-  color: var(--cp2b-lime-500);
-  margin: 0;
-}
-
-.home-solutions-metric-label {
-  margin: 0;
-  font-size: var(--text-sm);
-  line-height: var(--leading-snug);
-  color: color-mix(in srgb, var(--cp2b-white) 80%, transparent);
 }
 
 /* ---------- Ambient molecule field ----------
@@ -938,8 +794,15 @@ main#main-content,
    quarter of Home's density the field is meant to read as texture only
    where a page happens to have some open white space, not to fight for
    visibility through content. */
-.home-page > section.bg-light-gray,
-.home-page > section.home-band-tinted {
+/* Home: as seções vêm uma atrás da outra num ritmo mais curto que o das
+   páginas internas (~68px em 1440, em vez de ~98px por lado), para a página
+   ler como um percurso e não como blocos soltos com vazios entre eles. */
+.home-page > .section {
+  padding-top: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+  padding-bottom: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+}
+
+.home-page > section.bg-light-gray {
   background-color: color-mix(in srgb, var(--cp2b-light-gray) 82%, transparent) !important;
 }
 
@@ -1011,42 +874,6 @@ main#main-content,
 
   .home-stat:last-child:nth-child(odd) {
     grid-column: 1 / -1;
-  }
-
-  /* minmax(0, …): com 1fr puro a coluna não encolhe abaixo da palavra mais
-     longa ("Socioeconômica,") e a da direita passava da tela. */
-  .home-axis-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-2);
-  }
-
-  .home-axis-card {
-    padding: var(--space-2) var(--space-3);
-    gap: var(--space-2);
-  }
-
-  .home-axis-title {
-    font-size: var(--text-xs);
-  }
-
-  .home-axis-num {
-    width: 1.75rem;
-    height: 1.75rem;
-    font-size: 0.75rem;
-  }
-
-  .home-solutions-panel {
-    padding: var(--space-5) var(--space-4);
-  }
-
-  .home-solutions-panel-lead {
-    margin-bottom: var(--space-4);
-  }
-
-  .home-solutions-metrics {
-    margin: 0 0 var(--space-5);
-    padding-top: var(--space-4);
-    gap: var(--space-3);
   }
 
   .event-card .event-body {
@@ -1176,15 +1003,6 @@ main#main-content,
 }
 
 @media (max-width: 575.98px) {
-  /* Celular: uma coluna, e cada eixo volta a caber numa ou duas linhas — em
-     duas colunas os títulos longos chegavam a cinco linhas espremidas. */
-  .home-axis-grid {
-    grid-template-columns: minmax(0, 1fr);
-  }
-
-  .home-axis-title {
-    font-size: var(--text-sm);
-  }
 
   .team-member-card {
     padding: 0.65rem !important;
@@ -1250,10 +1068,10 @@ main[data-page="inner"] .card-editorial {
 
 .solution-modality-badge {
   font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: var(--weight-semibold);
   line-height: 1.3;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
   text-align: right;
   color: var(--cp2b-verde-escuro);
@@ -1264,7 +1082,7 @@ main[data-page="inner"] .card-editorial {
   min-width: 2.2rem;
   font-family: var(--font-display);
   font-size: 1.9rem;
-  font-weight: 900;
+  font-weight: var(--weight-semibold);
   line-height: 1;
   font-variant-numeric: tabular-nums;
   color: var(--cp2b-ambar);
@@ -1287,11 +1105,23 @@ main[data-page="inner"] .card-editorial {
 .header-pill:focus-visible {
   color: #fff;
   box-shadow: var(--shadow-md);
-  transform: translateY(-1px);
 }
 
 .header-pill--pilar:hover { background: var(--brand-primary-hover); }
 .header-pill--arqueia:hover { background: color-mix(in srgb, var(--cp2b-azul-petroleo) 85%, black); }
+
+/* Barra horizontal (≥ 1200px): cada rótulo numa linha só. Entre 1200 e
+   1399px os itens só cabem com o espaçamento um pouco mais justo. */
+@media (min-width: 1200px) {
+  .navbar-nav .nav-link,
+  .header-pill { white-space: nowrap; }
+}
+
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+  .navbar-nav > .nav-link,
+  .navbar-nav > .dropdown > .nav-link { padding-inline: 0.375rem !important; }
+  .navbar-nav .header-pill { margin-left: 0.25rem !important; padding-inline: 0.75rem !important; }
+}
 
 /* ---------- Alto contraste ---------- */
 body.high-contrast .page-hero,

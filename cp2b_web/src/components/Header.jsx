@@ -61,73 +61,17 @@ const Header = () => {
       <a href="#main-content" className="skip-link">
         {language === 'pt' ? 'Ir para o conteúdo' : 'Skip to content'}
       </a>
-      {/* Top Header - Recod.ai Style */}
+      {/* Barra de utilidades: redes à esquerda, acessibilidade e idioma à
+          direita, numa linha só e alinhada às bordas do mesmo Container do
+          menu, para começar e terminar onde o logo e as pills começam. */}
       <div
         id="top-header"
         className={`border-bottom bg-light ${isScrolled ? 'header-hidden' : ''}`}
         style={{ fontSize: '0.85rem' }}
       >
-        <Container className="py-2">
-          <div className="row align-items-center">
-            <div className="col d-none d-lg-flex">
-              <div className="desktop-shortcuts">
-                  {/* Future shortcuts */}
-              </div>
-            </div>
-
-            {/* Accessibility */}
-            <div className="col col-lg-3 accessibility d-flex align-items-center justify-content-end gap-3 text-muted">
-              <button
-                onClick={increaseFontSize}
-                className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted header-touch-target"
-                title="Aumentar tamanho da letra"
-                aria-label="Increase font size"
-              >
-                A+
-              </button>
-              <button
-                onClick={decreaseFontSize}
-                className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted header-touch-target"
-                title="Diminuir tamanho da letra"
-                aria-label="Decrease font size"
-              >
-                A-
-              </button>
-              <button
-                onClick={toggleContrast}
-                className="btn btn-sm p-0 border-0 bg-transparent header-touch-target"
-                title="Contraste"
-                aria-label="Toggle high contrast"
-              >
-                <span style={{ width: '16px', height: '16px', borderRadius: '50%', border: '1px solid #333', background: 'linear-gradient(to right, #333 50%, #fff 50%)', display: 'inline-block' }}></span>
-              </button>
-              <span className="d-none d-md-block">{t.accessibility}</span>
-            </div>
-
-            {/* Languages */}
-            <div className="col col-lg-2 d-flex justify-content-end">
-              <div className="lang-switch" role="group" aria-label="Language">
-                <button
-                  onClick={() => toggleLang('pt')}
-                  className={`${language === 'pt' ? 'active ' : ''}header-touch-target`}
-                  title="Português"
-                  aria-pressed={language === 'pt'}
-                >
-                  PT
-                </button>
-                <button
-                  onClick={() => toggleLang('en')}
-                  className={`${language === 'en' ? 'active ' : ''}header-touch-target`}
-                  title="English"
-                  aria-pressed={language === 'en'}
-                >
-                  EN
-                </button>
-              </div>
-            </div>
-
+        <Container className="top-header__bar">
             {/* Social Media Icons */}
-            <div className="d-none d-lg-flex align-items-center gap-3 ms-3">
+            <div className="top-header__social d-none d-lg-flex align-items-center">
               {socialLinks.spotify !== '#' && (
                 <a
                   href={socialLinks.spotify}
@@ -169,7 +113,59 @@ const Header = () => {
                 </a>
               )}
             </div>
-          </div>
+
+            <div className="top-header__tools">
+            {/* Accessibility */}
+            <div className="accessibility d-flex align-items-center text-muted">
+              <button
+                onClick={increaseFontSize}
+                className="btn btn-sm p-0 fw-semibold border-0 bg-transparent text-muted header-touch-target"
+                title="Aumentar tamanho da letra"
+                aria-label="Increase font size"
+              >
+                A+
+              </button>
+              <button
+                onClick={decreaseFontSize}
+                className="btn btn-sm p-0 fw-semibold border-0 bg-transparent text-muted header-touch-target"
+                title="Diminuir tamanho da letra"
+                aria-label="Decrease font size"
+              >
+                A-
+              </button>
+              <button
+                onClick={toggleContrast}
+                className="btn btn-sm p-0 border-0 bg-transparent header-touch-target"
+                title="Contraste"
+                aria-label="Toggle high contrast"
+              >
+                <span className="contrast-glyph" aria-hidden="true"></span>
+              </button>
+              <span className="d-none d-md-block">{t.accessibility}</span>
+            </div>
+
+            <span className="top-header__divider" aria-hidden="true" />
+
+            {/* Languages */}
+              <div className="lang-switch" role="group" aria-label="Language">
+                <button
+                  onClick={() => toggleLang('pt')}
+                  className={`${language === 'pt' ? 'active ' : ''}header-touch-target`}
+                  title="Português"
+                  aria-pressed={language === 'pt'}
+                >
+                  PT
+                </button>
+                <button
+                  onClick={() => toggleLang('en')}
+                  className={`${language === 'en' ? 'active ' : ''}header-touch-target`}
+                  title="English"
+                  aria-pressed={language === 'en'}
+                >
+                  EN
+                </button>
+              </div>
+            </div>
         </Container>
       </div>
 
@@ -277,14 +273,7 @@ const Header = () => {
               </NavDropdown>
 
               <Nav.Link as={Link} to="/eixos" className="fw-semibold px-2">{t.axes}</Nav.Link>
-              <Nav.Link as={Link} to="/solucoes" className="fw-semibold px-2">
-                {/* O rótulo completo não cabe na barra horizontal entre 1200 e
-                    1399px sem quebrar o menu em duas linhas; ali fica a forma
-                    curta. No menu recolhido (< 1200px) e acima de 1400px, o
-                    completo. Só um dos dois fica visível por vez. */}
-                <span className="d-xl-none d-xxl-inline">{t.solutions}</span>
-                <span className="d-none d-xl-inline d-xxl-none">{t.solutionsShort}</span>
-              </Nav.Link>
+              <Nav.Link as={Link} to="/solucoes" className="fw-semibold px-2">{t.solutionsShort}</Nav.Link>
               <Nav.Link as={Link} to="/publicacoes" className="fw-semibold px-2">{t.publications}</Nav.Link>
               {/* O Fórum de 2026 já aconteceu: cronograma e registro saíram,
                   sobrou só a retrospectiva — dropdown de um item vira link. */}

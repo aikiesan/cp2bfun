@@ -292,13 +292,10 @@ The conception of CP2b and its own mission foresee the strong integration of bas
 
 export const partners = {
   host: { name: 'Núcleo Interdisciplinar de Planejamento Energético (NIPE/UNICAMP)', location: 'Campinas, SP' },
-  // DEFESO ELEITORAL 2026 (04/07 a 25/10/2026): Ocultado temporariamente da vitrine institucional.
-  // Reativar após 25/10/2026 descomentando os parceiros abaixo:
-  // public: [
-  //   { name: 'Secretaria Estadual de Agricultura e Abastecimento de São Paulo (SAASP)', location: 'São Paulo, SP' },
-  //   { name: 'Secretaria Municipal do Verde, Meio Ambiente e Desenvolvimento Sustentável de Campinas (SMVMADS/PMC)', location: 'Campinas, SP' }
-  // ],
-  public: [],
+  public: [
+    { name: 'Secretaria Estadual de Agricultura e Abastecimento de São Paulo (SAASP)', location: 'São Paulo, SP' },
+    { name: 'Secretaria Municipal do Verde, Meio Ambiente e Desenvolvimento Sustentável de Campinas (SMVMADS/PMC)', location: 'Campinas, SP' }
+  ],
   research: [
     { name: 'Universidade Federal de Alfenas (UNIFAL)', location: 'Alfenas, MG' },
     { name: 'Instituto Agronômico de Campinas (IAC/SAASP)', location: 'Campinas, SP' },
@@ -354,7 +351,7 @@ export const newsItems = {
       image: '/assets/logos/cp2b-avatar-gradient.svg',
       badge: 'Institucional',
       badgeColor: 'success',
-      title: 'Conheça o Metaninho: o novo mascote do CP2b!',
+      title: 'Conheça o Metaninho, o novo mascote do CP2b',
       description: 'Para celebrar o final de ano, apresentamos nosso mascote que representa a molécula de metano e a identidade visual do centro. Uma ferramenta lúdica para educação científica.',
       link: '#'
     },
@@ -396,7 +393,7 @@ export const newsItems = {
       image: '/assets/logos/cp2b-avatar-gradient.svg',
       badge: 'Institutional',
       badgeColor: 'success',
-      title: 'Meet Metaninho: the new CP2b mascot!',
+      title: 'Meet Metaninho, the new CP2b mascot',
       description: 'To celebrate the end of the year, we present our mascot representing the methane molecule and the center\'s visual identity. A playful tool for scientific education.',
       link: '#'
     },
@@ -930,7 +927,7 @@ export const teamMembers = [
     en: 'Associate Researchers',
     members: [
       { name: 'Aline Veronese da Silva', role: 'Pesquisador Associado', institution: 'IE/UNICAMP' },
-      { name: 'Ana Beatriz Soares Aguiar', role: 'Coordenadora do Eixo 3', institution: 'UNICAMP' },
+      { name: 'Ana Beatriz Soares Aguiar', role: 'Pós-Doutoranda', en: 'Postdoctoral Researcher', institution: 'UNICAMP' },
       { name: 'Carlos Eduardo Driemeier', role: 'Coordenador do Eixo 4', institution: 'NIPE/UNICAMP' },
       { name: 'Barbara Janet Teruel Mederos', role: 'Pesquisador Associado', institution: 'FEAGRI/UNICAMP' },
       { name: 'Caio Henrique Rufino', role: 'Pesquisador Associado', institution: 'FEM/UNICAMP' },
@@ -952,7 +949,7 @@ export const teamMembers = [
       { name: 'Lira Luz Benites Lazaro', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'Luana Mattos de Oliveira Cruz', role: 'Pesquisador Associado', institution: 'FEC/UNICAMP' },
       { name: 'Lucas Tadeu Fuess', role: 'Coordenador do Eixo 2', institution: 'EESC/USP' },
-      { name: 'Luciana Cristina Lenhari da Silva', role: 'Pesquisador Associado', institution: 'IG/UNICAMP' },
+      { name: 'Luciana Cristina Lenhari da Silva', role: 'Pós-Doutoranda', en: 'Postdoctoral Researcher', institution: 'IG/UNICAMP' },
       { name: 'Luiz Carlos Pereira da Silva', role: 'Pesquisador Associado', institution: 'FEEC/UNICAMP' },
       { name: 'Luiz Carlos Roma Júnior', role: 'Pesquisador Associado', institution: 'IZ/SAASP' },
       { name: 'Luiz Gustavo Antonio de Souza', role: 'Pesquisador Associado', institution: 'NIPE/UNICAMP' },
@@ -1481,7 +1478,7 @@ export const homeContent = {
       title: 'Uma rede transdisciplinar em operação',
       subtitle: 'Valores apurados diretamente da base institucional do CP2b.',
       axes: 'Eixos temáticos',
-      researchers: 'Pesquisadores',
+      researchers: 'Na equipe do CP2b',
       institutions: 'Instituições',
       laboratories: 'Laboratórios centrais',
       services: 'Serviços técnicos',
@@ -1508,7 +1505,7 @@ export const homeContent = {
       title: 'A transdisciplinary network at work',
       subtitle: 'Figures drawn directly from the CP2b institutional dataset.',
       axes: 'Thematic axes',
-      researchers: 'Researchers',
+      researchers: 'On the CP2b team',
       institutions: 'Institutions',
       laboratories: 'Core laboratories',
       services: 'Technical services',
@@ -1547,6 +1544,15 @@ export const pilarBand = {
       { path: '/data', label: 'Catálogo de dados de resíduos', hint: 'Potencial metanogênico e caracterização de cada resíduo' },
     ],
     cta: 'Abrir o PILAR-2b',
+    map: {
+      alt: 'Mapa do estado de São Paulo com o potencial de biogás de cada um dos 645 municípios, do menor ao maior, sobre as linhas de transmissão, os gasodutos, as subestações e as 15 plantas de biogás do estado.',
+      low: 'menor',
+      high: 'maior potencial de biogás',
+      transmission: 'Linhas de transmissão',
+      gas: 'Gasodutos',
+      plants: 'Plantas de biogás',
+      source: 'Base de dados do PILAR-2b',
+    },
   },
   en: {
     locale: 'en',
@@ -1559,6 +1565,15 @@ export const pilarBand = {
       { path: '/data', label: 'Residue data catalog', hint: 'Methane potential and characterization of each residue' },
     ],
     cta: 'Open PILAR-2b',
+    map: {
+      alt: 'Map of São Paulo state showing the biogas potential of each of its 645 municipalities, from lowest to highest, over the transmission lines, gas pipelines, substations and the 15 biogas plants in the state.',
+      low: 'lower',
+      high: 'higher biogas potential',
+      transmission: 'Transmission lines',
+      gas: 'Gas pipelines',
+      plants: 'Biogas plants',
+      source: 'PILAR-2b database',
+    },
   },
 };
 

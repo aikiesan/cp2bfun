@@ -83,7 +83,7 @@ const PressKit = () => {
               <i className="bi bi-file-earmark-zip text-success mobile-empty-icon" style={{ fontSize: '4rem', opacity: 0.8 }}></i>
               <div className="mt-3 mt-md-4">
                 <span className="mono-label text-success text-uppercase">{labels.tag}</span>
-                <h1 className="display-5 mobile-display-6 fw-bold mt-2 mb-2 mb-md-3">{labels.title}</h1>
+                <h1 className="display-5 mobile-display-6 fw-semibold mt-2 mb-2 mb-md-3">{labels.title}</h1>
                 <p className="lead text-muted mb-4 mb-md-5">{labels.description}</p>
 
               </div>
@@ -94,7 +94,7 @@ const PressKit = () => {
               disponíveis, independentes do backend. */}
           <Row className="justify-content-center mt-4 mt-md-5">
             <Col lg={9}>
-              <h2 className="h5 fw-bold mb-1">{labels.logosTitle}</h2>
+              <h2 className="h5 fw-semibold mb-1">{labels.logosTitle}</h2>
               <p className="text-muted small mb-3">{labels.logosHint}</p>
 
               <Row className="g-3">
@@ -146,7 +146,7 @@ const PressKit = () => {
           {/* Banners — a prévia é o próprio arquivo, na proporção 4:1. */}
           <Row className="justify-content-center mt-4 mt-md-5">
             <Col lg={9}>
-              <h2 className="h5 fw-bold mb-1">{labels.bannersTitle}</h2>
+              <h2 className="h5 fw-semibold mb-1">{labels.bannersTitle}</h2>
               <p className="text-muted small mb-3">{labels.bannersHint}</p>
 
               <Row className="g-3">
@@ -181,7 +181,7 @@ const PressKit = () => {
           {/* Documentos de marca — no repositório, sempre disponíveis. */}
           <Row className="justify-content-center mt-4 mt-md-5">
             <Col lg={9}>
-              <h2 className="h5 fw-bold mb-1">{labels.docsTitle}</h2>
+              <h2 className="h5 fw-semibold mb-1">{labels.docsTitle}</h2>
               <p className="text-muted small mb-3">{labels.docsHint}</p>
 
               <Row className="g-3">
@@ -213,7 +213,7 @@ const PressKit = () => {
           {/* Paleta — o hex é o que a imprensa precisa copiar. */}
           <Row className="justify-content-center mt-4 mt-md-5">
             <Col lg={9}>
-              <h2 className="h5 fw-bold mb-1">{labels.colorsTitle}</h2>
+              <h2 className="h5 fw-semibold mb-1">{labels.colorsTitle}</h2>
               <p className="text-muted small mb-3">{labels.colorsHint}</p>
 
               <Row className="g-3">
@@ -241,7 +241,7 @@ const PressKit = () => {
           {/* Tipografia — informativa: as fontes não são redistribuídas. */}
           <Row className="justify-content-center mt-4 mt-md-5">
             <Col lg={9}>
-              <h2 className="h5 fw-bold mb-1">{labels.typeTitle}</h2>
+              <h2 className="h5 fw-semibold mb-1">{labels.typeTitle}</h2>
               <p className="text-muted small mb-3">{labels.typeHint}</p>
 
               <Row className="g-3">
@@ -272,7 +272,7 @@ const PressKit = () => {
           ) : items.length > 0 && (
             <Row className="justify-content-center mt-4 mt-md-5">
               <Col lg={9}>
-                <h2 className="h5 fw-bold mb-3">{labels.otherTitle}</h2>
+                <h2 className="h5 fw-semibold mb-3">{labels.otherTitle}</h2>
                 <Row className="g-3">
                   {items.map((item) => (
                     <Col xs={12} sm={6} md={4} key={item.id}>

@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
+import { isAmbientRoute } from '../utils/ambientRoutes';
 
 /**
  * Ambient backdrop: methane molecules drifting slowly upward, a few of which
@@ -10,10 +11,9 @@ import { useLocation } from 'react-router-dom';
  * that the identity of the centre (CH4 -> energia) is present, not that anyone
  * notices it.
  *
- * Mounted once in the app layout (src/App.jsx) so it persists across route
- * changes rather than remounting per page. It reads its own route via
- * useLocation and turns the density down everywhere except Home, where the
- * "O Centro em Números" band gives it room to actually read as a field.
+ * Mounted in the app layout (src/App.jsx). It reads its own route and only
+ * renders on Home and the Comunicação pages (utils/ambientRoutes); on every
+ * other page it renders nothing.
  *
  * Costs nothing when off-screen or on a hidden tab: the animation loop stops.
  * With prefers-reduced-motion it paints one static frame and never animates.
@@ -21,14 +21,10 @@ import { useLocation } from 'react-router-dom';
 
 // Density rather than a fixed count, so a wide desktop viewport is not
 // covered by the same dozen molecules as a phone. Roughly 34 on a 1280x800
-// screen at full density — enough to read as a field, sparse enough to stay
-// quiet. Every other page runs at a fraction of that so the effect reads as
-// ambient texture, not as the page's subject.
-const DENSITY = 1 / 30000; // molecules per square pixel at density = 1
+// screen — enough to read as a field, sparse enough to stay quiet.
+const DENSITY = 1 / 30000; // molecules per square pixel
 const MIN_COUNT = 4;
 const MAX_COUNT = 70;
-const HOME_DENSITY = 1;
-const OTHER_PAGES_DENSITY = 0.4;
 
 const BOND = 7;          // distance from carbon to each hydrogen, px
 const CARBON_R = 2.3;
@@ -63,18 +59,8 @@ const spawn = (width, height, atBottom) => ({
   converting: 0,
 });
 
-const MoleculeField = () => {
+const MoleculeCanvas = () => {
   const canvasRef = useRef(null);
-  const { pathname } = useLocation();
-  // Read inside the animation loop via a ref rather than as an effect
-  // dependency: re-running the effect on every route change would tear the
-  // canvas down and rebuild it, restarting every molecule's drift.
-  const densityRef = useRef(pathname === '/' ? HOME_DENSITY : OTHER_PAGES_DENSITY);
-  densityRef.current = pathname === '/' ? HOME_DENSITY : OTHER_PAGES_DENSITY;
-  // Set by the effect below to the current retarget() closure, so a route
-  // change can adjust the particle count without re-running the whole
-  // effect (which would tear down and rebuild the canvas).
-  const retargetRef = useRef(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -107,21 +93,15 @@ const MoleculeField = () => {
       retarget();
     };
 
-    // Adjusts the particle count for the current width/height/route without
-    // touching the canvas backing store — cheap enough to call on every
-    // route change, unlike resize() which re-measures the DOM.
+    // Adjusts the particle count for the current size. Grows or shrinks in
+    // place, so the existing molecules keep their positions on a resize
+    // instead of the whole field jumping.
     const retarget = () => {
       if (width <= 0 || height <= 0) return;
-      const target = Math.max(
-        MIN_COUNT,
-        Math.min(MAX_COUNT, Math.round(width * height * DENSITY * densityRef.current))
-      );
-      // Grow or shrink in place, so the existing molecules keep their
-      // positions instead of the whole field jumping.
+      const target = Math.max(MIN_COUNT, Math.min(MAX_COUNT, Math.round(width * height * DENSITY)));
       while (particles.length < target) particles.push(spawn(width, height, false));
       if (particles.length > target) particles.length = target;
     };
-    retargetRef.current = retarget;
 
     const drawMolecule = (p) => {
       // 0 while it is still methane, 1 once it has become energy.
@@ -274,13 +254,14 @@ const MoleculeField = () => {
     };
   }, []);
 
-  // densityRef is already updated above on every render; this just tells
-  // the running loop to actually apply the new count for the new route.
-  useEffect(() => {
-    retargetRef.current?.();
-  }, [pathname]);
-
   return <canvas ref={canvasRef} className="molecule-field" aria-hidden="true" />;
+};
+
+// Home and the Comunicação pages only (utils/ambientRoutes). Everywhere else
+// the field is not mounted at all: no canvas, no animation loop.
+const MoleculeField = () => {
+  const { pathname } = useLocation();
+  return isAmbientRoute(pathname) ? <MoleculeCanvas /> : null;
 };
 
 export default MoleculeField;

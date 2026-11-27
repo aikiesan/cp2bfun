@@ -126,7 +126,7 @@ const Capacitacao = () => {
           <section id="propor-curso" className="cap-section" aria-labelledby="cap-propose-title">
             <div className="cap-section__head">
               <span className="mono-label text-success d-block mb-1">{t.propose.tag}</span>
-              <h2 id="cap-propose-title" className="fw-bold fs-2 mb-2">{t.propose.title}</h2>
+              <h2 id="cap-propose-title" className="fw-semibold fs-2 mb-2">{t.propose.title}</h2>
               <p className="text-muted mb-0">{t.propose.lead}</p>
             </div>
 
@@ -205,7 +205,7 @@ const Capacitacao = () => {
           <section id="estrutura" className="cap-section" aria-labelledby="cap-outline-title">
             <div className="cap-section__head">
               <span className="mono-label text-success d-block mb-1">{t.outline.tag}</span>
-              <h2 id="cap-outline-title" className="fw-bold fs-2 mb-2">{t.outline.title}</h2>
+              <h2 id="cap-outline-title" className="fw-semibold fs-2 mb-2">{t.outline.title}</h2>
               <p className="text-muted mb-0">{t.outline.lead}</p>
             </div>
 
