@@ -1,0 +1,15 @@
+# /etc/cron.d/cp2b-stats: resumo diário de visitas do site do CP2b.
+# Instalar (uma vez, na VM):
+#   sudo install -m 644 -o root -g root /var/www/cp2b/repo/cp2b_web/deployment/stats/cp2b-stats.cron /etc/cron.d/cp2b-stats
+# Desfazer:
+#   sudo rm /etc/cron.d/cp2b-stats
+#
+# 01:30 e não 00:30: no Debian 12 o logrotate.timer roda "daily" com até uma
+# hora de folga (AccuracySec=1h), então a rotação cai entre 00:00 e 01:00.
+# Rodar depois dela evita ler os arquivos no meio da troca de nomes. O script
+# filtra cada dia pela data da linha, então a hora exata não muda o resultado.
+# Sem argumento ele grava todo dia completo que falta no CSV: se a VM passar
+# uma noite desligada, o dia perdido entra na noite seguinte.
+SHELL=/bin/bash
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+30 1 * * * root bash /var/www/cp2b/repo/cp2b_web/scripts/stats-daily.sh >> /var/log/cp2b-stats.log 2>&1
