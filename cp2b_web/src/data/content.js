@@ -351,7 +351,7 @@ export const newsItems = {
       image: '/assets/logos/cp2b-avatar-gradient.svg',
       badge: 'Institucional',
       badgeColor: 'success',
-      title: 'Conheça o Metaninho: o novo mascote do CP2b!',
+      title: 'Conheça o Metaninho, o novo mascote do CP2b',
       description: 'Para celebrar o final de ano, apresentamos nosso mascote que representa a molécula de metano e a identidade visual do centro. Uma ferramenta lúdica para educação científica.',
       link: '#'
     },
@@ -393,7 +393,7 @@ export const newsItems = {
       image: '/assets/logos/cp2b-avatar-gradient.svg',
       badge: 'Institutional',
       badgeColor: 'success',
-      title: 'Meet Metaninho: the new CP2b mascot!',
+      title: 'Meet Metaninho, the new CP2b mascot',
       description: 'To celebrate the end of the year, we present our mascot representing the methane molecule and the center\'s visual identity. A playful tool for scientific education.',
       link: '#'
     },

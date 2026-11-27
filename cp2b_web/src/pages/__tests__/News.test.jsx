@@ -101,7 +101,7 @@ describe('News', () => {
     // Known static item from src/data/content.js (pt is the default language).
     await waitFor(() => {
       expect(
-        screen.getByText('Conheça o Metaninho: o novo mascote do CP2b!')
+        screen.getByText('Conheça o Metaninho, o novo mascote do CP2b')
       ).toBeInTheDocument();
     });
   });

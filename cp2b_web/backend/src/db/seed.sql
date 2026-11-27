@@ -4,8 +4,8 @@
 -- News articles
 INSERT INTO news (slug, title_pt, title_en, description_pt, description_en, image, badge, badge_color, date_display, published_at) VALUES
 ('metaninho-mascote',
- 'Conheça o Metaninho: o novo mascote do CP2b!',
- 'Meet Metaninho: the new CP2b mascot!',
+ 'Conheça o Metaninho, o novo mascote do CP2b',
+ 'Meet Metaninho, the new CP2b mascot',
  'Para celebrar o final de ano, apresentamos nosso mascote que representa a molécula de metano e a identidade visual do centro. Uma ferramenta lúdica para educação científica.',
  'To celebrate the end of the year, we present our mascot representing the methane molecule and the center''s visual identity. A playful tool for scientific education.',
  '/assets/CP2B-AVATAR-BR@8x.png',

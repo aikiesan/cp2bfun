@@ -287,8 +287,8 @@ const Team = () => {
                 >
                   <div className="d-flex align-items-baseline justify-content-between border-bottom pb-2 mb-3 mb-md-4">
                     <h3
-                      className="fw-semibold mb-0 text-uppercase fs-6"
-                      style={{ letterSpacing: '1px', color: 'var(--text-primary)' }}
+                      className="fw-semibold mb-0 fs-5"
+                      style={{ color: 'var(--text-primary)' }}
                     >
                       {group.title}
                     </h3>
@@ -417,8 +417,8 @@ const Team = () => {
                 >
                   <div className="d-flex align-items-baseline justify-content-between border-bottom pb-2 mb-3 mb-md-4">
                     <h3
-                      className="fw-semibold mb-0 text-uppercase fs-6"
-                      style={{ letterSpacing: '1px', color: 'var(--text-primary)' }}
+                      className="fw-semibold mb-0 fs-5"
+                      style={{ color: 'var(--text-primary)' }}
                     >
                       {language === 'pt' ? 'Mascote' : 'Mascot'}
                     </h3>
