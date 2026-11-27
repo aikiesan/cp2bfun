@@ -99,7 +99,7 @@ const Contact = () => {
       <Row className="justify-content-center g-4 g-lg-5">
         <Col lg={5}>
           <div className="mb-4 mb-md-5">
-            <h4 className="fw-bold mb-2 mb-md-3">{labels.address}</h4>
+            <h4 className="fw-semibold mb-2 mb-md-3">{labels.address}</h4>
             <p className="text-muted mb-0">
               Rua Cora Coralina, 330<br/>
               Universidade Estadual de Campinas - UNICAMP<br/>
@@ -109,7 +109,7 @@ const Contact = () => {
           </div>
 
           <div className="mb-4 mb-md-5">
-            <h4 className="fw-bold mb-2 mb-md-3">{labels.direct}</h4>
+            <h4 className="fw-semibold mb-2 mb-md-3">{labels.direct}</h4>
             <p className="text-muted mb-2"><strong>{labels.general}:</strong> <a href="mailto:administrativo@cp2b.unicamp.br" className="text-decoration-none text-dark hover-blue d-inline-block py-1">administrativo@cp2b.unicamp.br</a></p>
             <p className="text-muted mb-2"><strong>{labels.coordination}:</strong> <a href="mailto:diretoria@cp2b.unicamp.br" className="text-decoration-none text-dark hover-blue d-inline-block py-1">diretoria@cp2b.unicamp.br</a></p>
             <p className="text-muted mb-0"><strong>{labels.phone}:</strong> <a href="tel:+551935211244" className="text-decoration-none text-dark hover-blue d-inline-block py-1">+55 (19) 3521-1244</a></p>
@@ -126,7 +126,7 @@ const Contact = () => {
 
         <Col lg={6}>
           <div className="bg-light p-3 p-md-4 border border-dark h-100">
-            <h4 className="fw-bold mb-3 mb-md-4">{labels.sendMsg}</h4>
+            <h4 className="fw-semibold mb-3 mb-md-4">{labels.sendMsg}</h4>
 
             {status.success && (
               <Alert variant="success" dismissible onClose={() => setStatus({ ...status, success: false })}>

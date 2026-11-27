@@ -144,7 +144,7 @@ const About = () => {
               <span className="mono-label text-success d-block mb-1">
                 {mvv.sectionTag || 'Diretrizes estratégicas'}
               </span>
-              <h2 className="fw-bold fs-2 mb-2" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
+              <h2 className="fw-semibold fs-2 mb-2" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
                 {mvv.sectionTitle || 'Missão, Visão e Valores'}
               </h2>
               {mvv.sectionSubtitle && (
@@ -221,7 +221,7 @@ const About = () => {
         <section className="mb-4 mb-md-5 pb-3" aria-labelledby="about-axes-title">
           <div className="text-center max-w-3xl mx-auto mb-4">
             <span className="mono-label text-success d-block mb-1">{labels.axesTag}</span>
-            <h2 id="about-axes-title" className="fw-bold fs-2 mb-2" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
+            <h2 id="about-axes-title" className="fw-semibold fs-2 mb-2" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
               {labels.axesTitle}
             </h2>
             <p className="text-muted lead fs-6 mb-0">{labels.axesSubtitle}</p>
@@ -309,7 +309,7 @@ const About = () => {
 
           <div className="about-sheet p-3 p-md-4 mb-4">
             <span className="about-label d-block mb-1">{labels.headquarters}</span>
-            <h5 className="fw-bold mb-1" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
+            <h5 className="fw-semibold mb-1" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
               {partners.host.name}
             </h5>
             <p className="text-muted small mb-0">
@@ -323,7 +323,7 @@ const About = () => {
               <Col md={6}>
                 <div className="about-sheet p-3 p-md-4 h-100">
                   <h5
-                    className="fw-bold mb-3 d-flex align-items-center"
+                    className="fw-semibold mb-3 d-flex align-items-center"
                     style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)', fontSize: '1rem' }}
                   >
                     <i className="bi bi-bank me-2 about-icon" aria-hidden="true" />
@@ -345,7 +345,7 @@ const About = () => {
             <Col md={partners.public && partners.public.length > 0 ? 6 : 12}>
               <div className="about-sheet p-3 p-md-4 h-100">
                 <h5
-                  className="fw-bold mb-3 d-flex align-items-center"
+                  className="fw-semibold mb-3 d-flex align-items-center"
                   style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)', fontSize: '1rem' }}
                 >
                   <i className="bi bi-building me-2 about-icon" aria-hidden="true" />
@@ -368,7 +368,7 @@ const About = () => {
             <Col md={12}>
               <div className="about-sheet p-3 p-md-4">
                 <h5
-                  className="fw-bold mb-3 d-flex align-items-center"
+                  className="fw-semibold mb-3 d-flex align-items-center"
                   style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)', fontSize: '1rem' }}
                 >
                   <i className="bi bi-mortarboard me-2 about-icon" aria-hidden="true" />

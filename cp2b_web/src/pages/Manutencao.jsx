@@ -33,7 +33,7 @@ const Manutencao = () => {
       <div className="mb-4">
         <Metaninho pose="tranquilo" size={160} />
       </div>
-      <h1 className="fw-bold mb-3">{t.title}</h1>
+      <h1 className="fw-semibold mb-3">{t.title}</h1>
       <p className="text-muted fs-5 mb-2">{t.subtitle}</p>
       <p className="text-muted mb-5">{t.body}</p>
       <div>

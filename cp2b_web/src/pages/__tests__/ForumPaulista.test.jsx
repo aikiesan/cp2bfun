@@ -6,8 +6,10 @@ import ForumPaulista from '../ForumPaulista';
 describe('ForumPaulista', () => {
   it('presents the Forum as a completed event memoir', () => {
     renderWithProviders(<ForumPaulista />);
-    expect(screen.getByRole('heading', { name: 'Este foi o nosso Fórum. E foi incrível.' })).toBeInTheDocument();
-    expect(screen.getByText('Até o ano que vem!')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: 'I Fórum Paulista de Biogás e Bioprodutos' })).toBeInTheDocument();
+    expect(screen.getByText('Até a próxima edição')).toBeInTheDocument();
+    // A record, not a sales page: no exclamation marks anywhere.
+    expect(document.body.textContent).not.toMatch(/!/);
     expect(screen.queryByText(/Inscreva-se/i)).not.toBeInTheDocument();
   });
 
@@ -19,7 +21,7 @@ describe('ForumPaulista', () => {
 
   it('links the main action to the photographic record', () => {
     renderWithProviders(<ForumPaulista />);
-    expect(screen.getByText('Rever os melhores momentos').closest('a')).toHaveAttribute('href', '#fotos');
+    expect(screen.getByText('Ver as fotos do evento').closest('a')).toHaveAttribute('href', '#fotos');
   });
 
   it('keeps the Forum-to-opening memory and omits the removed long sections', () => {

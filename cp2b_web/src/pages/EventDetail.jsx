@@ -26,7 +26,7 @@ const EventSchedule = ({ items, title, language }) => {
 
   return (
     <section className="mb-5">
-      <h2 className="h4 fw-bold mb-4">{title}</h2>
+      <h2 className="h4 fw-semibold mb-4">{title}</h2>
       <div ref={listRef} className="d-flex flex-column gap-3 event-schedule" data-reveal={reveal}>
         {items.map((item, i) => (
           <div
@@ -36,13 +36,13 @@ const EventSchedule = ({ items, title, language }) => {
             style={{ '--i': Math.min(i, 8) }}
           >
             <div
-              className="fw-bold flex-shrink-0 text-center event-schedule__time"
+              className="fw-semibold flex-shrink-0 text-center event-schedule__time"
               style={{ fontFamily: 'var(--font-mono)', color: 'var(--cp2b-petrol)', minWidth: '5rem' }}
             >
               {item.time}
             </div>
             <div>
-              <div className="fw-bold">
+              <div className="fw-semibold">
                 {language === 'pt' ? item.title_pt : (item.title_en || item.title_pt)}
               </div>
               {item.speaker && <div className="text-muted small">{item.speaker}</div>}
@@ -252,7 +252,7 @@ const EventDetail = () => {
 
             {content && (
               <section className="mb-5">
-                <h2 className="h4 fw-bold mb-3">{labels.about}</h2>
+                <h2 className="h4 fw-semibold mb-3">{labels.about}</h2>
                 <div
                   className="article-content"
                   dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(content) }}
@@ -266,7 +266,7 @@ const EventDetail = () => {
 
             {albums.length > 0 && (
               <section>
-                <h2 className="h4 fw-bold mb-4">{labels.gallery}</h2>
+                <h2 className="h4 fw-semibold mb-4">{labels.gallery}</h2>
                 <div className="album-grid">
                   {albums.map((album) => (
                     <Link key={album.id} to={`/galeria/${album.album_id}`} className="album-card">

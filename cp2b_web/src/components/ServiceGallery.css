@@ -67,7 +67,7 @@
 
 .svc__meta {
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   letter-spacing: 0.01em;
   color: var(--cp2b-verde-escuro);
 }
@@ -78,7 +78,7 @@
   margin: 0.3rem 0 0.55rem;
   font-family: var(--font-display);
   font-size: 0.96rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   line-height: 1.28;
   color: var(--svc-ink);
   text-wrap: balance;
@@ -186,7 +186,7 @@
 
 .svc-trl__label {
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   letter-spacing: 0.01em;
   color: var(--cp2b-verde-escuro);
 }

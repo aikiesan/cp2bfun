@@ -69,11 +69,8 @@ const FeaturedVideos = ({ itemA, itemB, itemC }) => {
                   backgroundColor: 'rgba(255,255,255,0.9)',
                   borderRadius: '50%',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  transition: 'transform 0.2s, box-shadow 0.2s',
                   boxShadow: '0 4px 20px rgba(0,0,0,0.4)',
                 }}
-                onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.1)'; }}
-                onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; }}
               >
                 <FaPlay style={{ fontSize: '1.4rem', color: '#dc3545', marginLeft: '4px' }} />
               </div>
@@ -87,7 +84,7 @@ const FeaturedVideos = ({ itemA, itemB, itemC }) => {
                     {activeVideo.date_display}
                   </div>
                 )}
-                <h3 className="fw-bold text-white mb-1 mobile-compact-title">{getTitle(activeVideo)}</h3>
+                <h3 className="fw-semibold text-white mb-1 mobile-compact-title">{getTitle(activeVideo)}</h3>
                 {getDescription(activeVideo) && (
                   <p className="text-white-50 mb-0 small" style={{
                     display: '-webkit-box',

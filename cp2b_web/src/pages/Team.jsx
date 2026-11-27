@@ -287,7 +287,7 @@ const Team = () => {
                 >
                   <div className="d-flex align-items-baseline justify-content-between border-bottom pb-2 mb-3 mb-md-4">
                     <h3
-                      className="fw-bold mb-0 text-uppercase fs-6"
+                      className="fw-semibold mb-0 text-uppercase fs-6"
                       style={{ letterSpacing: '1px', color: 'var(--text-primary)' }}
                     >
                       {group.title}
@@ -342,7 +342,7 @@ const Team = () => {
                               />
                               <div style={{ minWidth: 0 }} className="flex-grow-1">
                                 <h4
-                                  className="fw-bold mb-1 team-member-name"
+                                  className="fw-semibold mb-1 team-member-name"
                                   title={member.name}
                                   style={{
                                     color: 'var(--text-primary, #222)',
@@ -417,7 +417,7 @@ const Team = () => {
                 >
                   <div className="d-flex align-items-baseline justify-content-between border-bottom pb-2 mb-3 mb-md-4">
                     <h3
-                      className="fw-bold mb-0 text-uppercase fs-6"
+                      className="fw-semibold mb-0 text-uppercase fs-6"
                       style={{ letterSpacing: '1px', color: 'var(--text-primary)' }}
                     >
                       {language === 'pt' ? 'Mascote' : 'Mascot'}
@@ -429,7 +429,7 @@ const Team = () => {
                         <div className="d-flex align-items-center gap-2 gap-sm-3 team-member-inner">
                           <Metaninho pose="feliz" size={64} className="team-mascot__img" />
                           <div style={{ minWidth: 0 }} className="flex-grow-1">
-                            <h4 className="fw-bold mb-1 team-member-name" style={{ fontSize: '0.92rem', lineHeight: 1.25 }}>
+                            <h4 className="fw-semibold mb-1 team-member-name" style={{ fontSize: '0.92rem', lineHeight: 1.25 }}>
                               Metaninho
                             </h4>
                             <div

@@ -106,7 +106,7 @@ const MetaninhoHQ = () => {
                 <div className="hq-print__mascot" aria-hidden="true">
                   <Metaninho pose="feliz" size={120} />
                 </div>
-                <h2 id="hq-imprimir" className="h4 fw-bold mb-2">{t.printTitle}</h2>
+                <h2 id="hq-imprimir" className="h4 fw-semibold mb-2">{t.printTitle}</h2>
                 <p className="text-muted mb-3">{t.printIntro}</p>
                 <ol className="hq-print__steps">
                   {t.printSteps.map((step) => <li key={step}>{step}</li>)}
@@ -121,7 +121,7 @@ const MetaninhoHQ = () => {
             <Col lg={5}>
               <details className="hq-transcript">
                 <summary>
-                  <span className="h5 fw-bold mb-0">{t.transcriptTitle}</span>
+                  <span className="h5 fw-semibold mb-0">{t.transcriptTitle}</span>
                   <i className="bi bi-chevron-down" aria-hidden="true"></i>
                 </summary>
                 <p className="text-muted small mt-2">{t.transcriptIntro}</p>

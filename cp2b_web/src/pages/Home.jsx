@@ -235,7 +235,7 @@ const Home = () => {
                         {item.image ? (
                           <img src={item.image} alt={item.title} loading="lazy" />
                         ) : (
-                          <div className="w-100 h-100" style={{ background: 'linear-gradient(135deg, var(--cp2b-petrol) 0%, #2d3748 100%)' }} />
+                          <div className="w-100 h-100" style={{ background: 'var(--bg-surface-muted)' }} />
                         )}
                       </Link>
                       <div className="p-3 p-md-4 d-flex flex-column flex-grow-1">
@@ -245,7 +245,7 @@ const Home = () => {
                             <span className={`badge bg-${item.badgeColor} bg-opacity-10 text-${item.badgeColor} rounded-pill`}>{item.badge}</span>
                           )}
                         </div>
-                        <h3 className="h5 fw-bold mb-2 mb-md-3">
+                        <h3 className="h5 fw-semibold mb-2 mb-md-3">
                           <Link to={item.link} className="text-decoration-none" style={{ color: 'var(--cp2b-dark)' }}>
                             {item.title}
                           </Link>
@@ -276,7 +276,7 @@ const Home = () => {
           <Container>
             <div className="text-center section-head">
               <span className="eyebrow justify-content-center">{language === 'pt' ? 'Multimídia' : 'Multimedia'}</span>
-              <h2 className="fw-bold mt-2">{labels.videosTitle}</h2>
+              <h2 className="fw-semibold mt-2">{labels.videosTitle}</h2>
             </div>
           </Container>
           <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
@@ -312,7 +312,7 @@ const Home = () => {
             <span className="eyebrow justify-content-center">
               {language === 'pt' ? 'Rede' : 'Network'}
             </span>
-            <h2 className="fw-bold mt-2">{labels.partnersTitle}</h2>
+            <h2 className="fw-semibold mt-2">{labels.partnersTitle}</h2>
           </div>
           <div className="text-center bg-white p-3 p-md-4 rounded-5 shadow-sm">
             <img

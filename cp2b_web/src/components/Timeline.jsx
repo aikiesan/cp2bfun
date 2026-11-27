@@ -20,12 +20,12 @@ const TimelineEntry = ({ item, index }) => {
         >
           <i className={`bi ${item.icon}`} />
         </span>
-        <span className="badge rounded-pill px-3 py-1" style={{ background: 'var(--cp2b-petrol)', fontWeight: 700, letterSpacing: '0.05em' }}>
+        <span className="badge rounded-pill px-3 py-1" style={{ background: 'var(--cp2b-petrol)', fontWeight: 600, letterSpacing: '0.05em' }}>
           {item.year}
         </span>
       </div>
 
-      <h6 className="fw-bold mt-3 mb-2" style={{ color: 'var(--cp2b-petrol)' }}>{item.title}</h6>
+      <h6 className="fw-semibold mt-3 mb-2" style={{ color: 'var(--cp2b-petrol)' }}>{item.title}</h6>
       <p className="text-muted small mb-3">{item.description}</p>
       <span
         className={`badge rounded-pill px-3 py-1 ${item.status === 'ongoing' ? 'text-success' : 'text-secondary'}`}

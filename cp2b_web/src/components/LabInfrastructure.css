@@ -16,7 +16,7 @@
   display: block;
   font-family: var(--font-sans);
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   letter-spacing: 0.01em;
   color: var(--cp2b-verde);
 }
@@ -29,7 +29,7 @@
 .lab-head h2 {
   font-family: var(--font-display);
   font-size: var(--fs-display-2);
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
   color: var(--lab-ink);
@@ -46,9 +46,7 @@
   z-index: 2;
   margin-top: clamp(-4.5rem, -3rem - 2vw, -2.5rem);
   padding: clamp(1.75rem, 1rem + 3vw, 3rem) clamp(1rem, 0.5rem + 2.5vw, 3rem);
-  background:
-    radial-gradient(circle, color-mix(in srgb, var(--cp2b-verde-escuro) 7%, transparent) 1px, transparent 1.4px) 0 0 / 22px 22px,
-    var(--bg-surface);
+  background: var(--bg-surface);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-md);
   box-shadow: var(--shadow-sm);
@@ -86,7 +84,7 @@
 .lab-trl__phase-range {
   display: block;
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   letter-spacing: 0.01em;
   color: var(--cp2b-verde);
 }
@@ -125,7 +123,7 @@
   display: block;
   font-family: var(--font-display);
   font-size: 1rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   color: var(--lab-ink);
 }
 
@@ -208,7 +206,7 @@
   cursor: pointer;
 }
 
-.lab-rail__acr { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; color: var(--gray-500); }
+.lab-rail__acr { font-family: var(--font-display); font-size: 1.1rem; font-weight: var(--weight-semibold); color: var(--gray-500); }
 .lab-rail__meta { font-size: 0.75rem; }
 
 .lab-rail__tab:hover { border-top-color: var(--cp2b-lima); }
@@ -231,16 +229,14 @@
 
 .lab-aside {
   padding: var(--lab-pad);
-  background:
-    radial-gradient(28rem 16rem at 0% 0%, color-mix(in srgb, var(--cp2b-lima) 11%, transparent), transparent 70%),
-    var(--lab-tint);
+  background: var(--lab-tint);
   border-right: 1px solid var(--lab-hair);
 }
 
 .lab-aside__acr {
   font-family: var(--font-display);
   font-size: 2.1rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--lab-ink);
@@ -387,7 +383,7 @@
   color: var(--cp2b-verde);
 }
 
-.lab-criteria h4 { margin: 0.45rem 0 0.35rem; font-size: 0.93rem; font-weight: 700; line-height: 1.3; color: var(--lab-ink); }
+.lab-criteria h4 { margin: 0.45rem 0 0.35rem; font-size: 0.93rem; font-weight: var(--weight-semibold); line-height: 1.3; color: var(--lab-ink); }
 .lab-criteria p { margin: 0; font-size: 0.85rem; line-height: 1.6; color: var(--text-secondary); }
 
 /* Justificativa por nível de TRL. */
@@ -411,10 +407,10 @@
   color: var(--gray-400);
 }
 
-.lab-levels__num span { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; margin-bottom: 0.2rem; }
+.lab-levels__num span { font-size: 0.6rem; font-weight: var(--weight-semibold); letter-spacing: 0.12em; margin-bottom: 0.2rem; }
 .lab-levels li.is-focus .lab-levels__num { color: var(--lab-ink); }
 
-.lab-levels h4 { margin: 0 0 0.35rem; font-size: 0.95rem; font-weight: 700; color: var(--lab-ink); }
+.lab-levels h4 { margin: 0 0 0.35rem; font-size: 0.95rem; font-weight: var(--weight-semibold); color: var(--lab-ink); }
 .lab-levels p { margin: 0; font-size: 0.87rem; line-height: 1.6; color: var(--text-secondary); }
 
 .lab-levels__focus {
@@ -424,7 +420,7 @@
   border-radius: var(--radius-full);
   background: var(--lab-ink);
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   letter-spacing: 0.01em;
   vertical-align: 0.15em;
   color: #fff;

@@ -178,7 +178,7 @@ const Footer = () => {
           <Col md={4} className="text-md-end mt-3 mt-md-0">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="btn btn-link p-0 small fw-bold text-decoration-none footer-back-to-top"
+              className="btn btn-link p-0 small fw-semibold text-decoration-none footer-back-to-top"
               style={{ color: 'var(--cp2b-lime-500)' }}
             >
               {labels.backToTop}

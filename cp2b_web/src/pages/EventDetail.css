@@ -17,7 +17,7 @@
   background: color-mix(in srgb, var(--cp2b-lima) 24%, var(--cp2b-branco));
   color: var(--cp2b-verde-escuro);
   font-size: 0.8rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   line-height: 1.3;
 }
 

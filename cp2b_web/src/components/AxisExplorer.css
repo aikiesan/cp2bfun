@@ -17,7 +17,7 @@
   display: block;
   font-family: var(--font-sans);
   font-size: 0.76rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   letter-spacing: 0.01em;
   color: var(--axis, var(--cp2b-verde));
 }
@@ -101,9 +101,7 @@
 /* ---------- resumo do eixo (coluna esquerda) ---------- */
 .axx-head {
   padding: var(--axx-pad);
-  background:
-    radial-gradient(28rem 16rem at 0% 0%, color-mix(in srgb, var(--axis, var(--cp2b-lima)) 10%, transparent), transparent 70%),
-    color-mix(in srgb, var(--axis, var(--cp2b-verde)) 4%, white);
+  background: color-mix(in srgb, var(--axis, var(--cp2b-verde)) 4%, white);
   border-right: 1px solid var(--axx-hair);
   border-top: 3px solid var(--axis, transparent);
 }
@@ -133,7 +131,7 @@
 .axx-head__title {
   font-family: var(--font-display);
   font-size: 1.3rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   line-height: 1.22;
   letter-spacing: var(--tracking-tight);
   color: var(--axx-ink);
@@ -219,7 +217,7 @@
 
 .axx-branch__count {
   font-family: var(--font-sans);
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   font-size: 0.7rem;
   color: var(--gray-500);
 }
@@ -284,7 +282,7 @@ button.axx-row__head:focus-visible { outline: none; box-shadow: var(--focus-ring
   border-radius: var(--radius-full);
   font-family: var(--font-sans);
   font-size: 0.66rem;
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   color: var(--axx-ink);
   white-space: nowrap;
 }
@@ -495,7 +493,7 @@ button.axx-row__head:focus-visible { outline: none; box-shadow: var(--focus-ring
 .research-explore__head h2 {
   font-family: var(--font-display);
   font-size: var(--fs-display-2);
-  font-weight: 700;
+  font-weight: var(--weight-semibold);
   letter-spacing: var(--tracking-tight);
   line-height: var(--leading-tight);
   color: var(--cp2b-verde-escuro);

@@ -88,7 +88,7 @@ const CookieConsent = () => {
 
           {/* Left panel: info */}
           <div className="col-12 col-lg-7">
-            <h6 className="fw-bold mb-1" style={{ color: 'var(--cp2b-lime, #A4C639)', fontSize: '0.9rem' }}>
+            <h6 className="fw-semibold mb-1" style={{ color: 'var(--cp2b-lime, #A4C639)', fontSize: '0.9rem' }}>
               <i className="bi bi-shield-lock me-2" />
               {t.title}
             </h6>

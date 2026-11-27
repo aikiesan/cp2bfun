@@ -138,7 +138,7 @@ const Boletins = () => {
                             {date && <span className="text-muted small">{date}</span>}
                           </div>
 
-                          <h6 className="fw-bold mb-2">{title}</h6>
+                          <h6 className="fw-semibold mb-2">{title}</h6>
 
                           {getDescription(b) && (
                             <p className="text-muted small mb-3">{getDescription(b)}</p>

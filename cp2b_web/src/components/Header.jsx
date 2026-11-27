@@ -119,7 +119,7 @@ const Header = () => {
             <div className="accessibility d-flex align-items-center text-muted">
               <button
                 onClick={increaseFontSize}
-                className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted header-touch-target"
+                className="btn btn-sm p-0 fw-semibold border-0 bg-transparent text-muted header-touch-target"
                 title="Aumentar tamanho da letra"
                 aria-label="Increase font size"
               >
@@ -127,7 +127,7 @@ const Header = () => {
               </button>
               <button
                 onClick={decreaseFontSize}
-                className="btn btn-sm p-0 fw-bold border-0 bg-transparent text-muted header-touch-target"
+                className="btn btn-sm p-0 fw-semibold border-0 bg-transparent text-muted header-touch-target"
                 title="Diminuir tamanho da letra"
                 aria-label="Decrease font size"
               >

@@ -47,7 +47,7 @@ const Others = () => {
             <i className="bi bi-grid text-success" style={{ fontSize: '4rem', opacity: 0.8 }}></i>
             <div className="mt-4">
               <span className="mono-label text-success text-uppercase">{labels.tag}</span>
-              <h1 className="display-5 fw-bold mt-2 mb-3">{labels.title}</h1>
+              <h1 className="display-5 fw-semibold mt-2 mb-3">{labels.title}</h1>
               <p className="lead text-muted mb-4">{labels.description}</p>
               <Link to={labels.ctaLink} className="btn btn-outline-success px-4">
                 {labels.cta}

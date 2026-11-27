@@ -75,7 +75,7 @@ const PartnerCard = ({ partner, language }) => {
             />
           ) : (
             <div
-              className="d-flex align-items-center justify-content-center fw-bold partner-logo-placeholder"
+              className="d-flex align-items-center justify-content-center fw-semibold partner-logo-placeholder"
               style={{
                 width: '64px',
                 height: '64px',
@@ -92,7 +92,7 @@ const PartnerCard = ({ partner, language }) => {
           )}
         </div>
         <h6
-          className="fw-bold mb-2 flex-grow-1 partner-card-name"
+          className="fw-semibold mb-2 flex-grow-1 partner-card-name"
           style={{ color: 'var(--text-primary)' }}
         >
           {name}
@@ -171,7 +171,7 @@ const HeadquartersCard = ({ partner, language, label }) => {
               />
             ) : (
               <div
-                className="d-flex align-items-center justify-content-center fw-bold"
+                className="d-flex align-items-center justify-content-center fw-semibold"
                 style={{
                   width: '80px',
                   height: '80px',
@@ -191,7 +191,7 @@ const HeadquartersCard = ({ partner, language, label }) => {
             <span className="mono-label" style={{ color: 'var(--brand-primary)' }}>
               {label}
             </span>
-            <h4 className="fw-bold mt-1 mb-2" style={{ color: 'var(--text-primary)' }}>
+            <h4 className="fw-semibold mt-1 mb-2" style={{ color: 'var(--text-primary)' }}>
               {name}
             </h4>
             <p className="mb-0" style={{ color: 'var(--text-secondary)' }}>
@@ -310,7 +310,7 @@ const PartnersPage = () => {
           {partners.public && partners.public.length > 0 && (
             <Row className="mb-4 mb-md-5">
               <Col md={12}>
-                <h3 className="fw-bold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
+                <h3 className="fw-semibold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
                   {labels.public}
                 </h3>
                 <Row className="g-2 g-sm-3 g-md-4">
@@ -328,7 +328,7 @@ const PartnersPage = () => {
           {partners.companies && partners.companies.length > 0 && (
             <Row className="mb-4 mb-md-5">
               <Col md={12}>
-                <h3 className="fw-bold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
+                <h3 className="fw-semibold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
                   {labels.companies}
                 </h3>
                 <Row className="g-2 g-sm-3 g-md-4">
@@ -346,7 +346,7 @@ const PartnersPage = () => {
           {partners.research && partners.research.length > 0 && (
             <Row>
               <Col md={12}>
-                <h3 className="fw-bold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
+                <h3 className="fw-semibold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
                   {labels.research}
                 </h3>
                 <Row className="g-2 g-sm-3 g-md-4">
