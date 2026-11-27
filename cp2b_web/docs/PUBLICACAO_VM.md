@@ -390,3 +390,55 @@ quill acima.
   lido sem erro.
 - Tirar a regra provisória da seção 1.1 do vhost, quando quiser. Depois da
   publicação ela não faz mais diferença.
+
+---
+
+## 11. Estatísticas de acesso
+
+O site não tem ferramenta de analytics nem script de rastreamento: as visitas
+saem dos logs do Apache, que a VM só guarda por 14 dias. Toda noite, às 01:30,
+`scripts/stats-daily.sh` resume o dia anterior numa linha por página e
+acrescenta ao CSV, que guarda o histórico para sempre.
+
+- **Onde fica:** `/var/lib/cp2b-stats/daily.csv` (dono root, legível pelo
+  grupo `adm`). O registro de cada noite vai para `/var/log/cp2b-stats.log`.
+- **Instalar (uma vez):**
+  ```bash
+  sudo install -m 644 -o root -g root /var/www/cp2b/repo/cp2b_web/deployment/stats/cp2b-stats.cron /etc/cron.d/cp2b-stats
+  sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-daily.sh --dry-run | head -20   # confere, sem gravar
+  sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-daily.sh                        # backfill dos 14 dias
+  ```
+  Desfazer: `sudo rm /etc/cron.d/cp2b-stats` (o CSV fica onde está).
+- **Ler um mês:**
+  ```bash
+  sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-report.sh 2026-11
+  sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-report.sh 2026-11 /microscopio   # dia a dia de uma página
+  sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-report.sh 2026 --csv ~/cp2b-2026.csv
+  ```
+- **Baixar para o computador** (Git Bash, com a VPN):
+  `scp -P 22004 lucas@177.220.121.2:/var/lib/cp2b-stats/daily.csv .`
+  Se der "permission denied", copie antes para a sua pasta na VM:
+  `sudo install -m 644 /var/lib/cp2b-stats/daily.csv ~/`.
+
+**O que os números querem dizer.** O site é uma SPA: o HTML de uma página só
+é pedido quando a pessoa chega de fora (Google, link compartilhado, endereço
+digitado); quem navega por dentro só chama a API.
+
+- **Chegadas (`arrivals`):** pedidos do HTML. As colunas `src_*` dizem de onde
+  vieram e somam o total de chegadas. WhatsApp no celular quase sempre chega
+  sem referer e cai em "direto"; só aparece como WhatsApp com `utm_source`.
+- **Visualizações (`views`):** chamadas da API que só aquela página faz (a home,
+  /sobre, /eixos, /publicacoes, /microscopio, cada notícia, artigo, entrevista,
+  vaga e evento, entre outras). Incluem as chegadas.
+- **Páginas sem chamada exclusiva** (/equipe, /contato, /solucoes,
+  /capacitacao, /noticias, /galeria…) têm `counted_by = html`: contam só as
+  chegadas de fora, e quem chegou navegando pelo site não aparece. O número é
+  um piso, não o total.
+- **Navegadores (`browsers`):** todo pedido chega pelo proxy da Unicamp com o
+  mesmo IP, então isto conta user agents distintos. É uma estimativa por baixo
+  (dois iPhones com o mesmo Safari contam como um).
+- **Ficam de fora:** robôs, o próprio servidor (o gerador do sitemap), o
+  painel /admin, arquivos estáticos, /pilar2b, /arqueia e as sondas da
+  Microsoft.
+- Uma coluna nunca muda de significado depois que há dados. Se um dia a
+  contagem precisar mudar, entra uma coluna nova.

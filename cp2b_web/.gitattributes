@@ -1,0 +1,4 @@
+# Scripts e arquivos de cron rodam na VM Debian: precisam de LF, mesmo
+# quando o repositório é clonado no Windows (core.autocrlf=true).
+*.sh text eol=lf
+deployment/stats/* text eol=lf
