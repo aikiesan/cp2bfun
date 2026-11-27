@@ -1110,6 +1110,19 @@ main[data-page="inner"] .card-editorial {
 .header-pill--pilar:hover { background: var(--brand-primary-hover); }
 .header-pill--arqueia:hover { background: color-mix(in srgb, var(--cp2b-azul-petroleo) 85%, black); }
 
+/* Barra horizontal (≥ 1200px): cada rótulo numa linha só. Entre 1200 e
+   1399px os itens só cabem com o espaçamento um pouco mais justo. */
+@media (min-width: 1200px) {
+  .navbar-nav .nav-link,
+  .header-pill { white-space: nowrap; }
+}
+
+@media (min-width: 1200px) and (max-width: 1399.98px) {
+  .navbar-nav > .nav-link,
+  .navbar-nav > .dropdown > .nav-link { padding-inline: 0.375rem !important; }
+  .navbar-nav .header-pill { margin-left: 0.25rem !important; padding-inline: 0.75rem !important; }
+}
+
 /* ---------- Alto contraste ---------- */
 body.high-contrast .page-hero,
 body.high-contrast .page-hero h1,
