@@ -218,7 +218,6 @@ const Events = () => {
       />
 
       <PageHero
-        eyebrow={labels.eyebrow}
         title={labels.title}
         subtitle={labels.subtitle}
       />

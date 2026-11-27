@@ -372,8 +372,7 @@ const LabInfrastructure = ({ language, onShowServices }) => {
     <>
       {/* ---------- régua de maturidade: painel sobre o hero ---------- */}
       <section ref={mapRef} className="lab-map" aria-labelledby="lab-map-title" data-reveal={mapReveal}>
-        <header className="lab-head">
-          <span className="eyebrow">{labels.mapEyebrow}</span>
+        <header className="lab-head">
           <h2 id="lab-map-title">{labels.mapTitle}</h2>
           <p>{labels.mapSub}</p>
         </header>
@@ -382,8 +381,7 @@ const LabInfrastructure = ({ language, onShowServices }) => {
 
       {/* ---------- laboratórios de bioprocessos ---------- */}
       <section className="lab-section" id="laboratorios" ref={dossierRef} aria-labelledby="lab-bio-title">
-        <header className="lab-head lab-head--left">
-          <span className="eyebrow">{labels.bioEyebrow}</span>
+        <header className="lab-head lab-head--left">
           <h2 id="lab-bio-title">{labels.bioTitle}</h2>
           <p>{labels.bioSub}</p>
         </header>

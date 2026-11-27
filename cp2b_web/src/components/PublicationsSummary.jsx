@@ -10,8 +10,7 @@ import './PublicationsSummary.css';
 // legíveis por leitor de tela e buscadores, e se ajustam ao celular.
 const LABELS = {
   pt: {
-    eyebrow: 'Ano 1 · 2025',
-    title: 'Publicações do Ano 1',
+    title: 'Publicações do Ano 1 (2025)',
     subtitle: 'Síntese da produção científica do CP2b no primeiro ano do Centro.',
     publications: 'publicações',
     of: 'de',
@@ -20,8 +19,7 @@ const LABELS = {
     source: 'Fonte: planilha de publicações do Ano 1 (2025), recontada artigo por artigo.',
   },
   en: {
-    eyebrow: 'Year 1 · 2025',
-    title: 'Year 1 publications',
+    title: 'Year 1 publications (2025)',
     subtitle: "A summary of CP2b's scientific output in the Centre's first year.",
     publications: 'publications',
     of: 'of',
@@ -58,7 +56,6 @@ export const PublicationsSummary = ({ language }) => {
     <section ref={ref} className="pubs-summary" aria-labelledby="pubs-summary-title" data-reveal={reveal}>
       <header className="pubs-summary__head">
         <div>
-          <span className="pubs-summary__eyebrow">{t.eyebrow}</span>
           <h2 id="pubs-summary-title" className="pubs-summary__title">{t.title}</h2>
           <p className="pubs-summary__sub">{t.subtitle}</p>
         </div>

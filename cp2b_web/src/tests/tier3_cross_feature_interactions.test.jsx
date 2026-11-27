@@ -52,21 +52,21 @@ describe('Tier 3 — Cross-Feature Interactions: Language Toggling', () => {
     // Default is PT
     expect(screen.getByTestId('current-lang')).toHaveTextContent('pt');
     await waitFor(() => {
-      expect(screen.getByText(/SOBRE O PROJETO|Sobre/i)).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: /Centro Paulista de Estudos em Biogás/ })).toBeInTheDocument();
     });
 
     // Switch to EN
     await user.click(screen.getByText('Set EN'));
     expect(screen.getByTestId('current-lang')).toHaveTextContent('en');
     await waitFor(() => {
-      expect(screen.getByText(/ABOUT THE PROJECT|About/i)).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: /São Paulo Center for Biogas/ })).toBeInTheDocument();
     });
 
     // Switch back to PT
     await user.click(screen.getByText('Set PT'));
     expect(screen.getByTestId('current-lang')).toHaveTextContent('pt');
     await waitFor(() => {
-      expect(screen.getByText(/SOBRE O PROJETO|Sobre/i)).toBeInTheDocument();
+      expect(screen.getByRole('heading', { level: 1, name: /Centro Paulista de Estudos em Biogás/ })).toBeInTheDocument();
     });
   });
 

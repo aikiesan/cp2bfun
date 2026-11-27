@@ -141,7 +141,6 @@ const Publications = () => {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
     <PageHero
       className="page-hero--overlap"
-      eyebrow={language === 'pt' ? 'Produção Científica' : 'Scientific Output'}
       title={language === 'pt' ? 'Publicações' : 'Publications'}
       subtitle={language === 'pt'
         ? 'Artigos, relatórios e estudos técnicos produzidos pela rede de pesquisa do CP2b.'

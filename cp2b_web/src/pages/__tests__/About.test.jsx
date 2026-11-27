@@ -35,15 +35,12 @@ describe('About Page — Missão, Visão e Valores & Redesign', () => {
     expect(screen.getByText(projectDetails.pt.title)).toBeInTheDocument();
 
     // Section Tag & Subtitle
-    expect(screen.getByText(missionVisionValues.pt.sectionTag)).toBeInTheDocument();
+    expect(screen.queryByText(missionVisionValues.pt.sectionTag)).not.toBeInTheDocument();
     expect(screen.getByText(missionVisionValues.pt.sectionSubtitle)).toBeInTheDocument();
 
     // Mission & Vision Headings & Tags
-    expect(screen.getByText(missionVisionValues.pt.mission.tag)).toBeInTheDocument();
     expect(screen.getByText(missionVisionValues.pt.mission.title)).toBeInTheDocument();
     expect(screen.getByText(missionVisionValues.pt.mission.text)).toBeInTheDocument();
-
-    expect(screen.getByText(missionVisionValues.pt.vision.tag)).toBeInTheDocument();
     expect(screen.getByText(missionVisionValues.pt.vision.title)).toBeInTheDocument();
     expect(screen.getByText(missionVisionValues.pt.vision.text)).toBeInTheDocument();
 
@@ -67,7 +64,7 @@ describe('About Page — Missão, Visão e Valores & Redesign', () => {
     const videoRatio = container.querySelector('.ratio.ratio-16x9');
     expect(videoRatio).toBeTruthy();
     expect(container.querySelector('video')).toBeTruthy();
-    expect(screen.getByText('Laboratório vivo')).toBeInTheDocument();
+    expect(screen.queryByText('Laboratório vivo')).not.toBeInTheDocument();
 
     // Resumo Executivo, Objetivos and Resultados
     expect(screen.getByText('Resumo Executivo')).toBeInTheDocument();
@@ -89,15 +86,12 @@ describe('About Page — Missão, Visão e Valores & Redesign', () => {
       expect(screen.getByText(missionVisionValues.en.sectionTitle)).toBeInTheDocument();
     });
 
-    // Section Tag
-    expect(screen.getByText(missionVisionValues.en.sectionTag)).toBeInTheDocument();
+    // Sem rótulo de seção acima do título: o título já diz o que é.
+    expect(screen.queryByText(missionVisionValues.en.sectionTag)).not.toBeInTheDocument();
 
     // Mission & Vision
-    expect(screen.getByText(missionVisionValues.en.mission.tag)).toBeInTheDocument();
     expect(screen.getByText(missionVisionValues.en.mission.title)).toBeInTheDocument();
     expect(screen.getByText(missionVisionValues.en.mission.text)).toBeInTheDocument();
-
-    expect(screen.getByText(missionVisionValues.en.vision.tag)).toBeInTheDocument();
     expect(screen.getByText(missionVisionValues.en.vision.title)).toBeInTheDocument();
     expect(screen.getByText(missionVisionValues.en.vision.text)).toBeInTheDocument();
 
@@ -115,7 +109,7 @@ describe('About Page — Missão, Visão e Valores & Redesign', () => {
     expect(screen.getByRole('link', { name: /Transparency/i })).toHaveAttribute('href', '/sobre/transparencia');
     expect(screen.getByRole('link', { name: /Partners/i })).toHaveAttribute('href', '/sobre/parceiros');
 
-    expect(screen.getByText('Living lab')).toBeInTheDocument();
+    expect(screen.queryByText('Living lab')).not.toBeInTheDocument();
     const partnerLinkEn = screen.getByText('View Partners Catalog').closest('a');
     expect(partnerLinkEn).toHaveAttribute('href', '/sobre/parceiros');
   });

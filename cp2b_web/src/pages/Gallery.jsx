@@ -87,8 +87,7 @@ const Gallery = () => {
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
 
       <div className="page-hero">
-        <Container>
-          <span className="eyebrow">{labels.eyebrow}</span>
+        <Container>
           <h1>{labels.title}</h1>
           <p className="page-hero-sub">{labels.subtitle}</p>
         </Container>

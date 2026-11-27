@@ -294,7 +294,6 @@ const Solucoes = () => {
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
 
       <PageHero
-        eyebrow={t.hero.eyebrow}
         title={t.hero.title}
         subtitle={t.hero.subtitle}
         className="page-hero--overlap"
@@ -328,7 +327,6 @@ const Solucoes = () => {
           >
             <div className="d-flex flex-column flex-lg-row justify-content-between align-items-lg-end mb-4 gap-3">
               <div>
-                <span className="mono-label text-success d-block mb-1">{t.servicesSection.tag}</span>
                 <h2 id="servicos-title" className="fw-semibold fs-2 mb-2">{t.servicesSection.title}</h2>
                 <p className="text-muted small mb-0">{t.servicesSection.subtitle}</p>
               </div>
@@ -395,7 +393,6 @@ const Solucoes = () => {
           {/* Section 2: 5 Partnership Modalities */}
           <section className="mb-4 mb-md-5 pb-3 pb-md-4">
             <div className="text-center max-w-3xl mx-auto mb-4 mb-md-5">
-              <span className="mono-label text-success d-block mb-2">{t.modalitiesSection.tag}</span>
               <h2 className="fw-semibold fs-2 mb-2 mb-md-3">{t.modalitiesSection.title}</h2>
               <p className="text-muted lead fs-6">{t.modalitiesSection.subtitle}</p>
             </div>
@@ -438,7 +435,6 @@ const Solucoes = () => {
           {/* Section 5: Getting Started Funnel */}
           <section className="mb-4 mb-md-5 pb-3 pb-md-4 pt-3 pt-md-4 border-top">
             <div className="text-center max-w-3xl mx-auto mb-4 mb-md-5">
-              <span className="mono-label text-success d-block mb-2">{t.funnelSection.tag}</span>
               <h2 className="fw-semibold fs-2 mb-2 mb-md-3">{t.funnelSection.title}</h2>
               <p className="text-muted lead fs-6">{t.funnelSection.subtitle}</p>
             </div>

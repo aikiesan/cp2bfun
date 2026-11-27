@@ -884,8 +884,9 @@ body.high-contrast .navbar .dropdown-item:hover {
 
 .featured-news-container {
   display: flex;
-  height: min(64vh, 620px);
-  min-height: 460px;
+  /* Mais baixos que antes: o topo da home divide a tela com a faixa do CP2b. */
+  height: min(52vh, 500px);
+  min-height: 400px;
   gap: 1.5rem;
 }
 
@@ -967,14 +968,13 @@ body.high-contrast .navbar .dropdown-item:hover {
   font-weight: 600;
   padding: 0.5rem 1rem;
   font-size: 0.85rem;
-  text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .featured-headline-large .featured-headline-content {
-  padding: 2.5rem;
+  padding: 2rem;
 }
 
 .featured-headline-small .featured-headline-content {
@@ -1018,7 +1018,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 
 /* Typography - Enhanced for 100% visibility */
 .featured-headline-large h2 {
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 600;
   margin-bottom: 1rem;
   line-height: 1.2;
@@ -1050,65 +1050,142 @@ body.high-contrast .navbar .dropdown-item:hover {
   text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
-/* Mobile responsive: Stack vertically */
+/* Celular: o destaque principal fica como cartão com foto; os outros dois
+   viram uma lista curta (miniatura à esquerda, título e data à direita, texto
+   escuro sobre branco), como nos sites de notícias. Ocupa menos de uma tela
+   e os títulos não brigam com a foto. */
 @media (max-width: 768px) {
   .featured-news-section {
-    padding: 1.5rem 0 0;
+    padding: 1.25rem 0 0;
   }
 
   .featured-news-container {
     flex-direction: column;
     height: auto;
-    gap: 0.75rem;
+    min-height: 0;
+    gap: 0;
   }
 
   .featured-news-main {
-    height: 300px;
-    min-height: 280px;
-    max-height: 42vh;
+    aspect-ratio: 4 / 3;
+    max-height: 60vh;
+  }
+
+  .featured-news-main .featured-headline {
+    min-height: 0;
+    height: 100%;
+    border-radius: 12px;
+  }
+
+  .featured-news-main .featured-image-bg,
+  .featured-news-main .featured-headline-overlay {
+    border-radius: 12px;
+  }
+
+  .featured-headline-large .featured-headline-content {
+    padding: 1rem 1.125rem;
+  }
+
+  .featured-headline-large h2 {
+    font-size: 1.3rem;
+    line-height: 1.25;
+    margin-bottom: 0.35rem;
+  }
+
+  .featured-headline-excerpt {
+    display: none;
+  }
+
+  .featured-headline-content .badge {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+    letter-spacing: 0;
+    box-shadow: none;
+  }
+
+  .featured-headline-date {
+    font-size: 0.8rem;
+    letter-spacing: 0;
+    margin-bottom: 0 !important;
+  }
+
+  /* Lista: B e C */
+  .featured-news-secondary {
+    gap: 0;
+    margin-top: 0.5rem;
   }
 
   .featured-news-top,
   .featured-news-bottom {
-    height: 180px;
-    min-height: 160px;
-    max-height: 26vh;
+    flex: none;
+    height: auto;
+    min-height: 0;
+    max-height: none;
+    overflow: visible;
+    border-radius: 0;
+    border-top: 1px solid var(--border-default);
   }
 
-  /* Safety net: never let a card collapse if the flex height chain fails */
-  .featured-news-main .featured-headline {
-    min-height: 280px;
-    height: 100%;
+  .featured-news-bottom {
+    border-bottom: 1px solid var(--border-default);
   }
 
-  .featured-news-top .featured-headline,
-  .featured-news-bottom .featured-headline {
-    min-height: 160px;
-    height: 100%;
+  .featured-news-secondary .featured-headline {
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    align-items: center;
+    gap: 0.875rem;
+    min-height: 0;
+    height: auto;
+    padding: 0.875rem 0;
+    background: transparent !important;
+    border-radius: 0;
+    box-shadow: none;
+    overflow: visible;
   }
 
-  .featured-headline-content {
-    padding: 1rem 1.25rem !important;
+  .featured-news-secondary .featured-image-bg {
+    position: static;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    border-radius: 8px;
   }
 
-  .featured-headline-large h2 {
-    font-size: 1.4rem;
-    margin-bottom: 0.5rem;
+  .featured-news-secondary .featured-headline-overlay {
+    display: none;
   }
 
-  .featured-headline-small h2 {
-    font-size: 1.05rem;
+  .featured-news-secondary .featured-headline-content {
+    position: static;
+    grid-column: 2;
+    padding: 0 !important;
+    color: var(--text-primary);
+  }
+
+  .featured-news-secondary .featured-headline-content .badge {
+    display: none;
+  }
+
+  .featured-news-secondary .featured-headline-small h2 {
+    font-size: 1rem;
+    line-height: 1.3;
     margin-bottom: 0.25rem;
+    color: var(--text-primary) !important;
+    text-shadow: none;
   }
 
-  .featured-headline-excerpt {
-    font-size: 0.875rem;
-    line-height: 1.4;
-    margin-top: 0.5rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+  .featured-news-secondary .featured-headline-date {
+    color: var(--text-secondary) !important;
+    text-shadow: none;
+  }
+
+  /* Esqueleto enquanto carrega: a mesma altura das linhas. */
+  .featured-news-secondary .featured-headline-skeleton {
+    display: block;
+    height: 5.5rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
   }
 }
 

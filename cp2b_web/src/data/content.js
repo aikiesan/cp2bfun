@@ -1473,8 +1473,14 @@ export { staticPublications as publications } from './generated/publications.js'
 // laboratories e technicalServices, para não desatualizarem.
 export const homeContent = {
   pt: {
+    intro: {
+      title: 'Centro Paulista de Estudos em Biogás e Bioprodutos',
+      lede: 'O CP2b pesquisa como transformar resíduos urbanos e agropecuários de São Paulo em biogás, biometano e bioprodutos, e leva esse conhecimento a empresas, governos e à formação de pessoas.',
+      primary: 'Conheça o centro',
+      secondary: 'Laboratórios e serviços',
+      logoAlt: 'Logo do CP2b',
+    },
     stats: {
-      eyebrow: 'O Centro em Números',
       title: 'Uma rede transdisciplinar em operação',
       subtitle: 'Valores apurados diretamente da base institucional do CP2b.',
       axes: 'Eixos temáticos',
@@ -1500,8 +1506,14 @@ export const homeContent = {
     },
   },
   en: {
+    intro: {
+      title: 'São Paulo Center for Biogas and Bioproducts Studies',
+      lede: 'CP2b studies how to turn urban and agricultural waste from São Paulo into biogas, biomethane and bioproducts, and takes that knowledge to companies, governments and training.',
+      primary: 'About the center',
+      secondary: 'Labs and services',
+      logoAlt: 'CP2b logo',
+    },
     stats: {
-      eyebrow: 'The Centre in Numbers',
       title: 'A transdisciplinary network at work',
       subtitle: 'Figures drawn directly from the CP2b institutional dataset.',
       axes: 'Thematic axes',

@@ -24,7 +24,7 @@ test.describe('publications serve external links', () => {
   });
 
   test('groups publications under year headings', async ({ page }) => {
-    await expect(page.getByRole('heading', { name: '2025' })).toBeVisible();
-    await expect(page.getByRole('heading', { name: '2024' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: '2025', exact: true })).toBeVisible();
+    await expect(page.getByRole('heading', { name: '2024', exact: true })).toBeVisible();
   });
 });

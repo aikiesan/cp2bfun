@@ -82,14 +82,13 @@ const Indicators = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
-      <PageHero eyebrow={t.eyebrow} title={seo.title} subtitle={t.subtitle} />
+      <PageHero title={seo.title} subtitle={t.subtitle} />
 
       <motion.div initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <Container className="indicators-page py-4 py-md-5">
           <AboutSubnav />
           <section className="indicators-overview" aria-labelledby="indicators-overview-title">
             <div className="indicators-overview__copy">
-              <span className="indicators-eyebrow">{t.overviewEyebrow}</span>
               <h2 id="indicators-overview-title">{t.overviewTitle}</h2>
               <p>{t.overviewLead}</p>
               <p className="indicators-source">{t.source}</p>
@@ -114,7 +113,6 @@ const Indicators = () => {
 
           <section ref={visionRef} className="indicators-vision" aria-labelledby="indicators-vision-title" data-reveal={visionReveal}>
             <div className="indicators-section-heading">
-              <span className="indicators-eyebrow">{t.visionEyebrow}</span>
               <h2 id="indicators-vision-title">{t.visionTitle}</h2>
             </div>
             <div className="indicators-vision__grid">
@@ -130,7 +128,6 @@ const Indicators = () => {
 
           <section className="indicators-explorer" aria-labelledby="indicators-explorer-title">
             <div className="indicators-section-heading indicators-section-heading--centered">
-              <span className="indicators-eyebrow">{t.explorerEyebrow}</span>
               <h2 id="indicators-explorer-title">{t.explorerTitle}</h2>
               <p>{t.explorerLead}</p>
             </div>

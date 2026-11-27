@@ -140,7 +140,6 @@ const Research = () => {
     {/* O cabeçalho da página é o da figura dos eixos: antes ele se repetia
         no topo do infográfico, empurrando os eixos para baixo. */}
     <PageHero
-      eyebrow={labels.overview.eyebrow}
       title={labels.overview.title}
       subtitle={labels.overview.subtitle}
       className="page-hero--overlap"
@@ -155,7 +154,6 @@ const Research = () => {
     <Container className="pb-4 pb-md-5">
       <section id="explorar-eixos" className="research-explore" aria-labelledby="explorar-eixos-title">
         <header className="research-explore__head">
-          <span className="eyebrow">{labels.detailsEyebrow}</span>
           <h2 id="explorar-eixos-title">{labels.details}</h2>
           <p>{labels.mindmapHint}</p>
         </header>

@@ -166,13 +166,9 @@ const Home = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
-      <motion.div
-        className="home-page"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.5 }}
-      >
-      {/* Featured News Headlines Section — the page opens on the newsroom */}
+      {/* Sem fade na página inteira: o topo aparece de imediato. */}
+      <div className="home-page">
+      {/* Destaques: as notícias que a equipe marcou no painel */}
       {(loadingFeatured || loadingNews || featuredSlots) && (
       <section className="position-relative overflow-hidden">
         {loadingFeatured || loadingNews ? (
@@ -203,13 +199,70 @@ const Home = () => {
       </section>
       )}
 
-      {/* News — 3 most recent from API */}
+      {/* Quem somos, logo depois dos destaques: logo à esquerda, nome do
+          centro e uma frase à direita. O nome é o único <h1> da home, e o
+          mesmo texto vai para o HTML pré-renderizado (generate-seo.mjs). */}
+      <section className="home-intro" aria-labelledby="home-intro-title">
+        <Container>
+          <div className="home-intro__grid">
+            <figure className="home-intro__logo">
+              <img src="/assets/logos/cp2b-logo-gradient.svg" alt={t.intro.logoAlt} width="480" height="183" loading="lazy" decoding="async" />
+            </figure>
+            <div className="home-intro__text">
+              <h1 id="home-intro-title" className="home-intro__title">{t.intro.title}</h1>
+              <p className="home-intro__lede">{t.intro.lede}</p>
+              <div className="home-intro__actions">
+                <Link to="/sobre" className="btn btn-primary">{t.intro.primary}</Link>
+                <Link to="/solucoes" className="btn btn-outline-primary">{t.intro.secondary}</Link>
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      {/* PILAR-2b logo depois de quem somos: é a vitrine dos resultados de
+          pesquisa, e os links levam o Google às páginas da plataforma. */}
+      <PilarBand language={language} />
+
+      {/* The Centre in numbers — all figures computed from the datasets.
+          The molecule field sits behind this band only: it is the one calm,
+          plain-white section on the page, so the drift reads as identity
+          rather than competing with the newsroom imagery above it. */}
+      <section className="section">
+        <Container>
+          <div className="section-head text-center">
+            <h2>{t.stats.title}</h2>
+            <p className="section-sub mx-auto">{t.stats.subtitle}</p>
+          </div>
+          <motion.div className="home-stats-grid" {...reveal} transition={{ duration: 0.5 }}>
+            {stats.map((stat) => (
+              <div className="home-stat" key={stat.key}>
+                <span className="home-stat-value">{stat.value}</span>
+                <span className="home-stat-label">{stat.label}</span>
+              </div>
+            ))}
+          </motion.div>
+        </Container>
+      </section>
+
+      {/* Featured Videos Section */}
+      {(featuredVideos.A || featuredVideos.B || featuredVideos.C) && (
+        <section className="section">
+          <Container>
+            <div className="text-center section-head">
+              <h2 className="fw-semibold">{labels.videosTitle}</h2>
+            </div>
+          </Container>
+          <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
+        </section>
+      )}
+
+      {/* Notícias recentes, perto do fim, antes dos parceiros */}
       <section className="section bg-light-gray">
         <Container>
           <div className="d-flex justify-content-between align-items-end section-head flex-wrap gap-3">
             <div>
-              <span className="eyebrow">{language === 'pt' ? 'Comunicação' : 'Communication'}</span>
-              <h2 className="mb-0 mt-2">{labels.newsTitle}</h2>
+              <h2 className="mb-0">{labels.newsTitle}</h2>
             </div>
             <Link to="/noticias" className="arrow-link">
               {labels.newsAll} <span className="arrow">→</span>
@@ -266,53 +319,11 @@ const Home = () => {
         </Container>
       </section>
 
-      {/* PILAR-2b logo depois das notícias: é a vitrine dos resultados de
-          pesquisa, e os links levam o Google às páginas da plataforma. */}
-      <PilarBand language={language} />
-
-      {/* Featured Videos Section */}
-      {(featuredVideos.A || featuredVideos.B || featuredVideos.C) && (
-        <section className="section">
-          <Container>
-            <div className="text-center section-head">
-              <span className="eyebrow justify-content-center">{language === 'pt' ? 'Multimídia' : 'Multimedia'}</span>
-              <h2 className="fw-semibold mt-2">{labels.videosTitle}</h2>
-            </div>
-          </Container>
-          <FeaturedVideos itemA={featuredVideos.A} itemB={featuredVideos.B} itemC={featuredVideos.C} />
-        </section>
-      )}
-
-      {/* The Centre in numbers — all figures computed from the datasets.
-          The molecule field sits behind this band only: it is the one calm,
-          plain-white section on the page, so the drift reads as identity
-          rather than competing with the newsroom imagery above it. */}
-      <section className="section">
-        <Container>
-          <div className="section-head text-center">
-            <span className="eyebrow justify-content-center">{t.stats.eyebrow}</span>
-            <h2>{t.stats.title}</h2>
-            <p className="section-sub mx-auto">{t.stats.subtitle}</p>
-          </div>
-          <motion.div className="home-stats-grid" {...reveal} transition={{ duration: 0.5 }}>
-            {stats.map((stat) => (
-              <div className="home-stat" key={stat.key}>
-                <span className="home-stat-value">{stat.value}</span>
-                <span className="home-stat-label">{stat.label}</span>
-              </div>
-            ))}
-          </motion.div>
-        </Container>
-      </section>
-
       {/* Partners Image Section */}
       <section className="section partners-section">
         <Container>
           <div className="text-center section-head">
-            <span className="eyebrow justify-content-center">
-              {language === 'pt' ? 'Rede' : 'Network'}
-            </span>
-            <h2 className="fw-semibold mt-2">{labels.partnersTitle}</h2>
+            <h2 className="fw-semibold">{labels.partnersTitle}</h2>
           </div>
           <div className="text-center bg-white p-3 p-md-4 rounded-5 shadow-sm">
             <img
@@ -324,7 +335,7 @@ const Home = () => {
           </div>
         </Container>
       </section>
-    </motion.div>
+    </div>
     </>
   );
 };

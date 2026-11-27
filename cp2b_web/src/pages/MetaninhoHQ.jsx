@@ -87,7 +87,7 @@ const MetaninhoHQ = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
       >
-        <PageHero eyebrow={t.tag} title={t.title} subtitle={t.subtitle} />
+        <PageHero title={t.title} subtitle={t.subtitle} />
 
         <Container className="py-4 py-md-5">
           <section aria-labelledby="hq-ler">

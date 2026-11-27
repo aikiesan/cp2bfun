@@ -76,7 +76,7 @@ const Projects = () => {
   return (
     <>
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
-      <PageHero eyebrow={language === 'pt' ? 'Comunicação' : 'Communication'} title={labels.title} />
+      <PageHero title={labels.title} />
       <Container className="py-4 py-md-5">
 
       {/* Featured Projects - FAPESP Style */}
@@ -102,7 +102,7 @@ const Projects = () => {
       </section>
 
       {/* Others Grid */}
-      <h2 className="eyebrow d-block mb-3 mb-md-4">{labels.latest}</h2>
+      <h2 className="h4 fw-semibold mb-3 mb-md-4">{labels.latest}</h2>
       <Row className="g-3 g-md-4">
         {others.map((item) => (
           <Col md={6} lg={4} key={item.id}>

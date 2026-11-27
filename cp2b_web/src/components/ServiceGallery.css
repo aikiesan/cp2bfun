@@ -118,7 +118,7 @@
   .svc__art { aspect-ratio: 1; padding: 0.5rem; }
   .svc__art--icon i { width: 3.4rem; height: 3.4rem; font-size: 1.4rem; }
   .svc__body { padding: 0.65rem 0.7rem 0.75rem; }
-  .svc__meta { font-size: 0.625rem; letter-spacing: 0.06em; }
+  .svc__meta { font-size: 0.625rem; }
   .svc__title { font-size: 0.82rem; margin-bottom: 0.45rem; }
   .svc__more { padding: 0.25rem 0.55rem; font-size: 0.7rem; }
   /* Aberto, o card ocupa a linha toda em formato horizontal: ilustração

@@ -124,7 +124,7 @@ const About = () => {
       <SeoHead title={seo.title} description={seo.description} path={pathname} language={language} />
       
       {/* 1. Page Hero */}
-      <PageHero eyebrow={labels.tag} title={tTitle}>
+      <PageHero title={tTitle}>
         <p className="page-hero-sub mb-1">
           <strong>{labels.process}:</strong> {details.number}
         </p>
@@ -141,9 +141,6 @@ const About = () => {
         {mvv && (
           <section className="mb-4 mb-md-5 pb-3">
             <div className="text-center max-w-3xl mx-auto mb-4">
-              <span className="mono-label text-success d-block mb-1">
-                {mvv.sectionTag || 'Diretrizes estratégicas'}
-              </span>
               <h2 className="fw-semibold fs-2 mb-2" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
                 {mvv.sectionTitle || 'Missão, Visão e Valores'}
               </h2>
@@ -156,10 +153,6 @@ const About = () => {
             <Row className="g-3 g-md-4 mb-4">
               <Col lg={6}>
                 <div className="about-sheet h-100 p-3 p-md-4 p-lg-5 d-flex flex-column">
-                  <div className="d-flex align-items-center justify-content-between mb-2">
-                    <span className="about-label">{mvv.mission?.tag || 'Missão'}</span>
-                    <i className="bi bi-compass about-icon" aria-hidden="true" />
-                  </div>
                   <h3 className="about-sheet__title mb-2 mb-md-3">
                     {mvv.mission?.title || 'Nossa Missão'}
                   </h3>
@@ -170,10 +163,6 @@ const About = () => {
               </Col>
               <Col lg={6}>
                 <div className="about-sheet h-100 p-3 p-md-4 p-lg-5 d-flex flex-column">
-                  <div className="d-flex align-items-center justify-content-between mb-2">
-                    <span className="about-label">{mvv.vision?.tag || 'Visão'}</span>
-                    <i className="bi bi-eye about-icon" aria-hidden="true" />
-                  </div>
                   <h3 className="about-sheet__title mb-2 mb-md-3">
                     {mvv.vision?.title || 'Nossa Visão'}
                   </h3>
@@ -220,7 +209,6 @@ const About = () => {
             títulos e o logo do CP2b no centro, sem coordenadores. */}
         <section className="mb-4 mb-md-5 pb-3" aria-labelledby="about-axes-title">
           <div className="text-center max-w-3xl mx-auto mb-4">
-            <span className="mono-label text-success d-block mb-1">{labels.axesTag}</span>
             <h2 id="about-axes-title" className="fw-semibold fs-2 mb-2" style={{ color: 'var(--cp2b-azul-petroleo, #1E3E4C)' }}>
               {labels.axesTitle}
             </h2>
@@ -247,9 +235,6 @@ const About = () => {
               ]}
             />
           </div>
-          {/* Selo no canto superior: embaixo ele cobria o botão de play e o
-              início da linha do tempo dos controles nativos do vídeo. */}
-          <span className="about-video-tag">{labels.lab}</span>
         </div>
 
         {/* 5. Resumo Executivo: texto corrido, sem a caixa cinza em volta. */}
@@ -292,7 +277,6 @@ const About = () => {
         <section className="mb-4 mb-md-5">
           <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4 pb-3 border-bottom gap-3">
             <div>
-              <span className="mono-label text-success d-block mb-1">{labels.partnersTag}</span>
               <h3 className="about-block-title mb-0">
                 {labels.partners}
               </h3>
