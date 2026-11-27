@@ -115,13 +115,42 @@ describe('Home — news serving', () => {
     api.get.mockResolvedValue({ data: [] });
     fetchFeaturedContent.mockResolvedValue({ A: null, B: null, C: null });
 
-    renderWithProviders(<Home />);
+    const { container } = renderWithProviders(<Home />);
 
     await waitFor(() => {
       expect(screen.queryByText('Primeira notícia')).not.toBeInTheDocument();
     });
-    // Static partner image is always served regardless of news state.
-    expect(screen.getByAltText('Partners')).toHaveAttribute('src', '/assets/parceiros.png');
+    // Sem lista na API, a grade de parceiros usa os logos estáticos, com a
+    // FAPESP na frente.
+    const logos = within(container.querySelector('.partner-grid')).getAllByRole('img');
+    expect(logos[0]).toHaveAttribute('alt', expect.stringMatching(/FAPESP/));
+    expect(logos.length).toBeGreaterThan(10);
+  });
+
+  it('builds the partner grid from the admin list, FAPESP first, by category', async () => {
+    fetchFeaturedContent.mockResolvedValue({ A: null, B: null, C: null });
+    api.get.mockImplementation((url) =>
+      Promise.resolve({
+        data: url === '/partners'
+          ? [
+              { id: 3, name_pt: 'Empresa X', category: 'companies', sort_order: 1, logo: '/x.png', website: 'https://x.example' },
+              { id: 1, name_pt: 'Sede Y', category: 'host', sort_order: 1, logo: '/y.png' },
+              { id: 2, name_pt: 'Sem logo', category: 'research', sort_order: 1, logo: null },
+            ]
+          : [],
+      })
+    );
+
+    const { container } = renderWithProviders(<Home />);
+    const grid = container.querySelector('.partner-grid');
+    await waitFor(() => expect(within(grid).getAllByRole('img')).toHaveLength(3));
+
+    const alts = within(grid).getAllByRole('img').map((img) => img.getAttribute('alt'));
+    expect(alts[0]).toMatch(/FAPESP/);
+    expect(alts.slice(1)).toEqual(['Sede Y', 'Empresa X']);
+    expect(within(grid).getByRole('link', { name: 'Empresa X' })).toHaveAttribute('href', 'https://x.example');
+    // /partners/grouped conta como visita a /sobre/parceiros nas estatísticas.
+    expect(api.get).not.toHaveBeenCalledWith('/partners/grouped');
   });
 
   it('does not crash when the news request rejects', async () => {
@@ -131,7 +160,7 @@ describe('Home — news serving', () => {
     renderWithProviders(<Home />);
 
     await waitFor(() => {
-      expect(screen.getByAltText('Partners')).toBeInTheDocument();
+      expect(screen.getByAltText(/FAPESP/)).toBeInTheDocument();
     });
   });
 });

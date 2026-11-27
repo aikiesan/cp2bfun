@@ -18,6 +18,7 @@ import { useLocation } from 'react-router-dom';
 import { pageSeo } from '../data/content';
 import SeoHead from '../components/SeoHead';
 import PilarBand from '../components/PilarBand';
+import PartnerLogoGrid from '../components/PartnerLogoGrid';
 import useTeamRoster from '../hooks/useTeamRoster';
 import { computeTeamProfile } from '../utils/teamProfile';
 
@@ -319,20 +320,13 @@ const Home = () => {
         </Container>
       </section>
 
-      {/* Partners Image Section */}
+      {/* Parceiros e apoiadores: grade de logos em cinza, cor ao passar o mouse */}
       <section className="section partners-section">
         <Container>
           <div className="text-center section-head">
             <h2 className="fw-semibold">{labels.partnersTitle}</h2>
           </div>
-          <div className="text-center bg-white p-3 p-md-4 rounded-5 shadow-sm">
-            <img
-                src="/assets/parceiros.png"
-                alt="Partners"
-                className="img-fluid"
-                style={{ maxWidth: '100%', mixBlendMode: 'multiply', borderRadius: 0 }}
-            />
-          </div>
+          <PartnerLogoGrid language={language} />
         </Container>
       </section>
     </div>
