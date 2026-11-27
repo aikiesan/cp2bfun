@@ -133,9 +133,9 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 1;
 }
 
-/* extra spacing for partners section to clear previous content */
-.partners-section {
-  margin-top: 8rem; /* push it further down so title isn’t overlapped */
+/* Parceiros: título perto dos logos, sem o vão de antes. */
+.partners-section .section-head {
+  margin-bottom: var(--space-6, 1.5rem);
 }
 
 /* Accordion */
@@ -199,10 +199,6 @@ h1, h2, h3, h4, h5, h6 {
   .my-5 {
     margin-top: 2rem !important;
     margin-bottom: 2rem !important;
-  }
-
-  .partners-section {
-    margin-top: 0 !important;
   }
 
   .container,
