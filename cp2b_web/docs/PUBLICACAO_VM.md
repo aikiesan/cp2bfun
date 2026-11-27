@@ -337,6 +337,11 @@ quill acima.
 
 ## 7. Defeso eleitoral
 
+> **Encerrado em 25/10/2026.** O bloqueio por data (`src/utils/defeso.js`) e a
+> imagem de parceiros sem os órgãos públicos foram removidos do código. Se os
+> parceiros públicos foram desativados à mão no painel, reative-os em `/admin`
+> → Parceiros.
+
 - [ ] Hoje: desativar os parceiros da seção pública no painel (1.2).
 - [ ] Na publicação: o código passa a esconder a seção de 04/07 a 25/10/2026
       (`src/utils/defeso.js`, com teste).

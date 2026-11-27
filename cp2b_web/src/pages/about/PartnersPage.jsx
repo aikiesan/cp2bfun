@@ -9,7 +9,6 @@ import { getPartnerLogo } from '../../data/partnerLogos';
 import SeoHead from '../../components/SeoHead';
 import PageHero from '../../components/PageHero';
 import AboutSubnav from '../../components/AboutSubnav';
-import { emDefesoEleitoral } from '../../utils/defeso';
 import { safeHref } from '../../utils/safeUrl';
 
 /**
@@ -308,9 +307,7 @@ const PartnersPage = () => {
             </Row>
           )}
 
-          {/* Órgãos públicos: fora do ar durante o defeso eleitoral, mesmo que o
-              cadastro ainda os traga ativos (ver utils/defeso). */}
-          {!emDefesoEleitoral() && partners.public && partners.public.length > 0 && (
+          {partners.public && partners.public.length > 0 && (
             <Row className="mb-4 mb-md-5">
               <Col md={12}>
                 <h3 className="fw-bold mb-3 mb-md-4" style={{ color: 'var(--text-primary)' }}>
