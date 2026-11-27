@@ -115,13 +115,42 @@ describe('Home — news serving', () => {
     api.get.mockResolvedValue({ data: [] });
     fetchFeaturedContent.mockResolvedValue({ A: null, B: null, C: null });
 
-    renderWithProviders(<Home />);
+    const { container } = renderWithProviders(<Home />);
 
     await waitFor(() => {
       expect(screen.queryByText('Primeira notícia')).not.toBeInTheDocument();
     });
-    // Static partner image is always served regardless of news state.
-    expect(screen.getByAltText('Partners')).toHaveAttribute('src', '/assets/parceiros.png');
+    // Sem lista na API, a grade de parceiros usa os logos estáticos, com a
+    // FAPESP na frente.
+    const logos = within(container.querySelector('.partner-grid')).getAllByRole('img');
+    expect(logos[0]).toHaveAttribute('alt', expect.stringMatching(/FAPESP/));
+    expect(logos.length).toBeGreaterThan(10);
+  });
+
+  it('builds the partner grid from the admin list, FAPESP first, by category', async () => {
+    fetchFeaturedContent.mockResolvedValue({ A: null, B: null, C: null });
+    api.get.mockImplementation((url) =>
+      Promise.resolve({
+        data: url === '/partners'
+          ? [
+              { id: 3, name_pt: 'Empresa X', category: 'companies', sort_order: 1, logo: '/x.png', website: 'https://x.example' },
+              { id: 1, name_pt: 'Sede Y', category: 'host', sort_order: 1, logo: '/y.png' },
+              { id: 2, name_pt: 'Sem logo', category: 'research', sort_order: 1, logo: null },
+            ]
+          : [],
+      })
+    );
+
+    const { container } = renderWithProviders(<Home />);
+    const grid = container.querySelector('.partner-grid');
+    await waitFor(() => expect(within(grid).getAllByRole('img')).toHaveLength(3));
+
+    const alts = within(grid).getAllByRole('img').map((img) => img.getAttribute('alt'));
+    expect(alts[0]).toMatch(/FAPESP/);
+    expect(alts.slice(1)).toEqual(['Sede Y', 'Empresa X']);
+    expect(within(grid).getByRole('link', { name: 'Empresa X' })).toHaveAttribute('href', 'https://x.example');
+    // /partners/grouped conta como visita a /sobre/parceiros nas estatísticas.
+    expect(api.get).not.toHaveBeenCalledWith('/partners/grouped');
   });
 
   it('does not crash when the news request rejects', async () => {
@@ -131,7 +160,7 @@ describe('Home — news serving', () => {
     renderWithProviders(<Home />);
 
     await waitFor(() => {
-      expect(screen.getByAltText('Partners')).toBeInTheDocument();
+      expect(screen.getByAltText(/FAPESP/)).toBeInTheDocument();
     });
   });
 });
@@ -202,24 +231,43 @@ describe('Home — institutional layer', () => {
     fetchFeaturedContent.mockResolvedValue({ A: null, B: null, C: null });
   });
 
-  it('opens on the featured-news block, with the institutional layer below it', async () => {
+  it('opens with highlights, then the CP2b band (logo + name), PILAR, numbers, videos, news and partners', async () => {
     api.get.mockResolvedValue({ data: [{ id: 1, slug: 'uma', title_pt: 'Uma notícia', created_at: '2026-11-01' }] });
     const { container } = renderWithProviders(<Home />);
     await screen.findByText(homeContent.pt.stats.title);
 
-    // Order matters: the newsroom leads, the institutional bands follow.
+    // Destaques primeiro; logo abaixo, a faixa do CP2b (logo à esquerda, nome
+    // e frase à direita) e em seguida o PILAR-2b; as notícias descem para
+    // antes dos parceiros.
     const sections = [...container.querySelectorAll('section')];
-    const featuredIndex = sections.findIndex((s) => s.querySelector('.featured-news-container'));
-    const statsIndex = sections.findIndex((s) => s.querySelector('.home-stats-grid'));
-    const partnersIndex = sections.findIndex((s) => s.classList.contains('partners-section'));
+    const at = (fn) => sections.findIndex(fn);
+    const featured = at((s) => s.classList.contains('featured-news-section'));
+    const intro = at((s) => s.classList.contains('home-intro'));
+    const pilar = at((s) => s.classList.contains('pilar-band'));
+    const stats = at((s) => s.querySelector('.home-stats-grid'));
+    const news = at((s) => s.querySelector('h2')?.textContent === 'Notícias');
+    const partners = at((s) => s.classList.contains('partners-section'));
 
-    expect(featuredIndex).toBe(0);
-    expect(statsIndex).toBeGreaterThan(featuredIndex);
-    expect(partnersIndex).toBeGreaterThan(statsIndex);
+    expect(featured).toBeGreaterThanOrEqual(0);
+    expect(featured).toBeLessThanOrEqual(1); // seção externa + a do FeaturedContent
+    expect(intro).toBe(featured + 1);
+    expect(pilar).toBe(intro + 1);
+    expect(stats).toBeGreaterThan(pilar);
+    expect(news).toBeGreaterThan(stats);
+    expect(partners).toBe(news + 1);
+    expect(container.querySelector('.home-strip')).toBeNull();
 
-    // No full-bleed institutional banner: the page has no <h1> of its own.
-    expect(container.querySelector('.home-hero')).toBeNull();
-    expect(screen.queryByRole('heading', { level: 1 })).not.toBeInTheDocument();
+    // Um só <h1>, com o nome do centro, na faixa; o logo vem antes do texto.
+    const h1s = screen.getAllByRole('heading', { level: 1 });
+    expect(h1s).toHaveLength(1);
+    expect(h1s[0]).toHaveTextContent(homeContent.pt.intro.title);
+    expect(sections[intro]).toContainElement(h1s[0]);
+    const logo = within(sections[intro]).getByRole('img', { name: homeContent.pt.intro.logoAlt });
+    expect(logo).toHaveAttribute('src', '/assets/logos/cp2b-logo-gradient.svg');
+    expect(logo.compareDocumentPosition(h1s[0]) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect(screen.getByText(homeContent.pt.intro.lede)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: homeContent.pt.intro.primary })).toHaveAttribute('href', '/sobre');
+    expect(screen.getByRole('link', { name: homeContent.pt.intro.secondary })).toHaveAttribute('href', '/solucoes');
   });
 
   it('derives every stat from the datasets rather than hardcoding them', async () => {

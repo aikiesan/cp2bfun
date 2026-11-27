@@ -34,6 +34,14 @@ const organizationJsonLd = {
     alternateName: 'UNICAMP',
     url: 'https://www.unicamp.br',
   },
+  // Projeto FAPESP 2024/01112-1 (Centros de Ciência para o Desenvolvimento), desde 01/02/2025.
+  funder: {
+    '@type': 'Organization',
+    name: 'Fundação de Amparo à Pesquisa do Estado de São Paulo',
+    alternateName: 'FAPESP',
+    url: 'https://fapesp.br',
+  },
+  foundingDate: '2025-02-01',
   sameAs: [
     'https://www.instagram.com/centro_biogas_cp2b/',
     'https://br.linkedin.com/company/centro-paulista-de-estudos-em-biog%C3%A1s-e-bioprodutos-cp2b',

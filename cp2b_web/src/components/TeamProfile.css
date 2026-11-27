@@ -18,17 +18,6 @@
 
 .tprof__head { max-width: 44rem; margin-bottom: clamp(1.1rem, 0.8rem + 1vw, 1.6rem); }
 
-.tprof__eyebrow {
-  display: block;
-  color: var(--cp2b-verde-escuro);
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: var(--weight-semibold);
-  letter-spacing: 0.14em;
-  line-height: 1.4;
-  text-transform: uppercase;
-}
-
 .tprof__head h2 {
   margin: 0.35rem 0;
   font-family: var(--font-display);
@@ -110,9 +99,7 @@
   font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: var(--weight-semibold);
-  letter-spacing: 0.14em;
   line-height: 1.4;
-  text-transform: uppercase;
 }
 
 .tprof-bars { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }

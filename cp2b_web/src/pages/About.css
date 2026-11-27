@@ -27,14 +27,12 @@
   font-style: italic;
 }
 
-/* ---------- Rótulo em caixa-alta e ícone solto ---------- */
+/* ---------- Rótulo de um fato (ex.: "Sede do Centro") e ícone solto ---------- */
 .about-label {
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: 0.875rem;
   font-weight: var(--weight-semibold);
-  letter-spacing: 0.14em;
   line-height: 1.4;
-  text-transform: uppercase;
   color: var(--cp2b-verde-escuro);
 }
 
@@ -79,26 +77,6 @@
   color: var(--text-secondary);
 }
 
-/* ---------- Selo do vídeo: etiqueta em pílula branca ---------- */
-.about-video-tag {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 2;
-  pointer-events: none;
-  padding: 0.3rem 0.8rem;
-  background: var(--cp2b-branco);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-full);
-  box-shadow: var(--shadow-sm);
-  font-family: var(--font-sans);
-  font-size: 0.75rem;
-  font-weight: var(--weight-semibold);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-primary);
-}
-
 /* ---------- Listas de parceiros: folhinhas no lugar dos "checks" ---------- */
 .about-leaf {
   flex-shrink: 0;
@@ -126,8 +104,3 @@ body.high-contrast .about-abstract__text {
   color: #fff;
 }
 
-body.high-contrast .about-video-tag {
-  background: #000;
-  color: #fff;
-  border: 1px solid #fff;
-}

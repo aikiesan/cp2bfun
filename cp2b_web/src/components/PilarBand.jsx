@@ -15,8 +15,7 @@ const PilarBand = ({ language, className = '' }) => {
     <section className={`section pilar-band ${className}`} aria-labelledby="pilar-band-title">
       <Container>
         <div className="pilar-band__layout">
-          <div className="pilar-band__intro">
-            <span className="eyebrow">{t.eyebrow}</span>
+          <div className="pilar-band__intro">
             <h2 id="pilar-band-title" className="pilar-band__title">{t.title}</h2>
             <p className="pilar-band__lead">{t.lead}</p>
             <a href={base} className="btn-hero pilar-band__cta">

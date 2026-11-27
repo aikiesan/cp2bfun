@@ -37,9 +37,7 @@
   font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: var(--weight-semibold);
-  letter-spacing: 0.14em;
   line-height: 1.4;
-  text-transform: uppercase;
 }
 
 /* ---------- nuvem ---------- */

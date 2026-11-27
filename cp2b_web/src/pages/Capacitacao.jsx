@@ -203,8 +203,7 @@ const Capacitacao = () => {
           {/* As seções do template, para o proponente saber de antemão o que
               vai precisar responder. */}
           <section id="estrutura" className="cap-section" aria-labelledby="cap-outline-title">
-            <div className="cap-section__head">
-              <span className="mono-label text-success d-block mb-1">{t.outline.tag}</span>
+            <div className="cap-section__head">
               <h2 id="cap-outline-title" className="fw-semibold fs-2 mb-2">{t.outline.title}</h2>
               <p className="text-muted mb-0">{t.outline.lead}</p>
             </div>

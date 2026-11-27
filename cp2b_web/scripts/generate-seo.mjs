@@ -30,7 +30,7 @@ import { readFile, writeFile, mkdir, readdir, rm } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { pageSeo, researchAxes, newsItems, projectsItems, pilarBand } from '../src/data/content.js';
+import { pageSeo, researchAxes, newsItems, projectsItems, pilarBand, homeContent } from '../src/data/content.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -248,6 +248,14 @@ export function buildOrganizationJsonLd(baseUrl = DEFAULT_SITE_URL) {
       alternateName: 'UNICAMP',
       url: 'https://www.unicamp.br',
     },
+    // Projeto FAPESP 2024/01112-1 (Centros de Ciência para o Desenvolvimento), desde 01/02/2025.
+    funder: {
+      '@type': 'Organization',
+      name: 'Fundação de Amparo à Pesquisa do Estado de São Paulo',
+      alternateName: 'FAPESP',
+      url: 'https://fapesp.br',
+    },
+    foundingDate: '2025-02-01',
     sameAs: [
       'https://www.instagram.com/centro_biogas_cp2b/',
       'https://br.linkedin.com/company/centro-paulista-de-estudos-em-biog%C3%A1s-e-bioprodutos-cp2b',
@@ -802,8 +810,12 @@ export async function generateSeo({
       siteUrl,
     });
     const html = renderBody(head, [
-      `<h1>${escapeHtml(meta.title)}</h1>`,
-      p(meta.description),
+      // A home abre com o mesmo título e texto que o React mostra (Home.jsx):
+      // o nome do centro e o que ele faz, lidos pelo Google antes do JS.
+      route === '/'
+        ? `<h1>${escapeHtml(homeContent.pt.intro.title)}</h1>`
+        : `<h1>${escapeHtml(meta.title)}</h1>`,
+      route === '/' ? p(homeContent.pt.intro.lede) : p(meta.description),
       ...staticExtras(route),
       buildSiteNav(),
     ].filter(Boolean).join('\n'));

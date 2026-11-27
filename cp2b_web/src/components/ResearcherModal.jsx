@@ -138,7 +138,7 @@ const ResearcherModal = ({ member, show, onHide }) => {
 
         {areasList.length > 0 && (
           <div className="mb-4">
-            <h3 className="mono-label text-muted small text-uppercase mb-2">{t.areas}</h3>
+            <h3 className="mono-label text-muted small mb-2">{t.areas}</h3>
             <ul className="list-unstyled mb-0">
               {areasList.map((area) => (
                 <li key={area} className="d-flex gap-2 mb-1">
@@ -156,7 +156,7 @@ const ResearcherModal = ({ member, show, onHide }) => {
 
         {summary?.competencies.length > 0 && (
           <div className="mb-4">
-            <h3 className="mono-label text-muted small text-uppercase mb-2">{t.competencies}</h3>
+            <h3 className="mono-label text-muted small mb-2">{t.competencies}</h3>
             <dl className="mb-0">
               {summary.competencies.map(({ title, definition }) => (
                 <div key={title} className="mb-2">
@@ -172,7 +172,7 @@ const ResearcherModal = ({ member, show, onHide }) => {
           </div>
         )}
 
-        <h3 className="mono-label text-muted small text-uppercase mb-2">{t.profiles}</h3>
+        <h3 className="mono-label text-muted small mb-2">{t.profiles}</h3>
         {links.length > 0 ? (
           <div className="d-flex gap-2 flex-wrap">
             {links.map(({ field, variant, Icon }) => (

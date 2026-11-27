@@ -68,7 +68,7 @@ const Microscopio = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
     >
-      <PageHero eyebrow={labels.tag} title={labels.title} subtitle={description} />
+      <PageHero title={labels.title} subtitle={description} />
       <Container className="py-4 py-md-5">
 
         {loading ? (

@@ -50,8 +50,7 @@ const WordCloud = ({ language }) => {
   const reveal = useScrollReveal(ref, { amount: 0.2 });
   return (
     <section ref={ref} className="wcloud" aria-labelledby="wcloud-title" data-reveal={reveal}>
-      <header className="wcloud__head">
-        <span className="eyebrow">{t.eyebrow}</span>
+      <header className="wcloud__head">
         <h2 id="wcloud-title">{t.title}</h2>
         <p>{wordCloudSource[language] || wordCloudSource.pt}</p>
       </header>

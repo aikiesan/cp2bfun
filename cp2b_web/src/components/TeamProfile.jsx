@@ -109,8 +109,7 @@ const TeamProfile = ({ profile, language }) => {
 
   return (
     <section className="tprof" aria-labelledby="tprof-title">
-      <header className="tprof__head">
-        <span className="tprof__eyebrow">{t.eyebrow}</span>
+      <header className="tprof__head">
         <h2 id="tprof-title">{t.title}</h2>
         <p>{t.subtitle}</p>
       </header>

@@ -44,8 +44,7 @@ const TrlMatcher = ({ language, labels, countServices, onShowServices }) => {
 
   return (
     <section className="trl-match" id="qual-seu-desafio" aria-labelledby="trl-match-title">
-      <header className="lab-head lab-head--left">
-        <span className="eyebrow">{labels.eyebrow}</span>
+      <header className="lab-head lab-head--left">
         <h2 id="trl-match-title">{labels.title}</h2>
         <p>{labels.subtitle}</p>
       </header>

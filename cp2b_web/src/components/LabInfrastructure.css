@@ -407,7 +407,7 @@
   color: var(--gray-400);
 }
 
-.lab-levels__num span { font-size: 0.6rem; font-weight: var(--weight-semibold); letter-spacing: 0.12em; margin-bottom: 0.2rem; }
+.lab-levels__num span { font-size: 0.6rem; font-weight: var(--weight-semibold); margin-bottom: 0.2rem; }
 .lab-levels li.is-focus .lab-levels__num { color: var(--lab-ink); }
 
 .lab-levels h4 { margin: 0 0 0.35rem; font-size: 0.95rem; font-weight: var(--weight-semibold); color: var(--lab-ink); }
@@ -459,7 +459,7 @@
   .lab-trl__line--nums .lab-trl__label { display: none; }
   .lab-trl__phase { padding: 0.4rem 0.45rem; }
   .lab-trl__phase-name { display: none; }
-  .lab-trl__phase-range { font-size: 0.625rem; letter-spacing: 0.06em; }
+  .lab-trl__phase-range { font-size: 0.625rem; }
   .lab-trl__row .lab-trl__label { display: flex; align-items: baseline; gap: 0.5rem; padding: 0.7rem 0 0; }
   .lab-trl__row .lab-trl__track { padding: 0.4rem 0 0.7rem; }
   .lab-trl__bar { height: 1.5rem; margin: 0 2px; }

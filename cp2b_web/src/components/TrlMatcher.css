@@ -28,9 +28,7 @@
   font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: var(--weight-semibold);
-  letter-spacing: 0.14em;
   line-height: 1.4;
-  text-transform: uppercase;
 }
 
 /* ---------- nove níveis em três fases ---------- */
@@ -153,7 +151,6 @@
   background: var(--cp2b-verde-escuro);
   font-family: var(--font-sans);
   font-size: 0.8rem;
-  letter-spacing: 0.06em;
   color: var(--cp2b-branco);
 }
 

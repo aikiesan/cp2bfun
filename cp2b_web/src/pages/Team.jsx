@@ -2,7 +2,7 @@ import { useState, useMemo, useRef } from 'react';
 import { Container, Row, Col, Card, Form, InputGroup } from 'react-bootstrap';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
-import { menuLabels, pageSeo } from '../data/content';
+import { pageSeo } from '../data/content';
 import { getTeamPhoto } from '../data/teamPhotos';
 import { groupTeamByAxis, isCoordinator } from '../utils/teamGroups';
 import { useLanguage } from '../context/LanguageContext';
@@ -44,7 +44,6 @@ const Team = () => {
   const { language } = useLanguage();
   const { pathname } = useLocation();
   const seo = pageSeo.team[language] || pageSeo.team.pt;
-  const t = menuLabels[language];
 
   // A busca vive no link (?busca=), para poder ser compartilhada. A categoria
   // também, mais abaixo: ela só pode ser validada depois dos grupos montados.
@@ -145,7 +144,6 @@ const Team = () => {
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
         <PageHero
           className="page-hero--overlap"
-          eyebrow={t.team}
           title={language === 'pt' ? 'Quem Faz o CP2b' : 'Our Team'}
           subtitle={
             language === 'pt'

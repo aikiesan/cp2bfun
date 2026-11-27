@@ -149,8 +149,7 @@ const ForumPaulista = () => {
         <img className="forum-hero__image" src={gallery[3].src} alt="" />
         <div className="forum-hero__veil" />
         <div className="forum-shell forum-hero__content">
-          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }}>
-            <span className="eyebrow eyebrow--light">{t.eyebrow}</span>
+          <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, ease: EASE }}>
             <h1 id="forum-title">{t.title}</h1>
             <p className="forum-hero__meta">
               <time className="forum-date" dateTime="2026-05-28">{FORUM_DATE}</time>
@@ -169,8 +168,7 @@ const ForumPaulista = () => {
           do relato do dia. */}
       <section className="forum-section forum-thanks-section" aria-labelledby="forum-thanks-title">
         <div className="forum-shell forum-thanks">
-          <motion.div {...reveal}>
-            <span className="eyebrow">{t.thanksTag}</span>
+          <motion.div {...reveal}>
             <h2 id="forum-thanks-title">{t.thanksTitle}</h2>
             <p>{t.thanksText}</p>
           </motion.div>
@@ -195,8 +193,7 @@ const ForumPaulista = () => {
 
       <section id="memoria" className="forum-section">
         <div className="forum-shell forum-story">
-          <motion.div {...reveal}>
-            <span className="eyebrow">{t.storyTag}</span>
+          <motion.div {...reveal}>
             <h2>{t.storyTitle}</h2>
             <p>{t.storyP1}</p>
             <p>{t.storyP2}</p>
@@ -211,8 +208,7 @@ const ForumPaulista = () => {
 
       <section className="forum-section forum-bridge">
         <div className="forum-shell forum-bridge__grid">
-          <motion.div {...reveal}>
-            <span className="eyebrow eyebrow--light">{t.bridgeTag}</span>
+          <motion.div {...reveal}>
             <h2>{t.bridgeTitle}</h2>
             <p>{t.bridgeText}</p>
           </motion.div>
@@ -231,8 +227,7 @@ const ForumPaulista = () => {
 
       <section id="fotos" className="forum-section forum-gallery-section">
         <div className="forum-shell">
-          <header className="forum-section-head">
-            <span className="eyebrow">{t.galleryTag}</span>
+          <header className="forum-section-head">
             <h2>{t.galleryTitle}</h2>
             <p>{t.galleryLead}</p>
           </header>

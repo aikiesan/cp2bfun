@@ -19,7 +19,7 @@ export const proposalsEmail = 'diretoria@cp2b.unicamp.br';
 export const capacitacaoContent = {
   pt: {
     hero: {
-      eyebrow: 'Eixo 6 · Educação e Capacitação',
+      eyebrow: 'Eixo 6: Educação e Capacitação',
       title: 'Cursos e Capacitação',
       subtitle:
         'Cursos de extensão e capacitação de 4 a 24 horas em biogás, biometano e bioprodutos, planejados pelos pesquisadores do CP2b para estudantes, profissionais e gestores públicos.',
@@ -117,7 +117,7 @@ export const capacitacaoContent = {
   },
   en: {
     hero: {
-      eyebrow: 'Axis 6 · Education and Training',
+      eyebrow: 'Axis 6: Education and Training',
       title: 'Courses and Training',
       subtitle:
         'Extension and training courses of 4 to 24 hours on biogas, biomethane and bioproducts, designed by CP2b researchers for students, professionals and public managers.',

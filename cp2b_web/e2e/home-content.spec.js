@@ -35,7 +35,17 @@ test.describe('home serves images and featured content', () => {
     await expect(page.getByRole('heading', { name: 'Destaque principal' })).toBeVisible();
   });
 
-  test('serves the static partners image', async ({ page }) => {
-    await expect(page.getByAltText('Partners')).toHaveAttribute('src', '/assets/parceiros.png');
+  // Sem lista na API, a grade usa os logos estáticos; a FAPESP abre a grade.
+  // Em cinza por padrão, coloridos ao passar o mouse.
+  test('shows the partner logos in grey, in colour on hover', async ({ page }) => {
+    const cells = page.locator('.partners-section .partner-grid__cell');
+    await expect(cells.first().locator('img')).toHaveAttribute('alt', /FAPESP/);
+    expect(await cells.count()).toBeGreaterThan(10);
+
+    const logo = page.getByAltText(/SABESP/);
+    await logo.scrollIntoViewIfNeeded();
+    await expect(logo).toHaveCSS('filter', 'grayscale(1)');
+    await logo.hover();
+    await expect(logo).toHaveCSS('filter', 'none');
   });
 });
