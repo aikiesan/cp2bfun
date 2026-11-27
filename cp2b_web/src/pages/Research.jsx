@@ -10,7 +10,6 @@ import SeoHead from '../components/SeoHead';
 import PageHero from '../components/PageHero';
 import AxisExplorer from '../components/AxisExplorer';
 import AxisConstellation from '../components/AxisConstellation';
-import PilarBand from '../components/PilarBand';
 import { axisDetails } from '../data/generated/axisDetails';
 
 const transformApiAxes = (apiAxes, lang) =>
@@ -168,9 +167,6 @@ const Research = () => {
         />
       </section>
     </Container>
-
-    {/* O PILAR-2b nasce do Eixo 1 e serve aos demais: fecha a página. */}
-    <PilarBand language={language} className="pt-0" />
     </motion.div>
     </>
   );
