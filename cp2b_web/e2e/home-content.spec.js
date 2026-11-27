@@ -36,16 +36,32 @@ test.describe('home serves images and featured content', () => {
   });
 
   // Sem lista na API, a grade usa os logos estáticos; a FAPESP abre a grade.
-  // Em cinza por padrão, coloridos ao passar o mouse.
-  test('shows the partner logos in grey, in colour on hover', async ({ page }) => {
+  // Com mouse: em cinza, coloridos ao passar o mouse. Na tela de toque (sem
+  // hover) ficam coloridos desde o início.
+  test('shows the partner logos in grey, in colour on hover', async ({ page }, testInfo) => {
     const cells = page.locator('.partners-section .partner-grid__cell');
     await expect(cells.first().locator('img')).toHaveAttribute('alt', /FAPESP/);
     expect(await cells.count()).toBeGreaterThan(10);
 
     const logo = page.getByAltText(/SABESP/);
     await logo.scrollIntoViewIfNeeded();
+
+    const temHover = await page.evaluate(() => matchMedia('(hover: hover)').matches);
+    expect(temHover).toBe(testInfo.project.name !== 'mobile'); // Pixel 5: toque
+    if (!temHover) {
+      await expect(logo).toHaveCSS('filter', 'none');
+      return;
+    }
+
     await expect(logo).toHaveCSS('filter', 'grayscale(1)');
-    await logo.hover();
-    await expect(logo).toHaveCSS('filter', 'none');
+    // Passa o mouse de novo a cada tentativa: enquanto os outros logos (lazy)
+    // carregam, a página se mexe e o logo sai de baixo do ponteiro parado. No
+    // meio da transição o filtro aparece como grayscale(0), no fim como none.
+    await expect
+      .poll(async () => {
+        await logo.hover();
+        return logo.evaluate((el) => getComputedStyle(el).filter);
+      })
+      .toMatch(/^(none|grayscale\(0\))$/);
   });
 });
