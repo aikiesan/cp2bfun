@@ -83,7 +83,13 @@ beforeEach(() => {
 describe('Home — news serving', () => {
   it('renders the 3 latest news with their images and links', async () => {
     api.get.mockResolvedValue({ data: mockNews });
-    fetchFeaturedContent.mockResolvedValue({ A: null, B: null, C: null });
+    // All three Destaques taken by other content, so the news stay in the
+    // Notícias cards (free Destaques slots would take the newest ones).
+    fetchFeaturedContent.mockResolvedValue({
+      A: featured.A,
+      B: { ...featured.A, slug: 'destaque-b', title_pt: 'Destaque B' },
+      C: { ...featured.A, slug: 'destaque-c', title_pt: 'Destaque C' },
+    });
 
     renderWithProviders(<Home />);
 
@@ -148,6 +154,45 @@ describe('Home — featured content serving', () => {
   });
 });
 
+describe('Home — Destaques never shows an empty box', () => {
+  const news = [1, 2, 3, 4, 5].map((n) => ({
+    id: n, slug: `n${n}`, title_pt: `Notícia ${n}`, created_at: `2026-11-0${n}`,
+  }));
+
+  it('fills empty slots with the latest news and leaves those out of Notícias', async () => {
+    api.get.mockResolvedValue({ data: news });
+    fetchFeaturedContent.mockResolvedValue({ A: null, B: null, C: null });
+
+    const { container } = renderWithProviders(<Home />);
+    const highlights = await waitFor(() => {
+      const block = container.querySelector('.featured-news-container');
+      expect(within(block).getByText('Notícia 5')).toBeInTheDocument();
+      return block;
+    });
+
+    expect(screen.queryByText('Nenhum conteúdo em destaque')).not.toBeInTheDocument();
+    // Newest first: 5, 4, 3 lead; Notícias carries on with 2 and 1.
+    ['Notícia 5', 'Notícia 4', 'Notícia 3'].forEach((t) => expect(within(highlights).getByText(t)).toBeInTheDocument());
+    const cards = [...container.querySelectorAll('.card-editorial')].map((c) => c.textContent);
+    expect(cards).toHaveLength(2);
+    expect(cards.join(' ')).toContain('Notícia 2');
+    expect(cards.join(' ')).not.toContain('Notícia 5');
+  });
+
+  it('keeps what the team featured and fills only the gaps', async () => {
+    api.get.mockResolvedValue({ data: news });
+    fetchFeaturedContent.mockResolvedValue({ A: { ...news[0], slug: 'n1', title_pt: 'Notícia 1', content_type: 'news' }, B: null, C: null });
+
+    const { container } = renderWithProviders(<Home />);
+    await screen.findAllByText('Notícia 1');
+    const highlights = container.querySelector('.featured-news-container');
+    const large = highlights.querySelector('.featured-headline-large');
+    expect(within(large).getByText('Notícia 1')).toBeInTheDocument();
+    expect(within(highlights).getByText('Notícia 5')).toBeInTheDocument();
+    expect(within(highlights).getByText('Notícia 4')).toBeInTheDocument();
+  });
+});
+
 describe('Home — institutional layer', () => {
   beforeEach(() => {
     api.get.mockResolvedValue({ data: [] });
@@ -155,6 +200,7 @@ describe('Home — institutional layer', () => {
   });
 
   it('opens on the featured-news block, with the institutional layer below it', async () => {
+    api.get.mockResolvedValue({ data: [{ id: 1, slug: 'uma', title_pt: 'Uma notícia', created_at: '2026-11-01' }] });
     const { container } = renderWithProviders(<Home />);
     await screen.findByText(homeContent.pt.stats.title);
 

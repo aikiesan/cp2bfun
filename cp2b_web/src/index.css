@@ -443,6 +443,55 @@ body.high-contrast .admin-sidebar small {
   will-change: transform, opacity;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  /* Acima do campo de moléculas (position: fixed, z-index 0), que antes
+     desenhava as cruzinhas por cima da barra. */
+  position: relative;
+  z-index: 1;
+}
+
+/* Uma linha só: redes à esquerda, ferramentas à direita, tudo no mesmo
+   centro vertical e nas mesmas bordas do Container do menu. */
+.top-header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  min-height: 40px;
+}
+
+.top-header__social {
+  gap: 1.1rem;
+}
+
+.top-header__tools {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto;
+}
+
+.top-header__tools .accessibility {
+  gap: 0.9rem;
+}
+
+.top-header__tools .accessibility button {
+  line-height: 1;
+}
+
+.top-header__divider {
+  width: 1px;
+  height: 18px;
+  background: var(--cp2b-border);
+}
+
+.contrast-glyph {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  background: linear-gradient(to right, currentColor 50%, transparent 50%);
+  color: var(--cp2b-ink-soft);
 }
 
 #top-header.header-hidden {
@@ -888,21 +937,20 @@ body.high-contrast .navbar .dropdown-item:hover {
 }
 
 /* Featured News Section */
+/* Sem fundo próprio: as moléculas de CH4 passam por trás, como no resto
+   da Home. Só o respiro do topo; o espaço até a próxima seção é o da
+   própria seção seguinte. */
 .featured-news-section {
   width: 100%;
-  min-height: 70vh;
-  min-height: 600px;
-  background: var(--bg-page);
+  background: transparent;
   position: relative;
-  padding: 4rem 2rem;
+  padding: 2rem 0 0;
 }
 
 .featured-news-container {
   display: flex;
-  max-width: 1400px;
-  margin: 0 auto;
-  height: 70vh;
-  min-height: 600px;
+  height: min(64vh, 620px);
+  min-height: 460px;
   gap: 1.5rem;
 }
 
@@ -945,17 +993,22 @@ body.high-contrast .navbar .dropdown-item:hover {
   height: 100%;
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s ease;
-  background: #2d3748;
+  transition: box-shadow 0.2s ease;
+  background: var(--cp2b-petrol-700, #1e3e4c);
   border-radius: 16px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  border: 1px solid #e9ecef;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .featured-headline:hover {
-  z-index: 10;
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.featured-headline .featured-image-bg {
+  transition: transform 0.4s ease;
+}
+
+.featured-headline:hover .featured-image-bg {
+  transform: scale(1.02);
 }
 
 /* Dark overlay for text readability - Enhanced for 100% visibility */
@@ -1035,11 +1088,11 @@ body.high-contrast .navbar .dropdown-item:hover {
 /* Typography - Enhanced for 100% visibility */
 .featured-headline-large h2 {
   font-size: 2.5rem;
-  font-weight: 700;
+  font-weight: 600;
   margin-bottom: 1rem;
   line-height: 1.2;
   color: #ffffff !important;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
 }
 
 .featured-headline-small h2 {
@@ -1048,7 +1101,7 @@ body.high-contrast .navbar .dropdown-item:hover {
   margin-bottom: 0.5rem;
   line-height: 1.3;
   color: #ffffff !important;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8), 0 4px 16px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
 }
 
 .featured-headline-date {
@@ -1069,7 +1122,7 @@ body.high-contrast .navbar .dropdown-item:hover {
 /* Mobile responsive: Stack vertically */
 @media (max-width: 768px) {
   .featured-news-section {
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 0 0;
   }
 
   .featured-news-container {

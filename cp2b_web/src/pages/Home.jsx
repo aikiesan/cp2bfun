@@ -95,7 +95,9 @@ const Home = () => {
         const response = await api.get('/news');
         const sorted = (response.data || [])
           .sort((a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0))
-          .slice(0, 3);
+          // Seis, e não três: as que entram nos Destaques saem da lista de
+          // Notícias logo abaixo, e a lista ainda precisa de três.
+          .slice(0, 6);
         setLatestNews(sorted);
       } catch {
         setLatestNews([]);
@@ -125,9 +127,27 @@ const Home = () => {
     }
   }[language];
 
-  // Map API news items to the shape the cards expect
+  // Destaques: o que a equipe marcou no painel, com as vagas que sobraram
+  // preenchidas pelas notícias mais recentes que ainda não estão em
+  // destaque — nunca uma caixa cinza dizendo "Nenhum conteúdo em destaque".
+  // Só some se não houver nem destaque nem notícia nenhuma.
+  const featuredSlots = useMemo(() => {
+    const picked = [featuredContent.A, featuredContent.B, featuredContent.C];
+    const used = new Set(picked.filter(Boolean).map((item) => item.slug));
+    const spare = latestNews
+      .filter((item) => !used.has(item.slug))
+      .map((item) => ({ ...item, content_type: 'news' }));
+    const slots = picked.map((item) => item || spare.shift() || null);
+    return slots.some(Boolean) ? slots : null;
+  }, [featuredContent, latestNews]);
+
+  // Map API news items to the shape the cards expect, leaving out the ones
+  // already shown in Destaques above.
+  const inHighlights = new Set(
+    (featuredSlots || []).filter((item) => item?.content_type === 'news').map((item) => item.slug)
+  );
   const displayNews = latestNews.length > 0
-    ? latestNews.map((item) => ({
+    ? latestNews.filter((item) => !inHighlights.has(item.slug)).slice(0, 3).map((item) => ({
         id: item.id,
         title: language === 'pt' ? item.title_pt : (item.title_en || item.title_pt),
         badge: item.badge,
@@ -155,9 +175,11 @@ const Home = () => {
         transition={{ duration: 0.5 }}
       >
       {/* Featured News Headlines Section — the page opens on the newsroom */}
-      <section className="position-relative overflow-hidden mb-5">
-        {loadingFeatured ? (
+      {(loadingFeatured || loadingNews || featuredSlots) && (
+      <section className="position-relative overflow-hidden">
+        {loadingFeatured || loadingNews ? (
           <div className="featured-news-section featured-news-skeleton">
+            <Container>
             <div className="featured-news-container">
               <div className="featured-news-main">
                 <div className="featured-headline featured-headline-large featured-headline-skeleton" />
@@ -171,15 +193,17 @@ const Home = () => {
                 </div>
               </div>
             </div>
+            </Container>
           </div>
         ) : (
           <FeaturedContent
-            itemA={featuredContent.A}
-            itemB={featuredContent.B}
-            itemC={featuredContent.C}
+            itemA={featuredSlots[0]}
+            itemB={featuredSlots[1]}
+            itemC={featuredSlots[2]}
           />
         )}
       </section>
+      )}
 
       {/* News — 3 most recent from API */}
       <section className="section bg-light-gray">

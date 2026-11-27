@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Badge } from 'react-bootstrap';
+import { Badge, Container } from 'react-bootstrap';
 import { useLanguage } from '../context/LanguageContext';
 
 const FeaturedContent = ({ itemA, itemB, itemC }) => {
@@ -78,6 +78,8 @@ const FeaturedContent = ({ itemA, itemB, itemC }) => {
 
   return (
     <section className="featured-news-section">
+      {/* Mesmo Container das seções abaixo, para as bordas baterem. */}
+      <Container>
       <div className="featured-news-container">
         {/* Left: Headline A (50% width, full height) */}
         <div className="featured-news-main">
@@ -94,6 +96,7 @@ const FeaturedContent = ({ itemA, itemB, itemC }) => {
           </div>
         </div>
       </div>
+      </Container>
     </section>
   );
 };

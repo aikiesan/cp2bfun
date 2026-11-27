@@ -35,18 +35,24 @@ describe('Footer', () => {
     scrollSpy.mockRestore();
   });
 
-  it('seats Metaninho on the edge on inner pages, not on the Home', () => {
-    window.history.pushState({}, '', '/');
-    const { container, unmount } = renderWithProviders(<Footer />);
-    expect(container.querySelector('.footer-metaninho')).toBeNull();
-    unmount();
+  it('seats Metaninho on the edge on the Home and Comunicação pages only', () => {
+    for (const path of ['/', '/noticias', '/metaninho']) {
+      window.history.pushState({}, '', path);
+      const { container, unmount } = renderWithProviders(<Footer />);
+      const seat = container.querySelector('.footer-metaninho');
+      expect(seat, path).not.toBeNull();
+      expect(seat.querySelector('img')).toHaveAttribute('src', '/assets/metaninho/metaninho-tranquilo.webp');
+      // Easter egg: he is a button that talks when clicked.
+      expect(screen.getByRole('button', { name: 'Metaninho, o mascote do CP2b' })).toBeInTheDocument();
+      unmount();
+    }
 
-    window.history.pushState({}, '', '/sobre');
-    const inner = renderWithProviders(<Footer />);
-    const seat = inner.container.querySelector('.footer-metaninho');
-    expect(seat.querySelector('img')).toHaveAttribute('src', '/assets/metaninho/metaninho-tranquilo.webp');
-    // Easter egg: he is a button that talks when clicked.
-    expect(screen.getByRole('button', { name: 'Metaninho, o mascote do CP2b' })).toBeInTheDocument();
+    for (const path of ['/sobre', '/equipe', '/noticias/alguma-noticia']) {
+      window.history.pushState({}, '', path);
+      const { container, unmount } = renderWithProviders(<Footer />);
+      expect(container.querySelector('.footer-metaninho'), path).toBeNull();
+      unmount();
+    }
     window.history.pushState({}, '', '/');
   });
 });

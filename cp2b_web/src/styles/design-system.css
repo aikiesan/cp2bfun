@@ -938,6 +938,14 @@ main#main-content,
    quarter of Home's density the field is meant to read as texture only
    where a page happens to have some open white space, not to fight for
    visibility through content. */
+/* Home: as seções vêm uma atrás da outra num ritmo mais curto que o das
+   páginas internas (~68px em 1440, em vez de ~98px por lado), para a página
+   ler como um percurso e não como blocos soltos com vazios entre eles. */
+.home-page > .section {
+  padding-top: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+  padding-bottom: clamp(2.5rem, 1.5rem + 3vw, 4.5rem);
+}
+
 .home-page > section.bg-light-gray,
 .home-page > section.home-band-tinted {
   background-color: color-mix(in srgb, var(--cp2b-light-gray) 82%, transparent) !important;
