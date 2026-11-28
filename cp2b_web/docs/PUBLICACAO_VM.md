@@ -438,6 +438,18 @@ acrescenta ao CSV, que guarda o histórico para sempre.
   sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-report.sh 2026-11 /microscopio   # dia a dia de uma página
   sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-report.sh 2026 --csv ~/cp2b-2026.csv
   ```
+- **Relatório por e-mail, todo dia 1:** às 07:00 o mesmo cron manda o
+  relatório do mês anterior, com o CSV do mês e o histórico inteiro em anexo,
+  pela conta SMTP do backend (remetente do `SMTP_FROM`). É a cópia de
+  segurança das estatísticas fora da VM. Só contagens, sem log bruto. Os
+  destinatários ficam na VM, fora do repositório:
+  ```bash
+  echo 'STATS_EMAIL_TO="comunicacao@cp2b.unicamp.br,outra@unicamp.br"' | sudo tee /etc/default/cp2b-stats
+  sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-monthly.sh --dry-run   # mostra, sem enviar
+  sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-monthly.sh 2026-11     # reenvia um mês
+  ```
+  Parar os envios: apague a linha `STATS_EMAIL_TO` (ou o arquivo); o script
+  avisa no log e não manda nada.
 - **Baixar para o computador** (Git Bash, com a VPN):
   `scp -P 22004 lucas@177.220.121.2:/var/lib/cp2b-stats/daily.csv .`
   Se der "permission denied", copie antes para a sua pasta na VM:
