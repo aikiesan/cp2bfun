@@ -409,6 +409,17 @@ acrescenta ao CSV, que guarda o histórico para sempre.
   sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-daily.sh                        # backfill dos 14 dias
   ```
   Desfazer: `sudo rm /etc/cron.d/cp2b-stats` (o CSV fica onde está).
+- **Cópia dos logs (90 dias):** o logrotate da VM apaga os logs do Apache em
+  14 dias, numa regra comum a todos os sites da VM. Por isso o mesmo cron
+  guarda uma cópia de cada dia completo em
+  `/var/lib/cp2b-stats/logs/cp2b-access-AAAA-MM-DD.log.gz` (cerca de 35 MB
+  em 90 dias) e apaga as mais antigas que isso. Serve para recalcular o CSV
+  quando uma regra de contagem muda; nesse caso, leia **só** a cópia, nunca
+  junto com os logs do Apache (os dias que estão nos dois contariam em dobro):
+  ```bash
+  sudo mv /var/lib/cp2b-stats/daily.csv /var/lib/cp2b-stats/daily.csv.antes
+  sudo bash -c 'LOGS="$(ls /var/lib/cp2b-stats/logs/*.gz)" bash /var/www/cp2b/repo/cp2b_web/scripts/stats-daily.sh'
+  ```
 - **Ler um mês:**
   ```bash
   sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-report.sh 2026-11
