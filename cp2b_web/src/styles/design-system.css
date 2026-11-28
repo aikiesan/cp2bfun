@@ -1249,12 +1249,23 @@ body.high-contrast main[data-page="inner"] .card-editorial {
   height: auto;
   object-fit: contain;
   mix-blend-mode: multiply;
-  filter: grayscale(1);
-  opacity: 0.72;
   transition: filter 0.25s ease, opacity 0.25s ease;
 }
 
-.partner-grid__item:hover img,
+/* Cinza só onde existe mouse: no celular não há hover, e os logos ficariam
+   apagados para sempre. Lá eles aparecem com as cores de cada marca. */
+@media (hover: hover) {
+  .partner-grid__item img {
+    filter: grayscale(1);
+    opacity: 0.72;
+  }
+
+  .partner-grid__item:hover img {
+    filter: none;
+    opacity: 1;
+  }
+}
+
 .partner-grid__item:focus-visible img {
   filter: none;
   opacity: 1;
