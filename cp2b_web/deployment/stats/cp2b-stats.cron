@@ -13,3 +13,7 @@
 SHELL=/bin/bash
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 30 1 * * * root bash /var/www/cp2b/repo/cp2b_web/scripts/stats-daily.sh >> /var/log/cp2b-stats.log 2>&1
+# Dia 1, 07:00: relatório do mês anterior por e-mail, com o CSV do mês e o
+# histórico em anexo (stats-monthly.sh). O último dia do mês já entrou à 01:30.
+# Destinatários em /etc/default/cp2b-stats (STATS_EMAIL_TO), fora do repositório.
+0 7 1 * * root bash /var/www/cp2b/repo/cp2b_web/scripts/stats-monthly.sh >> /var/log/cp2b-stats.log 2>&1

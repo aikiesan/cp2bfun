@@ -40,7 +40,10 @@
 #                chamam a API); vazio quando counted_by = html
 #   browsers     navegadores distintos (IP + user agent) na base da contagem
 #                (views se api, arrivals se html). Todo pedido chega pelo
-#                proxy da Unicamp com o mesmo IP: é uma estimativa por baixo
+#                proxy da Unicamp; o IP do visitante vem do último endereço do
+#                X-Forwarded-For, que o log grava num campo no fim da linha
+#                desde 28/11/2026. Antes disso o IP era sempre o do proxy, e
+#                a coluna é uma estimativa por baixo
 #   src_*        origem das chegadas; a soma das src_* é igual a arrivals
 #                direct: sem referer (link salvo, e-mail, WhatsApp no celular)
 #                google: busca do Google (referer, gclid, app do Google)
@@ -125,8 +128,9 @@ TODOS=$(dias_nos_logs)
 # nova precisa das linhas originais. Para recalcular a partir da cópia, use
 # só ela (misturar com os logs do Apache contaria duas vezes os dias que
 # estão nos dois):  LOGS="$(ls /var/lib/cp2b-stats/logs/*.gz)"
+# 30 dias, não mais: as linhas trazem o IP do visitante, dado pessoal (LGPD).
 ARQ="${ARQ:-$(dirname "$CSV")/logs}"
-ARQ_DIAS="${ARQ_DIAS:-90}"
+ARQ_DIAS="${ARQ_DIAS:-30}"
 if [ "$DRY" -eq 0 ]; then
   mkdir -p "$ARQ"
   chmod 750 "$ARQ"
@@ -290,6 +294,15 @@ LINHAS=$(zcat -f $LOGS | awk -F'"' -v dias="$ALVO" '
     if (!(dia in quer)) next
     n = split($1, a, " "); ip = (a[1] ~ /:[0-9]+$/) ? a[2] : a[1]
     if (ip == "127.0.0.1" || ip == "::1") next
+    # Quem é o visitante: o último endereço do X-Forwarded-For (campo no fim
+    # da linha), que é o que o proxy da Unicamp acrescentou; os anteriores
+    # vêm de quem fez o pedido e podem ser inventados. Linhas sem o campo
+    # (logs antigos) ficam com o IP de quem conectou, o proxy.
+    cli = ip
+    if (NF >= 8 && $8 != "" && $8 != "-") {
+      x = $8; sub(/.*,/, "", x); gsub(/[ \t]/, "", x)
+      if (x != "") cli = x
+    }
     split($2, r, " "); if (r[1] != "GET") next
     split($3, s, " "); if (s[1] != "200" && s[1] != "304") next
     ua = $6; lua = tolower(ua)
@@ -304,16 +317,16 @@ LINHAS=$(zcat -f $LOGS | awk -F'"' -v dias="$ALVO" '
     if (path ~ /^\/api\//) {
       # O painel /admin usa as mesmas rotas públicas para editar: não é visita.
       if (ref ~ /^https?:\/\/[^\/]+\/admin/) next
-      js[dia SUBSEP ip SUBSEP ua] = 1   # este navegador rodou o site hoje
+      js[dia SUBSEP cli SUBSEP ua] = 1   # este navegador rodou o site hoje
       if (!api_page(path, q)) next
       k = dia SUBSEP T SUBSEP P
       tipo[k] = T; pag[k] = P; vis[k]++
-      if (tem_api(T, P)) conta_base(k, ip, ua, lua)
+      if (tem_api(T, P)) conta_base(k, cli, ua, lua)
     } else {
       if (!html_page(path)) next
       # Só conta no fim, quando já se sabe se este navegador chamou a API.
       n_ch++
-      ch_dia[n_ch] = dia; ch_t[n_ch] = T; ch_p[n_ch] = P; ch_ip[n_ch] = ip
+      ch_dia[n_ch] = dia; ch_t[n_ch] = T; ch_p[n_ch] = P; ch_ip[n_ch] = cli
       ch_ua[n_ch] = ua; ch_src[n_ch] = origem(lua, q, ref)
     }
   }
