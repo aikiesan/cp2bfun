@@ -442,7 +442,8 @@ digitado); quem navega por dentro só chama a API.
   mesmo IP, então isto conta user agents distintos. É uma estimativa por baixo
   (dois iPhones com o mesmo Safari contam como um).
 - **Ficam de fora:** robôs, o próprio servidor (o gerador do sitemap), o
-  painel /admin, arquivos estáticos, /pilar2b, /arqueia e as sondas da
-  Microsoft.
+  painel /admin, arquivos estáticos, /pilar2b, /arqueia, as sondas da
+  Microsoft e o que o service worker do PWA baixa sozinho (referer `/sw.js`:
+  ele busca o HTML da home a cada instalação ou atualização).
 - Uma coluna nunca muda de significado depois que há dados. Se um dia a
   contagem precisar mudar, entra uma coluna nova.
