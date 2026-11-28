@@ -118,6 +118,36 @@ if [ "$DRY" -eq 0 ]; then
 fi
 
 TODOS=$(dias_nos_logs)
+
+# Cópia própria dos logs, um arquivo por dia completo, guardada ARQ_DIAS dias.
+# O logrotate da VM apaga os do Apache em 14 dias (regra comum a todos os
+# sites da VM, que não é nossa para mudar), e recalcular o CSV com uma regra
+# nova precisa das linhas originais. Para recalcular a partir da cópia, use
+# só ela (misturar com os logs do Apache contaria duas vezes os dias que
+# estão nos dois):  LOGS="$(ls /var/lib/cp2b-stats/logs/*.gz)"
+ARQ="${ARQ:-$(dirname "$CSV")/logs}"
+ARQ_DIAS="${ARQ_DIAS:-90}"
+if [ "$DRY" -eq 0 ]; then
+  mkdir -p "$ARQ"
+  chmod 750 "$ARQ"
+  if getent group adm >/dev/null 2>&1; then chgrp adm "$ARQ"; fi
+  for d in $(printf '%s\n' "$TODOS" | awk -v hoje="$HOJE" 'NF && $0 < hoje'); do
+    f="$ARQ/cp2b-access-$d.log.gz"
+    if [ -e "$f" ]; then continue; fi
+    marca="[$(date -d "$d" +%d/%b/%Y):"
+    zcat -f $LOGS | { grep -F "$marca" || true; } | gzip -9 > "$f.tmp"
+    chmod 640 "$f.tmp"
+    if getent group adm >/dev/null 2>&1; then chgrp adm "$f.tmp"; fi
+    mv "$f.tmp" "$f"
+  done
+  limite=$(date -d "$HOJE - $ARQ_DIAS days" +%F)
+  for f in "$ARQ"/cp2b-access-*.log.gz; do
+    if [ ! -e "$f" ]; then continue; fi
+    d=${f##*/cp2b-access-}; d=${d%.log.gz}
+    if [ "$d" \< "$limite" ]; then rm -f "$f"; fi
+  done
+fi
+
 if [ -n "$DIA" ]; then
   if [ "$DIA" \> "$HOJE" ] || [ "$DIA" = "$HOJE" ]; then
     echo "$DIA ainda não acabou: só dias anteriores a $HOJE." >&2; exit 2
