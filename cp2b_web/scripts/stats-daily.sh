@@ -57,6 +57,9 @@
 # chamadas da API feitas de dentro do /admin), arquivos estáticos, os outros
 # apps (/pilar2b, /arqueia, ABIOVE) e as sondas de teste da Microsoft
 # (referer *.afd.team). As três primeiras regras vêm de microscopio-stats.sh.
+# Também fica de fora o que o service worker do PWA baixa sozinho (referer
+# /sw.js): ao instalar ou atualizar, ele busca o HTML da home para o modo
+# offline, e isso parecia uma chegada à home a cada atualização.
 
 set -euo pipefail
 export LC_ALL=C
@@ -263,6 +266,7 @@ LINHAS=$(zcat -f $LOGS | awk -F'"' -v dias="$ALVO" '
     if (lua ~ /bot|crawl|spider|slurp|facebookexternalhit|whatsapp|preview|curl|wget|python|headless|lighthouse|monitor|uptime/) next
     ref = $4
     if (ref ~ /afd\.team/) next
+    if (ref ~ /\/sw\.js$/) next   # o service worker, não uma pessoa
     path = r[2]; q = ""
     if (index(path, "?")) { q = substr(path, index(path, "?")); path = substr(path, 1, index(path, "?") - 1) }
     sub(/\/$/, "", path)
