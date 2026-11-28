@@ -409,11 +409,23 @@ acrescenta ao CSV, que guarda o histórico para sempre.
   sudo bash /var/www/cp2b/repo/cp2b_web/scripts/stats-daily.sh                        # backfill dos 14 dias
   ```
   Desfazer: `sudo rm /etc/cron.d/cp2b-stats` (o CSV fica onde está).
-- **Cópia dos logs (90 dias):** o logrotate da VM apaga os logs do Apache em
+- **IP do visitante no log:** todo pedido chega pelo proxy da Unicamp
+  (`10.100.0.100`), que manda o endereço de quem visita no cabeçalho
+  `X-Forwarded-For`. Desde 28/11/2026 o vhost do CP2b grava esse cabeçalho
+  num campo a mais no fim de cada linha do `cp2b-access.log` (formato
+  `cp2b_xff`, definido no próprio vhost). Só o log muda: os apps atrás do
+  mesmo vhost (/pilar2b, /arqueia, /abiove, /data_biogas) recebem os
+  pedidos como antes. O vhost anterior ficou em
+  `/root/cp2b.unicamp.br.conf.antes-xff`; para desfazer, copie-o de volta
+  para `/etc/apache2/sites-available/cp2b.unicamp.br.conf`, rode
+  `sudo apache2ctl configtest` e `sudo systemctl reload apache2`.
+- **Cópia dos logs (30 dias):** o logrotate da VM apaga os logs do Apache em
   14 dias, numa regra comum a todos os sites da VM. Por isso o mesmo cron
   guarda uma cópia de cada dia completo em
-  `/var/lib/cp2b-stats/logs/cp2b-access-AAAA-MM-DD.log.gz` (cerca de 35 MB
-  em 90 dias) e apaga as mais antigas que isso. Serve para recalcular o CSV
+  `/var/lib/cp2b-stats/logs/cp2b-access-AAAA-MM-DD.log.gz` (cerca de 12 MB
+  em 30 dias) e apaga as mais antigas que isso. Não mais que 30 dias porque
+  as linhas trazem o IP do visitante, dado pessoal (LGPD); o CSV só guarda
+  contagens. Serve para recalcular o CSV
   quando uma regra de contagem muda; nesse caso, leia **só** a cópia, nunca
   junto com os logs do Apache (os dias que estão nos dois contariam em dobro):
   ```bash
@@ -449,9 +461,12 @@ digitado); quem navega por dentro só chama a API.
   /capacitacao, /noticias, /galeria…) têm `counted_by = html`: contam só as
   chegadas de fora, e quem chegou navegando pelo site não aparece. O número é
   um piso, não o total.
-- **Navegadores (`browsers`):** todo pedido chega pelo proxy da Unicamp com o
-  mesmo IP, então isto conta user agents distintos. É uma estimativa por baixo
-  (dois iPhones com o mesmo Safari contam como um).
+- **Navegadores (`browsers`):** combinações distintas de IP do visitante e
+  user agent. O IP é o último endereço do `X-Forwarded-For`, o que o proxy
+  da Unicamp acrescentou (os anteriores podem ser inventados por quem faz o
+  pedido). Até 27/11/2026 o log só tinha o IP do proxy, e nesses dias a
+  coluna é uma estimativa por baixo (dois iPhones com o mesmo Safari contavam
+  como um).
 - **Ficam de fora:** robôs, o próprio servidor (o gerador do sitemap), o
   painel /admin, arquivos estáticos, /pilar2b, /arqueia, as sondas da
   Microsoft e o que o service worker do PWA baixa sozinho (referer `/sw.js`:

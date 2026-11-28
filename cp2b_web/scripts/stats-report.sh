@@ -99,8 +99,8 @@ fi
 
 echo
 echo "Aberturas: visualizações pela API (base api) ou chegadas pelo HTML (base html)."
-echo "Navegadores: user agents distintos; todo pedido vem do proxy da Unicamp,"
-echo "então é uma estimativa por baixo (dois iPhones com o mesmo Safari = um)."
+echo "Navegadores: IP do visitante + user agent distintos. Até 27/11/2026 o log só"
+echo "tinha o IP do proxy da Unicamp, e nesses dias é uma estimativa por baixo."
 
 if [ -n "$SAIDA" ]; then
   awk -F, -v OFS=, '
